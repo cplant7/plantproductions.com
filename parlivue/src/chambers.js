@@ -168,7 +168,7 @@ function chSummary(C){
       <dl class="kv"><dt>Speaker</dt><dd>Raymonde Gagné</dd><dt>Appointed by</dt><dd>Governor General, on the PM's advice</dd><dt>Serve until</dt><dd>Age 75</dd></dl>`; }
   document.getElementById(C.id+"-sum").innerHTML=`<div class="hsum-l">${C.kicker?`<div class="kicker">${C.kicker}</div>`:""}<h2 class="hhead">${C.title}<span class="fr">${C.fr}</span></h2>${typeof CH_META!=="undefined"&&CH_META[C.id]?`<p class="hlede">${CH_META[C.id][2]}</p>`:""}${left}
     <div class="mbar">${C.order.map(g=>`<span style="--w:${(c[g]||0)/total*100}%;--pc:${C.groups[g].color}"></span>`).join("")}${C.majority?`<i class="mline" style="left:${C.majority/total*100}%"><em>${C.majority}</em></i>`:`<i class="mline" style="left:${53/105*100}%"><em>53</em></i>`}</div>
-    <div class="ptiles">${tiles}</div><div class="src">${GE?`Change shown against the ${C.geLabel||"February 27, 2025 election"} (${C.order.map(g=>C.groups[g].short+" "+GE[g]).join(" · ")}). `:""}<b class="hint">Tap a ${C.id==="senate"?"group":"party"}</b> to light up its seats and open its breakdown.</div></div><div class="hsum-r">${right}</div>`;
+    <div class="ptiles">${tiles}</div><div class="src">${GE?`Change shown against the ${C.geLabel||"February 27, 2025 election"} (${C.order.map(g=>C.groups[g].short+" "+GE[g]).join(" · ")}). `:""}<b class="hint">Tap a ${C.tileWord||(C.id==="senate"?"group":"party")}</b> to light up its seats and open its breakdown.</div></div><div class="hsum-r">${right}</div>`;
   document.querySelectorAll(`#${C.id}-sum .ptile`).forEach(b=>b.onclick=()=>{ const g=b.dataset.g; st.focus=st.focus===g?null:g; st.panel=st.focus?{type:"group",g}:null; st.sel=null; chPaint(C); chProfile(C); chSummary(C); if(C.map&&st.focus){ const sg=document.getElementById(C.map.stageId); if(sg) sg.scrollIntoView({behavior:RM?"auto":"smooth",block:"start"}); } });
   const mb=document.getElementById(C.id+"-maj"); if(mb) mb.onclick=()=>{ st.panel={type:"maj"}; st.focus=null; st.sel=null; chPaint(C); chProfile(C); };
 }
@@ -194,9 +194,9 @@ function chProfile(C){
       ${C.id==="ontario"&&(m.hon)?`<button class="chipbtn" id="${C.id}-towheel">Show on the power map ↑</button>`:""}
       ${srcA(C.src)}<button class="linkbtn" id="${C.id}-back" style="font-size:13px">← Back</button>`; }
   else if(st.panel&&st.panel.type==="group"){ const g=st.panel.g, G=C.groups[g], ms=C.members.filter(x=>x.group===g);
-    const by=d3.rollups(ms,v=>v.length,x=>C.id==="senate"?x.place:(x.hon?"Cabinet":"Other members")).sort((a,b)=>b[1]-a[1]); const mx=by.length?by[0][1]:1;
+    const by=d3.rollups(ms,v=>v.length,x=>C.breakFn?C.breakFn(x):C.id==="senate"?x.place:(x.hon?"Cabinet":"Other members")).sort((a,b)=>b[1]-a[1]); const mx=by.length?by[0][1]:1;
     h=`<div class="pband" style="--pc:${G.color}"></div><div class="kicker">${C.id==="senate"?"Group":"Party"} · tap the tile again to clear</div><h2>${G.name}</h2>
-      <div class="statgrid" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><b>${ms.length}</b><span>Seats</span></div><div class="stat"><b>${Math.round(ms.length/C.members.length*100)}%</b><span>of the ${C.id==="senate"?"Senate":"Assembly"}</span></div></div>
+      <div class="statgrid" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><b>${ms.length}</b><span>Seats</span></div><div class="stat"><b>${Math.round(ms.length/C.members.length*100)}%</b><span>of the ${C.bodyWord||(C.id==="senate"?"Senate":"Assembly")}</span></div></div>
       <h3>${C.id==="senate"?"By province or territory":"Breakdown"}</h3><div class="bars" style="--accent:${G.color}">${by.map(([k,v])=>`<div class="bar"><span>${k}</span><span class="amt">${v}</span><div class="track"><div class="fill" style="width:${v/mx*100}%"></div></div></div>`).join("")}</div>
       ${C.id!=="ontario"?`<button class="chipbtn" id="${C.id}-plist">List all ${ms.length} in the table ↓</button>`:""}${srcA(C.src)}<button class="linkbtn" id="${C.id}-back" style="font-size:13px">← Back</button>`; }
   else if(st.panel&&st.panel.type==="maj"){ const gov=c.pc, others=C.members.length-gov;
@@ -221,6 +221,7 @@ function chSelect(C,i,zoom){ if(C.map){ document.getElementById(C.map.stageId).s
   if(window.innerWidth<980) document.getElementById(C.id+"-panel").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"}); }
 
 function renderChamber(id){
+  if(id==="vicscore") return renderVicScorePage();
   if(id==="bcleg") return renderBcLeg();
   if(id==="skleg") return renderSkLeg();
   if(typeof PV_CFG!=="undefined"&&PV_CFG[id]) return renderPvLeg(PV_CFG[id]);
@@ -257,7 +258,7 @@ function renderChamber(id){
         ${srcA(ON_SO_SRC)}
         <div class="who4"><span><b>Speaker</b> elected by MPPs; keeps order impartially</span><span><b>Cabinet</b> leads ministries; front bench</span><span><b>Opposition</b> questions and proposes alternatives</span><span><b>Backbenchers</b> most MPPs; debate and sit on committees</span></div>
        </section></div>
-       <div class="hside">${ridingCard("ontario")}<section class="nsec"><div class="lgh"><h2 class="nh">Changes since the 2025 election</h2></div>
+       <div class="hside">${ridingBtn("ontario")}<section class="nsec"><div class="lgh"><h2 class="nh">Changes since the 2025 election</h2></div>
         <div class="seg lgfs"><button class="onlgf" data-f="all">All</button><button class="onlgf" data-f="bye">By-elections</button><button class="onlgf" data-f="cross">Party changes</button><button class="onlgf" data-f="vac">Vacancies</button></div>
         <ol class="hlog" id="onlog"></ol>${srcA(ON_LOG_SRC)}</section></div></div>`);
     document.querySelectorAll(".onlgf").forEach(b=>b.onclick=()=>{ onLogFilter=b.dataset.f; renderOnLog(); });

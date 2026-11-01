@@ -363,7 +363,7 @@ function renderCommons(){
         <div class="who4"><span><b>Speaker</b> elected by MPs; keeps order impartially</span><span><b>Cabinet</b> run departments; front bench</span><span><b>Opposition</b> question and propose alternatives</span><span><b>Backbenchers</b> most MPs; debate and sit on committees</span></div>
         ${srcA(ROLEH_SRC)}
        </section>
-     </div><div class="hside">${ridingCard("commons")}
+     </div><div class="hside">${ridingBtn("commons")}
        <section class="nsec"><div class="lgh"><h2 class="nh">Changes since the 2025 election</h2></div>
         <div class="seg lgfs"><button class="lgf" data-f="all">All</button><button class="lgf" data-f="bye">By-elections</button><button class="lgf" data-f="cross">Party changes</button><button class="lgf" data-f="vac">Vacancies</button></div>
         <ol class="hlog" id="hlog"></ol>

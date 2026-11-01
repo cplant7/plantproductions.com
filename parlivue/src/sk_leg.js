@@ -166,7 +166,7 @@ function renderSkLeg(){
         </div>
         <div class="who4"><span><b>Speaker</b> elected by MLAs; keeps order impartially</span><span><b>Cabinet</b> leads ministries; front bench</span><span><b>Opposition</b> questions and proposes alternatives</span><span><b>Backbenchers</b> most MLAs; debate and sit on committees</span></div>
        </section></div>
-       <div class="hside">${ridingCard("sk")}<section class="nsec"><div class="lgh"><h2 class="nh">Changes since the 2024 election</h2></div>
+       <div class="hside">${ridingBtn("sk")}<section class="nsec"><div class="lgh"><h2 class="nh">Changes since the 2024 election</h2></div>
         <ol class="hlog">${SK_LOG.map(x=>{ const m=C.members.find(mm=>mm.place===x[3]); const chip=g=>`<span class="pchip" style="--pc:${C.groups[g].color}">${C.groups[g].short}</span>`;
           return `<li class="lgi"><button data-i="${m?m.i:""}"><span class="lg-t"><b>${x[2]}</b><span>${x[3]}</span><span class="muted">${x[6]}</span></span><span class="lg-c">${chip(x[4])}<span class="arr">→</span>${chip(x[5])}</span></button></li>`; }).join("")}</ol>
         ${srcA(SK_S.nip)}${srcA(SK_S.ge)}</section></div></div>`;

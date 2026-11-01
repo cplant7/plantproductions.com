@@ -38,7 +38,7 @@ function pvBuild(cfg){
   const card=(B,t1,t2)=>{ g.append("rect").attr("x",B.x).attr("y",B.y).attr("width",B.w).attr("height",B.h).attr("rx",16).attr("class","pmcard");
     const t=g.append("text").attr("x",B.x+22).attr("y",B.y+36).attr("class","pmcardh"); t.append("tspan").text(t1); t.append("tspan").attr("class","pmcardn").text("  ·  "+t2[0]);
     g.append("text").attr("x",B.x+22).attr("y",B.y+56).attr("class","pmcards").text(t2[1]); };
-  card(CAB,"Cabinet",[`${D.mins.length} ministers`,cfg.cabSub]);
+  card(CAB,cfg.cabTitle||"Cabinet",[`${D.mins.length} ${cfg.cabCount||"ministers"}`,cfg.cabSub]);
   card(MIN,cfg.minTitle||"Ministries",[String(D.ministries.length),cfg.minSub||"Each is run day to day by a deputy minister from the public service."]);
   // ---- chamber: desks from the seating plan ----
   const ch=g.append("g").attr("class","pmchamber");
@@ -53,10 +53,10 @@ function pvBuild(cfg){
   const [sx,sy]=[C.spk.px,C.spk.py];
   ch.append("rect").attr("x",sx-24).attr("y",sy-24).attr("width",48).attr("height",48).attr("rx",10).attr("fill","none").attr("stroke","var(--brass)").attr("stroke-width",2);
   const below=cfg.spkLabel==="below", sl=cfg.spkLabelSide||-1, sa=below?"middle":sl<0?"end":"start", lx0=below?sx:sx+sl*34, ly0=below?sy+42:sy-2;
-  ch.append("text").attr("x",lx0).attr("y",ly0).attr("text-anchor",sa).attr("class","clbl brass").text("SPEAKER");
+  ch.append("text").attr("x",lx0).attr("y",ly0).attr("text-anchor",sa).attr("class","clbl brass").text(cfg.spkWord||"SPEAKER");
   ch.append("text").attr("x",lx0).attr("y",ly0+14).attr("text-anchor",sa).attr("class","clbl").text(C.spk.name.toUpperCase());
   const bot=cfg.bot;
-  [["gov",(cfg.sideNames||["GOVERNMENT"])[0],"SPEAKER'S RIGHT"],["opp",(cfg.sideNames||[0,"OPPOSITION"])[1],"SPEAKER'S LEFT"]].forEach(([k,a,b])=>{ const x=T(cfg.sideLbl[k][0],cfg.sideLbl[k][1]||0)[0];
+  if(!cfg.noSides) [["gov",(cfg.sideNames||["GOVERNMENT"])[0],"SPEAKER'S RIGHT"],["opp",(cfg.sideNames||[0,"OPPOSITION"])[1],"SPEAKER'S LEFT"]].forEach(([k,a,b])=>{ const x=T(cfg.sideLbl[k][0],cfg.sideLbl[k][1]||0)[0];
     ch.append("text").attr("x",x).attr("y",bot+36).attr("text-anchor","middle").attr("class","clbl side").text(a);
     ch.append("text").attr("x",x).attr("y",bot+52).attr("text-anchor","middle").attr("class","clbl").text(b); });
   const cx=cfg.cx;
@@ -70,7 +70,7 @@ function pvBuild(cfg){
   const [px,py]=D.premier;
   const cf=cfg.confPath(D.prem,px,py); arrow(cf.d,"f-conf","accent"); lbl(cf.lx,cf.ly,(cfg.confLbl||["Leader with the Assembly's"])[0],cf.anchor||"start"); lbl(cf.lx,cf.ly+14,(cfg.confLbl||[0,"confidence becomes Premier"])[1],cf.anchor||"start");
   arrow(`M${px+72},${py} C${px+110},${py} ${CAB.x-50},${CAB.y+CAB.h-60} ${CAB.x-6},${CAB.y+CAB.h-60}`,"f-app");
-  lbl(px+80,py-32,"Chooses","start","flowlbl big");lbl(px+80,py-16,"Cabinet","start","flowlbl big");
+  lbl(px+80,py-32,(cfg.choosesLbl||["Chooses"])[0],"start","flowlbl big");lbl(px+80,py-16,(cfg.choosesLbl||[0,"Cabinet"])[1],"start","flowlbl big");
   arrow(`M${CAB.x+CAB.w/2},${CAB.y+CAB.h+2} L${CAB.x+CAB.w/2},${MIN.y-4}`,"f-app");
   lbl(CAB.x+CAB.w/2+12,MIN.y-10,cfg.dirLbl||"Ministers direct ministries","start","flowlbl big");
   const SL=[{key:"premier",x:px,y:py,m:D.prem},...D.mins.filter(mn=>mn.mpp).map(mn=>({key:mn.id,x:mn.x,y:mn.y,m:mn.mpp}))];
@@ -88,7 +88,7 @@ function pvBuild(cfg){
   g.append("path").attr("class","spoke").attr("d",`M${px},${py+58} V${D.premierOffices[0].y-12} M${px},${D.premierOffices[0].y+40} V${D.sec[1]-21}`);
   const pr=g.append("g").attr("class","pmn premier").attr("transform",`translate(${px},${py})`).datum({type:"premier",key:"premier"});
   pr.append("rect").attr("x",-72).attr("y",-28).attr("width",144).attr("height",56).attr("rx",16).attr("class","prbox "+cfg.gov);
-  pr.append("text").attr("y",8).attr("text-anchor","middle").attr("class","pminit").text("Premier");
+  pr.append("text").attr("y",8).attr("text-anchor","middle").attr("class","pminit").text(cfg.headWord||"Premier");
   g.append("text").attr("x",px).attr("y",py+50).attr("text-anchor","middle").attr("class","pmname").text(cfg.premier.name);
   const po=g.append("g").selectAll("g").data(D.premierOffices).join("g").attr("class","pmn office").attr("transform",o=>`translate(${o.x},${o.y})`).datum(o=>({type:"ministry",key:"o_"+o.id,o}));
   po.append("rect").attr("x",-11).attr("y",-11).attr("width",22).attr("height",22).attr("rx",5).attr("class","mbox");
@@ -100,7 +100,7 @@ function pvBuild(cfg){
   // ---- the Crown and the officers ----
   const LGY=-400; D.lgPt=[px,LGY]; D.offPt=[cx,bot+94];
   g.append("path").attr("class","flow f-crown").attr("d",`M${px},${LGY+24} L${px},${py-32}`).attr("marker-end",`url(#${pre}-ar-ink)`);
-  g.append("text").attr("x",px+8).attr("y",(LGY+py)/2+4).attr("class","flowlbl").text("Appoints, on advice");
+  g.append("text").attr("x",px+8).attr("y",(LGY+py)/2+4).attr("class","flowlbl").text(cfg.crownLbl||"Appoints, on advice");
   const lg=g.append("g").attr("class","pmn crown").attr("transform",`translate(${px},${LGY})`).datum({type:"lg",key:"lg"});
   lg.append("rect").attr("x",-86).attr("y",-23).attr("width",172).attr("height",46).attr("rx",23).attr("class","crownbox");
   lg.append("text").attr("y",-3).attr("text-anchor","middle").attr("class","seclbl").text(cfg.crown||"Lieutenant Governor");
@@ -108,12 +108,12 @@ function pvBuild(cfg){
   g.append("path").attr("class","spoke").attr("d",`M${cx},${bot+18} V${bot+70}`);
   const of=g.append("g").attr("class","pmn officers").attr("transform",`translate(${cx},${bot+94})`).datum({type:"officers",key:"officers"});
   of.append("rect").attr("x",-170).attr("y",-24).attr("width",340).attr("height",48).attr("rx",24).attr("class","crownbox");
-  of.append("text").attr("y",-3).attr("text-anchor","middle").attr("class","seclbl").text(`Officers of the Assembly · ${cfg.OFFICERS.length}`);
-  of.append("text").attr("y",14).attr("text-anchor","middle").attr("class","clbl").text("REPORT TO THE ASSEMBLY, NOT CABINET");
+  of.append("text").attr("y",-3).attr("text-anchor","middle").attr("class","seclbl").text(`${cfg.offLbl||"Officers of the Assembly"} · ${cfg.OFFICERS.length}`);
+  of.append("text").attr("y",14).attr("text-anchor","middle").attr("class","clbl").text(cfg.offSub||"REPORT TO THE ASSEMBLY, NOT CABINET");
   // ---- ministers ----
   const mn=g.append("g").selectAll("g").data(D.mins).join("g").attr("class","pmn minister").attr("transform",m=>`translate(${m.x},${m.y})`).datum(m=>({type:"minister",key:m.id,m}));
   mn.append("rect").attr("x",-14).attr("y",-CAB.rh/2+2).attr("width",(CAB.w-24)/CAB.cols-8).attr("height",CAB.rh-4).attr("rx",7).attr("class","rowhit");
-  mn.append("circle").attr("r",9.5).attr("fill",G[cfg.gov].color).attr("stroke","#ffffff80").attr("stroke-width",1);
+  mn.append("circle").attr("r",9.5).attr("fill",x=>G[(x.m.mpp&&x.m.mpp.group)||cfg.gov].color).attr("stroke","#ffffff80").attr("stroke-width",1);
   mn.append("circle").attr("r",3.2).attr("fill","#fff");
   mn.append("text").attr("class","mlbl2").attr("x",17).attr("dy","0.35em").text(x=>x.m.name);
   // ---- ministries ----
@@ -144,7 +144,7 @@ function pvRelated(cfg,key){
   if(key==="sec"){ D.ministries.forEach(o=>s.add("o_"+o.id)); D.premierOffices.forEach(o=>s.add("o_"+o.id)); s.add("premier"); return s; }
   if(key==="lg"){ s.add("premier"); D.mins.forEach(m=>s.add(m.id)); return s; }
   if(key==="officers"){ D.mpps.forEach(m=>s.add("m"+m.i)); return s; }
-  if(key.startsWith("o_")){ const o=[...D.ministries,...D.premierOffices].find(x=>"o_"+x.id===key); o.ms.forEach(m=>{ s.add(m.id); if(m.mpp) s.add("m"+m.mpp.i); }); if(!o.ms.length){ s.add("premier"); s.add("m"+D.prem.i); } return s; }
+  if(key.startsWith("o_")){ const o=[...D.ministries,...D.premierOffices].find(x=>"o_"+x.id===key); o.ms.forEach(m=>{ s.add(m.id); if(m.mpp) s.add("m"+m.mpp.i); }); if(!o.ms.length){ if(cfg.deptRel) cfg.deptRel(o).forEach(k=>s.add(k)); else { s.add("premier"); s.add("m"+D.prem.i); } } return s; }
   if(/^m\d+$/.test(key)) return s;
   const mn=D.mins.find(x=>x.id===key); if(mn){ s.add("premier"); if(mn.mpp) s.add("m"+mn.mpp.i); mn.links.forEach(l=>s.add("o_"+l)); } return s;
 }
@@ -159,7 +159,8 @@ function pvHighlight(cfg,key){
 }
 function pvRole(cfg,m){ const D=pvS(cfg).D; if(m===D.prem) return "Premier"; if(m===D.C.spk) return "Speaker"; const mn=D.mins.find(x=>x.mpp===m); if(mn) return mn.title; return (cfg.roles&&cfg.roles[m.name])||"MLA"; }
 function pvTip(cfg,e,d){
-  const t=document.getElementById(`${cfg.pre}-tip`), D=pvS(cfg).D, G=D.G; let h="";
+  const t=document.getElementById(`${cfg.pre}-tip`), D=pvS(cfg).D, G=D.G; let h=cfg.tipHTML?cfg.tipHTML(d,D)||"":"";
+  if(!h){
   if(d.type==="mpp") h=`<b>${d.m.name}</b><span>${d.m.place}</span><span class="tparty"><span class="pchip" style="--pc:${G[d.m.group].color}">${G[d.m.group].short}</span> ${pvRole(cfg,d.m)}</span>`;
   else if(d.type==="minister") h=`<b>${d.m.name}</b><span>${d.m.title}</span><span>MLA for ${d.m.mpp?d.m.mpp.place:""}</span>`;
   else if(d.type==="ministry") h=`<b>${d.o.name}</b><span>${d.o.heads.length?d.o.heads.map(x=>x.name).join(", "):"Deputy minister not confirmed here"}</span>`;
@@ -167,6 +168,7 @@ function pvTip(cfg,e,d){
   else if(d.type==="sec") h=`<b>${cfg.sec.name}</b><span>${cfg.sec.title}</span>`;
   else if(d.type==="lg") h=`<b>${cfg.LG.name}</b><span>${cfg.LG.title}</span>`;
   else h=`<b>Officers of the Assembly</b><span>${cfg.OFFICERS.map(o=>o.role).join(" · ")}</span>`;
+  }
   if(cfg.memberWord) h=h.replace(/\bMLA(s?)\b/g,cfg.memberWord+"$1"); t.innerHTML=h; t.hidden=false; const r=document.getElementById(`${cfg.pre}-stage`).getBoundingClientRect(); let lx=e.clientX-r.left+16; if(lx>r.width-280) lx-=300; t.style.left=lx+"px"; t.style.top=(e.clientY-r.top+16)+"px";
 }
 function pvPanel(cfg,key){
@@ -175,7 +177,9 @@ function pvPanel(cfg,key){
   const head=(m,kicker,grp,place)=>{ const gr=grp||m.group; return `<div class="pband" style="--pc:${G[gr].color}"></div><div class="who"><div class="ava" style="--pc:${G[gr].color}" aria-hidden="true">${initials(m.name)}</div><div class="who-t"><div class="kicker">${kicker}</div><h2>${m.name}</h2><div class="party"><i style="background:${G[gr].color}"></i><span>${G[gr].name}${place?" · "+place:""}</span></div></div></div>`; };
   const dmList=o=>o.heads.length?`<ul class="list">${o.heads.map(x=>`<li class="item"><span class="nm">${x.name}</span><span class="rl">${x.role}</span>${srcA(S[x.src])}</li>`).join("")}</ul>`:`<p class="muted">Not confirmed in the sources checked for this page.</p>`;
   const c=chCounts(C), opp=cfg.oppLeader&&D.byName[cfg.oppLeader];
-  if(!key){
+  const ov=cfg.panelHTML?cfg.panelHTML(key,D):null;
+  if(ov!=null){ h=ov; }
+  else if(!key){
     h=`<div class="kicker">Start here</div><h2>How power flows in ${cfg.region}</h2>
       <ol class="steps">${cfg.steps?cfg.steps.map(x=>`<li>${x}</li>`).join(""):`<li><b>Voters</b> in each of the ${cfg.total||C.members.length} ${cfg.placeNounPl} elect one MLA. The last general election was ${cfg.lastElection}.</li><li>The ${cfg.crown||"Lieutenant Governor"} asks the leader who holds the Assembly's confidence to form government. The <b>${cfg.govName} holds ${c[cfg.gov]||0} of ${cfg.total||C.members.length}</b> seats, past the ${C.majority} needed.</li><li><b>${cfg.premier.name}</b>, as Premier, chooses <b>Cabinet</b>, and the ${cfg.crown||"Lieutenant Governor"} appoints them on the Premier's advice.</li><li>Each minister directs one or more <b>${(cfg.minTitle||"ministries").toLowerCase()}</b>, which deputy ministers run day to day.</li>`}</ol>
       <h3>Key roles</h3><ul class="list"><li class="item"><button class="linkbtn" data-k="premier">${cfg.premier.name}</button><span class="rl">Premier</span></li>${opp?`<li class="item"><button class="linkbtn" data-k="m${opp.i}">${opp.name}</button><span class="rl">${cfg.oppLeaderTitle||"Leader of the Opposition"}</span></li>`:""}<li class="item"><button class="linkbtn" data-k="m${C.spk.i}">${C.spk.name}</button><span class="rl">Speaker</span></li><li class="item"><button class="linkbtn" data-k="lg">${cfg.LG.name}</button><span class="rl">${cfg.crown||"Lieutenant Governor"}</span></li></ul>
@@ -218,6 +222,7 @@ function pvPanel(cfg,key){
   if(key) h+=`<button class="linkbtn" data-k="" style="font-size:13px">← How power flows</button>`;
   if(cfg.memberWord) h=h.replace(/\bMLA(s?)\b/g,cfg.memberWord+"$1"); el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap"); el.innerHTML=h;
   el.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>pvSelect(cfg,b.dataset.k||null,!!b.dataset.k));
+  if(cfg.afterPanel) cfg.afterPanel(el,key);
 }
 function pvPoint(cfg,key){ const D=pvS(cfg).D;
   if(key==="premier") return D.premier; if(key==="sec") return D.sec; if(key==="lg") return D.lgPt; if(key==="officers") return D.offPt;
@@ -234,7 +239,7 @@ function pvSelect(cfg,key,zoom){
   else svg.transition().duration(PV_RM?0:600).call(S.zoom.transform,d3.zoomIdentity);
   if(key) document.getElementById(`${cfg.pre}-panel`).scrollIntoView({behavior:PV_RM?"auto":"smooth",block:"nearest"});
 }
-function pvFocus(cfg,fk){ if(!fk||fk.startsWith("ch:")) return; if(fk==="hub") return pvSelect(cfg,"premier",true); if(fk==="head") return pvSelect(cfg,"sec",true); pvSelect(cfg,fk,true); }
+function pvFocus(cfg,fk){ if(!fk||fk.startsWith("ch:")) return; if(cfg.focusMap&&fk in cfg.focusMap){ fk=cfg.focusMap[fk]; if(!fk) return; } if(fk==="hub") return pvSelect(cfg,"premier",true); if(fk==="head") return pvSelect(cfg,"sec",true); pvSelect(cfg,fk,true); }
 function pvSearchIndex(cfg){ const D=pvS(cfg).D, idx=[];
   D.mpps.forEach(m=>idx.push({k:pvKeyForMpp(cfg,m.i),label:m.name,sub:`${D.G[m.group].short} · ${m.place} · ${pvRole(cfg,m)}`}));
   [...D.ministries,...D.premierOffices].forEach(o=>{ idx.push({k:"o_"+o.id,label:o.name,sub:o.abbr}); o.heads.forEach(x=>idx.push({k:"o_"+o.id,label:x.name,sub:x.role+" · "+o.abbr})); });
@@ -245,7 +250,7 @@ function renderPvMap(cfg){
   const S=pvS(cfg), pre=cfg.pre; if(S.built) return;
   const slot=document.getElementById(`${pre}-slot`); if(!slot) return;
   slot.innerHTML=`<div class="pmbar ${pre}bar"><label class="search" for="${pre}-q"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
-      <input id="${pre}-q" type="search" placeholder="Search an ${cfg.memberWord||"MLA"}, ${cfg.placeNoun}, minister or ${(cfg.minNoun||"ministry").toLowerCase()}" autocomplete="off" aria-label="Search ${cfg.region}"><ul class="results" id="${pre}-res" hidden></ul></label>
+      <input id="${pre}-q" type="search" placeholder="${cfg.searchPh||`Search an ${cfg.memberWord||"MLA"}, ${cfg.placeNoun}, minister or ${(cfg.minNoun||"ministry").toLowerCase()}`}" autocomplete="off" aria-label="Search ${cfg.region}"><ul class="results" id="${pre}-res" hidden></ul></label>
       <div class="zbtn"><button id="${pre}-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="${pre}-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="${pre}-zr" aria-label="Reset view" title="Reset view" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Reset</span></button></div></div>
     <div class="pmgrid"><div class="pmstage" id="${pre}-stage"><svg id="${pre}-svg" viewBox="${PV_VB.join(" ")}" role="img" aria-label="${cfg.region} power map: the Legislative Assembly, Premier, Cabinet and ${(cfg.minTitle||"ministries").toLowerCase()}"></svg><div class="tip" id="${pre}-tip" hidden></div></div>
       <aside class="hpanel pmpanel" id="${pre}-panel" aria-live="polite"></aside></div>`;
@@ -270,15 +275,15 @@ function renderPvLeg(cfg){
     el.innerHTML=`<section class="hsum" id="${cfg.id}-sum"></section>
      <section class="nsec pmwrap"><div class="kicker">Power map · ${cfg.capital}</div><h2 class="nh pmtitle">Elected Officials</h2>
        ${foldHTML(cfg.pre+"-fold","How to read this map","What each part means and how to explore it",
-         [["The room on the left",`is where ${cfg.region}'s laws are made. Each dot is one MLA, a person voters chose to speak for their area. ${cfg.colourNote||"The colour shows their party."}`],
+         cfg.foldLeft||[["The room on the left",`is where ${cfg.region}'s laws are made. Each dot is one MLA, a person voters chose to speak for their area. ${cfg.colourNote||"The colour shows their party."}`],
           ["The Premier","is the leader of the government. It is the leader who has the support of most MLAs."],
           ["Cabinet","is the Premier's team. Each minister is also an MLA with a seat in the room."],
           [cfg.minTitle||"Ministries",`are the ${cfg.minNoun==="Department"?"departments":"departments"} that do the work, like Health or Finance. Cabinet ministers are in charge of them, and a deputy minister runs each one every day.`]],
-         [["Point at","or tap any dot, name or box to see who it is."],["Click a minister","to draw a line to their seat and to what they are responsible for."],[`Click a ${(cfg.minNoun||"ministry").toLowerCase()}`,"to see who is in charge of it and where they sit."],["Search",`for any MLA, ${cfg.placeNoun}, minister or ${(cfg.minNoun||"ministry").toLowerCase()}. Details appear in the box under the map.`]],
+         cfg.foldRight||[["Point at","or tap any dot, name or box to see who it is."],["Click a minister","to draw a line to their seat and to what they are responsible for."],[`Click a ${(cfg.minNoun||"ministry").toLowerCase()}`,"to see who is in charge of it and where they sit."],["Search",`for any MLA, ${cfg.placeNoun}, minister or ${(cfg.minNoun||"ministry").toLowerCase()}. Details appear in the box under the map.`]],
          cfg.foldNote)}
        <div id="${cfg.pre}-slot"></div>
        <div class="src">${cfg.noPlan?"":`Every MLA is shown at their desk on the Assembly's ${cfg.planDate} seating plan. `}${cfg.planNote||""}</div>${srcA(cfg.S.plan)}</section>
-     <div class="hgrid"><div class="hmain"><section class="nsec"><div class="kicker">About the Assembly</div><h2 class="nh">What the Legislative Assembly does</h2>
+     <div class="hgrid"><div class="hmain">${cfg.aboutHTML||`<section class="nsec"><div class="kicker">About the Assembly</div><h2 class="nh">What the Legislative Assembly does</h2>
         <div class="does">
          <div><b>Forms the government</b><span>The leader who can win the support of most MLAs becomes Premier and picks Cabinet. That is usually the leader of the party with the most seats.</span></div>
          <div><b>Makes laws</b><span>Bills are debated here and in committees, then need ${cfg.assent||"Royal Assent"} from the ${cfg.crown||"Lieutenant Governor"}. ${cfg.region} has no upper house.</span></div>
@@ -287,14 +292,15 @@ function renderPvLeg(cfg){
          <div><b>Represents ${cfg.region}</b><span>Each of the ${cfg.total||C.members.length} MLAs speaks for one ${cfg.placeNoun}.</span></div>
         </div>
         <div class="who4"><span><b>Speaker</b> elected by MLAs; keeps order impartially</span><span><b>Cabinet</b> leads ${(cfg.minTitle||"ministries").toLowerCase()}; front bench</span><span><b>Opposition</b> questions and proposes alternatives</span><span><b>Backbenchers</b> most MLAs; debate and sit on committees</span></div>
-       </section></div>
-       <div class="hside">${cfg.ridingKey?ridingCard(cfg.ridingKey):""}<section class="nsec"><div class="lgh"><h2 class="nh">Changes since the ${cfg.geYear} election</h2></div>
-        <ol class="hlog">${cfg.LOG.length?"":`<li class="lgi"><span class="lg-t" style="padding:10px"><span class="muted">No changes in membership since the election.</span></span></li>`}${cfg.LOG.map(x=>{ const m=C.members.find(mm=>mm.place===x[3]); const chip=g=>g?`<span class="pchip" style="--pc:${C.groups[g].color}">${C.groups[g].short}</span>`:"";
+       </section>`}</div>
+       <div class="hside">${cfg.ridingKey?ridingBtn(cfg.ridingKey):""}<section class="nsec"><div class="lgh"><h2 class="nh">Changes since the ${cfg.geYear} election</h2></div>
+        <ol class="hlog">${cfg.LOG.length?"":`<li class="lgi"><span class="lg-t" style="padding:10px"><span class="muted">No changes in membership since the election.</span></span></li>`}${cfg.LOG.map(x=>{ const m=C.members.find(mm=>mm.name===x[2])||C.members.find(mm=>mm.place===x[3]); const chip=g=>g?`<span class="pchip" style="--pc:${C.groups[g].color}">${C.groups[g].short}</span>`:"";
           return `<li class="lgi"><button data-i="${m?m.i:""}"><span class="lg-t"><b>${x[2]}</b><span>${x[3]}</span><span class="muted">${x[6]}</span></span><span class="lg-c">${chip(x[4])}${x[4]?`<span class="arr">→</span>`:""}${chip(x[5])}</span></button></li>`; }).join("")}</ol>
         ${cfg.logSrcs.map(s=>srcA(s)).join("")}</section></div></div>`;
     if(cfg.memberWord) el.querySelectorAll(".nsec").forEach(x=>{ x.innerHTML=x.innerHTML.replace(/\bMLA(s?)\b/g,cfg.memberWord+"$1"); });
     el.querySelectorAll(".hlog [data-i]").forEach(b=>{ if(b.dataset.i!=="") b.onclick=()=>chSelect(C,+b.dataset.i,true); });
     renderPvMap(cfg); wireFold(cfg.pre+"-fold");
+    if(cfg.after) cfg.after(el);
     st.built=true;
   }
   chSummary(C); chProfile(C); chList(C);

@@ -59,7 +59,7 @@ function renderBcLeg(){
         </div>
         <div class="who4"><span><b>Speaker</b> elected by MLAs when the new Legislature first meets</span><span><b>Cabinet</b> leads ministries; front bench</span><span><b>Opposition</b> questions and proposes alternatives</span><span><b>Backbenchers</b> most MLAs; debate and sit on committees</span></div>
        </section></div>
-       <div class="hside">${ridingCard("bc")}<section class="nsec"><div class="lgh"><h2 class="nh">Transition timeline</h2></div>
+       <div class="hside">${ridingBtn("bc")}<section class="nsec"><div class="lgh"><h2 class="nh">Transition timeline</h2></div>
         <ol class="hlog">${BC_TIMELINE.map(([d,t,x])=>`<li class="lgi"><button tabindex="-1"><span class="lg-t"><b>${t}</b><span class="muted">${fmtDate(d)} · ${x}</span></span></button></li>`).join("")}</ol>
         ${srcA(BC_RES_SRC)}${srcA(BC_ODC_SRC)}${srcA(BC_WIKI_SRC)}</section></div></div>`;
     renderBcMap(); wireFold("bc-fold");

@@ -523,6 +523,145 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .qbox .bign{font-size:52px}
 .who4{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted)}.who4 b{color:var(--ink);margin-right:4px}
 @media (prefers-reduced-motion:reduce){.stage,.hchamber{animation:none}body::after{display:none}}
+/* Victoria accountability scorecard */
+@media (min-width:981px){.main:has(#vicscore:not([hidden])) #stage{grid-column:1;grid-row:1}.main:has(#vicscore:not([hidden])) #panel{grid-column:2;grid-row:1/span 2;align-self:start}.main:has(#vicscore:not([hidden])) #vicscore{grid-column:1;grid-row:2}}
+.vicscore{gap:16px;grid-template-columns:minmax(0,1fr);min-width:0}
+.vspane{grid-template-columns:minmax(0,1fr)} .vspane>*,.vicscore>*{min-width:0}
+.vshead{display:grid;gap:6px}
+.vstabs{display:flex;gap:4px;padding:4px;background:var(--bg);border:1px solid var(--rule);border-radius:12px;overflow-x:auto;max-width:100%;width:max-content}
+.vstabs button{all:unset;cursor:pointer;padding:7px 14px;border-radius:9px;font:600 13px var(--f-body);color:var(--muted);white-space:nowrap}
+.vstabs button[aria-selected="true"]{background:var(--brass);color:var(--bg)}
+.vstabs button:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+.vspane{display:grid;gap:14px;min-width:0}
+.vslede{margin:0;font-size:15.5px;line-height:1.6;max-width:92ch}
+.vsp{margin:0;max-width:92ch}
+.vsh{font-family:var(--f-mark);font-weight:800;font-size:17px;margin:8px 0 0}
+.vskpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:760px){.vskpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.vsstory{display:grid;gap:14px;border-left:3px solid var(--brass);padding-left:14px}
+.muted{color:var(--muted)}
+.sctwrap{overflow-x:auto;max-width:100%;border:1px solid var(--rule);border-radius:10px}
+.sct{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+.sct caption{caption-side:top;text-align:left;padding:10px 12px 6px;font:500 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sct th,.sct td{padding:7px 12px;border-top:1px solid var(--rule);text-align:right;vertical-align:top}
+.sct th[scope=row],.sct thead th:first-child{text-align:left;font-weight:600}
+.sct thead th{font:500 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.sct td.muted,.sct td:nth-last-child(1):not(:only-child){}
+.sct td small{color:var(--muted);margin-left:4px}
+.sct tr.tot th,.sct tr.tot td{font-weight:700;border-top:1px solid var(--muted)}
+.sct td.up{color:var(--check)} .sct td.dn{color:var(--ok)}
+.sct td:has(> .muted),.sct td.muted{text-align:left}
+#vsp-check .sct td,#vsp-y24 .sct td:nth-child(2){text-align:left}
+#vsp-y26 .sct td:nth-child(2),#vsp-y26 .sct td:nth-child(5),#vsp-card .sct td:nth-child(2),#vsp-card .sct td:nth-child(6){text-align:left}
+.vis{width:28%;min-width:140px}
+.sct th[scope=row]{min-width:150px} #vsp-check .sct td:last-child,#vsp-card .sct td:last-child,#vsp-y26 .sct td:last-child,#vsp-y24 .sct td:nth-child(2){min-width:240px}
+.pv{display:grid;gap:2px}
+.pv i,.pvkey i{display:block;height:5px;border-radius:3px}
+.pb{background:var(--muted);opacity:.55} .pa{background:var(--brass)}
+.pvkey{display:flex;gap:16px;font-size:12px;color:var(--muted)} .pvkey span{display:inline-flex;align-items:center;gap:6px} .pvkey i{width:16px}
+.share{display:inline-block;width:46px;height:5px;background:var(--rule);border-radius:3px;margin-right:8px;vertical-align:middle;overflow:hidden}.share i{display:block;height:100%;background:var(--brass)}
+.why{background:color-mix(in srgb,var(--brass) 9%,var(--faint));border:1px solid color-mix(in srgb,var(--brass) 35%,transparent);border-radius:10px;padding:11px 13px;max-width:100%}
+.why .muted{display:block;margin-top:6px;font-size:12.5px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
+.grade,.res,.vd{display:inline-block;font:600 11px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.g-d,.r-reelected,.v-correct,.v-validated{color:var(--ok)} .v-clarification,.v-updated,.v-added,.v-corrected{color:var(--brass-2)} .v-cannotvalidate{color:var(--warn)} .g-t,.r-new{color:var(--brass-2)} .g-x,.v-misleading,.v-incomplete,.v-outofdate,.v-note{color:var(--warn)} .g-b,.v-wrong,.v-unsupported,.v-missing{color:var(--check)} .g-n,.r-notreelected,.r-didnotrun{color:var(--muted)}
+.gkey{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font:600 13px var(--f-mono)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.rc{background:var(--faint);border:1px solid var(--rule);border-radius:12px;padding:14px;display:grid;gap:8px;align-content:start;min-width:0}
+.rc header{display:flex;justify-content:space-between;gap:10px;align-items:start}
+.rc h4{margin:0;font-family:var(--f-mark);font-size:16px;font-weight:800;line-height:1.2}
+.rc ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:13.5px}
+.rcplan{margin:0;font-size:13px;color:var(--muted)} .rcplan span{display:block;font:500 10.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--brass)}
+.rccav{margin:0;font-size:12.5px;color:var(--muted);font-style:italic}
+.scorelink{all:unset;cursor:pointer;display:block;text-align:center;font:600 13.5px var(--f-body);color:var(--bg);background:var(--brass);border-radius:999px;padding:9px 14px}
+.scorelink:focus-visible{outline:2px solid var(--brass-2);outline-offset:2px}
+/* Victoria chamber: larger type, same layout */
+#vc-svg .pmchamber .clbl{font-size:13px;letter-spacing:.1em}
+#vc-svg .pmchamber .pmcardh{font-size:31px}
+#vc-svg .pmchamber .pmcards{font-size:15.5px}
+#vc-svg .mlbl2{font-size:15px} #vc-svg .mnlbl{font-size:14px}
+#vc-svg .seclbl{font-size:15px} #vc-svg .pmname{font-size:18.5px} #vc-svg .olbl.big{font-size:14.5px}
+#vc-svg .crownbox+text+text,#vc-svg .secbox+text+text{font-size:11.5px}
+/* drill-down "How power flows" */
+.flowdd{border:1px solid var(--rule);border-radius:12px;background:var(--faint)}
+.flowdd>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px}
+.flowdd>summary::-webkit-details-marker{display:none}
+.flowdd>summary h2{margin:0}
+.flowdd>summary .ddarrow{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--brass);color:var(--bg);transition:transform .2s}
+.flowdd>summary .ddarrow svg{width:18px;height:18px}
+.flowdd[open]>summary .ddarrow{transform:rotate(180deg)}
+.flowdd>summary:focus-visible{outline:2px solid var(--brass);outline-offset:2px;border-radius:12px}
+.flowdd .steps{padding:0 14px 14px 34px;margin:0}
+.flowdd[open] .ddhint{display:none}
+.flowdd .ddhint{font-size:12.5px;color:var(--muted);display:block;margin-top:2px}
+/* scorecard section buttons */
+.vsnav{display:grid;gap:8px}
+.vsnav .vshint{display:flex;align-items:center;gap:8px;font:600 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--brass-2)}
+.vstabs.big{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;padding:0;background:none;border:0;width:100%}
+@media (max-width:760px){.vstabs.big{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.vstabs.big button{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;padding:13px 10px;border-radius:10px;border:1.5px solid var(--rule);background:var(--surface);font:700 15px var(--f-body);color:var(--ink);box-shadow:0 2px 0 #000}
+.vstabs.big button:hover{border-color:var(--brass)}
+.vstabs.big button[aria-selected="true"]{background:var(--brass);border-color:var(--brass);color:var(--bg)}
+.vstabs.big button:focus-visible{outline:2px solid var(--brass-2);outline-offset:2px}
+.vstabs.big button small{display:block;font:500 11.5px var(--f-body);opacity:.75;margin-top:2px}
+.vspane{border-top:1px solid var(--rule);padding-top:16px}
+/* scorecard v3: roll-ups, explanation column, type scale */
+.vicscore .vshead .nh{font-size:clamp(26px,3vw,36px);line-height:1.15}
+.vspane{gap:12px}
+.roll{border:1px solid var(--rule);border-radius:12px;background:var(--surface)}
+.roll>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px}
+.roll>summary::-webkit-details-marker{display:none}
+.roll>summary:hover .rollc{background:var(--brass);color:var(--bg)}
+.roll>summary:focus-visible{outline:2px solid var(--brass);outline-offset:2px;border-radius:12px}
+.rollh{display:grid;gap:2px}
+.rollt{font:800 20px var(--f-mark);letter-spacing:.005em;color:var(--ink)}
+.rolls{font-size:13px;color:var(--muted)}
+.rollc{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--brass);color:var(--brass);transition:transform .2s,background .2s}
+.rollc svg{width:16px;height:16px}
+.rollc.sm{width:24px;height:24px}.rollc.sm svg{width:13px;height:13px}
+details[open]>summary .rollc{transform:rotate(180deg)}
+.rollb{display:grid;gap:12px;padding:0 16px 16px;min-width:0}
+.sct caption{font-size:12px}
+.sct thead th{font-size:11.5px}
+.sct.fn td.exp,.sct.fn th.exp{text-align:left;min-width:260px;max-width:420px;white-space:normal;font-size:12.5px;color:var(--muted);line-height:1.45}
+.sct.fn tr.tot td.exp{color:var(--ink);font-weight:500}
+.vcell{white-space:nowrap}
+.vbar{display:block;height:5px;margin-top:5px;background:var(--rule);border-radius:3px;overflow:hidden;min-width:90px}
+.vbar i{display:block;height:100%;border-radius:3px}
+.vbar.pos i{background:var(--check);margin-left:0} .vbar.neg i{background:var(--ok);margin-left:auto}
+.rclist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (max-width:760px){.rclist{grid-template-columns:minmax(0,1fr)}}
+details.rc{background:var(--faint);border:1px solid var(--rule);border-radius:10px;padding:0;display:block}
+details.rc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:11px 12px}
+details.rc>summary::-webkit-details-marker{display:none}
+details.rc>summary:focus-visible{outline:2px solid var(--brass);outline-offset:2px;border-radius:10px}
+.rcname{flex:1;font:700 15px var(--f-body)}
+.rcb{display:grid;gap:8px;padding:0 12px 12px}
+.rolltog{display:flex;align-items:center;gap:8px;font:600 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--brass)}
+.roll .t-hide{display:none} .roll[open]>summary .t-hide{display:inline} .roll[open]>summary .t-show{display:none}
+.rclist{align-items:start}
+.rc2{background:var(--faint);border:1px solid var(--rule);border-radius:10px;min-width:0}
+.rc2>header{display:flex;align-items:center;gap:10px;padding:11px 12px}
+.rc2 h4{margin:0}
+.rc2 .rcb ul,.rc2 .rcb p{margin:0}
+.vswitch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:600px){.vswitch{grid-template-columns:minmax(0,1fr)}}
+.vsw{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:2px;padding:12px 16px;border-radius:12px;border:1.5px solid var(--rule);background:var(--surface)}
+.vsw:hover{border-color:var(--brass)}
+.vsw.on{border-color:var(--brass);background:color-mix(in srgb,var(--brass) 14%,var(--surface));cursor:default}
+.vsw:focus-visible{outline:2px solid var(--brass-2);outline-offset:2px}
+.vswk{font:600 11.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--brass)}
+.vsw b{font:800 18px var(--f-mark)}
+.vsws{font-size:12.5px;color:var(--muted)}
+#ch-vicscore{display:grid;gap:16px}
+.vsec{display:grid;gap:12px;border:1px solid var(--rule);border-radius:12px;background:var(--surface);padding:14px 16px 16px}
+.elec .sct td:nth-child(2),.elec .sct td:last-child,.elec .sct thead th:nth-child(2),.elec .sct thead th:last-child{text-align:left}
+.elec .sct td:nth-child(5),.elec .sct thead th:nth-child(5){text-align:center}
+.rbtn{display:inline-flex;align-items:center;gap:8px;justify-self:start;width:max-content;max-width:100%;padding:7px 14px;border:1px solid var(--rule);border-radius:999px;background:var(--surface);color:var(--ink);text-decoration:none;font:600 13px var(--f-body)}
+.rbtn svg{width:16px;height:16px;color:var(--brass);flex:none}
+.rbtn-s{color:var(--muted);font-weight:500;font-size:12px}
+.rbtn:hover,.rbtn:focus-visible{border-color:var(--brass)}
 </style>
 
 <div class="wrap">
@@ -561,7 +700,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
       </div></div>
     <div class="dd" id="dd-city"><button class="ddbtn" aria-haspopup="true" aria-expanded="false">Cities<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></button>
       <div class="ddmenu" role="menu">
-        <button role="menuitem" id="t-victoria" data-tab="victoria"><b>Victoria, BC</b><span>Mayor, council and city departments</span></button>
+        <div class="ddprov"><button role="menuitem" class="ddname" data-tab="victoria" tabindex="-1">Victoria, BC</button><div class="ddlinks"><button role="menuitem" id="t-victoria" data-tab="victoria">City Council</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-vicscore" data-tab="vicscore">Scorecard</button></div></div>
         <button role="menuitem" id="t-mississauga" data-tab="mississauga"><b>Mississauga, ON</b><span>Mayor-elect, council and city departments</span></button>
       </div></div>
     <button role="tab" id="t-news" data-tab="news">News</button>
@@ -608,11 +747,13 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
   <div id="ch-nsleg" class="chwrap" hidden></div>
   <div id="ch-ntleg" class="chwrap" hidden></div>
   <div id="ch-nuleg" class="chwrap" hidden></div>
+  <div id="ch-victoria" class="chwrap" hidden></div>
+  <div id="ch-vicscore" class="chwrap" hidden></div>
 
   <footer id="wheelfoot">
     <div><strong>Status tags (Cabinet wheels).</strong> <span class="pill A">Verified</span> on a current official page, a 2026 government record, or a GEDS entry updated in 2026. <span class="pill B">Announced</span> named by the Prime Minister but contradicted by an older record. <span class="pill C">Re-check</span> newest source predates 2026. <span class="pill U">Not named</span> no source names this person.</div>
     <div><strong>Shades of grey</strong> group portfolios by theme to make each wheel readable. They are an editorial grouping, not an official structure, and they don't represent political parties.</div>
-    <div>Federal ministers come from the Prime Minister's Cabinet page and deputy heads were cross-checked against the GEDS export of Oct 25, 2026. BC data comes from the Province's Executive Council and Deputy Ministers' Council pages. Victoria data comes from the 2026 preliminary election results, the City's 2025 Annual Report and the 2026–2030 Financial Plan. This is a snapshot; confirm anything important at the source linked in each profile.</div>
+    <div>Federal ministers come from the Prime Minister's Cabinet page and deputy heads were cross-checked against the GEDS export of Oct 25, 2026. BC data comes from the Province's Executive Council and Deputy Ministers' Council pages. Victoria data comes from the 2026 preliminary election results, the City's audited 2024 and 2025 Annual Reports and the 2025–2029 and 2026–2030 Financial Plans; the Victoria scorecard's status labels compare the City's Strategic Plan with its own Annual Reports. This is a snapshot; confirm anything important at the source linked in each profile.</div>
   </footer>
 </div>
 

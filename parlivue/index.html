@@ -523,6 +523,145 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .qbox .bign{font-size:52px}
 .who4{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted)}.who4 b{color:var(--ink);margin-right:4px}
 @media (prefers-reduced-motion:reduce){.stage,.hchamber{animation:none}body::after{display:none}}
+/* Victoria accountability scorecard */
+@media (min-width:981px){.main:has(#vicscore:not([hidden])) #stage{grid-column:1;grid-row:1}.main:has(#vicscore:not([hidden])) #panel{grid-column:2;grid-row:1/span 2;align-self:start}.main:has(#vicscore:not([hidden])) #vicscore{grid-column:1;grid-row:2}}
+.vicscore{gap:16px;grid-template-columns:minmax(0,1fr);min-width:0}
+.vspane{grid-template-columns:minmax(0,1fr)} .vspane>*,.vicscore>*{min-width:0}
+.vshead{display:grid;gap:6px}
+.vstabs{display:flex;gap:4px;padding:4px;background:var(--bg);border:1px solid var(--rule);border-radius:12px;overflow-x:auto;max-width:100%;width:max-content}
+.vstabs button{all:unset;cursor:pointer;padding:7px 14px;border-radius:9px;font:600 13px var(--f-body);color:var(--muted);white-space:nowrap}
+.vstabs button[aria-selected="true"]{background:var(--brass);color:var(--bg)}
+.vstabs button:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+.vspane{display:grid;gap:14px;min-width:0}
+.vslede{margin:0;font-size:15.5px;line-height:1.6;max-width:92ch}
+.vsp{margin:0;max-width:92ch}
+.vsh{font-family:var(--f-mark);font-weight:800;font-size:17px;margin:8px 0 0}
+.vskpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:760px){.vskpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.vsstory{display:grid;gap:14px;border-left:3px solid var(--brass);padding-left:14px}
+.muted{color:var(--muted)}
+.sctwrap{overflow-x:auto;max-width:100%;border:1px solid var(--rule);border-radius:10px}
+.sct{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+.sct caption{caption-side:top;text-align:left;padding:10px 12px 6px;font:500 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sct th,.sct td{padding:7px 12px;border-top:1px solid var(--rule);text-align:right;vertical-align:top}
+.sct th[scope=row],.sct thead th:first-child{text-align:left;font-weight:600}
+.sct thead th{font:500 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.sct td.muted,.sct td:nth-last-child(1):not(:only-child){}
+.sct td small{color:var(--muted);margin-left:4px}
+.sct tr.tot th,.sct tr.tot td{font-weight:700;border-top:1px solid var(--muted)}
+.sct td.up{color:var(--check)} .sct td.dn{color:var(--ok)}
+.sct td:has(> .muted),.sct td.muted{text-align:left}
+#vsp-check .sct td,#vsp-y24 .sct td:nth-child(2){text-align:left}
+#vsp-y26 .sct td:nth-child(2),#vsp-y26 .sct td:nth-child(5),#vsp-card .sct td:nth-child(2),#vsp-card .sct td:nth-child(6){text-align:left}
+.vis{width:28%;min-width:140px}
+.sct th[scope=row]{min-width:150px} #vsp-check .sct td:last-child,#vsp-card .sct td:last-child,#vsp-y26 .sct td:last-child,#vsp-y24 .sct td:nth-child(2){min-width:240px}
+.pv{display:grid;gap:2px}
+.pv i,.pvkey i{display:block;height:5px;border-radius:3px}
+.pb{background:var(--muted);opacity:.55} .pa{background:var(--brass)}
+.pvkey{display:flex;gap:16px;font-size:12px;color:var(--muted)} .pvkey span{display:inline-flex;align-items:center;gap:6px} .pvkey i{width:16px}
+.share{display:inline-block;width:46px;height:5px;background:var(--rule);border-radius:3px;margin-right:8px;vertical-align:middle;overflow:hidden}.share i{display:block;height:100%;background:var(--brass)}
+.why{background:color-mix(in srgb,var(--brass) 9%,var(--faint));border:1px solid color-mix(in srgb,var(--brass) 35%,transparent);border-radius:10px;padding:11px 13px;max-width:100%}
+.why .muted{display:block;margin-top:6px;font-size:12.5px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
+.grade,.res,.vd{display:inline-block;font:600 11px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.g-d,.r-reelected,.v-correct,.v-validated{color:var(--ok)} .v-clarification,.v-updated,.v-added,.v-corrected{color:var(--brass-2)} .v-cannotvalidate{color:var(--warn)} .g-t,.r-new{color:var(--brass-2)} .g-x,.v-misleading,.v-incomplete,.v-outofdate,.v-note{color:var(--warn)} .g-b,.v-wrong,.v-unsupported,.v-missing{color:var(--check)} .g-n,.r-notreelected,.r-didnotrun{color:var(--muted)}
+.gkey{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font:600 13px var(--f-mono)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.rc{background:var(--faint);border:1px solid var(--rule);border-radius:12px;padding:14px;display:grid;gap:8px;align-content:start;min-width:0}
+.rc header{display:flex;justify-content:space-between;gap:10px;align-items:start}
+.rc h4{margin:0;font-family:var(--f-mark);font-size:16px;font-weight:800;line-height:1.2}
+.rc ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:13.5px}
+.rcplan{margin:0;font-size:13px;color:var(--muted)} .rcplan span{display:block;font:500 10.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--brass)}
+.rccav{margin:0;font-size:12.5px;color:var(--muted);font-style:italic}
+.scorelink{all:unset;cursor:pointer;display:block;text-align:center;font:600 13.5px var(--f-body);color:var(--bg);background:var(--brass);border-radius:999px;padding:9px 14px}
+.scorelink:focus-visible{outline:2px solid var(--brass-2);outline-offset:2px}
+/* Victoria chamber: larger type, same layout */
+#vc-svg .pmchamber .clbl{font-size:13px;letter-spacing:.1em}
+#vc-svg .pmchamber .pmcardh{font-size:31px}
+#vc-svg .pmchamber .pmcards{font-size:15.5px}
+#vc-svg .mlbl2{font-size:15px} #vc-svg .mnlbl{font-size:14px}
+#vc-svg .seclbl{font-size:15px} #vc-svg .pmname{font-size:18.5px} #vc-svg .olbl.big{font-size:14.5px}
+#vc-svg .crownbox+text+text,#vc-svg .secbox+text+text{font-size:11.5px}
+/* drill-down "How power flows" */
+.flowdd{border:1px solid var(--rule);border-radius:12px;background:var(--faint)}
+.flowdd>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px}
+.flowdd>summary::-webkit-details-marker{display:none}
+.flowdd>summary h2{margin:0}
+.flowdd>summary .ddarrow{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--brass);color:var(--bg);transition:transform .2s}
+.flowdd>summary .ddarrow svg{width:18px;height:18px}
+.flowdd[open]>summary .ddarrow{transform:rotate(180deg)}
+.flowdd>summary:focus-visible{outline:2px solid var(--brass);outline-offset:2px;border-radius:12px}
+.flowdd .steps{padding:0 14px 14px 34px;margin:0}
+.flowdd[open] .ddhint{display:none}
+.flowdd .ddhint{font-size:12.5px;color:var(--muted);display:block;margin-top:2px}
+/* scorecard section buttons */
+.vsnav{display:grid;gap:8px}
+.vsnav .vshint{display:flex;align-items:center;gap:8px;font:600 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--brass-2)}
+.vstabs.big{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;padding:0;background:none;border:0;width:100%}
+@media (max-width:760px){.vstabs.big{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.vstabs.big button{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;padding:13px 10px;border-radius:10px;border:1.5px solid var(--rule);background:var(--surface);font:700 15px var(--f-body);color:var(--ink);box-shadow:0 2px 0 #000}
+.vstabs.big button:hover{border-color:var(--brass)}
+.vstabs.big button[aria-selected="true"]{background:var(--brass);border-color:var(--brass);color:var(--bg)}
+.vstabs.big button:focus-visible{outline:2px solid var(--brass-2);outline-offset:2px}
+.vstabs.big button small{display:block;font:500 11.5px var(--f-body);opacity:.75;margin-top:2px}
+.vspane{border-top:1px solid var(--rule);padding-top:16px}
+/* scorecard v3: roll-ups, explanation column, type scale */
+.vicscore .vshead .nh{font-size:clamp(26px,3vw,36px);line-height:1.15}
+.vspane{gap:12px}
+.roll{border:1px solid var(--rule);border-radius:12px;background:var(--surface)}
+.roll>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px}
+.roll>summary::-webkit-details-marker{display:none}
+.roll>summary:hover .rollc{background:var(--brass);color:var(--bg)}
+.roll>summary:focus-visible{outline:2px solid var(--brass);outline-offset:2px;border-radius:12px}
+.rollh{display:grid;gap:2px}
+.rollt{font:800 20px var(--f-mark);letter-spacing:.005em;color:var(--ink)}
+.rolls{font-size:13px;color:var(--muted)}
+.rollc{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--brass);color:var(--brass);transition:transform .2s,background .2s}
+.rollc svg{width:16px;height:16px}
+.rollc.sm{width:24px;height:24px}.rollc.sm svg{width:13px;height:13px}
+details[open]>summary .rollc{transform:rotate(180deg)}
+.rollb{display:grid;gap:12px;padding:0 16px 16px;min-width:0}
+.sct caption{font-size:12px}
+.sct thead th{font-size:11.5px}
+.sct.fn td.exp,.sct.fn th.exp{text-align:left;min-width:260px;max-width:420px;white-space:normal;font-size:12.5px;color:var(--muted);line-height:1.45}
+.sct.fn tr.tot td.exp{color:var(--ink);font-weight:500}
+.vcell{white-space:nowrap}
+.vbar{display:block;height:5px;margin-top:5px;background:var(--rule);border-radius:3px;overflow:hidden;min-width:90px}
+.vbar i{display:block;height:100%;border-radius:3px}
+.vbar.pos i{background:var(--check);margin-left:0} .vbar.neg i{background:var(--ok);margin-left:auto}
+.rclist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (max-width:760px){.rclist{grid-template-columns:minmax(0,1fr)}}
+details.rc{background:var(--faint);border:1px solid var(--rule);border-radius:10px;padding:0;display:block}
+details.rc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:11px 12px}
+details.rc>summary::-webkit-details-marker{display:none}
+details.rc>summary:focus-visible{outline:2px solid var(--brass);outline-offset:2px;border-radius:10px}
+.rcname{flex:1;font:700 15px var(--f-body)}
+.rcb{display:grid;gap:8px;padding:0 12px 12px}
+.rolltog{display:flex;align-items:center;gap:8px;font:600 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--brass)}
+.roll .t-hide{display:none} .roll[open]>summary .t-hide{display:inline} .roll[open]>summary .t-show{display:none}
+.rclist{align-items:start}
+.rc2{background:var(--faint);border:1px solid var(--rule);border-radius:10px;min-width:0}
+.rc2>header{display:flex;align-items:center;gap:10px;padding:11px 12px}
+.rc2 h4{margin:0}
+.rc2 .rcb ul,.rc2 .rcb p{margin:0}
+.vswitch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:600px){.vswitch{grid-template-columns:minmax(0,1fr)}}
+.vsw{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:2px;padding:12px 16px;border-radius:12px;border:1.5px solid var(--rule);background:var(--surface)}
+.vsw:hover{border-color:var(--brass)}
+.vsw.on{border-color:var(--brass);background:color-mix(in srgb,var(--brass) 14%,var(--surface));cursor:default}
+.vsw:focus-visible{outline:2px solid var(--brass-2);outline-offset:2px}
+.vswk{font:600 11.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--brass)}
+.vsw b{font:800 18px var(--f-mark)}
+.vsws{font-size:12.5px;color:var(--muted)}
+#ch-vicscore{display:grid;gap:16px}
+.vsec{display:grid;gap:12px;border:1px solid var(--rule);border-radius:12px;background:var(--surface);padding:14px 16px 16px}
+.elec .sct td:nth-child(2),.elec .sct td:last-child,.elec .sct thead th:nth-child(2),.elec .sct thead th:last-child{text-align:left}
+.elec .sct td:nth-child(5),.elec .sct thead th:nth-child(5){text-align:center}
+.rbtn{display:inline-flex;align-items:center;gap:8px;justify-self:start;width:max-content;max-width:100%;padding:7px 14px;border:1px solid var(--rule);border-radius:999px;background:var(--surface);color:var(--ink);text-decoration:none;font:600 13px var(--f-body)}
+.rbtn svg{width:16px;height:16px;color:var(--brass);flex:none}
+.rbtn-s{color:var(--muted);font-weight:500;font-size:12px}
+.rbtn:hover,.rbtn:focus-visible{border-color:var(--brass)}
 </style>
 
 <div class="wrap">
@@ -561,7 +700,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
       </div></div>
     <div class="dd" id="dd-city"><button class="ddbtn" aria-haspopup="true" aria-expanded="false">Cities<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></button>
       <div class="ddmenu" role="menu">
-        <button role="menuitem" id="t-victoria" data-tab="victoria"><b>Victoria, BC</b><span>Mayor, council and city departments</span></button>
+        <div class="ddprov"><button role="menuitem" class="ddname" data-tab="victoria" tabindex="-1">Victoria, BC</button><div class="ddlinks"><button role="menuitem" id="t-victoria" data-tab="victoria">City Council</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-vicscore" data-tab="vicscore">Scorecard</button></div></div>
         <button role="menuitem" id="t-mississauga" data-tab="mississauga"><b>Mississauga, ON</b><span>Mayor-elect, council and city departments</span></button>
       </div></div>
     <button role="tab" id="t-news" data-tab="news">News</button>
@@ -608,11 +747,13 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
   <div id="ch-nsleg" class="chwrap" hidden></div>
   <div id="ch-ntleg" class="chwrap" hidden></div>
   <div id="ch-nuleg" class="chwrap" hidden></div>
+  <div id="ch-victoria" class="chwrap" hidden></div>
+  <div id="ch-vicscore" class="chwrap" hidden></div>
 
   <footer id="wheelfoot">
     <div><strong>Status tags (Cabinet wheels).</strong> <span class="pill A">Verified</span> on a current official page, a 2026 government record, or a GEDS entry updated in 2026. <span class="pill B">Announced</span> named by the Prime Minister but contradicted by an older record. <span class="pill C">Re-check</span> newest source predates 2026. <span class="pill U">Not named</span> no source names this person.</div>
     <div><strong>Shades of grey</strong> group portfolios by theme to make each wheel readable. They are an editorial grouping, not an official structure, and they don't represent political parties.</div>
-    <div>Federal ministers come from the Prime Minister's Cabinet page and deputy heads were cross-checked against the GEDS export of Oct 25, 2026. BC data comes from the Province's Executive Council and Deputy Ministers' Council pages. Victoria data comes from the 2026 preliminary election results, the City's 2025 Annual Report and the 2026–2030 Financial Plan. This is a snapshot; confirm anything important at the source linked in each profile.</div>
+    <div>Federal ministers come from the Prime Minister's Cabinet page and deputy heads were cross-checked against the GEDS export of Oct 25, 2026. BC data comes from the Province's Executive Council and Deputy Ministers' Council pages. Victoria data comes from the 2026 preliminary election results, the City's audited 2024 and 2025 Annual Reports and the 2025–2029 and 2026–2030 Financial Plans; the Victoria scorecard's status labels compare the City's Strategic Plan with its own Annual Reports. This is a snapshot; confirm anything important at the source linked in each profile.</div>
   </footer>
 </div>
 
@@ -864,6 +1005,293 @@ const VIC_OUT=[
 const VIC_OTHER_BUDGET=[["Corporate (city-wide costs)",57472780],["Grants",4360120],["One-time items",8108650]];
 const VIC_TOTAL=394060040;
 
+/* ================= CITY OF VICTORIA · ACCOUNTABILITY SCORECARD 2024–2026 =================
+   Every figure below was checked against the City's audited statements (2024 and 2025 Annual Reports),
+   the 2025–2029 and 2026–2030 Financial Plans, City web pages, or named news reports. Snapshot Nov 1 2026. */
+const VSC_S={
+  ar25:["2025 Annual Report (audited statements)","https://www.victoria.ca/media/file/annual-report-2025"],
+  ar24:["2024 Annual Report (audited statements)","https://www.victoria.ca/media/file/annual-report-2024"],
+  fp26:["2026–2030 Financial Plan","https://www.victoria.ca/media/file/2026-2030-financial-plan"],
+  fp25:["2025–2029 Financial Plan","https://www.victoria.ca/media/file/2025-2029-financial-plan"],
+  budget:["City Budget page","https://www.victoria.ca/city-government/city-budget"],
+  tax25:["2025 Property Tax Info Sheet","https://www.victoria.ca/media/file/2025-property-tax-info-sheet"],
+  tc24:["Times Colonist, 2024 budget vote","https://www.timescolonist.com/opinion/victoria-residents-face-793-per-cent-tax-hike-police-budget-passes-8180469"],
+  draft26:["Greater Victoria Chamber, Jan 7 2026","https://victoriachamber.ca/government-local/victoria-seeks-feedback-on-huge-10-44-tax-increase/"],
+  sp:["2023–2026 Strategic Plan","https://victoria.ca/media/file/strategic-plan-2023-2026"],
+  ocp:["OCP Update page","https://engage.victoria.ca/ocpupdate"],
+  pool:["Capital Daily, Feb 9 2025","https://capitaldaily.ca/news/taking-the-plunge-victorians-vote-yes-to-a-new-crystal-pool"],
+  elec26:["City of Victoria, 2026 preliminary results","https://www.victoria.ca/city-government/news/victoria-election-2026-preliminary-results"],
+  buzz:["Victoria Buzz, Oct 17 2026 (preliminary counts)","https://victoriabuzz.com/2026/10/marianne-alto-re-elected-victoria-mayor-as-council-results-bring-new-faces/"],
+  elec22:["2022 Declaration of Official Results","https://www.victoria.ca/media/file/declaration-official-results-2022pdf"],
+  amal:["Daily Hive, Oct 27 2026","https://dailyhive.com/vancouver/victoria-saanich-october-2026-amalgamation-plebiscite-election-results"],
+  ca:["CTV News, Jun 24 2026","https://www.ctvnews.ca/vancouver/vancouver-island/article/province-halts-binding-victoria-saanich-merger-referendum"]
+};
+const vsM=n=>"$"+(n/1e6).toFixed(2)+"M";
+const vsM1=n=>"$"+(n/1e6).toFixed(1)+"M";
+const vsSgn=(n,f)=>(n>0?"+":n<0?"−":"")+f(Math.abs(n));
+const vsPct=(a,b)=>((a-b)/b*100);
+const vsP=(x)=>(x>0?"+":x<0?"−":"")+Math.abs(x).toFixed(1)+"%";
+
+/* Expenses by function (audited). 2024r = 2024 as restated in the 2025 report. */
+const VSC_FN=["General government","Protective services","Engineering & transportation","Environmental & public health","Social services & housing","Planning & development","Parks, recreation & facilities","Water utility","Sewer utility"];
+const VSC_EXP={
+  b25:[36251310,110748000,34353270,11435480,2489850,26563330,43788670,20589600,5167730],
+  a25:[37880123,114377965,49132687,13984927,6628272,30376826,51117392,22909296,6860836],
+  a24r:[35088935,108004997,45647987,11275293,3547914,27530740,50748545,19875368,7577064],
+  b24:[42881150,98871790,31506840,10439410,2276870,25477260,35306230,19368390,4847660],
+  a24:[35088935,108004997,45082807,11275293,4113094,26582622,51696663,19875368,7577064],
+  a23:[27707915,97724786,40019766,10387184,3272815,22970043,48072553,19444103,5902287]
+};
+const VSC_TOT={
+  rev:{b25:360749030,a25:377811148,b24:339226000,a24:356508636,a23:346308071},
+  exp:{b25:291387240,a25:333268324,b24:270975600,a24:309296843,a23:275501453},
+  sur:{b25:69361790,a25:44542824,b24:68250400,a24:47211793,a23:70806618},
+  cap:{b25:164272000,a25:64167813,b24:153162000,a24:77224466,a23:105205048,a24r:73457247},
+  cash:{a25:175830646,a24:121941832,a23:97276196},
+  debt:{a25:58853765,a24:43885097,a23:48962799},
+  acc:{a25:1068555215,a24:1024012391,a23:976800598},
+  amort:{a25:24054331,a24:21701362}, capmaint:{a25:14682090,a24:12927531}
+};
+const VSC_REV25=[["Taxation",197688460,197787953],["Sale of goods and services",95312010,107701980],["Government transfers",25460230,19499883],["Investment income",8000000,14122897],["Licences and permits",9551850,11716142],["Fines and penalties",10365960,9346522],["Grants in lieu of taxes",8159000,8025574],["Other (rentals, DCCs, misc., actuarial)",6211520,9610197]];
+
+/* Report card: the 2022–2026 Council against its own 2023–2026 Strategic Plan */
+const VSC_GRADES={D:["Target met","g-d"],T:["In progress","g-t"],X:["Partly complete","g-x"],B:["Below plan","g-b"],N:["Not reported","g-n"],I:["For context","g-n"]};
+const VSC_CARD=[
+ {area:"Housing",g:"D",plan:"Enable more market and non-market housing; speed up approvals; plan for growth.",
+  ev:["1,477 net-new homes in 2024 against a provincial target of 659.","882 net-new homes from Oct 2024 to Oct 2025; the City reports beating its provincial target for a second year.","New Official Community Plan, Victoria 2050, adopted Oct 2, 2025.","$4.49M received from CMHC's Housing Accelerator Fund in 2025."],
+  cav:"Figures are net-new completions as reported by the City.",src:["ar24","ar25","ocp"]},
+ {area:"Transportation",g:"T",plan:"Keep expanding the All Ages and Abilities bike network; better walking and transit.",
+  ev:["6 km added to the AAA network in 2024 and 5.1 km in 2025.","11 new and 17 upgraded crosswalks in 2024; 17 installed or upgraded in 2025.","Pedestrian head-start signals at 20 more intersections; Blanshard Street South finished June 2025.","About 9.7 km of roads paved in 2024 and nearly 9 km in 2025."],
+  cav:"Transit service is delivered by BC Transit.",src:["ar24","ar25"]},
+ {area:"Parks, recreation & gathering spaces",g:"X",plan:"Begin major projects: a new Crystal Pool, Centennial Square, Ship Point, a new Central Library, a refreshed Royal Athletic Park.",
+  ev:["Voters approved Crystal Pool borrowing of up to $168.9M on Feb 8, 2025 (58.7% yes, 21% turnout). Planning and design continue in 2026, with $12.0M in the 2026 capital budget.","851 Broughton Street secured as an interim recreation centre from late 2026.","Royal Athletic Park renewal carries $8.6M in the 2026 capital budget.","438 trees planted in 2024 and 476 added in 2025."],
+  cav:"The 2025 Annual Report says Crystal Pool planning and design continue in 2026. Status of Centennial Square, Ship Point and the Central Library is not covered in the documents used here.",src:["pool","ar25","fp26"]},
+ {area:"Community well-being & safety",g:"T",plan:"Develop and implement a community safety plan; support crisis response and neighbourhoods near shelters.",
+  ev:["Community Safety and Wellbeing Plan endorsed July 2025: 99 recommendations, 11 priority actions.","$10.35M redirected within the 2025 budget to launch it; rollout continues in 2026.","30 more shelter spaces at Rock Bay Landing.","Fire responded to 12,199 calls in 2024 and 11,767 incidents in 2025."],
+  cav:"The City reports that programs continue to roll out in 2026.",src:["ar25","ar24"]},
+ {area:"Climate & environment",g:"T",plan:"Cut emissions from buildings, transportation and waste; set and track life-cycle targets.",
+  ev:["34 fleet vehicles replaced with EVs in 2024, including the City's first electric fire truck.","About 92% of new fleet vehicles were electric in 2025; 100 EVs in service.","68 public Level 2 chargers (2024) and 14 public fast chargers (2025).","Beyond the Curb recycling pilot: 4,900 users, 11.5 tonnes over 31 weeks."],
+  cav:"Community-wide emissions results are not covered in the documents used here.",src:["ar24","ar25"]},
+ {area:"Economic health & downtown",g:"T",plan:"Strengthen downtown, support small business, streamline permits, continue governance reform.",
+  ev:["$945,000 in OUR DWTN revitalization for a third straight year.","New Urban Clean Team and Victoria Storefront Activation program in 2025.","Victoria–Saanich Citizens' Assembly recommended amalgamation. On Oct 17, 2026 Victoria voted 62% yes; Saanich voted 68% no on the non-binding question."],
+  cav:"Business outcomes are not covered in the documents used here.",src:["ar25","ca","amal"]},
+ {area:"Truth & reconciliation",g:"N",plan:"Implement the City's 32 Calls to Action and TRC calls for local government.",ev:[],cav:"Progress on these commitments is not covered in the documents used here.",src:["sp"]},
+ {area:"Arts, culture, music & sport",g:"N",plan:"Build the Arts and Innovation District; support venues, events and sport.",ev:[],cav:"Progress on these commitments is not covered in the documents used here.",src:["sp"]},
+ {area:"Delivering the capital program",g:"B",plan:"Council's own capital plans: $153.2M for 2024 and $164.3M for 2025.",
+  ev:["2024: $77.2M of capital assets acquired, 50% of plan.","2025: $64.2M acquired, 39% of plan.","Government transfers were $19.5M against $25.5M planned in 2025."],
+  cav:"Capital projects often span several years. The annual reports don't list project-by-project timing.",src:["ar24","ar25"]},
+ {area:"Taxes & finances",g:"I",plan:"Fund City services through the annual Financial Plan.",
+  ev:["Overall property tax increase: 7.28% in 2026 and 6.99% in 2025 (City figures); 7.93% in 2024 as reported by the Times Colonist.","Police services account for 5.06 of the 7.28 points in 2026 and 3.23 of the 6.99 points in 2025. The police budget is prepared by the Victoria and Esquimalt Police Board.","Annual surplus each year: $47.2M (2024) and $44.5M (2025). Cash and equivalents $175.8M and long-term debt $58.9M at the end of 2025."],
+  cav:"Shown for context, not graded.",src:["budget","tax25","tc24","ar25"]}
+];
+
+/* Who Victoria elected: 2022 term and Oct 17 2026 result (2026 counts preliminary) */
+const VSC_PEOPLE=[
+ ["Marianne Alto","Mayor",15090,12627,"Re-elected","44.69% in an 8-way race; Bruce McGuigan 34.30%"],
+ ["Stephen Hammond","Councillor",10042,13729,"Re-elected","8th of 8 in 2022, topped the poll in 2026"],
+ ["Matt Dell","Councillor",13899,13421,"Re-elected",""],
+ ["Jeremy Caradonna","Councillor",14238,13257,"Re-elected","Topped the poll in 2022"],
+ ["Marg Gardiner","Councillor",9255,12880,"Re-elected",""],
+ ["Dave Thompson","Councillor",12271,12266,"Re-elected","8th, 20 votes ahead of 9th"],
+ ["Krista Loughton","Councillor",12683,12246,"Not re-elected","Finished 9th, 20 votes behind 8th"],
+ ["Susan Kim","Councillor",14005,null,"Not re-elected","2nd in 2022"],
+ ["Chris Coleman","Councillor",10785,null,"Did not run",""],
+ ["Jack Sandor","Councillor-elect",null,12951,"New",""],
+ ["Melissa Cseszko","Councillor-elect",null,12720,"New",""],
+ ["Wendy Bowkett","Councillor-elect",null,12297,"New",""]
+];
+
+/* 2026 plan */
+const VSC_DEPT26=[
+ ["Victoria Police Department","Fiona Wilson, Chief Constable",94989170,"Policing for Victoria and Esquimalt; overseen by the Police Board"],
+ ["Engineering & Public Works (incl. water, sewer, stormwater)","William Doyle",80932610,"Streets, traffic, cycling and walking networks, and three utilities; over $2B of assets"],
+ ["Corporate (city-wide costs)","",57472780,"Debt, insurance, transfers to reserves and other city-wide items"],
+ ["Victoria Fire Department","Daniel Atkinson, Fire Chief",24468330,"24-hour emergency response from three stations"],
+ ["Parks & Recreation","Derrick Newman",23875750,"138 parks, about 34,000 trees, recreation and permits"],
+ ["Business & Community Relations","Kerri Moore",16033630,"Arts, culture, economic development, neighbourhoods, Victoria Conference Centre"],
+ ["Community Safety, Wellbeing & Partnerships","Peter Rantucci",15991980,"Bylaw, the Community Safety and Wellbeing Plan, strategic real estate"],
+ ["Finance (incl. Parking Services)","Susanne Thompson, Deputy City Manager & CFO",15252700,"Budgeting, accounting, procurement; parking brings in more than it costs"],
+ ["Planning & Development","Karen Hoese",14008920,"Land use, housing, heritage, permits"],
+ ["Facilities","Not named",8986220,"City buildings"],
+ ["Information Technology","Mike Palmer, CIO",8406980,"Corporate systems"],
+ ["Greater Victoria Public Library (City share)","",6859720,"Regional library board"],
+ ["People & Culture","Jodi Jensen",5499760,"HR, health and safety"],
+ ["Grants","",4360120,"Community and social grants"],
+ ["Communications & Engagement","Sheldon Johnson",2891680,"Public communication and engagement"],
+ ["Legislative Services","Curt Kingsley, City Clerk",2316750,"Council support, records, elections"],
+ ["Legal Services","Stacey Grubb, City Solicitor",1381160,"Legal advice"],
+ ["City Manager's Office","Jocelyn Jenkyns, City Manager",1277890,"Runs the administration for Council"],
+ ["Council","Mayor and 8 councillors",945240,"Policy, taxes and the Financial Plan"],
+ ["One-time items","",8108650,"Non-recurring 2026 spending"]
+];
+const VSC_CAP26=[["Facilities",36922000],["Transportation",36694000],["Equipment (fleet, IT, parking, fire)",22592000],["Sanitary sewers",19010000],["Stormwater",13179000],["Waterworks",12553000],["Structures",6764000],["Parks",6100000],["Other (police, real estate, VCC, remediation, contingency)",6266000]];
+const VSC_PROJ26=[["Vehicle and heavy equipment replacement",12261000],["Crystal Pool replacement",12000000],["Major street rehabilitation",11500000],["Water mains replacement",10040000],["Sanitary system upgrades",9006000],["Storm mains replacement",8667000],["Royal Athletic Park renewal",8618000],["Multi-modal corridor improvements",8411000]];
+const VSC_CAPYRS=[["2026",160080000],["2027",125127000],["2028",127481000],["2029",163231000],["2030",125884000]];
+
+
+
+/* Data validation: research brief items checked against City documents */
+const VSC_CHECK=[
+ ["2025 revenue, expenses, surplus, cash and accumulated surplus","Validated","Match the audited 2025 statements."],
+ ["2025 expenses by function, plan and actual","Validated","Match Note 18 and the Statement of Operations."],
+ ["2025 actual expenses compared with the Financial Plan ($41.88M difference)","Clarification","The figure is correct. The Financial Plan does not include amortization ($24.05M), and capital maintenance ($14.68M) is budgeted in the capital program but recorded as an expense. Together they account for $38.7M of the difference. 2024 follows the same pattern."],
+ ["Reasons for differences by function","Cannot validate","The Annual Report does not give reasons at the function level, so none are shown on this page."],
+ ["Crystal Pool site and approval date","Corrected","Voters approved borrowing on Feb 8, 2025 to rebuild at the existing location. Planning began March 2025 (2025 Annual Report)."],
+ ["2025 housing, community safety, downtown, cycling, fleet and fire figures","Validated","Confirmed in the 2025 Annual Report."],
+ ["2026 budget by department","Updated","Replaced with the department totals in the 2026–2030 Financial Plan, including Police, Engineering & Public Works and Fire."],
+ ["Current-year team","Updated","Names added from the City's Oct 17, 2026 preliminary election results."],
+ ["2026 operating $394.1M, capital $160.1M, tax increase 7.28% (police 5.06 points)","Validated","Confirmed on the City Budget page and in the Financial Plan."],
+ ["Capital budget 2026–2030","Validated","Matches the Financial Plan capital summary."],
+ ["2024 analysis","Added","Built from the 2024 Annual Report."],
+ ["2024 comparative figures","Note","The 2025 Annual Report restates some 2024 function totals and 2024 capital acquisitions ($77.2M to $73.5M). Totals are unchanged. Each table uses the figures from its own report."]
+];
+const vsA=k=>VSC_S[k]?`<a href="${VSC_S[k][1]}" target="_blank" rel="noopener">${VSC_S[k][0]}</a>`:"";
+const vsSrc=ks=>`<div class="src">Source: ${ks.map(vsA).join(" · ")}</div>`;
+const vgrade=g=>`<span class="grade ${VSC_GRADES[g][1]}">${VSC_GRADES[g][0]}</span>`;
+const vcls=x=>x>0.05?"up":x<-0.05?"dn":"";
+
+/* Amortization and capital maintenance by function (Segmented Information, Note 19). Neither is in the operating plan. */
+const VSC_SEG={
+  25:{am:[4284682,3115035,10919761,665179,0,677079,2585631,1132366,674598],cm:[1723950,171837,2891211,2823101,0,33309,3879467,2257194,902021]},
+  24:{am:[3740589,2942779,9575286,600320,0,674561,2500539,1064813,602475],cm:[2063800,323537,4294625,974327,0,24552,2863606,610396,1772687]}
+};
+const vsMs=n=>"$"+(Math.abs(n)/1e6).toFixed(2)+"M";
+function vscExplain(y,i,v){
+  const s=VSC_SEG[y], am=s.am[i], cm=s.cm[i], acc=am+cm, rest=v-acc;
+  if(!acc) return `No amortization or capital maintenance in this function. Difference not itemized in the Annual Report.`;
+  const parts=`Amortization ${vsMs(am)}${cm?` and capital maintenance ${vsMs(cm)}`:""}, not in the operating plan`;
+  if(Math.abs(rest)<0.05*Math.abs(v)||Math.abs(rest)<250000) return `${parts}, account for the difference.`;
+  return rest>0?`${parts}. Remaining ${vsMs(rest)} not itemized in the Annual Report.`
+              :`${parts}. Excluding them, actual was ${vsMs(rest)} under plan.`;
+}
+const vsVarBar=(v,mx)=>`<span class="vbar ${v<0?"neg":"pos"}"><i style="width:${Math.min(100,Math.abs(v)/mx*100).toFixed(1)}%"></i></span>`;
+function vscFnTable(y,cap){
+  const b=VSC_EXP["b"+y],a=VSC_EXP["a"+y]; const tb=b.reduce((s,x)=>s+x,0),ta=a.reduce((s,x)=>s+x,0);
+  const mx=Math.max(...a.map((x,i)=>Math.abs(x-b[i])));
+  return `<div class="sctwrap"><table class="sct fn"><caption>${cap}</caption><thead><tr><th scope="col">Function</th><th scope="col">Plan</th><th scope="col">Actual</th><th scope="col">Variance</th><th scope="col" class="exp">What explains it</th></tr></thead><tbody>
+  ${VSC_FN.map((f,i)=>{const v=a[i]-b[i],p=vsPct(a[i],b[i]);return `<tr><th scope="row">${f}</th><td>${vsM(b[i])}</td><td>${vsM(a[i])}</td><td class="vcell ${vcls(p)}">${vsSgn(v,vsM)} <small>${vsP(p)}</small>${vsVarBar(v,mx)}</td><td class="exp">${vscExplain(y,i,v)}</td></tr>`}).join("")}
+  <tr class="tot"><th scope="row">Total</th><td>${vsM(tb)}</td><td>${vsM(ta)}</td><td class="${vcls(vsPct(ta,tb))}">${vsSgn(ta-tb,vsM)} <small>${vsP(vsPct(ta,tb))}</small></td><td class="exp">${vscExplain0(y,ta-tb)}</td></tr></tbody></table></div>`;
+}
+const vscExplain0=(y,gap)=>{const T=VSC_TOT,ex=T.amort["a"+y]+T.capmaint["a"+y];return `Amortization ${vsMs(T.amort["a"+y])} and capital maintenance ${vsMs(T.capmaint["a"+y])} account for ${vsMs(ex)} (${Math.round(ex/gap*100)}%).`;};
+function vscYoY(prevKey,curKey,cap,ylab){
+  const b=VSC_EXP[prevKey],a=VSC_EXP[curKey]; const tb=b.reduce((s,x)=>s+x,0),ta=a.reduce((s,x)=>s+x,0);
+  return `<div class="sctwrap"><table class="sct">${cap?`<caption>${cap}</caption>`:""}<thead><tr><th scope="col">Function</th><th scope="col">${ylab[0]}</th><th scope="col">${ylab[1]}</th><th scope="col">Change</th><th scope="col">%</th></tr></thead><tbody>
+  ${VSC_FN.map((f,i)=>{const p=vsPct(a[i],b[i]);return `<tr><th scope="row">${f}</th><td>${vsM(b[i])}</td><td>${vsM(a[i])}</td><td>${vsSgn(a[i]-b[i],vsM)}</td><td class="${vcls(p)}">${vsP(p)}</td></tr>`}).join("")}
+  <tr class="tot"><th scope="row">Total</th><td>${vsM(tb)}</td><td>${vsM(ta)}</td><td>${vsSgn(ta-tb,vsM)}</td><td class="${vcls(vsPct(ta,tb))}">${vsP(vsPct(ta,tb))}</td></tr></tbody></table></div>`;
+}
+const VSC_HNOTE={
+  25:{rev:"Sale of goods and services +$12.39M and investment income +$6.12M; government transfers −$5.96M.",exp:"Amortization ($24.05M) and capital maintenance ($14.68M) are not in the operating plan.",sur:"Result of the revenue and expense lines above.",cap:"Capital projects often span several years. The Annual Report doesn't list project timing."},
+  24:{rev:"Revenue by source is in Note 18 of the 2024 Annual Report.",exp:"Amortization ($21.70M) and capital maintenance ($12.93M) are not in the operating plan.",sur:"Result of the revenue and expense lines above.",cap:"Capital projects often span several years. The Annual Report doesn't list project timing."}
+};
+function vscHeadline(y){
+  const T=VSC_TOT,b="b"+y,a="a"+y,N=VSC_HNOTE[y];
+  const row=(l,k)=>`<tr><th scope="row">${l}</th><td>${vsM(T[k][b])}</td><td>${vsM(T[k][a])}</td><td class="${k==="exp"?vcls(vsPct(T[k][a],T[k][b])):vcls(-vsPct(T[k][a],T[k][b]))}">${vsSgn(T[k][a]-T[k][b],vsM)} <small>${vsP(vsPct(T[k][a],T[k][b]))}</small></td><td class="exp">${N[k]}</td></tr>`;
+  return `<div class="sctwrap"><table class="sct fn"><caption>20${y} plan vs actual (audited)</caption><thead><tr><th scope="col">Measure</th><th scope="col">Plan</th><th scope="col">Actual</th><th scope="col">Variance</th><th scope="col" class="exp">What explains it</th></tr></thead><tbody>
+   ${row("Revenue","rev")}${row("Expenses","exp")}${row("Annual surplus","sur")}${row("Capital assets acquired","cap")}</tbody></table></div>`;
+}
+const vscWhy=y=>{const T=VSC_TOT,a="a"+y,b="b"+y,gap=T.exp[a]-T.exp[b],ex=T.amort[a]+T.capmaint[a];
+  return `<p class="vsp">The Financial Plan budget does not include amortization (${vsM(T.amort[a])} in 20${y}). Capital maintenance (${vsM(T.capmaint[a])}) is budgeted in the capital program but recorded as an expense in the audited statements. Together these account for ${vsM1(ex)}, or ${Math.round(ex/gap*100)}% of the ${vsM1(gap)} difference between planned and actual expenses. The function-level figures above come from the Segmented Information note.</p><div class="src">Based on Note 18 (reconciliation of the Financial Plan) and Note 19 (Segmented Information) of the audited statements.</div>`;};
+/* Election results: shown on the City Council page */
+function vscElectionHTML(){ return `<section class="nsec elec"><div class="kicker">Election · October 17, 2026</div><h2 class="nh">Election results</h2><p class="vsp">Votes by member, 2022 and 2026. Turnout 41.44%.</p>
+      <div class="sctwrap"><table class="sct"><caption>2026 counts are preliminary</caption><thead><tr><th scope="col">Member</th><th scope="col">Role</th><th scope="col">2022 votes</th><th scope="col">2026 votes</th><th scope="col">Result</th><th scope="col">Note</th></tr></thead><tbody>
+      ${VSC_PEOPLE.map(p=>`<tr><th scope="row">${p[0]}</th><td>${p[1]}</td><td>${p[2]?p[2].toLocaleString("en-CA"):"—"}</td><td>${p[3]?p[3].toLocaleString("en-CA"):"—"}</td><td><span class="res r-${p[4].toLowerCase().replace(/[^a-z]/g,"")}">${p[4]}</span></td><td class="muted">${p[5]}</td></tr>`).join("")}</tbody></table></div>
+      <div class="note">Council decides as a body. The new Council takes office on Nov 5, 2026.</div>
+      ${vsSrc(["elec26","buzz","elec22","amal"])}</section>`; }
+/* collapsible section */
+const vRoll=(title,sub,body,open)=>`<details class="roll" open><summary><span class="rollh"><span class="rollt">${title}</span>${sub?`<span class="rolls">${sub}</span>`:""}</span><span class="rolltog"><span class="t-show">Show</span><span class="t-hide">Hide</span><span class="rollc" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6l4 4 4-4"/></svg></span></span></summary><div class="rollb">${body}</div></details>`;
+
+function renderVicScore(){
+  const el=document.getElementById("vicscore"); if(!el||el.dataset.done) return; el.dataset.done="1";
+  const T=VSC_TOT, d26=VSC_DEPT26, tot26=394060040;
+  const capPct=y=>Math.round(T.cap["a"+y]/T.cap["b"+y]*100);
+  const counts=Object.keys(VSC_GRADES).map(g=>[g,VSC_CARD.filter(c=>c.g===g).length]).filter(x=>x[1]);
+  const panes={
+   card:`<div class="vsstory">
+      <p class="vslede"><b>Summary.</b> From the City's 2024 and 2025 Annual Reports: Victoria reported 1,477 net-new homes in 2024 and 882 from October 2024 to October 2025, exceeding its provincial housing targets both years. Council adopted the Victoria 2050 Official Community Plan in October 2025 and endorsed the Community Safety and Wellbeing Plan in July 2025. The All Ages and Abilities cycling network grew by 6 km in 2024 and 5.1 km in 2025. Capital assets acquired were $77.2M in 2024 and $64.2M in 2025, against capital plans of $153.2M and $164.3M. On October 17, 2026, voters re-elected Mayor Alto and five councillors, and elected three new councillors.</p>
+      <div class="vskpis">
+        <div class="stat"><b>2,359</b><span>Net-new homes, 2024 + 2025</span></div>
+        <div class="stat"><b>11.1 km</b><span>AAA bike network added</span></div>
+        <div class="stat"><b>${capPct(24)}% · ${capPct(25)}%</b><span>Capital acquired vs plan, 2024 · 2025</span></div>
+        <div class="stat"><b>7.28%</b><span>2026 tax increase (police 5.06 pts)</span></div>
+      </div></div>
+     <section class="vsec"><div class="rollh"><h3 class="rollt">Report card: 2023–2026 Strategic Plan</h3><span class="rolls">${VSC_CARD.length} areas of the Strategic Plan, with the evidence for each</span></div>
+      <div class="gkey">${counts.map(([g,n])=>`${vgrade(g)}<span>${n}</span>`).join("")}</div>
+       <div class="rclist">${VSC_CARD.map(c=>`<article class="rc2"><header><h4 class="rcname">${c.area}</h4>${vgrade(c.g)}</header>
+         <div class="rcb"><p class="rcplan"><span>Strategic Plan</span>${c.plan}</p>
+         ${c.ev.length?`<ul>${c.ev.map(e=>`<li>${e}</li>`).join("")}</ul>`:""}
+         <p class="rccav">${c.cav}</p>${vsSrc(c.src)}</div></article>`).join("")}</div>
+       <div class="note"><b>About the status labels.</b> Each label compares the 2023–2026 Strategic Plan with what the City reports in its Annual Reports and Financial Plans. The Strategic Plan sets few numeric targets, so labels reflect reported progress. "Not reported" means the documents used here don't cover that area.</div></section>`,
+
+   y26:`<div class="vskpis">
+       <div class="stat"><b>$394.1M</b><span>2026 operating budget, +8.87%</span></div>
+       <div class="stat"><b>$160.1M</b><span>2026 capital budget</span></div>
+       <div class="stat"><b>7.28%</b><span>Tax increase: police 5.06 pts, all else 2.22</span></div>
+       <div class="stat"><b>+14.2%</b><span>Police budget, $83.2M → $95.0M</span></div></div>
+     <p class="vsp">Council adopted the 2026–2030 Financial Plan on May 7, 2026. The Financial Plan lists each department's core services; the "Mandate" column reflects that.</p>
+     ${vRoll("Operating budget by department","20 lines · $394.1M",
+      `<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Department</th><th scope="col">Head</th><th scope="col">2026 budget</th><th scope="col">Share</th><th scope="col">Mandate</th></tr></thead><tbody>
+      ${d26.map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]||"—"}</td><td>${vsM(r[2])}</td><td><span class="share"><i style="width:${(r[2]/94989170*100).toFixed(1)}%"></i></span>${(r[2]/tot26*100).toFixed(1)}%</td><td class="muted">${r[3]}</td></tr>`).join("")}
+      <tr class="tot"><th scope="row">Total operating</th><td></td><td>${vsM(tot26)}</td><td>100%</td><td></td></tr></tbody></table></div>${vsSrc(["fp26","budget","fp25"])}`,true)}
+     ${vRoll("Capital budget 2026","By category and largest projects · $160.1M",
+      `<div class="two">
+      <div class="sctwrap"><table class="sct"><caption>By category</caption><tbody>${VSC_CAP26.map(r=>`<tr><th scope="row">${r[0]}</th><td>${vsM(r[1])}</td></tr>`).join("")}<tr class="tot"><th scope="row">Total</th><td>$160.08M</td></tr></tbody></table></div>
+      <div class="sctwrap"><table class="sct"><caption>Largest projects</caption><tbody>${VSC_PROJ26.map(r=>`<tr><th scope="row">${r[0]}</th><td>${vsM(r[1])}</td></tr>`).join("")}</tbody></table></div></div>${vsSrc(["fp26"])}`,false)}
+     ${vRoll("Capital plan 2026–2030","Five-year totals",
+      `<div class="sctwrap"><table class="sct"><thead><tr>${VSC_CAPYRS.map(r=>`<th scope="col">${r[0]}</th>`).join("")}</tr></thead><tbody><tr>${VSC_CAPYRS.map(r=>`<td>${vsM1(r[1])}</td>`).join("")}</tr></tbody></table></div>
+      <div class="note">For comparison, capital assets acquired were $64.2M in 2025 (2025 Annual Report).</div>${vsSrc(["fp26"])}`,false)}`,
+
+   y25:`<div class="vskpis"><div class="stat"><b>+6.0%</b><span>Revenue vs 2024</span></div><div class="stat"><b>+7.8%</b><span>Expenses vs 2024</span></div><div class="stat"><b>$175.8M</b><span>Cash, up from $121.9M</span></div><div class="stat"><b>6.99%</b><span>2025 tax increase (police 3.23 pts)</span></div></div>
+     ${vRoll("Plan vs actual: headline","Revenue, expenses, surplus and capital",vscHeadline(25),true)}
+     ${vRoll("Expenses by function","Variance and what explains it",vscFnTable(25,"2025 · plan vs actual"),true)}
+     ${vRoll("Revenue by source","Plan vs actual",
+      `<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Source</th><th scope="col">Plan</th><th scope="col">Actual</th><th scope="col">Variance</th></tr></thead><tbody>
+      ${VSC_REV25.map(r=>`<tr><th scope="row">${r[0]}</th><td>${vsM(r[1])}</td><td>${vsM(r[2])}</td><td class="${vcls(-vsPct(r[2],r[1]))}">${vsSgn(r[2]-r[1],vsM)}</td></tr>`).join("")}</tbody></table></div>`,false)}
+     ${vRoll("Planned and completed projects","Capital plan $164.3M · acquired $64.2M",
+      `<p class="vsp">The 2025 capital plan was $164.3M and capital assets acquired were $64.2M. Projects the City reports as completed in 2025 include Blanshard Street South, 5.1 km of cycling network, 17 crosswalks, 14 public fast chargers and fleet EVs. The City reports Crystal Pool planning and design continuing in 2026.</p>`,false)}
+     ${vRoll("How plan and actual are compared","Amortization and capital maintenance",vscWhy(25),false)}
+     ${vsSrc(["ar25","tax25"])}`,
+
+   y24:`<div class="vskpis"><div class="stat"><b>+2.9%</b><span>Revenue vs 2023</span></div><div class="stat"><b>+12.3%</b><span>Expenses vs 2023</span></div><div class="stat"><b>${capPct(24)}%</b><span>Capital acquired vs plan</span></div><div class="stat"><b>7.93%</b><span>2024 tax increase (Times Colonist)</span></div></div>
+     ${vRoll("Plan vs actual: headline","Revenue, expenses, surplus and capital",vscHeadline(24),true)}
+     ${vRoll("Expenses by function","Variance and what explains it",vscFnTable(24,"2024 · plan vs actual, as first reported"),true)}
+     ${vRoll("Reported results, 2024","From the 2024 Annual Report",
+      `<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Area</th><th scope="col">Result</th><th scope="col">Status</th></tr></thead><tbody>
+      <tr><th scope="row">Housing</th><td>1,477 net-new homes vs a provincial target of 659; $4.58M from the Housing Reserve Fund toward 387 affordable and supportive units</td><td>${vgrade("D")}</td></tr>
+      <tr><th scope="row">Transportation</th><td>6 km of AAA bike network, 11 new and 17 upgraded crosswalks, 9.7 km paved</td><td>${vgrade("T")}</td></tr>
+      <tr><th scope="row">Fire</th><td>12,199 calls, 3,703 inspections, 10 firefighters hired (largest intake in 15+ years)</td><td>${vgrade("T")}</td></tr>
+      <tr><th scope="row">Climate</th><td>34 fleet EVs including the first electric fire truck; 39 corporate and 68 public Level 2 chargers; 438 trees</td><td>${vgrade("T")}</td></tr>
+      <tr><th scope="row">Crystal Pool</th><td>Accessibility upgrades to the existing pool; replacement identified as a future priority</td><td>${vgrade("T")}</td></tr>
+      <tr><th scope="row">Official Community Plan</th><td>In public engagement (adopted Oct 2025)</td><td>${vgrade("T")}</td></tr>
+      <tr><th scope="row">Capital program</th><td>$77.2M acquired vs $153.2M planned</td><td>${vgrade("B")}</td></tr></tbody></table></div>`,false)}
+     ${vRoll("How plan and actual are compared","Amortization and capital maintenance",vscWhy(24),false)}
+     ${vsSrc(["ar24","tc24"])}`,
+
+   yoy:`${vRoll("High-level actuals, 2023–2025","Audited",
+      `<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Measure</th><th scope="col">2023</th><th scope="col">2024</th><th scope="col">2025</th><th scope="col">2024 vs 2023</th><th scope="col">2025 vs 2024</th></tr></thead><tbody>
+      ${[["Revenue","rev"],["Expenses","exp"],["Annual surplus","sur"],["Capital assets acquired","cap"],["Cash and equivalents","cash"],["Long-term debt","debt"],["Accumulated surplus","acc"]].map(([l,k])=>{const t=T[k],a24=k==="cap"?t.a24r:t.a24;return `<tr><th scope="row">${l}</th><td>${vsM(t.a23)}</td><td>${vsM(t.a24)}</td><td>${vsM(t.a25)}</td><td>${vsP(vsPct(t.a24,t.a23))}</td><td>${vsP(vsPct(t.a25,a24))}</td></tr>`}).join("")}</tbody></table></div>
+      <div class="note">Capital 2025 vs 2024 uses the restated 2024 figure of $73.46M.</div>
+      <p class="vsp">Expenses rose 12.3% in 2024 and 7.8% in 2025; revenue rose 2.9% and 6.0%. The annual surplus was $70.8M (2023), $47.2M (2024) and $44.5M (2025). Salaries, wages and benefits were $187.8M in 2025, 56% of expenses.</p>`,true)}
+     ${vRoll("Expenses by function, 2025 vs 2024","2024 as restated in the 2025 Annual Report",vscYoY("a24r","a25","",["2024","2025"]),false)}
+     ${vRoll("Expenses by function, 2024 vs 2023","2024 Annual Report",vscYoY("a23","a24","",["2023","2024"]),false)}
+     ${vsSrc(["ar25","ar24"])}`,
+   check:`<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Item</th><th scope="col">Status</th><th scope="col">What the City documents show</th></tr></thead><tbody>
+      ${VSC_CHECK.map(r=>`<tr><th scope="row">${r[0]}</th><td><span class="vd v-${r[1].toLowerCase().replace(/[^a-z]/g,"")}">${r[1]}</span></td><td>${r[2]}</td></tr>`).join("")}</tbody></table></div>
+     ${vsSrc(["ar25","ar24","fp26","budget","elec26"])}`
+  };
+
+
+  const tabs=[["card","Report card","Strategic Plan progress"],["y26","2026 plan","Budget by department"],["y25","2025 results","Plan vs actual"],["y24","2024 results","Plan vs actual"],["yoy","Year over year","2023–2025 actuals"],["check","Data validation","Sources checked"]];
+  el.innerHTML=`<header class="vshead"><div><div class="kicker">City of Victoria · Accountability scorecard · 2024–2026</div><h2 class="nh">Council Scorecard 2024–2026</h2></div>
+     <p class="pagelede">Plans, budgets and results from the City's audited statements, with progress on the 2023–2026 Strategic Plan. Snapshot Nov 1, 2026.</p></header>
+    <div class="vsnav"><div class="vshint"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 2v10M4 8l4 4 4-4"/></svg>Choose a section</div>
+    <div class="vstabs big" role="tablist" aria-label="Scorecard sections">${tabs.map((t,i)=>`<button role="tab" id="vst-${t[0]}" aria-controls="vsp-${t[0]}" aria-selected="${i?"false":"true"}" tabindex="${i?-1:0}" data-k="${t[0]}">${t[1]}<small>${t[2]}</small></button>`).join("")}</div></div>
+    ${tabs.map((t,i)=>`<div role="tabpanel" id="vsp-${t[0]}" aria-labelledby="vst-${t[0]}" class="vspane" ${i?"hidden":""}>${panes[t[0]]}</div>`).join("")}`;
+  const bs=[...el.querySelectorAll(".vstabs button")];
+  const pick=b=>{ bs.forEach(x=>{const on=x===b; x.setAttribute("aria-selected",on); x.tabIndex=on?0:-1; document.getElementById("vsp-"+x.dataset.k).hidden=!on;}); };
+  el._pick=k=>pick(bs.find(b=>b.dataset.k===k));
+  bs.forEach((b,i)=>{ b.onclick=()=>pick(b); b.onkeydown=e=>{ const d=e.key==="ArrowRight"?1:e.key==="ArrowLeft"?-1:0; if(d){ const n=bs[(i+d+bs.length)%bs.length]; pick(n); n.focus(); e.preventDefault(); } }; });
+}
+
 /* ================= PARTIES, RIDINGS, NEWS ================= */
 const PARTY={
  lib:{name:"Liberal Party of Canada",color:"var(--p-lib)",src:["Wikipedia: 30th Canadian Ministry","https://en.wikipedia.org/wiki/30th_Canadian_Ministry"]},
@@ -891,6 +1319,10 @@ const NOT_RUNNING_SRC=["Wikipedia: 2026 BC general election","https://en.wikiped
 
 // News items: summaries are written here in plain words; follow the source link for the full story.
 const NEWS=[
+ {date:"2026-11-01",tag:"Parliament",title:"Six federal by-elections called for December 7",text:"The Prime Minister announced by-elections on December 7, 2026 in Brantford—Brant South, Laurier—Sainte-Marie, Rosemont—La Petite-Patrie, Saint-Hyacinthe—Bagot—Acton, Scarborough North and Yorkton—Melville.",
+  ents:[["federal","hub"]],src:["PMO, Nov 1 2026","https://www.pm.gc.ca/en/news/news-releases/2026/11/01/prime-minister-carney-announces-elections"]},
+ {date:"2026-10-31",tag:"Trade",title:"Carney says Canada won't rush a U.S. trade deal",text:"Speaking during the Canada–EU summit in Montréal, the Prime Minister said Canada would not sign a U.S. trade agreement that isn't in its interest: \"if there's not something that's in Canada's interest, we're not going to do it just for the sake of it.\" He also pointed to the economic partnership with the United Arab Emirates, \"negotiated in 47 days.\"",
+  ents:[["federal","hub"]],src:["Bloomberg via The Spokesman-Review, Oct 31 2026","https://www.spokesman.com/stories/2026/oct/31/carney-says-no-hurry-on-trade-deal-if-us-wont-offe/"]},
  {date:"2026-10-30",tag:"Trade",title:"Canada and the EU launch an Alliance for the Future",text:"At the Canada–EU summit in Montréal, Prime Minister Carney, Commission President von der Leyen and Council President Costa launched an economic and security alliance. They concluded talks on digital trade and competition agreements and agreed on critical minerals investment, border security and defence cooperation. Carney expects to conclude associate-membership talks in June; the joint declaration does not use that term.",
   ents:[["federal","hub"],["federal","anand"],["federal","sidhu"],["federal","o_gac"]],src:["AP via ABC News, Oct 30 2026","https://abcnews.com/International/wireStory/prime-minister-carney-expects-conclude-talks-june-making-137703585"]},
  {date:"2026-10-29",tag:"Security",title:"First national security strategy in over 20 years",text:"The Plan for a Stronger Canada sets five priorities: economic security, foreign policy, rebuilding the Canadian Armed Forces, public safety and modern intelligence. It includes $10.9 billion over five years to upgrade digital systems at National Defence, the Armed Forces and the Communications Security Establishment.",
@@ -1346,7 +1778,7 @@ function renderCommons(){
         <div class="who4"><span><b>Speaker</b> elected by MPs; keeps order impartially</span><span><b>Cabinet</b> run departments; front bench</span><span><b>Opposition</b> question and propose alternatives</span><span><b>Backbenchers</b> most MPs; debate and sit on committees</span></div>
         ${srcA(ROLEH_SRC)}
        </section>
-     </div><div class="hside">${ridingCard("commons")}
+     </div><div class="hside">${ridingBtn("commons")}
        <section class="nsec"><div class="lgh"><h2 class="nh">Changes since the 2025 election</h2></div>
         <div class="seg lgfs"><button class="lgf" data-f="all">All</button><button class="lgf" data-f="bye">By-elections</button><button class="lgf" data-f="cross">Party changes</button><button class="lgf" data-f="vac">Vacancies</button></div>
         <ol class="hlog" id="hlog"></ol>
@@ -2009,6 +2441,7 @@ const RIDING_MAPS={
  pe:{title:"Prince Edward Island electoral districts",sub:"27 districts",src:["Elections PEI: Provincial district and poll maps","https://www.electionspei.ca/provincial-election-by-elections/provincial-district-and-poll-maps"]},
  sk:{title:"Saskatchewan constituencies",sub:"61 constituencies · 2024 boundaries, also used in 2028",src:["Elections Saskatchewan: Constituency maps","https://www.elections.sk.ca/candidates-political-parties/maps/"]}
 };
+function ridingBtn(k){ const R=RIDING_MAPS[k]; return `<a class="rbtn" href="${R.src[1]}" target="_blank" rel="noopener" title="${R.title} · ${R.sub} · ${R.src[0].split(":")[0]}"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M4 10l12-4 16 6 12-4v30l-12 4-16-6-12 4z"/><path d="M16 6v30M32 12v30"/></svg><span>Riding map</span><span class="rbtn-s">${R.src[0].split(":")[0]} ↗</span></a>`; }
 function ridingCard(k){ const R=RIDING_MAPS[k]; return `<a class="rmap" href="${R.src[1]}" target="_blank" rel="noopener"><span class="rmap-i" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 10l12-4 16 6 12-4v30l-12 4-16-6-12 4z"/><path d="M16 6v30M32 12v30"/><circle cx="24" cy="22" r="3.2" fill="currentColor" stroke="none"/></svg></span><span class="rmap-t"><span class="kicker">Riding map</span><b>${R.title}</b><span>${R.sub} · ${R.src[0].split(":")[0]} ↗</span></span></a>`; }
 let ON_CRITICS=null;
 function onCritics(){ if(ON_CRITICS) return ON_CRITICS; const C=CH.ontario;
@@ -2187,7 +2620,7 @@ function chSummary(C){
       <dl class="kv"><dt>Speaker</dt><dd>Raymonde Gagné</dd><dt>Appointed by</dt><dd>Governor General, on the PM's advice</dd><dt>Serve until</dt><dd>Age 75</dd></dl>`; }
   document.getElementById(C.id+"-sum").innerHTML=`<div class="hsum-l">${C.kicker?`<div class="kicker">${C.kicker}</div>`:""}<h2 class="hhead">${C.title}<span class="fr">${C.fr}</span></h2>${typeof CH_META!=="undefined"&&CH_META[C.id]?`<p class="hlede">${CH_META[C.id][2]}</p>`:""}${left}
     <div class="mbar">${C.order.map(g=>`<span style="--w:${(c[g]||0)/total*100}%;--pc:${C.groups[g].color}"></span>`).join("")}${C.majority?`<i class="mline" style="left:${C.majority/total*100}%"><em>${C.majority}</em></i>`:`<i class="mline" style="left:${53/105*100}%"><em>53</em></i>`}</div>
-    <div class="ptiles">${tiles}</div><div class="src">${GE?`Change shown against the ${C.geLabel||"February 27, 2025 election"} (${C.order.map(g=>C.groups[g].short+" "+GE[g]).join(" · ")}). `:""}<b class="hint">Tap a ${C.id==="senate"?"group":"party"}</b> to light up its seats and open its breakdown.</div></div><div class="hsum-r">${right}</div>`;
+    <div class="ptiles">${tiles}</div><div class="src">${GE?`Change shown against the ${C.geLabel||"February 27, 2025 election"} (${C.order.map(g=>C.groups[g].short+" "+GE[g]).join(" · ")}). `:""}<b class="hint">Tap a ${C.tileWord||(C.id==="senate"?"group":"party")}</b> to light up its seats and open its breakdown.</div></div><div class="hsum-r">${right}</div>`;
   document.querySelectorAll(`#${C.id}-sum .ptile`).forEach(b=>b.onclick=()=>{ const g=b.dataset.g; st.focus=st.focus===g?null:g; st.panel=st.focus?{type:"group",g}:null; st.sel=null; chPaint(C); chProfile(C); chSummary(C); if(C.map&&st.focus){ const sg=document.getElementById(C.map.stageId); if(sg) sg.scrollIntoView({behavior:RM?"auto":"smooth",block:"start"}); } });
   const mb=document.getElementById(C.id+"-maj"); if(mb) mb.onclick=()=>{ st.panel={type:"maj"}; st.focus=null; st.sel=null; chPaint(C); chProfile(C); };
 }
@@ -2213,9 +2646,9 @@ function chProfile(C){
       ${C.id==="ontario"&&(m.hon)?`<button class="chipbtn" id="${C.id}-towheel">Show on the power map ↑</button>`:""}
       ${srcA(C.src)}<button class="linkbtn" id="${C.id}-back" style="font-size:13px">← Back</button>`; }
   else if(st.panel&&st.panel.type==="group"){ const g=st.panel.g, G=C.groups[g], ms=C.members.filter(x=>x.group===g);
-    const by=d3.rollups(ms,v=>v.length,x=>C.id==="senate"?x.place:(x.hon?"Cabinet":"Other members")).sort((a,b)=>b[1]-a[1]); const mx=by.length?by[0][1]:1;
+    const by=d3.rollups(ms,v=>v.length,x=>C.breakFn?C.breakFn(x):C.id==="senate"?x.place:(x.hon?"Cabinet":"Other members")).sort((a,b)=>b[1]-a[1]); const mx=by.length?by[0][1]:1;
     h=`<div class="pband" style="--pc:${G.color}"></div><div class="kicker">${C.id==="senate"?"Group":"Party"} · tap the tile again to clear</div><h2>${G.name}</h2>
-      <div class="statgrid" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><b>${ms.length}</b><span>Seats</span></div><div class="stat"><b>${Math.round(ms.length/C.members.length*100)}%</b><span>of the ${C.id==="senate"?"Senate":"Assembly"}</span></div></div>
+      <div class="statgrid" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><b>${ms.length}</b><span>Seats</span></div><div class="stat"><b>${Math.round(ms.length/C.members.length*100)}%</b><span>of the ${C.bodyWord||(C.id==="senate"?"Senate":"Assembly")}</span></div></div>
       <h3>${C.id==="senate"?"By province or territory":"Breakdown"}</h3><div class="bars" style="--accent:${G.color}">${by.map(([k,v])=>`<div class="bar"><span>${k}</span><span class="amt">${v}</span><div class="track"><div class="fill" style="width:${v/mx*100}%"></div></div></div>`).join("")}</div>
       ${C.id!=="ontario"?`<button class="chipbtn" id="${C.id}-plist">List all ${ms.length} in the table ↓</button>`:""}${srcA(C.src)}<button class="linkbtn" id="${C.id}-back" style="font-size:13px">← Back</button>`; }
   else if(st.panel&&st.panel.type==="maj"){ const gov=c.pc, others=C.members.length-gov;
@@ -2240,6 +2673,7 @@ function chSelect(C,i,zoom){ if(C.map){ document.getElementById(C.map.stageId).s
   if(window.innerWidth<980) document.getElementById(C.id+"-panel").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"}); }
 
 function renderChamber(id){
+  if(id==="vicscore") return renderVicScorePage();
   if(id==="bcleg") return renderBcLeg();
   if(id==="skleg") return renderSkLeg();
   if(typeof PV_CFG!=="undefined"&&PV_CFG[id]) return renderPvLeg(PV_CFG[id]);
@@ -2276,7 +2710,7 @@ function renderChamber(id){
         ${srcA(ON_SO_SRC)}
         <div class="who4"><span><b>Speaker</b> elected by MPPs; keeps order impartially</span><span><b>Cabinet</b> leads ministries; front bench</span><span><b>Opposition</b> questions and proposes alternatives</span><span><b>Backbenchers</b> most MPPs; debate and sit on committees</span></div>
        </section></div>
-       <div class="hside">${ridingCard("ontario")}<section class="nsec"><div class="lgh"><h2 class="nh">Changes since the 2025 election</h2></div>
+       <div class="hside">${ridingBtn("ontario")}<section class="nsec"><div class="lgh"><h2 class="nh">Changes since the 2025 election</h2></div>
         <div class="seg lgfs"><button class="onlgf" data-f="all">All</button><button class="onlgf" data-f="bye">By-elections</button><button class="onlgf" data-f="cross">Party changes</button><button class="onlgf" data-f="vac">Vacancies</button></div>
         <ol class="hlog" id="onlog"></ol>${srcA(ON_LOG_SRC)}</section></div></div>`);
     document.querySelectorAll(".onlgf").forEach(b=>b.onclick=()=>{ onLogFilter=b.dataset.f; renderOnLog(); });
@@ -2381,7 +2815,7 @@ function renderBcLeg(){
         </div>
         <div class="who4"><span><b>Speaker</b> elected by MLAs when the new Legislature first meets</span><span><b>Cabinet</b> leads ministries; front bench</span><span><b>Opposition</b> questions and proposes alternatives</span><span><b>Backbenchers</b> most MLAs; debate and sit on committees</span></div>
        </section></div>
-       <div class="hside">${ridingCard("bc")}<section class="nsec"><div class="lgh"><h2 class="nh">Transition timeline</h2></div>
+       <div class="hside">${ridingBtn("bc")}<section class="nsec"><div class="lgh"><h2 class="nh">Transition timeline</h2></div>
         <ol class="hlog">${BC_TIMELINE.map(([d,t,x])=>`<li class="lgi"><button tabindex="-1"><span class="lg-t"><b>${t}</b><span class="muted">${fmtDate(d)} · ${x}</span></span></button></li>`).join("")}</ol>
         ${srcA(BC_RES_SRC)}${srcA(BC_ODC_SRC)}${srcA(BC_WIKI_SRC)}</section></div></div>`;
     renderBcMap(); wireFold("bc-fold");
@@ -2846,7 +3280,7 @@ function renderSkLeg(){
         </div>
         <div class="who4"><span><b>Speaker</b> elected by MLAs; keeps order impartially</span><span><b>Cabinet</b> leads ministries; front bench</span><span><b>Opposition</b> questions and proposes alternatives</span><span><b>Backbenchers</b> most MLAs; debate and sit on committees</span></div>
        </section></div>
-       <div class="hside">${ridingCard("sk")}<section class="nsec"><div class="lgh"><h2 class="nh">Changes since the 2024 election</h2></div>
+       <div class="hside">${ridingBtn("sk")}<section class="nsec"><div class="lgh"><h2 class="nh">Changes since the 2024 election</h2></div>
         <ol class="hlog">${SK_LOG.map(x=>{ const m=C.members.find(mm=>mm.place===x[3]); const chip=g=>`<span class="pchip" style="--pc:${C.groups[g].color}">${C.groups[g].short}</span>`;
           return `<li class="lgi"><button data-i="${m?m.i:""}"><span class="lg-t"><b>${x[2]}</b><span>${x[3]}</span><span class="muted">${x[6]}</span></span><span class="lg-c">${chip(x[4])}<span class="arr">→</span>${chip(x[5])}</span></button></li>`; }).join("")}</ol>
         ${srcA(SK_S.nip)}${srcA(SK_S.ge)}</section></div></div>`;
@@ -3177,7 +3611,7 @@ function pvBuild(cfg){
   const card=(B,t1,t2)=>{ g.append("rect").attr("x",B.x).attr("y",B.y).attr("width",B.w).attr("height",B.h).attr("rx",16).attr("class","pmcard");
     const t=g.append("text").attr("x",B.x+22).attr("y",B.y+36).attr("class","pmcardh"); t.append("tspan").text(t1); t.append("tspan").attr("class","pmcardn").text("  ·  "+t2[0]);
     g.append("text").attr("x",B.x+22).attr("y",B.y+56).attr("class","pmcards").text(t2[1]); };
-  card(CAB,"Cabinet",[`${D.mins.length} ministers`,cfg.cabSub]);
+  card(CAB,cfg.cabTitle||"Cabinet",[`${D.mins.length} ${cfg.cabCount||"ministers"}`,cfg.cabSub]);
   card(MIN,cfg.minTitle||"Ministries",[String(D.ministries.length),cfg.minSub||"Each is run day to day by a deputy minister from the public service."]);
   // ---- chamber: desks from the seating plan ----
   const ch=g.append("g").attr("class","pmchamber");
@@ -3192,10 +3626,10 @@ function pvBuild(cfg){
   const [sx,sy]=[C.spk.px,C.spk.py];
   ch.append("rect").attr("x",sx-24).attr("y",sy-24).attr("width",48).attr("height",48).attr("rx",10).attr("fill","none").attr("stroke","var(--brass)").attr("stroke-width",2);
   const below=cfg.spkLabel==="below", sl=cfg.spkLabelSide||-1, sa=below?"middle":sl<0?"end":"start", lx0=below?sx:sx+sl*34, ly0=below?sy+42:sy-2;
-  ch.append("text").attr("x",lx0).attr("y",ly0).attr("text-anchor",sa).attr("class","clbl brass").text("SPEAKER");
+  ch.append("text").attr("x",lx0).attr("y",ly0).attr("text-anchor",sa).attr("class","clbl brass").text(cfg.spkWord||"SPEAKER");
   ch.append("text").attr("x",lx0).attr("y",ly0+14).attr("text-anchor",sa).attr("class","clbl").text(C.spk.name.toUpperCase());
   const bot=cfg.bot;
-  [["gov",(cfg.sideNames||["GOVERNMENT"])[0],"SPEAKER'S RIGHT"],["opp",(cfg.sideNames||[0,"OPPOSITION"])[1],"SPEAKER'S LEFT"]].forEach(([k,a,b])=>{ const x=T(cfg.sideLbl[k][0],cfg.sideLbl[k][1]||0)[0];
+  if(!cfg.noSides) [["gov",(cfg.sideNames||["GOVERNMENT"])[0],"SPEAKER'S RIGHT"],["opp",(cfg.sideNames||[0,"OPPOSITION"])[1],"SPEAKER'S LEFT"]].forEach(([k,a,b])=>{ const x=T(cfg.sideLbl[k][0],cfg.sideLbl[k][1]||0)[0];
     ch.append("text").attr("x",x).attr("y",bot+36).attr("text-anchor","middle").attr("class","clbl side").text(a);
     ch.append("text").attr("x",x).attr("y",bot+52).attr("text-anchor","middle").attr("class","clbl").text(b); });
   const cx=cfg.cx;
@@ -3209,7 +3643,7 @@ function pvBuild(cfg){
   const [px,py]=D.premier;
   const cf=cfg.confPath(D.prem,px,py); arrow(cf.d,"f-conf","accent"); lbl(cf.lx,cf.ly,(cfg.confLbl||["Leader with the Assembly's"])[0],cf.anchor||"start"); lbl(cf.lx,cf.ly+14,(cfg.confLbl||[0,"confidence becomes Premier"])[1],cf.anchor||"start");
   arrow(`M${px+72},${py} C${px+110},${py} ${CAB.x-50},${CAB.y+CAB.h-60} ${CAB.x-6},${CAB.y+CAB.h-60}`,"f-app");
-  lbl(px+80,py-32,"Chooses","start","flowlbl big");lbl(px+80,py-16,"Cabinet","start","flowlbl big");
+  lbl(px+80,py-32,(cfg.choosesLbl||["Chooses"])[0],"start","flowlbl big");lbl(px+80,py-16,(cfg.choosesLbl||[0,"Cabinet"])[1],"start","flowlbl big");
   arrow(`M${CAB.x+CAB.w/2},${CAB.y+CAB.h+2} L${CAB.x+CAB.w/2},${MIN.y-4}`,"f-app");
   lbl(CAB.x+CAB.w/2+12,MIN.y-10,cfg.dirLbl||"Ministers direct ministries","start","flowlbl big");
   const SL=[{key:"premier",x:px,y:py,m:D.prem},...D.mins.filter(mn=>mn.mpp).map(mn=>({key:mn.id,x:mn.x,y:mn.y,m:mn.mpp}))];
@@ -3227,7 +3661,7 @@ function pvBuild(cfg){
   g.append("path").attr("class","spoke").attr("d",`M${px},${py+58} V${D.premierOffices[0].y-12} M${px},${D.premierOffices[0].y+40} V${D.sec[1]-21}`);
   const pr=g.append("g").attr("class","pmn premier").attr("transform",`translate(${px},${py})`).datum({type:"premier",key:"premier"});
   pr.append("rect").attr("x",-72).attr("y",-28).attr("width",144).attr("height",56).attr("rx",16).attr("class","prbox "+cfg.gov);
-  pr.append("text").attr("y",8).attr("text-anchor","middle").attr("class","pminit").text("Premier");
+  pr.append("text").attr("y",8).attr("text-anchor","middle").attr("class","pminit").text(cfg.headWord||"Premier");
   g.append("text").attr("x",px).attr("y",py+50).attr("text-anchor","middle").attr("class","pmname").text(cfg.premier.name);
   const po=g.append("g").selectAll("g").data(D.premierOffices).join("g").attr("class","pmn office").attr("transform",o=>`translate(${o.x},${o.y})`).datum(o=>({type:"ministry",key:"o_"+o.id,o}));
   po.append("rect").attr("x",-11).attr("y",-11).attr("width",22).attr("height",22).attr("rx",5).attr("class","mbox");
@@ -3239,7 +3673,7 @@ function pvBuild(cfg){
   // ---- the Crown and the officers ----
   const LGY=-400; D.lgPt=[px,LGY]; D.offPt=[cx,bot+94];
   g.append("path").attr("class","flow f-crown").attr("d",`M${px},${LGY+24} L${px},${py-32}`).attr("marker-end",`url(#${pre}-ar-ink)`);
-  g.append("text").attr("x",px+8).attr("y",(LGY+py)/2+4).attr("class","flowlbl").text("Appoints, on advice");
+  g.append("text").attr("x",px+8).attr("y",(LGY+py)/2+4).attr("class","flowlbl").text(cfg.crownLbl||"Appoints, on advice");
   const lg=g.append("g").attr("class","pmn crown").attr("transform",`translate(${px},${LGY})`).datum({type:"lg",key:"lg"});
   lg.append("rect").attr("x",-86).attr("y",-23).attr("width",172).attr("height",46).attr("rx",23).attr("class","crownbox");
   lg.append("text").attr("y",-3).attr("text-anchor","middle").attr("class","seclbl").text(cfg.crown||"Lieutenant Governor");
@@ -3247,12 +3681,12 @@ function pvBuild(cfg){
   g.append("path").attr("class","spoke").attr("d",`M${cx},${bot+18} V${bot+70}`);
   const of=g.append("g").attr("class","pmn officers").attr("transform",`translate(${cx},${bot+94})`).datum({type:"officers",key:"officers"});
   of.append("rect").attr("x",-170).attr("y",-24).attr("width",340).attr("height",48).attr("rx",24).attr("class","crownbox");
-  of.append("text").attr("y",-3).attr("text-anchor","middle").attr("class","seclbl").text(`Officers of the Assembly · ${cfg.OFFICERS.length}`);
-  of.append("text").attr("y",14).attr("text-anchor","middle").attr("class","clbl").text("REPORT TO THE ASSEMBLY, NOT CABINET");
+  of.append("text").attr("y",-3).attr("text-anchor","middle").attr("class","seclbl").text(`${cfg.offLbl||"Officers of the Assembly"} · ${cfg.OFFICERS.length}`);
+  of.append("text").attr("y",14).attr("text-anchor","middle").attr("class","clbl").text(cfg.offSub||"REPORT TO THE ASSEMBLY, NOT CABINET");
   // ---- ministers ----
   const mn=g.append("g").selectAll("g").data(D.mins).join("g").attr("class","pmn minister").attr("transform",m=>`translate(${m.x},${m.y})`).datum(m=>({type:"minister",key:m.id,m}));
   mn.append("rect").attr("x",-14).attr("y",-CAB.rh/2+2).attr("width",(CAB.w-24)/CAB.cols-8).attr("height",CAB.rh-4).attr("rx",7).attr("class","rowhit");
-  mn.append("circle").attr("r",9.5).attr("fill",G[cfg.gov].color).attr("stroke","#ffffff80").attr("stroke-width",1);
+  mn.append("circle").attr("r",9.5).attr("fill",x=>G[(x.m.mpp&&x.m.mpp.group)||cfg.gov].color).attr("stroke","#ffffff80").attr("stroke-width",1);
   mn.append("circle").attr("r",3.2).attr("fill","#fff");
   mn.append("text").attr("class","mlbl2").attr("x",17).attr("dy","0.35em").text(x=>x.m.name);
   // ---- ministries ----
@@ -3283,7 +3717,7 @@ function pvRelated(cfg,key){
   if(key==="sec"){ D.ministries.forEach(o=>s.add("o_"+o.id)); D.premierOffices.forEach(o=>s.add("o_"+o.id)); s.add("premier"); return s; }
   if(key==="lg"){ s.add("premier"); D.mins.forEach(m=>s.add(m.id)); return s; }
   if(key==="officers"){ D.mpps.forEach(m=>s.add("m"+m.i)); return s; }
-  if(key.startsWith("o_")){ const o=[...D.ministries,...D.premierOffices].find(x=>"o_"+x.id===key); o.ms.forEach(m=>{ s.add(m.id); if(m.mpp) s.add("m"+m.mpp.i); }); if(!o.ms.length){ s.add("premier"); s.add("m"+D.prem.i); } return s; }
+  if(key.startsWith("o_")){ const o=[...D.ministries,...D.premierOffices].find(x=>"o_"+x.id===key); o.ms.forEach(m=>{ s.add(m.id); if(m.mpp) s.add("m"+m.mpp.i); }); if(!o.ms.length){ if(cfg.deptRel) cfg.deptRel(o).forEach(k=>s.add(k)); else { s.add("premier"); s.add("m"+D.prem.i); } } return s; }
   if(/^m\d+$/.test(key)) return s;
   const mn=D.mins.find(x=>x.id===key); if(mn){ s.add("premier"); if(mn.mpp) s.add("m"+mn.mpp.i); mn.links.forEach(l=>s.add("o_"+l)); } return s;
 }
@@ -3298,7 +3732,8 @@ function pvHighlight(cfg,key){
 }
 function pvRole(cfg,m){ const D=pvS(cfg).D; if(m===D.prem) return "Premier"; if(m===D.C.spk) return "Speaker"; const mn=D.mins.find(x=>x.mpp===m); if(mn) return mn.title; return (cfg.roles&&cfg.roles[m.name])||"MLA"; }
 function pvTip(cfg,e,d){
-  const t=document.getElementById(`${cfg.pre}-tip`), D=pvS(cfg).D, G=D.G; let h="";
+  const t=document.getElementById(`${cfg.pre}-tip`), D=pvS(cfg).D, G=D.G; let h=cfg.tipHTML?cfg.tipHTML(d,D)||"":"";
+  if(!h){
   if(d.type==="mpp") h=`<b>${d.m.name}</b><span>${d.m.place}</span><span class="tparty"><span class="pchip" style="--pc:${G[d.m.group].color}">${G[d.m.group].short}</span> ${pvRole(cfg,d.m)}</span>`;
   else if(d.type==="minister") h=`<b>${d.m.name}</b><span>${d.m.title}</span><span>MLA for ${d.m.mpp?d.m.mpp.place:""}</span>`;
   else if(d.type==="ministry") h=`<b>${d.o.name}</b><span>${d.o.heads.length?d.o.heads.map(x=>x.name).join(", "):"Deputy minister not confirmed here"}</span>`;
@@ -3306,6 +3741,7 @@ function pvTip(cfg,e,d){
   else if(d.type==="sec") h=`<b>${cfg.sec.name}</b><span>${cfg.sec.title}</span>`;
   else if(d.type==="lg") h=`<b>${cfg.LG.name}</b><span>${cfg.LG.title}</span>`;
   else h=`<b>Officers of the Assembly</b><span>${cfg.OFFICERS.map(o=>o.role).join(" · ")}</span>`;
+  }
   if(cfg.memberWord) h=h.replace(/\bMLA(s?)\b/g,cfg.memberWord+"$1"); t.innerHTML=h; t.hidden=false; const r=document.getElementById(`${cfg.pre}-stage`).getBoundingClientRect(); let lx=e.clientX-r.left+16; if(lx>r.width-280) lx-=300; t.style.left=lx+"px"; t.style.top=(e.clientY-r.top+16)+"px";
 }
 function pvPanel(cfg,key){
@@ -3314,7 +3750,9 @@ function pvPanel(cfg,key){
   const head=(m,kicker,grp,place)=>{ const gr=grp||m.group; return `<div class="pband" style="--pc:${G[gr].color}"></div><div class="who"><div class="ava" style="--pc:${G[gr].color}" aria-hidden="true">${initials(m.name)}</div><div class="who-t"><div class="kicker">${kicker}</div><h2>${m.name}</h2><div class="party"><i style="background:${G[gr].color}"></i><span>${G[gr].name}${place?" · "+place:""}</span></div></div></div>`; };
   const dmList=o=>o.heads.length?`<ul class="list">${o.heads.map(x=>`<li class="item"><span class="nm">${x.name}</span><span class="rl">${x.role}</span>${srcA(S[x.src])}</li>`).join("")}</ul>`:`<p class="muted">Not confirmed in the sources checked for this page.</p>`;
   const c=chCounts(C), opp=cfg.oppLeader&&D.byName[cfg.oppLeader];
-  if(!key){
+  const ov=cfg.panelHTML?cfg.panelHTML(key,D):null;
+  if(ov!=null){ h=ov; }
+  else if(!key){
     h=`<div class="kicker">Start here</div><h2>How power flows in ${cfg.region}</h2>
       <ol class="steps">${cfg.steps?cfg.steps.map(x=>`<li>${x}</li>`).join(""):`<li><b>Voters</b> in each of the ${cfg.total||C.members.length} ${cfg.placeNounPl} elect one MLA. The last general election was ${cfg.lastElection}.</li><li>The ${cfg.crown||"Lieutenant Governor"} asks the leader who holds the Assembly's confidence to form government. The <b>${cfg.govName} holds ${c[cfg.gov]||0} of ${cfg.total||C.members.length}</b> seats, past the ${C.majority} needed.</li><li><b>${cfg.premier.name}</b>, as Premier, chooses <b>Cabinet</b>, and the ${cfg.crown||"Lieutenant Governor"} appoints them on the Premier's advice.</li><li>Each minister directs one or more <b>${(cfg.minTitle||"ministries").toLowerCase()}</b>, which deputy ministers run day to day.</li>`}</ol>
       <h3>Key roles</h3><ul class="list"><li class="item"><button class="linkbtn" data-k="premier">${cfg.premier.name}</button><span class="rl">Premier</span></li>${opp?`<li class="item"><button class="linkbtn" data-k="m${opp.i}">${opp.name}</button><span class="rl">${cfg.oppLeaderTitle||"Leader of the Opposition"}</span></li>`:""}<li class="item"><button class="linkbtn" data-k="m${C.spk.i}">${C.spk.name}</button><span class="rl">Speaker</span></li><li class="item"><button class="linkbtn" data-k="lg">${cfg.LG.name}</button><span class="rl">${cfg.crown||"Lieutenant Governor"}</span></li></ul>
@@ -3357,6 +3795,7 @@ function pvPanel(cfg,key){
   if(key) h+=`<button class="linkbtn" data-k="" style="font-size:13px">← How power flows</button>`;
   if(cfg.memberWord) h=h.replace(/\bMLA(s?)\b/g,cfg.memberWord+"$1"); el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap"); el.innerHTML=h;
   el.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>pvSelect(cfg,b.dataset.k||null,!!b.dataset.k));
+  if(cfg.afterPanel) cfg.afterPanel(el,key);
 }
 function pvPoint(cfg,key){ const D=pvS(cfg).D;
   if(key==="premier") return D.premier; if(key==="sec") return D.sec; if(key==="lg") return D.lgPt; if(key==="officers") return D.offPt;
@@ -3373,7 +3812,7 @@ function pvSelect(cfg,key,zoom){
   else svg.transition().duration(PV_RM?0:600).call(S.zoom.transform,d3.zoomIdentity);
   if(key) document.getElementById(`${cfg.pre}-panel`).scrollIntoView({behavior:PV_RM?"auto":"smooth",block:"nearest"});
 }
-function pvFocus(cfg,fk){ if(!fk||fk.startsWith("ch:")) return; if(fk==="hub") return pvSelect(cfg,"premier",true); if(fk==="head") return pvSelect(cfg,"sec",true); pvSelect(cfg,fk,true); }
+function pvFocus(cfg,fk){ if(!fk||fk.startsWith("ch:")) return; if(cfg.focusMap&&fk in cfg.focusMap){ fk=cfg.focusMap[fk]; if(!fk) return; } if(fk==="hub") return pvSelect(cfg,"premier",true); if(fk==="head") return pvSelect(cfg,"sec",true); pvSelect(cfg,fk,true); }
 function pvSearchIndex(cfg){ const D=pvS(cfg).D, idx=[];
   D.mpps.forEach(m=>idx.push({k:pvKeyForMpp(cfg,m.i),label:m.name,sub:`${D.G[m.group].short} · ${m.place} · ${pvRole(cfg,m)}`}));
   [...D.ministries,...D.premierOffices].forEach(o=>{ idx.push({k:"o_"+o.id,label:o.name,sub:o.abbr}); o.heads.forEach(x=>idx.push({k:"o_"+o.id,label:x.name,sub:x.role+" · "+o.abbr})); });
@@ -3384,7 +3823,7 @@ function renderPvMap(cfg){
   const S=pvS(cfg), pre=cfg.pre; if(S.built) return;
   const slot=document.getElementById(`${pre}-slot`); if(!slot) return;
   slot.innerHTML=`<div class="pmbar ${pre}bar"><label class="search" for="${pre}-q"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
-      <input id="${pre}-q" type="search" placeholder="Search an ${cfg.memberWord||"MLA"}, ${cfg.placeNoun}, minister or ${(cfg.minNoun||"ministry").toLowerCase()}" autocomplete="off" aria-label="Search ${cfg.region}"><ul class="results" id="${pre}-res" hidden></ul></label>
+      <input id="${pre}-q" type="search" placeholder="${cfg.searchPh||`Search an ${cfg.memberWord||"MLA"}, ${cfg.placeNoun}, minister or ${(cfg.minNoun||"ministry").toLowerCase()}`}" autocomplete="off" aria-label="Search ${cfg.region}"><ul class="results" id="${pre}-res" hidden></ul></label>
       <div class="zbtn"><button id="${pre}-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="${pre}-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="${pre}-zr" aria-label="Reset view" title="Reset view" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Reset</span></button></div></div>
     <div class="pmgrid"><div class="pmstage" id="${pre}-stage"><svg id="${pre}-svg" viewBox="${PV_VB.join(" ")}" role="img" aria-label="${cfg.region} power map: the Legislative Assembly, Premier, Cabinet and ${(cfg.minTitle||"ministries").toLowerCase()}"></svg><div class="tip" id="${pre}-tip" hidden></div></div>
       <aside class="hpanel pmpanel" id="${pre}-panel" aria-live="polite"></aside></div>`;
@@ -3409,15 +3848,15 @@ function renderPvLeg(cfg){
     el.innerHTML=`<section class="hsum" id="${cfg.id}-sum"></section>
      <section class="nsec pmwrap"><div class="kicker">Power map · ${cfg.capital}</div><h2 class="nh pmtitle">Elected Officials</h2>
        ${foldHTML(cfg.pre+"-fold","How to read this map","What each part means and how to explore it",
-         [["The room on the left",`is where ${cfg.region}'s laws are made. Each dot is one MLA, a person voters chose to speak for their area. ${cfg.colourNote||"The colour shows their party."}`],
+         cfg.foldLeft||[["The room on the left",`is where ${cfg.region}'s laws are made. Each dot is one MLA, a person voters chose to speak for their area. ${cfg.colourNote||"The colour shows their party."}`],
           ["The Premier","is the leader of the government. It is the leader who has the support of most MLAs."],
           ["Cabinet","is the Premier's team. Each minister is also an MLA with a seat in the room."],
           [cfg.minTitle||"Ministries",`are the ${cfg.minNoun==="Department"?"departments":"departments"} that do the work, like Health or Finance. Cabinet ministers are in charge of them, and a deputy minister runs each one every day.`]],
-         [["Point at","or tap any dot, name or box to see who it is."],["Click a minister","to draw a line to their seat and to what they are responsible for."],[`Click a ${(cfg.minNoun||"ministry").toLowerCase()}`,"to see who is in charge of it and where they sit."],["Search",`for any MLA, ${cfg.placeNoun}, minister or ${(cfg.minNoun||"ministry").toLowerCase()}. Details appear in the box under the map.`]],
+         cfg.foldRight||[["Point at","or tap any dot, name or box to see who it is."],["Click a minister","to draw a line to their seat and to what they are responsible for."],[`Click a ${(cfg.minNoun||"ministry").toLowerCase()}`,"to see who is in charge of it and where they sit."],["Search",`for any MLA, ${cfg.placeNoun}, minister or ${(cfg.minNoun||"ministry").toLowerCase()}. Details appear in the box under the map.`]],
          cfg.foldNote)}
        <div id="${cfg.pre}-slot"></div>
        <div class="src">${cfg.noPlan?"":`Every MLA is shown at their desk on the Assembly's ${cfg.planDate} seating plan. `}${cfg.planNote||""}</div>${srcA(cfg.S.plan)}</section>
-     <div class="hgrid"><div class="hmain"><section class="nsec"><div class="kicker">About the Assembly</div><h2 class="nh">What the Legislative Assembly does</h2>
+     <div class="hgrid"><div class="hmain">${cfg.aboutHTML||`<section class="nsec"><div class="kicker">About the Assembly</div><h2 class="nh">What the Legislative Assembly does</h2>
         <div class="does">
          <div><b>Forms the government</b><span>The leader who can win the support of most MLAs becomes Premier and picks Cabinet. That is usually the leader of the party with the most seats.</span></div>
          <div><b>Makes laws</b><span>Bills are debated here and in committees, then need ${cfg.assent||"Royal Assent"} from the ${cfg.crown||"Lieutenant Governor"}. ${cfg.region} has no upper house.</span></div>
@@ -3426,14 +3865,15 @@ function renderPvLeg(cfg){
          <div><b>Represents ${cfg.region}</b><span>Each of the ${cfg.total||C.members.length} MLAs speaks for one ${cfg.placeNoun}.</span></div>
         </div>
         <div class="who4"><span><b>Speaker</b> elected by MLAs; keeps order impartially</span><span><b>Cabinet</b> leads ${(cfg.minTitle||"ministries").toLowerCase()}; front bench</span><span><b>Opposition</b> questions and proposes alternatives</span><span><b>Backbenchers</b> most MLAs; debate and sit on committees</span></div>
-       </section></div>
-       <div class="hside">${cfg.ridingKey?ridingCard(cfg.ridingKey):""}<section class="nsec"><div class="lgh"><h2 class="nh">Changes since the ${cfg.geYear} election</h2></div>
-        <ol class="hlog">${cfg.LOG.length?"":`<li class="lgi"><span class="lg-t" style="padding:10px"><span class="muted">No changes in membership since the election.</span></span></li>`}${cfg.LOG.map(x=>{ const m=C.members.find(mm=>mm.place===x[3]); const chip=g=>g?`<span class="pchip" style="--pc:${C.groups[g].color}">${C.groups[g].short}</span>`:"";
+       </section>`}</div>
+       <div class="hside">${cfg.ridingKey?ridingBtn(cfg.ridingKey):""}<section class="nsec"><div class="lgh"><h2 class="nh">Changes since the ${cfg.geYear} election</h2></div>
+        <ol class="hlog">${cfg.LOG.length?"":`<li class="lgi"><span class="lg-t" style="padding:10px"><span class="muted">No changes in membership since the election.</span></span></li>`}${cfg.LOG.map(x=>{ const m=C.members.find(mm=>mm.name===x[2])||C.members.find(mm=>mm.place===x[3]); const chip=g=>g?`<span class="pchip" style="--pc:${C.groups[g].color}">${C.groups[g].short}</span>`:"";
           return `<li class="lgi"><button data-i="${m?m.i:""}"><span class="lg-t"><b>${x[2]}</b><span>${x[3]}</span><span class="muted">${x[6]}</span></span><span class="lg-c">${chip(x[4])}${x[4]?`<span class="arr">→</span>`:""}${chip(x[5])}</span></button></li>`; }).join("")}</ol>
         ${cfg.logSrcs.map(s=>srcA(s)).join("")}</section></div></div>`;
     if(cfg.memberWord) el.querySelectorAll(".nsec").forEach(x=>{ x.innerHTML=x.innerHTML.replace(/\bMLA(s?)\b/g,cfg.memberWord+"$1"); });
     el.querySelectorAll(".hlog [data-i]").forEach(b=>{ if(b.dataset.i!=="") b.onclick=()=>chSelect(C,+b.dataset.i,true); });
     renderPvMap(cfg); wireFold(cfg.pre+"-fold");
+    if(cfg.after) cfg.after(el);
     st.built=true;
   }
   chSummary(C); chProfile(C); chList(C);
@@ -4650,6 +5090,145 @@ const NU_CFG={id:"nuleg",pre:"nu",region:"Nunavut",capital:"Iqaluit",gov:"cab",g
   geYear:"2025",LOG:[],logSrcs:[NU_S.mla],ridingKey:"nu"};
 pvWire(NU_CFG);
 
+/* ================= CITY OF VICTORIA: COUNCIL CHAMBER (provincial chamber design) =================
+   Mayor in the chair, eight councillors elected at large. Desk positions are illustrative: the City doesn't
+   publish a seating plan. Data reuse: VIC_S / VIC_IN / VIC_OUT (bcvic_data.js), VSC_PEOPLE (vic_scorecard.js). */
+const VCC_S={...VIC_S, mla:VIC_S.elec, cab:VIC_S.elec, buzz:["Victoria Buzz, Oct 17 2026 (preliminary counts)","https://victoriabuzz.com/2026/10/marianne-alto-re-elected-victoria-mayor-as-council-results-bring-new-faces/"],
+  e22:["2022 Declaration of Official Results","https://www.victoria.ca/media/file/declaration-official-results-2022pdf"],
+  amal:["Daily Hive, Oct 27 2026","https://dailyhive.com/vancouver/victoria-saanich-october-2026-amalgamation-plebiscite-election-results"]};
+const VCC_SEATS={"Marianne Alto":[-385,-205],
+  "Stephen Hammond":[-520,-110],"Matt Dell":[-520,-20],"Jeremy Caradonna":[-520,70],"Jack Sandor":[-445,165],
+  "Marg Gardiner":[-325,165],"Melissa Cseszko":[-250,70],"Wendy Bowkett":[-250,-20],"Dave Thompson":[-250,-110]};
+const VCC_PEOPLE={}; VSC_PEOPLE.forEach(p=>VCC_PEOPLE[p[0]]=p);
+CH.victoria={id:"victoria",title:"Victoria City Council",fr:"",kicker:"",rows:1,memberNoun:"Councillor",placeNoun:"Elected",
+  groups:{inc:{name:"Returning member",short:"RETURNING",color:"var(--p-ind)"},new:{name:"New to Council",short:"NEW",color:"var(--brass)"}},
+  order:["inc","new"],govSide:["inc","new"],oppSide:[],speaker:"Marianne Alto",majority:5,
+  tileWord:"group",bodyWord:"Council",breakFn:x=>x.name==="Marianne Alto"?"Mayor":"Councillors",src:VIC_S.elec};
+CH.victoria.members=[["Marianne Alto","inc"],...VIC_IN.filter(n=>n.role==="vic_council"||n.role==="councillor").map(n=>[n.name,n.isNew?"new":"inc"])]
+  .map(([n,g],i)=>({i,name:n,sort:n,group:g,place:"Citywide (at large)",hon:false}));
+CH.victoria.summary=(c,total)=>[
+  `<div class="hsub"><span class="majtag">Council of ${total}</span> majority is 5</div>`,
+  `<div class="majbtn static"><span class="kicker">Voter turnout</span><span class="bign">41.4%</span><span class="src">31,281 ballots on Oct 17, 2026 (preliminary). The new term begins Nov 5, 2026.</span></div>
+   <dl class="kv"><dt>Mayor</dt><dd>Marianne Alto · 44.69%</dd><dt>City Manager</dt><dd>Jocelyn Jenkyns</dd><dt>2026 budget</dt><dd>$394.1M operating · $160.1M capital</dd></dl>`];
+const VCC_OUT=[{id:"cow",abbr:"Council",name:"Council as a whole",heads:[],budget:945240},
+  ...VIC_OUT.filter(o=>o.kind!=="advisory")];
+const VCC_MIN=VIC_IN.filter(n=>n.role==="vic_council"||n.role==="councillor").map(n=>({id:n.id,name:n.name,title:n.isNew?"Councillor (new)":"Councillor",links:[]}));
+const VCC_BOARDS=[
+  {role:"Victoria and Esquimalt Police Board",name:null,what:"Oversees the Victoria Police Department under the Police Act and prepares its budget.",src:VIC_S.pb,k:"o_vicpd"},
+  {role:"Greater Victoria Public Library Board",name:null,what:"Governs the regional library the City helps fund.",src:VIC_S.fp,k:"o_gvpl"},
+  ...VIC_OUT.filter(o=>o.kind==="advisory").map(o=>({role:o.name,name:null,what:o.desc||"Advises Council. See its page for mandate and membership.",src:VIC_S[o.src]}))];
+const VCC_LOG=[
+  ["2026-10-17","ret","Chris Coleman","Citywide (at large)","inc",null,"Did not seek re-election"],
+  ["2026-10-17","def","Susan Kim","Citywide (at large)","inc",null,"Ran for re-election; not elected"],
+  ["2026-10-17","def","Krista Loughton","Citywide (at large)","inc",null,"Ran for re-election; finished 9th, 20 votes behind 8th"],
+  ["2026-10-17","new","Jack Sandor","Citywide (at large)",null,"new","Elected to Council for the first time"],
+  ["2026-10-17","new","Melissa Cseszko","Citywide (at large)",null,"new","Elected to Council for the first time"],
+  ["2026-10-17","new","Wendy Bowkett","Citywide (at large)",null,"new","Elected to Council for the first time"]];
+const vccFmt=n=>n==null?"—":n.toLocaleString("en-CA");
+const vccMoney=n=>"$"+(n>=1e7?(n/1e6).toFixed(1)+"M":(n/1e6).toFixed(2)+"M");
+const vccScoreBtn=(tab,label)=>`<button class="chipbtn vcc-score" data-tab="${tab}">${label} →</button>`;
+function vccPerson(m,D,G){
+  const p=VCC_PEOPLE[m.name]||[], mayor=m.name==="Marianne Alto", gr=G[m.group];
+  const head=`<div class="pband" style="--pc:${gr.color}"></div><div class="who"><div class="ava" style="--pc:${gr.color}" aria-hidden="true">${initials(m.name)}</div><div class="who-t"><div class="kicker">${mayor?"Mayor of Victoria · chairs Council":"Councillor"}${m.group==="new"?' <span class="newtag">NEW</span>':""}</div><h2>${m.name}</h2><div class="party"><i style="background:${gr.color}"></i><span>No party label (municipal) · elected citywide</span></div></div></div>`;
+  const stats=`<div class="statgrid"><div class="stat"><b>${vccFmt(p[3])}</b><span>2026 votes</span></div><div class="stat"><b>${vccFmt(p[2])}</b><span>2022 votes</span></div><div class="stat"><b>${p[4]||"—"}</b><span>2026 result</span></div></div>`;
+  const role=mayor?ROLE.vic_mayor.text:ROLE.vic_council.text;
+  return head+stats+(p[5]?`<div class="note">${p[5]}</div>`:"")
+    +`<div class="role"><div class="kicker">About this role</div><p>${role}</p>${srcA(mayor?VIC_S.roles:VIC_S.roles)}</div>`
+    +(mayor?`<h3>Also sits on</h3><ul class="list"><li class="item"><span class="nm">Capital Regional District Board</span><span class="rl">Automatic appointment</span></li></ul>`:"")
+    +`<div class="note">Council decides as a body. The scorecard reports on Council's progress on the 2023–2026 Strategic Plan as a whole.</div>`
+    +vccScoreBtn("card","Council Scorecard 2024–2026")+srcA(VCC_S.buzz)+(p[2]?srcA(VCC_S.e22):"");
+}
+function vccPanel(key,D){
+  const G=D.G, deptLink=o=>`<li class="item"><button class="linkbtn" data-k="o_${o.id}">${o.name}</button><span class="rl">${o.heads[0]?o.heads[0].name+" · ":""}${o.budget?vccMoney(o.budget)+" in 2026":""}</span></li>`;
+  if(!key) return `<div class="kicker">Start here</div><details class="flowdd"><summary><span><h2>How power flows in Victoria</h2><span class="ddhint">Click to see the five steps</span></span><span class="ddarrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6l4 4 4-4"/></svg></span></summary>
+    <ol class="steps"><li><b>Voters</b> citywide elect a Mayor and eight councillors every four years. There are no wards and no parties. The last election was October 17, 2026.</li>
+     <li>The <b>Mayor</b> chairs Council and is the City's chief executive officer, but casts one vote like every councillor. Council decides by majority.</li>
+     <li><b>Council</b> sets policy, service levels, taxes and the Financial Plan. Councillors don't run departments.</li>
+     <li>Council appoints the <b>City Manager</b>, its only direct employee, who runs the City's departments through their directors.</li>
+     <li>The <b>Police Board</b>, not Council, oversees the Victoria Police Department. Council funds it.</li></ol></details>
+    <h3>Key roles</h3><ul class="list"><li class="item"><button class="linkbtn" data-k="premier">Marianne Alto</button><span class="rl">Mayor</span></li><li class="item"><button class="linkbtn" data-k="sec">Jocelyn Jenkyns</button><span class="rl">City Manager</span></li><li class="item"><button class="linkbtn" data-k="lg">Victoria voters</button><span class="rl">Elect the Mayor and Council</span></li></ul>
+    <div class="note">Hover or tap anything. Pick a department to see who runs it and its 2026 budget.</div>${vccScoreBtn("card","Council Scorecard 2024–2026")}${srcA(VCC_S.elec)}`;
+  if(key==="premier") return vccPerson(D.prem,D,G);
+  if(/^m\d+$/.test(key)) return vccPerson(D.mpps[+key.slice(1)],D,G);
+  const mn=D.mins.find(x=>x.id===key); if(mn) return vccPerson(mn.mpp,D,G);
+  if(key==="lg") return `<div class="kicker">Who Council answers to</div><h2>Victoria voters</h2><div class="lede">Every eligible voter in the city votes for the Mayor and for up to eight councillors. There are no wards.</div>
+    <div class="statgrid"><div class="stat"><b>41.44%</b><span>Turnout, Oct 17 2026</span></div><div class="stat"><b>31,281</b><span>Ballots cast</span></div><div class="stat"><b>62%</b><span>Yes to amalgamation with Saanich (non-binding)</span></div></div>
+    <div class="note">Saanich voters said no (68%), so amalgamation isn't proceeding on this vote.</div>${srcA(VCC_S.elec)}${srcA(VCC_S.amal)}`;
+  if(key==="sec") return `<div class="kicker">Public service · appointed by Council</div><h2>Jocelyn Jenkyns</h2><div class="lede">${ROLE.vic_cm.text}</div>
+    <div class="statgrid" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><b>${D.ministries.filter(o=>!["vicpd","gvpl"].includes(o.id)).length}</b><span>Departments</span></div><div class="stat"><b>$1.28M</b><span>City Manager's Office, 2026</span></div></div>
+    <h3>Oversees</h3><ul class="list">${D.ministries.filter(o=>!["vicpd","gvpl"].includes(o.id)).map(deptLink).join("")}</ul>
+    <div class="note">Public servants are non-partisan, so there is no colour here.</div>${srcA(VIC_S.cao)}${srcA(VIC_S.ar)}`;
+  if(key==="officers") return `<div class="kicker">Oversight and advice</div><h2>Boards & committees</h2><div class="lede">Two governing boards the City funds, and the advisory bodies that report to Council.</div>
+    <ul class="list">${VCC_BOARDS.map(b=>`<li class="item">${b.k?`<button class="linkbtn" data-k="${b.k}">${b.role}</button>`:`<span class="nm">${b.role}</span>`}<span class="rl">${b.what}</span>${srcA(b.src)}</li>`).join("")}</ul>`;
+  if(key.startsWith("o_")){ const o=[...D.ministries,...D.premierOffices].find(x=>"o_"+x.id===key); if(!o) return null;
+    if(o.id==="cow") return `<div class="kicker">Council</div><h2>Council as a whole</h2><div class="lede">The Mayor and all eight councillors deciding together. Council directs the City Manager as a body, not member by member.</div>
+      <div class="statgrid" style="grid-template-columns:minmax(0,1fr)"><div class="stat"><b>$945,240</b><span>2026 Council budget</span></div></div>
+      <h3>Appoints and directs</h3><ul class="list"><li class="item"><button class="linkbtn" data-k="sec">Jocelyn Jenkyns</button><span class="rl">City Manager</span></li></ul>${srcA(VIC_S.fp)}`;
+    const board=o.id==="vicpd"?"Victoria and Esquimalt Police Board":o.id==="gvpl"?"Greater Victoria Public Library Board":null;
+    return `<div class="kicker">${board?"Funded by the City · governed by a board":"City department · reports to the City Manager"}</div><h2>${o.name}</h2>
+      ${o.budget?`<div class="statgrid" style="grid-template-columns:minmax(0,1fr)"><div class="stat"><b>${moneyFull(o.budget)}</b><span>2026 operating budget${board?" (City of Victoria share)":""}</span></div></div>`:""}
+      ${o.lines?`<div class="bars">${o.lines.map(l=>`<div class="bar"><span>${l[0]}</span><span class="amt">${vccMoney(l[1])}</span><div class="track"><div class="fill" style="width:${(l[1]/o.budget*100).toFixed(1)}%"></div></div></div>`).join("")}</div>`:""}
+      <h3>${o.heads.length>1?"Leadership":"Head"}</h3>${o.heads.length?`<ul class="list">${o.heads.map(x=>`<li class="item"><span class="nm">${x.name}</span><span class="rl">${x.role}</span>${x.also?`<span class="src">${x.also}</span>`:""}</li>`).join("")}</ul>`:`<p class="muted">Not covered by the sources used here.</p>`}
+      <h3>Answers to</h3><ul class="list"><li class="item">${board?`<button class="linkbtn" data-k="officers">${board}</button>`:`<button class="linkbtn" data-k="sec">Jocelyn Jenkyns</button><span class="rl">City Manager</span>`}</li></ul>
+      ${o.note?`<div class="note">${o.note}</div>`:""}${vccScoreBtn("y26","All 2026 budget lines")}${srcA(VIC_S.fp)}${srcA(VIC_S.ar)}`; }
+  return null;
+}
+const VCC_CFG={id:"victoria",pre:"vc",region:"Victoria",capital:"Victoria City Hall",gov:"inc",govName:"Council",
+  MIN:VCC_MIN,OUT:VCC_OUT,execId:"cow",execLabel:"Council as a whole",
+  LG:{name:"Victoria voters",title:"Elect the Mayor and eight councillors every four years",src:VIC_S.elec},crown:"Victoria voters",crownSub:"ELECT ALL 9",crownLbl:"Elect, every four years",
+  OFFICERS:VCC_BOARDS,offLbl:"Boards & committees",offSub:"OVERSIGHT AND ADVICE",S:VCC_S,
+  minTitle:"Departments & services",minNoun:"Department",minSub:"Run by directors who report to the City Manager. Police and library are governed by boards.",
+  dirLbl:"Council directs staff through the City Manager",cabTitle:"Council",cabCount:"councillors",
+  cabSub:"Elected citywide. Council decides as a body; councillors don't run departments.",
+  premier:{name:"Marianne Alto",place:"Citywide",lede:""},headWord:"Mayor",choosesLbl:["Chairs","Council"],
+  confLbl:["Elected citywide;","chairs Council"],spkWord:"MAYOR · CHAIR",
+  sec:{name:"Jocelyn Jenkyns",title:"City Manager (Chief Administrative Officer)",l1:"City Manager",l2:"COUNCIL APPOINTS",src:VIC_S.cao,lede:""},
+  title:"Victoria City Council",sub:"Mayor and 8 councillors, elected at large",
+  seats:VCC_SEATS,T:(x,y)=>[x,y],isGov:()=>true,rowOf:()=>1,chair:VCC_SEATS["Marianne Alto"],spkLabel:"above",spkLabelSide:-1,
+  aisle:[-470,-300,-150,120],table:[-385,-20],noSides:true,cx:-385,titleX:-385,titleY:-330,bot:225,lineX:[-575,-195],deskW:56,deskH:48,
+  confPath:(m,px,py)=>({d:`M${m.px+28},${m.py} C${m.px+120},${m.py} ${px-150},${py} ${px-76},${py}`,lx:-330,ly:-232}),
+  noPlan:true,planNote:"Desk positions are illustrative: the City doesn't publish a seating plan. Outlined desks are new members.",
+  foldNote:"Council from the Oct 17, 2026 preliminary results. Departments and budgets from the 2026–2030 Financial Plan and the 2025 Annual Report.",
+  searchPh:"Search a councillor, department or director",memberWord:"Councillor",
+  foldLeft:[["The room on the left","is Victoria City Council. Each dot is an elected member. The Mayor sits in the chair; outlined desks are new members."],
+    ["The Mayor","chairs Council and is the City's chief executive officer, with one vote like each councillor."],
+    ["Council","sets policy, taxes and the budget as a body. Councillors don't run departments."],
+    ["Departments","are run by directors who report to the City Manager, Council's only direct employee."]],
+  foldRight:[["Point at","or tap any dot, name or box to see who it is."],["Click a department","to see its head, 2026 budget and who it answers to."],["Click the City Manager","to trace every department that reports to her."],["Search","for any councillor, department or director."]],
+  focusMap:{hub:"premier",cm:"sec",cow:"o_cow",pboard:"officers",lboard:"officers",crd:"premier",adp:"officers",hap:"officers",bov:"officers",aac:"officers",rac:"officers",wca:"officers",aipp:"officers",o_adp:"officers",o_hap:"officers",o_bov:"officers",o_aac:"officers",o_rac:"officers",o_wca:"officers",o_aipp:"officers"},
+  deptRel:o=>o.id==="vicpd"||o.id==="gvpl"?["officers"]:["sec"],
+  tipHTML:(d,D)=>{ if(d.type==="mpp"||d.type==="minister"){ const m=d.type==="mpp"?d.m:d.m.mpp, p=VCC_PEOPLE[m.name]||[]; return `<b>${m.name}</b><span>${m.name==="Marianne Alto"?"Mayor":"Councillor"} · ${vccFmt(p[3])} votes in 2026</span><span>${p[4]||""}</span>`; }
+    if(d.type==="premier") return `<b>Marianne Alto</b><span>Mayor of Victoria · chairs Council</span>`;
+    if(d.type==="lg") return `<b>Victoria voters</b><span>41.44% turnout on Oct 17, 2026</span>`;
+    if(d.type==="officers") return `<b>Boards & committees</b><span>Police Board, Library Board and ${VCC_BOARDS.length-2} advisory bodies</span>`;
+    if(d.type==="ministry") return `<b>${d.o.name}</b><span>${d.o.heads.length?d.o.heads.map(x=>x.name).join(", "):""}${d.o.budget?" · "+vccMoney(d.o.budget)+" in 2026":""}</span>`;
+    return ""; },
+  panelHTML:vccPanel,
+  afterPanel:el=>el.querySelectorAll(".vcc-score").forEach(b=>b.onclick=()=>vicGoScore(b.dataset.tab)),
+  aboutHTML:`<section class="nsec"><div class="kicker">About Council</div><h2 class="nh">What Victoria City Council does</h2>
+    <div class="does">
+     <div><b>Sets direction</b><span>Council adopts the Strategic Plan, the Official Community Plan and City policies.</span></div>
+     <div><b>Controls the money</b><span>Council adopts the five-year Financial Plan each spring and sets property tax rates.</span></div>
+     <div><b>Makes bylaws</b><span>Zoning, business licensing, parking, noise and other local rules are passed as bylaws.</span></div>
+     <div><b>Hires the City Manager</b><span>Council's only direct employee, who runs the administration.</span></div>
+     <div><b>Represents the city</b><span>The Mayor also sits on the Capital Regional District Board.</span></div></div>
+    <div class="who4"><span><b>Mayor</b> chairs Council; one vote</span><span><b>Councillors</b> 8, elected citywide</span><span><b>City Manager</b> runs the administration</span><span><b>Police Board</b> oversees VicPD</span></div><span class="src">Source: <a href="${VIC_S.roles[1]}" target="_blank" rel="noopener">${VIC_S.roles[0]}</a></span></section>`,
+  after:el=>{ el.insertAdjacentHTML("afterbegin",vicSwitch("victoria")); vicSwitchWire(el); const hg=el.querySelector(".hgrid"); if(hg) hg.insertAdjacentHTML("afterend",vscElectionHTML()); },
+  geYear:"2022",LOG:VCC_LOG,logSrcs:[VCC_S.buzz,VCC_S.e22]};
+pvWire(VCC_CFG);
+
+/* Victoria: two pages. Who = Council chamber (#victoria). What & when = scorecard (#vicscore). */
+function vicSwitch(cur){
+  const b=(id,k,t,sub)=>`<button class="vsw ${cur===id?"on":""}" data-go="${id}" ${cur===id?'aria-current="page"':""}><span class="vswk">${k}</span><b>${t}</b><span class="vsws">${sub}</span></button>`;
+  return `<nav class="vswitch" aria-label="City of Victoria pages">${b("victoria","City of Victoria","City Council","Mayor, councillors, City Manager, departments, election results")}${b("vicscore","City of Victoria","Scorecard","Plans, budgets and results, 2024–2026")}</nav>`;
+}
+function vicSwitchWire(el){ el.querySelectorAll(".vswitch [data-go]").forEach(b=>b.onclick=()=>{ if(!b.classList.contains("on")){ show(b.dataset.go); window.scrollTo(0,0); } }); }
+function vicGoScore(tab){ show("vicscore"); const v=document.getElementById("vicscore"); if(v&&v._pick&&tab) v._pick(tab); window.scrollTo(0,0); }
+function renderVicScorePage(){
+  const el=document.getElementById("ch-vicscore"); if(!el) return;
+  if(!el.dataset.built){ el.innerHTML=vicSwitch("vicscore")+`<section id="vicscore" class="nsec vicscore" aria-label="City of Victoria accountability scorecard"></section>`; vicSwitchWire(el); renderVicScore(); el.dataset.built="1"; }
+}
+
 /* ================= ONTARIO POWER MAP ================= */
 // Left: the Legislature as it sits (Speaker at the top). Middle: People → Premier. Right: a Cabinet card above a Ministries card.
 const PM={built:false,sel:null};
@@ -5032,7 +5611,7 @@ const FED_SECTORS=[
  {id:"global",label:"Global, Security & Justice",ids:["anand","sidhu","mcguinty","mcknight","anandasangaree","fraser"]}
 ];
 const DS={
- federal:{id:"federal",tab:"Federal",stamp:"Federal · Snapshot Oct 30 2026",
+ federal:{id:"federal",tab:"Federal",stamp:"Federal · Snapshot Nov 1 2026",
    tagline:"Who steers the federal government of Canada: the Prime Minister, every Cabinet minister, and the deputy heads who run each department.",
    party:"lib", hub:{name:"Mark Carney",kicker:"PRIME MINISTER",l1:"Mark",l2:"Carney",title:"Prime Minister of Canada",role:"fed_pm",src:"cab"},
    S, sectors:FED_SECTORS, innerNoun:"Cabinet minister", outerNoun:"Department / agency", outerRole:"fed_dh",
@@ -5040,7 +5619,7 @@ const DS={
    outer:depts, hubLinks:[],
    sats:[{key:"sos",pos:"top",label:"Secretaries of State",sub:"10 · OUTSIDE CABINET",color:"var(--muted)",role:"fed_sos",list:secretaries.map(s=>[s[0],"Secretary of State ("+s[1]+")"+(SOS_RIDING[s[0]]?" · "+SOS_RIDING[s[0]]:"")]),src:"sos"},
          {key:"clerk",pos:"bottom",label:"Clerk of the PC",sub:"PUBLIC SERVICE",color:"var(--brass)",ps:true,person:"Michael Sabia",title:"Clerk of the Privy Council and Secretary to the Cabinet",role:"fed_clerk",status:"A",src:"pco"}]},
- bc:{id:"bc",tab:"BC",stamp:"British Columbia · Snapshot Oct 30 2026",
+ bc:{id:"bc",tab:"BC",stamp:"British Columbia · Snapshot Nov 1 2026",
    tagline:"Who steers the Government of British Columbia: the Premier, every Cabinet minister, and the deputy ministers who run each ministry.",
    party:"ndp", banner:BC_TRANSITION, hub:{name:"David Eby",kicker:"PREMIER",l1:"David",l2:"Eby",title:"Premier of British Columbia",role:"bc_premier",src:"cab"},
    S:BC_S, sectors:BC_SECTORS, innerNoun:"Cabinet minister", outerNoun:"Ministry", outerRole:"bc_dm",
@@ -5048,14 +5627,14 @@ const DS={
    outer:BC_OUT, hubLinks:["premier"],
    sats:[{key:"mos",pos:"top",label:"Ministers of State",sub:"3 · WITHIN PORTFOLIOS",color:"var(--muted)",role:"bc_mos",list:BC_MOS.map(m=>[m[0],"Minister of State for "+m[1]]),src:"cab"},
          {key:"head",pos:"bottom",label:"Head of Public Service",sub:"DEPUTY MINISTERS' COUNCIL",color:"var(--brass)",ps:true,person:"Shannon Salter",title:"Deputy Minister to the Premier, Cabinet Secretary and Head of the Public Service",role:"bc_head",status:"A",src:"dm"}]},
- victoria:{id:"victoria",tab:"Victoria",stamp:"City of Victoria · Snapshot Oct 30 2026",
+ victoria:{id:"victoria",tab:"Victoria",stamp:"City of Victoria · Snapshot Nov 1 2026",
    tagline:"Who runs the City of Victoria: the Mayor and Council, the City Manager and department directors, the independent boards, and where the 2026 budget goes.",
    party:"ind", hub:{name:"Marianne Alto",kicker:"MAYOR",l1:"Marianne",l2:"Alto",title:"Mayor of Victoria",role:"vic_mayor",src:"elec"},
    S:VIC_S, sectors:VIC_SECTORS, innerNoun:"Council & administration", outerNoun:"Department / body", outerRole:"vic_head",
    inner:VIC_IN, outer:VIC_OUT, hubLinks:[], budget:true,
    sats:[{key:"crd",pos:"top",label:"CRD Board",sub:"REGIONAL · MAYOR SITS ON IT",color:"var(--muted)",role:null,src:"guide",
           text:"The Capital Regional District Board governs regional services for Greater Victoria. The City automatically appoints its mayor to the board. The regional layer isn't mapped here yet."}]},
- mississauga:{id:"mississauga",tab:"Mississauga",stamp:"City of Mississauga · Snapshot Oct 31 2026",
+ mississauga:{id:"mississauga",tab:"Mississauga",stamp:"City of Mississauga · Snapshot Nov 1 2026",
    tagline:"Who runs the City of Mississauga: the Mayor-elect and Council for 2026 to 2030, the City Manager, the commissioners and the departments they lead.",
    party:"mun", banner:MIS_TRANSITION, hub:{name:"Alvin Tedjo",kicker:"MAYOR-ELECT",l1:"Alvin",l2:"Tedjo",title:"Mayor-elect of Mississauga (74,479 votes, 39.21%). Takes office November 15, 2026",role:"mis_mayor",src:"res"},
    S:MIS_S, sectors:MIS_SECTORS, innerNoun:"Council & administration", outerNoun:"Department / division", outerRole:"mis_head",
@@ -5064,7 +5643,7 @@ const DS={
           text:"The Region of Peel runs regional services such as water, waste, paramedics and social services, and funds Peel Regional Police. Mississauga's Mayor and all 11 councillors also sit on Regional Council. The regional layer is not mapped here yet."},
          {key:"reps",pos:"bottom",label:"MPs and MPPs",sub:"FEDERAL AND PROVINCIAL · 12 MEMBERS",color:"var(--muted)",role:null,src:"res",list:MIS_REPS,
           text:"Mississauga's six ridings each elect one MP to the House of Commons and one MPP to Queen's Park. See the House of Commons and Ontario pages for their seats."}]},
- ontario:{id:"ontario",tab:"Ontario",stamp:"Snapshot · Oct 31 2026",
+ ontario:{id:"ontario",tab:"Ontario",stamp:"Snapshot · Nov 1 2026",
    tagline:"Who steers the Government of Ontario: the Premier, every Cabinet and associate minister, and the deputy ministers who run each ministry.",
    party:"onpc", hub:{name:"Doug Ford",kicker:"PREMIER",l1:"Doug",l2:"Ford",title:"Premier of Ontario and Minister of Intergovernmental Affairs",role:"on_premier",src:"wiki",riding:"Etobicoke North"},
    S:ON_S, sectors:ON_SECTORS, innerNoun:"Cabinet minister", outerNoun:"Ministry", outerRole:"on_dm",
@@ -5244,8 +5823,10 @@ function budgetBars(){
     ...ds.inner.filter(n=>n.budget).map(n=>({key:n.id,label:n.budgetLabel||n.short||n.name,v:n.budget})),
     ...VIC_OTHER_BUDGET.map(b=>({label:b[0],v:b[1]}))].sort((a,b)=>b.v-a.v);
   const max=items[0].v, sum=items.reduce((a,b)=>a+b.v,0);
-  return `<h3>2026 operating budget · ${money(VIC_TOTAL)}</h3><div class="bars">${items.map(it=>`<div class="bar"><span>${it.key?`<button data-go="${it.key}">${it.label}</button>`:it.label}</span><span class="amt">${money(it.v)}</span><div class="track"><div class="fill" style="width:${(it.v/max*100).toFixed(1)}%"></div></div></div>`).join("")}</div>
-   <div class="src">Lines add up to ${moneyFull(sum)}, matching the plan's total of ${moneyFull(VIC_TOTAL)}. Capital spending (about $160.1M in 2026) is separate.</div>${srcK("fp")}`;
+  const top=items.slice(0,5);
+  return `<h3>2026 operating budget · ${money(VIC_TOTAL)} · top 5 of ${items.length}</h3><div class="bars">${top.map(it=>`<div class="bar"><span>${it.key?`<button data-go="${it.key}">${it.label}</button>`:it.label}</span><span class="amt">${money(it.v)}</span><div class="track"><div class="fill" style="width:${(it.v/max*100).toFixed(1)}%"></div></div></div>`).join("")}</div>
+   <button class="linkbtn" id="to26" style="font-size:13.5px">All ${items.length} lines, with heads and mandates, in the scorecard's 2026 plan ↓</button>
+   <div class="src">Capital spending ($160.1M in 2026) is separate.</div>${srcK("fp")}`;
 }
 function initials(n){ const w=n.replace(/\(.*?\)/g,"").trim().split(/\s+/); return (w[0][0]+(w.length>1?w[w.length-1][0]:"")).toUpperCase(); }
 function personHead(kicker,name,partyKey,riding,tag=""){
@@ -5273,6 +5854,7 @@ function render(key){
       h+=`<div class="statgrid"><div class="stat"><b>8</b><span>Councillors</span></div><div class="stat"><b>${ds.outer.filter(o=>o.kind!=="advisory").length}</b><span>Departments & services</span></div><div class="stat"><b>${money(VIC_TOTAL)}</b><span>2026 operating</span></div></div>
         <div class="note">Elected Oct 17, 2026 (preliminary results). The new Council's four-year term begins at its inauguration on Nov 5, 2026.</div>
         <h3>Council</h3><ul class="list">${ds.inner.filter(n=>n.role==="vic_council").map(n=>`<li class="item">${go(n.id,n.name)}<span class="rl">Councillor${n.isNew?'<span class="newtag">NEW</span>':""}</span></li>`).join("")}</ul>
+        <button class="scorelink" id="toscore">Council Scorecard 2024–2026 ↓</button>
         ${roleBox(ds.hub.role)}${srcK("elec")}
         <div style="--accent:var(--s-infra)">${budgetBars()}</div>`;
     } else {
@@ -5325,6 +5907,8 @@ function render(key){
   if(ds.id==="ontario"&&(key==="hub"||I[key])){ const ola=key==="hub"?"Doug Ford":(ON_MIN.find(x=>x.id===key)||{}).ola; const cm=CH.ontario.members.find(x=>x.name===ola);
     if(cm) h+=`<div class="where"><div class="kicker">Where they sit at Queen's Park</div><div><b>${cm.side==="gov"?"Government side":"Opposition side"}</b> · row ${cm.row} from the aisle · desk ${cm.desk} from the Speaker <span class="muted">(from the Assembly's seating plan)</span></div><div class="muted">Riding: ${cm.place}</div><button class="chipbtn" id="toseat">Show on the Ontario power map →</button></div>`; }
   panel.style.setProperty("--accent",accent); panel.innerHTML=h;
+  { const ts=document.getElementById("toscore"); if(ts) ts.onclick=()=>{ const v=document.getElementById("vicscore"); if(v) v.scrollIntoView({behavior:"smooth",block:"start"}); }; }
+  { const t6=document.getElementById("to26"); if(t6) t6.onclick=()=>{ const v=document.getElementById("vicscore"); if(v){ if(v._pick) v._pick("y26"); v.scrollIntoView({behavior:"smooth",block:"start"}); } }; }
   const ts=document.getElementById("toseat"); if(ts) ts.onclick=()=>show("ontario",{focusKey:key});
   panel.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>select(b.dataset.go));
 }
@@ -5362,25 +5946,27 @@ function legend(){
 const tabs=[...document.querySelectorAll(".tabs button[data-tab]")];
 const newsEl=document.getElementById("news"), bannerEl=document.getElementById("banner");
 const wheelEls=[document.querySelector(".toolbar"),document.getElementById("legend"),document.querySelector(".main")];
-const chEls={senate:document.getElementById("ch-senate"),ontario:document.getElementById("ch-ontario"),bcleg:document.getElementById("ch-bcleg"),skleg:document.getElementById("ch-skleg"),mbleg:document.getElementById("ch-mbleg"),nbleg:document.getElementById("ch-nbleg"),peleg:document.getElementById("ch-peleg"),ableg:document.getElementById("ch-ableg"),ykleg:document.getElementById("ch-ykleg"),nlleg:document.getElementById("ch-nlleg"),nsleg:document.getElementById("ch-nsleg"),ntleg:document.getElementById("ch-ntleg"),nuleg:document.getElementById("ch-nuleg")};
-const CH_META={senate:["Snapshot · Oct 31 2026","Parliament of Canada · Senate","All 105 Senate seats by parliamentary group, with every senator, their province and when they retire."],
-  bcleg:["Snapshot · Oct 31 2026","Legislative Assembly of British Columbia · In transition","All 93 members-elect from the October 24, 2026 election, with the caretaker Cabinet and every ministry."],
-  ntleg:["Snapshot · Oct 31 2026","Legislative Assembly of the Northwest Territories · 20th Assembly","All 19 seats in Yellowknife: a consensus government with no political parties."],
-  nuleg:["Snapshot · Oct 31 2026","Legislative Assembly of Nunavut · 7th Assembly","All 22 seats in Iqaluit: a consensus government with no political parties."],
-  nsleg:["Snapshot · Oct 31 2026","Nova Scotia House of Assembly · 65th General Assembly","All 56 seats in Halifax, with every MLA, the Cabinet and every department."],
-  nlleg:["Snapshot · Oct 31 2026","House of Assembly of Newfoundland and Labrador · 51st General Assembly","All 40 seats in St. John's, with every MHA, the Cabinet and every portfolio. Seats are grouped by party."],
-  ykleg:["Snapshot · Oct 31 2026","Yukon Legislative Assembly · 36th Legislative Assembly","All 21 seats in Whitehorse, with every MLA, the Cabinet and every department."],
-  ableg:["Snapshot · Oct 31 2026","Legislative Assembly of Alberta · 31st Legislature","All 87 seats in Edmonton, with every MLA, the Cabinet and every ministry."],
-  peleg:["Snapshot · Oct 31 2026","Legislative Assembly of Prince Edward Island · 67th General Assembly","All 27 seats in Charlottetown, with every MLA, the Cabinet and every department."],
-  nbleg:["Snapshot · Oct 31 2026","Legislative Assembly of New Brunswick · 61st Legislature","All 49 seats in Fredericton, with every MLA, the Cabinet and every department."],
-  mbleg:["Snapshot · Oct 31 2026","Legislative Assembly of Manitoba · 43rd Legislature","All 57 seats in Winnipeg, with every MLA, the Cabinet and every department."],
-  skleg:["Snapshot · Oct 31 2026","Legislative Assembly of Saskatchewan · 30th Legislature","All 61 seats in Regina, with every MLA, the Cabinet and every ministry."],
-  ontario:["Snapshot · Oct 31 2026","Legislative Assembly of Ontario · 44th Parliament","All 124 seats at Queen's Park, with every MPP, riding and party."]};
+const chEls={senate:document.getElementById("ch-senate"),ontario:document.getElementById("ch-ontario"),bcleg:document.getElementById("ch-bcleg"),skleg:document.getElementById("ch-skleg"),mbleg:document.getElementById("ch-mbleg"),nbleg:document.getElementById("ch-nbleg"),peleg:document.getElementById("ch-peleg"),ableg:document.getElementById("ch-ableg"),ykleg:document.getElementById("ch-ykleg"),nlleg:document.getElementById("ch-nlleg"),nsleg:document.getElementById("ch-nsleg"),ntleg:document.getElementById("ch-ntleg"),nuleg:document.getElementById("ch-nuleg"),victoria:document.getElementById("ch-victoria"),vicscore:document.getElementById("ch-vicscore")};
+const CH_META={vicscore:["Snapshot · Nov 1 2026","City of Victoria, BC · Council Scorecard 2024–2026","What the City planned, budgeted and reported, and when: 2024 and 2025 results and the 2026 plan."],
+  victoria:["Snapshot · Nov 1 2026","City of Victoria, BC · Council 2026–2030","The Mayor and eight councillors elected October 17, 2026, the City Manager, and every department with its 2026 budget."],
+  senate:["Snapshot · Nov 1 2026","Parliament of Canada · Senate","All 105 Senate seats by parliamentary group, with every senator, their province and when they retire."],
+  bcleg:["Snapshot · Nov 1 2026","Legislative Assembly of British Columbia · In transition","All 93 members-elect from the October 24, 2026 election, with the caretaker Cabinet and every ministry."],
+  ntleg:["Snapshot · Nov 1 2026","Legislative Assembly of the Northwest Territories · 20th Assembly","All 19 seats in Yellowknife: a consensus government with no political parties."],
+  nuleg:["Snapshot · Nov 1 2026","Legislative Assembly of Nunavut · 7th Assembly","All 22 seats in Iqaluit: a consensus government with no political parties."],
+  nsleg:["Snapshot · Nov 1 2026","Nova Scotia House of Assembly · 65th General Assembly","All 56 seats in Halifax, with every MLA, the Cabinet and every department."],
+  nlleg:["Snapshot · Nov 1 2026","House of Assembly of Newfoundland and Labrador · 51st General Assembly","All 40 seats in St. John's, with every MHA, the Cabinet and every portfolio. Seats are grouped by party."],
+  ykleg:["Snapshot · Nov 1 2026","Yukon Legislative Assembly · 36th Legislative Assembly","All 21 seats in Whitehorse, with every MLA, the Cabinet and every department."],
+  ableg:["Snapshot · Nov 1 2026","Legislative Assembly of Alberta · 31st Legislature","All 87 seats in Edmonton, with every MLA, the Cabinet and every ministry."],
+  peleg:["Snapshot · Nov 1 2026","Legislative Assembly of Prince Edward Island · 67th General Assembly","All 27 seats in Charlottetown, with every MLA, the Cabinet and every department."],
+  nbleg:["Snapshot · Nov 1 2026","Legislative Assembly of New Brunswick · 61st Legislature","All 49 seats in Fredericton, with every MLA, the Cabinet and every department."],
+  mbleg:["Snapshot · Nov 1 2026","Legislative Assembly of Manitoba · 43rd Legislature","All 57 seats in Winnipeg, with every MLA, the Cabinet and every department."],
+  skleg:["Snapshot · Nov 1 2026","Legislative Assembly of Saskatchewan · 30th Legislature","All 61 seats in Regina, with every MLA, the Cabinet and every ministry."],
+  ontario:["Snapshot · Nov 1 2026","Legislative Assembly of Ontario · 44th Parliament","All 124 seats at Queen's Park, with every MPP, riding and party."]};
 function show(id,{focusKey}={}){
   const homeE=document.getElementById("landing"); if(homeE) homeE.hidden=id!=="home";
   if(id==="home"){ tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab==="home"?"true":"false")); Object.values(chEls).forEach(el=>el.hidden=true);
     wheelHome(); wheelEls.forEach(el=>el.hidden=true); bannerEl.hidden=true; newsEl.hidden=true; commonsEl.hidden=true; const wf0=document.getElementById("wheelfoot"); if(wf0) wf0.hidden=true; renderHome();
-    document.getElementById("tagline").textContent="Who sits where and who runs what, across Canada's governments."; document.getElementById("stamp").textContent="Snapshot · Oct 31 2026"; document.getElementById("scope").textContent="Federal · Provinces · Cities";
+    document.getElementById("tagline").textContent="Who sits where and who runs what, across Canada's governments."; document.getElementById("stamp").textContent="Snapshot · Nov 1 2026"; document.getElementById("scope").textContent="Federal · Provinces · Cities";
     try{ if(location.hash!=="#home") history.replaceState(null,"","#home"); }catch(e){} window.scrollTo(0,0); return; }
   const wf=document.getElementById("wheelfoot"); if(wf) wf.hidden=!!(chEls[id]||id==="commons"||id==="news");
   Object.values(chEls).forEach(el=>el.hidden=true);
@@ -5392,7 +5978,7 @@ function show(id,{focusKey}={}){
   if(id==="commons"){ tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab==="commons"?"true":"false"));
     wheelHome(); wheelEls.forEach(el=>el.hidden=true); bannerEl.hidden=true; newsEl.hidden=true; commonsEl.hidden=false; renderCommons();
     document.getElementById("tagline").textContent="All 343 seats in the House of Commons, laid out like the chamber, with every MP, riding and party.";
-    document.getElementById("stamp").textContent="Snapshot · Oct 30 2026"; document.getElementById("scope").textContent="Parliament of Canada · 45th Parliament";
+    document.getElementById("stamp").textContent="Snapshot · Nov 1 2026"; document.getElementById("scope").textContent="Parliament of Canada · 45th Parliament";
     try{ if(location.hash!=="#commons") history.replaceState(null,"","#commons"); }catch(e){} return; }
   commonsEl.hidden=true;
   if(id==="news"){ tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab==="news"?"true":"false"));
@@ -5417,6 +6003,7 @@ function mountWheel(id,focusKey){
   svg.call(zoom.transform,d3.zoomIdentity);
   if(ds.banner){ bannerEl.innerHTML=`<p>${ds.banner.text}</p><div class="src">Sources: ${ds.banner.srcs.map(s=>`<a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a>`).join(" · ")}</div>`; bannerEl.hidden=false; } else bannerEl.hidden=true;
   build(); legend();
+  { const vs=document.getElementById("vicscore"); if(vs){ vs.hidden=id!=="victoria"; if(id==="victoria") renderVicScore(); } }
   rot=-0.9; layout(); select("hub",{spin:false});
   if(focusKey) select(focusKey); else rotateTo(0,1400);
 }
@@ -5499,7 +6086,7 @@ show((location.hash||"").slice(1)||"home");
 
 /* ---------- masthead: page name + date under the wordmark, flag on the right, page description in the page ---------- */
 const HFLAG={home:["CA","Canada"],commons:["CA","Canada"],senate:["CA","Canada"],federal:["CA","Canada"],news:["CA","Canada"],
-  ontario:["ON","Ontario"],onwheel:["ON","Ontario"],mississauga:["ON","Ontario"],bcleg:["BC","British Columbia"],bc:["BC","British Columbia"],victoria:["BC","British Columbia"],
+  ontario:["ON","Ontario"],onwheel:["ON","Ontario"],mississauga:["ON","Ontario"],bcleg:["BC","British Columbia"],bc:["BC","British Columbia"],victoria:["BC","British Columbia"],vicscore:["BC","British Columbia"],
   skleg:["SK","Saskatchewan"],ableg:["AB","Alberta"],ykleg:["YT","Yukon"],nlleg:["NL","Newfoundland and Labrador"],nsleg:["NS","Nova Scotia"],ntleg:["NT","Northwest Territories"],nuleg:["NU","Nunavut"],mbleg:["MB","Manitoba"],nbleg:["NB","New Brunswick"],peleg:["PE","Prince Edward Island"]};
 function syncHead(id){
   const st=document.getElementById("stamp").textContent, sc=document.getElementById("scope").textContent, tg=document.getElementById("tagline").textContent;
