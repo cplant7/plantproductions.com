@@ -52,6 +52,8 @@ h1 {font-weight:700;font-size:clamp(40px,7vw,94px)}
 .disclaimer p {max-width:76ch}
 @media(max-width:480px){header{flex-wrap:wrap;padding:16px 0}.nav{flex-wrap:wrap;font-size:14px}}
 footer a{text-decoration:underline;text-underline-offset:3px}
+.status.launch {background:#171717;color:#fff;border-color:#171717;transition:background .2s}.status.launch:hover {background:#444}
+.details h3 a:hover {text-decoration:underline;text-underline-offset:4px}
 </style>
 </head>
 <body>
@@ -63,7 +65,7 @@ footer a{text-decoration:underline;text-underline-offset:3px}
 <section class="hero"><p class="eyebrow">Plant Productions</p><h1>Ideas into<br><span>production.</span></h1><p class="intro">A collection of digital creations and discoveries.</p></section>
 <section id="projects" aria-labelledby="collection"><h2 id="collection">The project collection</h2>
 <div class="cards">
-<article class="project"><div class="art"><div class="plaque"><img alt="ParliVue Pilot" src="parlivue-logo.png"></div></div><div class="details"><p class="tag">Project 01</p><h3>ParliVue Pilot</h3><p>An independent project with summaries in English. The official parliamentary record is available in English and French.</p><span class="status">Pilot coming soon</span></div></article>
+<article class="project"><a class="art" href="parlivue/" aria-label="Open ParliVue Pilot"><div class="plaque"><img alt="" src="parlivue-logo.png"></div></a><div class="details"><p class="tag">Project 01</p><h3><a href="parlivue/">ParliVue Pilot</a></h3><p>An independent project with summaries in English. The official parliamentary record is available in English and French.</p><a class="status launch" href="parlivue/">Open the pilot &rarr;</a></div></article>
 <article class="project"><div class="art layers" aria-hidden="true"><i></i><i></i><i></i></div><div class="details"><p class="tag">Project 02</p><h3>Coming soon</h3></div></article>
 <article class="project"><div class="art folds" aria-hidden="true"><i></i></div><div class="details"><p class="tag">Project 03</p><h3>Coming soon</h3></div></article>
 </div></section>

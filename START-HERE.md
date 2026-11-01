@@ -33,8 +33,9 @@ Replace conflicting website records for @ and www, including old AAAA records if
 ## 5. Finish
 Allow DNS to propagate, then enable Enforce HTTPS in Pages once available. Test both plantproductions.com and www.plantproductions.com.
 
-## Add ParliVue Pilot later
-The card currently says Coming soon; it deliberately has no launch link. Once the pilot is ready, change its status and add a launch link beneath the ParliVue Pilot description. A static pilot can go in a parlivue folder containing its own index.html; link to ./parlivue/. A separately hosted pilot can use its full HTTPS URL. Review the pilot's files before choosing hosting: GitHub Pages cannot run a server or safely store API secrets.
+## ParliVue Pilot
+The pilot lives in the parlivue folder and opens at plantproductions.com/parlivue/. The project card links to it.
+To update it, replace parlivue/index.html with the new version and commit. The parlivue/src folder and build.py hold the source; `python3 parlivue/build.py` rebuilds parlivue/index.html from them.
 
 ## Feedback later
 A suggested address is hello@plantproductions.com. It has not been created or tested. Once the mailbox or forwarding works, add a Feedback mailto link. No messages are collected by this page.
