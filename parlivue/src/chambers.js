@@ -112,7 +112,7 @@ function chFilter(C){ const qe=document.getElementById(C.id+"-q"), ge=document.g
 function chDraw(C){
   chLayout(C);
   const svg=d3.select("#"+C.id+"-svg"); svg.selectAll("*").remove();
-  const H=C.rowY(C.rows-1)+60, need=(C.W+80)-(C.X0-140), Wd=Math.max(need,900), x0=(C.X0-140)-(Wd-need)/2;
+  C.portrait=(C.id==="senate"); const H=C.rowY(C.rows-1)+60, need=(C.W+80)-(C.X0-140), Wd=C.portrait?need:Math.max(need,900), x0=(C.X0-140)-(Wd-need)/2;
   C.portrait=(C.id==="senate");
   svg.attr("viewBox",C.portrait?`${-H} ${x0} ${2*H} ${Wd}`:`${x0} ${-H} ${Wd} ${2*H}`);
   const z=svg.append("g"), g=z.append("g"); if(C.portrait) g.attr("transform","rotate(90)");
