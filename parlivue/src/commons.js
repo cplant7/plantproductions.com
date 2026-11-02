@@ -316,7 +316,7 @@ function majorityPanel(){
    <div class="note">The ${vac} vacant seats have no vote until by-elections fill them. A majority of the full House is 172 seats, and the Liberals hold ${lib}, which is ${lib-172} over.</div>
    <button class="linkbtn" id="pclose" style="font-size:13px">← How the government is run</button>`;
 }
-function hocSelect(i,zoom){ const s0=seats[i], mm=s0&&fedMinisterByName[s0.mp]; if(mm&&FM.D){ fmSelect(mm.pm?"pm":mm.id); return; } const sk=FM.D&&FM.D.sos.find(x=>x.seat===s0); if(sk){ fmSelect(sk.id); return; } if(FM.D){ FM.sel=null; fmHighlight(null); } hocHi=null; hocPanel=null; hocFocusParty=null; renderSummary(); hocSel=i; hocProfile(); hocList(); if(zoom) zoomToSeat(seats[i]);
+function hocSelect(i,zoom){ const s0=seats[i], mm=s0&&fedMinisterByName[s0.mp]; if(mm&&FM.D){ fmSelect(mm.pm?"pm":mm.id); return; } const sk=FM.D&&FM.D.sos.find(x=>x.seat===s0); if(sk){ fmSelect(sk.id); return; } if(FM.D){ FM.sel=null; fmHighlight(null); } hocHi=null; hocPanel=null; hocFocusParty=null; renderSummary(); hocSel=i; hocProfile(); hocList(); d3.select("#hemi").transition().duration(RM?0:500).call(hz.transform,d3.zoomIdentity); const _hp=document.getElementById("hpanel"); if(_hp&&zoom) _hp.scrollIntoView({behavior:RM?"auto":"smooth",block:"nearest"});
   if(window.innerWidth<980) document.getElementById("hpanel").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"}); }
 
 function renderCommons(){
