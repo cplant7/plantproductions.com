@@ -19,7 +19,7 @@ function fmData(){
   ds.forEach(d=>{ const ks=d.ms.filter(m=>!m.pm).map(m=>m.k); d.t=ks.length?d3.mean(ks):-1; });
   ds.sort((a,b)=>a.t-b.t);
   FM_DEP.y=FM_CAB.y+FM_CAB.h+34; FM_DEP.h=FM_DEP.head+Math.ceil(ds.length/FM_DEP.cols)*FM_DEP.rh+12;
-  ds.forEach((d,k)=>{ [d.x,d.y]=grid(FM_DEP,ds.length,k); let sn=({feddev:"FedDev Ontario (Southern Ontario)",fednor:"FedNor (Northern Ontario)"})[d.id]||d.name; if(sn.length>55) sn=sn.slice(0,sn.lastIndexOf(" ",53))+"…"; d.short=sn; });
+  ds.forEach((d,k)=>{ [d.x,d.y]=grid(FM_DEP,ds.length,k); let sn=({feddev:"FedDev Ontario (Southern Ontario)",fednor:"FedNor (Northern Ontario)"})[d.id]||d.name; d.short=sn; });
   const sos=secretaries.map(([name,area],k)=>({id:"sos"+k,name,area,seat:fmSeat(name)}));
   FM_SOS.y=FM_DEP.y+FM_DEP.h+34; FM_SOS.h=FM_SOS.head+Math.ceil(sos.length/FM_SOS.cols)*FM_SOS.rh+12;
   sos.forEach((s,k)=>{ [s.x,s.y]=grid(FM_SOS,sos.length,k); });

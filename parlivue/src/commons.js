@@ -1,3 +1,4 @@
+const HOC_PRESIDING={"Tom Kmiec":"Deputy Speaker and Chair of Committees of the Whole · takes the Speaker's chair to run debates","Alexandra Mendès":"Assistant Deputy Speaker and Deputy Chair of Committees of the Whole · takes the Speaker's chair to run debates","John Nater":"Assistant Deputy Speaker and Assistant Deputy Chair of Committees of the Whole · takes the Speaker's chair to run debates"};
 /* ================= HOUSE OF COMMONS ================= */
 const FPARTY={
  lib:{name:"Liberal",short:"LIB",color:"var(--p-lib)"}, cpc:{name:"Conservative",short:"CPC",color:"var(--p-cpc)"}, bq:{name:"Bloc Québécois",short:"BQ",color:"var(--p-bq)"},
@@ -216,7 +217,7 @@ function renderSummary(){
       <span class="bign">${(c.lib||0)-1-((343-(c.vac||0))-(c.lib||0))}</span>
       <span class="src">Liberal MPs minus all other MPs, leaving out the Speaker and ${c.vac} vacant seats.</span>
       <span class="hint">How is this calculated? ›</span></button>
-      <dl class="kv"><dt>Prime Minister</dt><dd>Mark Carney</dd><dt>Leader of the Opposition</dt><dd>Pierre Poilievre</dd><dt>Speaker</dt><dd>Francis Scarpaleggia</dd><dt>Since election</dt><dd>${HOC_LOG.filter(x=>x[1]==="cross").length} party changes · ${HOC_LOG.filter(x=>x[1]==="bye").length} by-elections</dd></dl>
+      <dl class="kv"><dt>Prime Minister</dt><dd>Mark Carney</dd><dt>Leader of the Opposition</dt><dd>Pierre Poilievre</dd><dt>Speaker</dt><dd>Francis Scarpaleggia</dd><dt>Deputy Speakers</dt><dd>Tom Kmiec · Alexandra Mendès · John Nater</dd><dt>Since election</dt><dd>${HOC_LOG.filter(x=>x[1]==="cross").length} party changes · ${HOC_LOG.filter(x=>x[1]==="bye").length} by-elections</dd></dl>
     </div>`;
   document.querySelectorAll("#hsum .ptile").forEach(b=>b.onclick=()=>{ const p=b.dataset.p;
     if(hocMode==="coalition"){ if(p==="vac") return; coalition.has(p)?coalition.delete(p):coalition.add(p); coalitionLayout(); moveSeats(); }
@@ -262,7 +263,7 @@ function hocProfile(){
      <div class="note">Click any seat to open that MP. Use + and − to zoom the chamber.</div>`;
   } else {
     const p=FPARTY[s.party], min=fedMinisterByName[s.mp];
-    const roles=[...(roleByName[s.mp]||[]), ...(min&&!min.pm?[min.title]:[]), ...(sosByName[s.mp]?[sosByName[s.mp]]:[])];
+    const roles=[...(roleByName[s.mp]||[]), ...(min&&!min.pm?[min.title]:[]), ...(sosByName[s.mp]?[sosByName[s.mp]]:[])]; if(HOC_PRESIDING[s.mp]) roles.unshift(HOC_PRESIDING[s.mp]);
     if(s.mp&&!roles.length&&s.i!==HOC_SPEAKER) roles.push(s.row===1?"Front-bench seat":"Backbencher · sits behind the front bench and takes part in debates, Question Period and committees");
     const log=HOC_LOG.filter(x=>x[3]===s.riding);
     h=`<div class="pband" style="--pc:${p.color}"></div>`+(s.mp?`<div class="who"><div class="ava" style="--pc:${p.color}" aria-hidden="true">${initials(s.mp)}</div><div class="who-t"><div class="kicker">Member of Parliament</div><h2>${s.mp}</h2>

@@ -23,7 +23,7 @@ function bmData(){
   BM_MIN.y=BM_CAB.y+BM_CAB.h+30;
   BM_MIN.h=BM_MIN.head+Math.ceil(ministries.length/BM_MIN.cols)*BM_MIN.rh+12;
   ministries.forEach((o,k)=>{ [o.x,o.y]=grid(BM_MIN,ministries.length,k);
-    let sn=o.name.replace(/^Ministry (of|for) (the )?/,""); if(sn.length>37) sn=sn.slice(0,sn.lastIndexOf(" ",35))+"…"; o.short=sn; });
+    let sn=o.name.replace(/^Ministry (of|for) (the )?/,""); o.short=sn; });
   const premierOffices=BC_OUT.filter(o=>o.id==="premier"); premierOffices.forEach(o=>{ o.x=BM_MID; o.y=96; o.ms=[]; });
   return {C,G,mpps,byName,mins,ministries,premierOffices,P,mid,eby:byName["David Eby"],doerk:byName["Lorne Doerkson"],
     premier:[BM_MID,-40], sec:[BM_MID,190], desig:[BM_MID,-150]};

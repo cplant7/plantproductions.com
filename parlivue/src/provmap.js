@@ -22,7 +22,7 @@ function pvData(cfg){
   ministries.sort((p,q)=>p.t-q.t);
   MIN.y=CAB.y+CAB.h+30; MIN.h=MIN.head+Math.ceil(ministries.length/MIN.cols)*MIN.rh+12;
   ministries.forEach((o,k)=>{ [o.x,o.y]=grid(MIN,ministries.length,k);
-    let sn=o.name.replace(/^(Ministry|Department) (of|for) (the )?/,""); if(sn.length>37) sn=sn.slice(0,sn.lastIndexOf(" ",35))+"…"; o.short=sn; });
+    let sn=o.name.replace(/^(Ministry|Department) (of|for) (the )?/,""); o.short=sn; });
   const premierOffices=cfg.OUT.filter(o=>o.id===cfg.execId); premierOffices.forEach(o=>{ o.x=PV_MID; o.y=40; o.ms=[]; });
   return {C,G,mpps,byName,mins,ministries,premierOffices,CAB,MIN,prem:byName[cfg.premier.name],premier:[PV_MID,-130],sec:[PV_MID,170]};
 }

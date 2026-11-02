@@ -29,7 +29,7 @@ function pmData(){
   PM_MIN.y=PM_CAB.y+PM_CAB.h+30;
   PM_MIN.h=PM_MIN.head+Math.ceil(ministries.length/PM_MIN.cols)*PM_MIN.rh+12;
   ministries.forEach((o,k)=>{ [o.x,o.y]=grid(PM_MIN,ministries.length,k);
-    let sn=o.name.replace(/^Ministry (of|for) (the )?/,""); if(sn.length>37) sn=sn.slice(0,sn.lastIndexOf(" ",35))+"…"; o.short=sn; });
+    let sn=o.name.replace(/^Ministry (of|for) (the )?/,""); o.short=sn; });
   const premierOffices=ON_OUT.filter(o=>o.id==="cab"||o.id==="iga");
   premierOffices.forEach((o,k)=>{ o.x=PM_MID+(k?54:-54); o.y=80; o.ms=[]; });
   return {C,G,mpps,byOla,spk:C.spk,mins,ministries,premierOffices,ford:byOla["Doug Ford"],P,mid,

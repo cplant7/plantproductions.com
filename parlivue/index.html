@@ -756,6 +756,20 @@ svg .clbl{paint-order:stroke;stroke:var(--bg);stroke-width:3px;stroke-linejoin:r
 .pvps{fill:none;stroke:var(--muted);stroke-width:1.4;stroke-dasharray:4 4}
 .pvpslbl{font:500 12.5px var(--f-body);fill:var(--muted);paint-order:stroke;stroke:var(--bg);stroke-width:4px}
 
+
+@media (max-width:760px){
+  .tabs{flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;width:auto!important;max-width:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:2px!important}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs button,.ddbtn{padding:8px 12px!important;font-size:15px!important;flex:none}
+  .tabs .dd{flex:none}
+  .tabs .ddmenu.pvfixed{position:fixed!important;left:12px!important;right:12px!important;width:auto!important;max-height:70vh;overflow:auto;z-index:100}
+  .ddmenu.pvfixed{gap:0!important;padding:6px 14px!important;grid-template-columns:1fr!important}
+  .ddmenu.pvfixed .ddprov{display:flex!important;flex-wrap:wrap;align-items:center;gap:0 12px;padding:2px 0!important;border-bottom:1px solid var(--rule)}
+  .ddmenu.pvfixed .ddprov:last-of-type{border-bottom:0}
+  .ddmenu.pvfixed .ddlinks{display:flex!important;align-items:center;gap:4px}
+  .ddmenu.pvfixed button{min-height:40px!important;padding:4px 6px!important;margin:0!important;font-size:15px!important}
+}
+
 /* Theme toggle */
 .themebtn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--rule);border-radius:999px;background:var(--surface);color:var(--ink);font:600 14px var(--f-body);cursor:pointer}
 .themebtn:hover{border-color:var(--brass)}
@@ -888,6 +902,11 @@ details.about>div{margin-top:10px}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script>
+document.addEventListener("click",function(e){ var b=e.target.closest&&e.target.closest(".ddbtn"); if(!b||window.innerWidth>760) return;
+  setTimeout(function(){ var m=b.parentNode.querySelector(".ddmenu"); if(!m) return; var r=b.getBoundingClientRect(); m.classList.add("pvfixed"); m.style.top=(r.bottom+6)+"px"; },0); }, true);
+window.addEventListener("scroll",function(){ if(window.innerWidth>760) return; document.querySelectorAll(".dd.open").forEach(function(d){ var b=d.querySelector(".ddbtn"), m=d.querySelector(".ddmenu"); if(b&&m) m.style.top=(b.getBoundingClientRect().bottom+6)+"px"; }); },{passive:true});
+</script>
+<script>
 /* Provinces: fit oval labels, and draw the public-service line from the Clerk to the departments */
 (function(){
   function fit(svg){
@@ -914,8 +933,20 @@ details.about>div{margin-top:10px}
     var lbl=document.createElementNS(NS,"text"); lbl.setAttribute("class","pvpslbl"); lbl.setAttribute("x",tx+10); lbl.setAttribute("y",cy>bottom+10?(bottom+cy)/2+4:cy+18);
     lbl.textContent="Deputy ministers report here"; if(cy>bottom+10) parent.appendChild(lbl);
   }
+  function fitLabels(svg){
+    if(svg.getAttribute("data-pvfit")) return;
+    var ts=[].slice.call(svg.querySelectorAll("text.mnlbl")); if(!ts.length) return;
+    var xs=[]; ts.forEach(function(t){ var m=/translate\(([-\d.]+)/.exec(t.parentNode.getAttribute("transform")||""); t._x=m?+m[1]:0; if(xs.indexOf(t._x)<0) xs.push(t._x); });
+    xs.sort(function(a,b){return a-b}); var gap=xs.length>1?xs[1]-xs[0]:420;
+    ts.forEach(function(t){ var avail=gap-34; var fs=parseFloat(getComputedStyle(t).fontSize)||14, len=0;
+      try{ len=t.getComputedTextLength(); }catch(e){ return; }
+      while(len>avail&&fs>10.5){ fs-=0.5; t.style.fontSize=fs+"px"; len=t.getComputedTextLength(); }
+      if(len>avail){ var full=t.textContent; var tt=document.createElementNS("http://www.w3.org/2000/svg","title"); tt.textContent=full; t.parentNode.appendChild(tt);
+        var w=full; while(w.length>8&&t.getComputedTextLength()>avail){ w=w.slice(0,w.lastIndexOf(" ")); t.textContent=w+"…"; } } });
+    svg.setAttribute("data-pvfit","1");
+  }
   var busy=false;
-  function run(){ busy=false; document.querySelectorAll(".chwrap:not([hidden]) svg, #commons svg").forEach(function(svg){ if(!svg.getBoundingClientRect().width) return; fit(svg); psLine(svg); }); }
+  function run(){ busy=false; document.querySelectorAll(".chwrap:not([hidden]) svg, #commons svg").forEach(function(svg){ if(!svg.getBoundingClientRect().width) return; fit(svg); psLine(svg); fitLabels(svg); }); }
   new MutationObserver(function(){ if(!busy){ busy=true; setTimeout(run,60); } }).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:["hidden"]});
 })();
 </script>
@@ -1607,6 +1638,7 @@ const HOC_SEATS=[["Abbotsford—South Langley","BC","Sukhman Gill","cpc"],["Abit
 const HOC_DESKS=[[[59,0,""],[118,0,""],[36,1,"Larry Brock"],[276,0,""],[61,0,""],[161,0,""],[170,0,""],[63,0,""],[244,0,""],[90,0,""],[15,0,""],[303,0,""],[47,0,""],[117,0,""],[139,0,""],[326,0,""],[50,0,""],[151,0,""],[109,0,""],[88,0,""],[159,0,""],[280,0,""],[214,0,""],[181,0,""],[24,0,""],[261,0,""],[149,0,""],[132,0,""],[254,0,""],[192,0,""]],[[158,0,""],[134,0,""],[6,0,""],[225,0,""],[71,0,""],[251,0,""],[68,0,""],[279,0,""],[13,0,""],[112,0,""],[178,0,""],[292,0,""],[115,0,""],[125,0,""],[222,0,""],[140,0,""],[93,0,""],[283,0,""],[23,0,""],[259,0,""],[67,1,"Richard Martel"],[51,0,""],[288,0,""],[224,0,""],[208,0,""],[87,0,""],[25,0,""],[113,0,""],[76,0,""],[246,0,""]],[[153,0,""],[46,0,""],[75,0,""],[162,0,""],[183,0,""],[266,0,""],[243,0,""],[239,0,""],[130,0,""],[201,0,""],[340,0,""],[138,0,""],[233,0,""],[268,0,""],[107,0,""],[267,0,""],[179,0,""],[249,0,""],[16,0,""],[265,0,""],[48,0,""],[110,0,""],[14,0,""],[306,0,""],[260,1,"Simon-Pierre Savard-Tremblay"],[131,0,""],[277,0,""],[312,0,""],[155,0,""]],[[194,0,""],[136,0,""],[250,0,""],[133,0,""],[9,0,""],[152,0,""],[238,0,""],[203,0,""],[226,0,""],[66,0,""],[198,0,""],[240,0,""],[91,0,""],[94,0,""],[97,0,""],[11,0,""],[341,1,"Cathay Wagantall"],[70,0,""],[92,0,""],[177,0,""],[232,0,""],[281,0,""],[245,0,""],[146,0,""],[230,0,""],[252,0,""],[2,0,""]],[[72,0,""],[103,0,""],[44,0,""],[297,0,""],[236,0,""],[28,0,""],[321,0,""],[166,0,""],[247,0,""],[207,0,""],[242,0,""],[294,0,""],[27,0,""],[284,0,""],[331,0,""],[200,0,""],[55,0,""],[202,0,""],[182,0,""],[143,0,""],[54,0,""],[33,0,""],[49,0,""],[330,0,""],[22,0,""],[317,0,""],[255,1,"Alexandre Boulerice"]],[[52,0,""],[227,0,""],[0,0,""],[19,0,""],[320,0,""],[205,0,""],[193,0,""],[165,0,""],[35,0,""],[78,0,""],[216,0,""],[282,0,""],[39,0,""],[196,0,""],[122,0,""],[100,0,""],[176,0,""],[95,0,""],[339,0,""],[53,0,""],[101,0,""],[301,0,""],[337,0,""],[144,0,""],[96,0,""],[332,0,""],[211,0,""]],[[34,0,""],[120,0,""],[172,0,""],[218,0,""],[169,0,""],[315,0,""],[308,0,""],[21,0,""],[5,0,""],[114,0,""],[197,0,""],[264,0,""],[291,0,""],[175,0,""],[274,0,""],[305,0,""],[223,0,""],[62,0,""],[323,0,""],[30,0,""],[89,0,""],[307,0,""],[189,0,""],[311,1,"Chrystia Freeland"],[241,0,""],[338,0,""],[40,0,""],[190,0,""],[272,1,"Bill Blair"],[206,1,"Jonathan Wilkinson"]],[[313,0,""],[325,0,""],[57,0,""],[163,0,""],[137,0,""],[41,0,""],[210,0,""],[65,0,""],[31,0,""],[83,0,""],[82,0,""],[69,0,""],[142,0,""],[212,0,""],[209,0,""],[1,0,""],[295,0,""],[102,0,""],[258,0,""],[105,0,""],[302,0,""],[263,0,""],[217,0,""],[195,0,""],[316,0,""],[126,0,""],[156,1,"Steven Guilbeault"],[174,0,""],[43,0,""],[129,0,""]],[[334,0,""],[18,1,"Nathaniel Erskine-Smith"],[80,0,""],[296,0,""],[234,0,""],[167,0,""],[145,0,""],[329,0,""],[318,0,""],[173,0,""],[299,0,""],[164,0,""],[333,0,""],[278,0,""],[328,0,""],[298,0,""],[154,0,""],[45,0,""],[324,0,""],[84,0,""],[111,0,""],[290,0,""],[271,1,"Shaun Chen"],[4,0,""],[86,0,""],[81,0,""],[157,0,""],[128,0,""],[185,0,""]],[[8,0,""],[186,0,""],[10,0,""],[106,0,""],[135,0,""],[310,0,""],[7,0,""],[98,0,""],[342,0,""],[204,0,""],[64,0,""],[141,0,""],[221,0,""],[220,0,""],[85,0,""],[56,0,""],[286,0,""],[289,0,""],[147,0,""],[309,0,""],[74,0,""],[99,0,""],[319,0,""],[269,0,""],[32,0,""],[219,0,""],[270,0,""],[262,0,""]],[[273,0,""],[104,0,""],[3,0,""],[215,0,""],[304,0,""],[327,0,""],[231,0,""],[336,0,""],[253,0,""],[248,0,""],[275,0,""],[188,0,""],[123,0,""],[293,0,""],[187,0,""],[335,0,""],[213,0,""],[184,0,""],[300,0,""],[42,0,""],[257,0,""],[12,0,""],[73,0,""],[124,0,""],[171,0,""],[148,0,""],[314,0,""],[77,0,""]],[[38,0,""],[285,0,""],[60,0,""],[322,0,""],[228,0,""],[79,0,""],[168,0,""],[20,0,""],[58,0,""],[17,0,""],[119,0,""],[237,0,""],[229,0,""],[287,0,""],[191,0,""],[116,0,""],[121,0,""],[235,0,""],[108,0,""],[26,0,""],[199,0,""],[29,0,""],[127,0,""],[180,0,""],[37,0,""],[160,0,""],[256,0,""]]];
 const HOC_SPEAKER=150;
 
+const HOC_PRESIDING={"Tom Kmiec":"Deputy Speaker and Chair of Committees of the Whole · takes the Speaker's chair to run debates","Alexandra Mendès":"Assistant Deputy Speaker and Deputy Chair of Committees of the Whole · takes the Speaker's chair to run debates","John Nater":"Assistant Deputy Speaker and Assistant Deputy Chair of Committees of the Whole · takes the Speaker's chair to run debates"};
 /* ================= HOUSE OF COMMONS ================= */
 const FPARTY={
  lib:{name:"Liberal",short:"LIB",color:"var(--p-lib)"}, cpc:{name:"Conservative",short:"CPC",color:"var(--p-cpc)"}, bq:{name:"Bloc Québécois",short:"BQ",color:"var(--p-bq)"},
@@ -1825,7 +1857,7 @@ function renderSummary(){
       <span class="bign">${(c.lib||0)-1-((343-(c.vac||0))-(c.lib||0))}</span>
       <span class="src">Liberal MPs minus all other MPs, leaving out the Speaker and ${c.vac} vacant seats.</span>
       <span class="hint">How is this calculated? ›</span></button>
-      <dl class="kv"><dt>Prime Minister</dt><dd>Mark Carney</dd><dt>Leader of the Opposition</dt><dd>Pierre Poilievre</dd><dt>Speaker</dt><dd>Francis Scarpaleggia</dd><dt>Since election</dt><dd>${HOC_LOG.filter(x=>x[1]==="cross").length} party changes · ${HOC_LOG.filter(x=>x[1]==="bye").length} by-elections</dd></dl>
+      <dl class="kv"><dt>Prime Minister</dt><dd>Mark Carney</dd><dt>Leader of the Opposition</dt><dd>Pierre Poilievre</dd><dt>Speaker</dt><dd>Francis Scarpaleggia</dd><dt>Deputy Speakers</dt><dd>Tom Kmiec · Alexandra Mendès · John Nater</dd><dt>Since election</dt><dd>${HOC_LOG.filter(x=>x[1]==="cross").length} party changes · ${HOC_LOG.filter(x=>x[1]==="bye").length} by-elections</dd></dl>
     </div>`;
   document.querySelectorAll("#hsum .ptile").forEach(b=>b.onclick=()=>{ const p=b.dataset.p;
     if(hocMode==="coalition"){ if(p==="vac") return; coalition.has(p)?coalition.delete(p):coalition.add(p); coalitionLayout(); moveSeats(); }
@@ -1871,7 +1903,7 @@ function hocProfile(){
      <div class="note">Click any seat to open that MP. Use + and − to zoom the chamber.</div>`;
   } else {
     const p=FPARTY[s.party], min=fedMinisterByName[s.mp];
-    const roles=[...(roleByName[s.mp]||[]), ...(min&&!min.pm?[min.title]:[]), ...(sosByName[s.mp]?[sosByName[s.mp]]:[])];
+    const roles=[...(roleByName[s.mp]||[]), ...(min&&!min.pm?[min.title]:[]), ...(sosByName[s.mp]?[sosByName[s.mp]]:[])]; if(HOC_PRESIDING[s.mp]) roles.unshift(HOC_PRESIDING[s.mp]);
     if(s.mp&&!roles.length&&s.i!==HOC_SPEAKER) roles.push(s.row===1?"Front-bench seat":"Backbencher · sits behind the front bench and takes part in debates, Question Period and committees");
     const log=HOC_LOG.filter(x=>x[3]===s.riding);
     h=`<div class="pband" style="--pc:${p.color}"></div>`+(s.mp?`<div class="who"><div class="ava" style="--pc:${p.color}" aria-hidden="true">${initials(s.mp)}</div><div class="who-t"><div class="kicker">Member of Parliament</div><h2>${s.mp}</h2>
@@ -2014,7 +2046,7 @@ function fmData(){
   ds.forEach(d=>{ const ks=d.ms.filter(m=>!m.pm).map(m=>m.k); d.t=ks.length?d3.mean(ks):-1; });
   ds.sort((a,b)=>a.t-b.t);
   FM_DEP.y=FM_CAB.y+FM_CAB.h+34; FM_DEP.h=FM_DEP.head+Math.ceil(ds.length/FM_DEP.cols)*FM_DEP.rh+12;
-  ds.forEach((d,k)=>{ [d.x,d.y]=grid(FM_DEP,ds.length,k); let sn=({feddev:"FedDev Ontario (Southern Ontario)",fednor:"FedNor (Northern Ontario)"})[d.id]||d.name; if(sn.length>55) sn=sn.slice(0,sn.lastIndexOf(" ",53))+"…"; d.short=sn; });
+  ds.forEach((d,k)=>{ [d.x,d.y]=grid(FM_DEP,ds.length,k); let sn=({feddev:"FedDev Ontario (Southern Ontario)",fednor:"FedNor (Northern Ontario)"})[d.id]||d.name; d.short=sn; });
   const sos=secretaries.map(([name,area],k)=>({id:"sos"+k,name,area,seat:fmSeat(name)}));
   FM_SOS.y=FM_DEP.y+FM_DEP.h+34; FM_SOS.h=FM_SOS.head+Math.ceil(sos.length/FM_SOS.cols)*FM_SOS.rh+12;
   sos.forEach((s,k)=>{ [s.x,s.y]=grid(FM_SOS,sos.length,k); });
@@ -3053,7 +3085,7 @@ function bmData(){
   BM_MIN.y=BM_CAB.y+BM_CAB.h+30;
   BM_MIN.h=BM_MIN.head+Math.ceil(ministries.length/BM_MIN.cols)*BM_MIN.rh+12;
   ministries.forEach((o,k)=>{ [o.x,o.y]=grid(BM_MIN,ministries.length,k);
-    let sn=o.name.replace(/^Ministry (of|for) (the )?/,""); if(sn.length>37) sn=sn.slice(0,sn.lastIndexOf(" ",35))+"…"; o.short=sn; });
+    let sn=o.name.replace(/^Ministry (of|for) (the )?/,""); o.short=sn; });
   const premierOffices=BC_OUT.filter(o=>o.id==="premier"); premierOffices.forEach(o=>{ o.x=BM_MID; o.y=96; o.ms=[]; });
   return {C,G,mpps,byName,mins,ministries,premierOffices,P,mid,eby:byName["David Eby"],doerk:byName["Lorne Doerkson"],
     premier:[BM_MID,-40], sec:[BM_MID,190], desig:[BM_MID,-150]};
@@ -3523,7 +3555,7 @@ function smData(){
   SM_MIN.y=SM_CAB.y+SM_CAB.h+30;
   SM_MIN.h=SM_MIN.head+Math.ceil(ministries.length/SM_MIN.cols)*SM_MIN.rh+12;
   ministries.forEach((o,k)=>{ [o.x,o.y]=grid(SM_MIN,ministries.length,k);
-    let sn=o.name.replace(/^Ministry (of|for) (the )?/,""); if(sn.length>37) sn=sn.slice(0,sn.lastIndexOf(" ",35))+"…"; o.short=sn; });
+    let sn=o.name.replace(/^Ministry (of|for) (the )?/,""); o.short=sn; });
   const premierOffices=SK_OUT.filter(o=>o.id==="exec"); premierOffices.forEach(o=>{ o.x=SM_MID; o.y=40; o.ms=[]; });
   return {C,G,mpps,byName,mins,ministries,premierOffices,P,mid,moe:byName["Scott Moe"],
     premier:[SM_MID,-130], sec:[SM_MID,170]};
@@ -3799,7 +3831,7 @@ function pvData(cfg){
   ministries.sort((p,q)=>p.t-q.t);
   MIN.y=CAB.y+CAB.h+30; MIN.h=MIN.head+Math.ceil(ministries.length/MIN.cols)*MIN.rh+12;
   ministries.forEach((o,k)=>{ [o.x,o.y]=grid(MIN,ministries.length,k);
-    let sn=o.name.replace(/^(Ministry|Department) (of|for) (the )?/,""); if(sn.length>37) sn=sn.slice(0,sn.lastIndexOf(" ",35))+"…"; o.short=sn; });
+    let sn=o.name.replace(/^(Ministry|Department) (of|for) (the )?/,""); o.short=sn; });
   const premierOffices=cfg.OUT.filter(o=>o.id===cfg.execId); premierOffices.forEach(o=>{ o.x=PV_MID; o.y=40; o.ms=[]; });
   return {C,G,mpps,byName,mins,ministries,premierOffices,CAB,MIN,prem:byName[cfg.premier.name],premier:[PV_MID,-130],sec:[PV_MID,170]};
 }
@@ -5464,7 +5496,7 @@ function pmData(){
   PM_MIN.y=PM_CAB.y+PM_CAB.h+30;
   PM_MIN.h=PM_MIN.head+Math.ceil(ministries.length/PM_MIN.cols)*PM_MIN.rh+12;
   ministries.forEach((o,k)=>{ [o.x,o.y]=grid(PM_MIN,ministries.length,k);
-    let sn=o.name.replace(/^Ministry (of|for) (the )?/,""); if(sn.length>37) sn=sn.slice(0,sn.lastIndexOf(" ",35))+"…"; o.short=sn; });
+    let sn=o.name.replace(/^Ministry (of|for) (the )?/,""); o.short=sn; });
   const premierOffices=ON_OUT.filter(o=>o.id==="cab"||o.id==="iga");
   premierOffices.forEach((o,k)=>{ o.x=PM_MID+(k?54:-54); o.y=80; o.ms=[]; });
   return {C,G,mpps,byOla,spk:C.spk,mins,ministries,premierOffices,ford:byOla["Doug Ford"],P,mid,

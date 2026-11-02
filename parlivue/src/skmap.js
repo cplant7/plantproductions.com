@@ -26,7 +26,7 @@ function smData(){
   SM_MIN.y=SM_CAB.y+SM_CAB.h+30;
   SM_MIN.h=SM_MIN.head+Math.ceil(ministries.length/SM_MIN.cols)*SM_MIN.rh+12;
   ministries.forEach((o,k)=>{ [o.x,o.y]=grid(SM_MIN,ministries.length,k);
-    let sn=o.name.replace(/^Ministry (of|for) (the )?/,""); if(sn.length>37) sn=sn.slice(0,sn.lastIndexOf(" ",35))+"…"; o.short=sn; });
+    let sn=o.name.replace(/^Ministry (of|for) (the )?/,""); o.short=sn; });
   const premierOffices=SK_OUT.filter(o=>o.id==="exec"); premierOffices.forEach(o=>{ o.x=SM_MID; o.y=40; o.ms=[]; });
   return {C,G,mpps,byName,mins,ministries,premierOffices,P,mid,moe:byName["Scott Moe"],
     premier:[SM_MID,-130], sec:[SM_MID,170]};
