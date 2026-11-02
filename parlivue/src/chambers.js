@@ -137,7 +137,7 @@ function chDraw(C){
     .on("mouseenter",function(e,m){ if(!RM) d3.select(this).transition("h").duration(150).attr("r",15.5); chTip(C,e,m); }).on("mousemove",(e,m)=>chTip(C,e,m))
     .on("mouseleave",function(e,m){ if(!RM) d3.select(this).transition("h").duration(200).attr("r",chState[C.id].sel===m.i?15.5:12.5); document.getElementById(C.id+"-tip").hidden=true; });
   if(!RM) dots.transition().delay(m=>120+(m.x-C.X0)*1.6+Math.abs(m.y)*.6).duration(420).ease(d3.easeBackOut.overshoot(1.6)).attr("r",12.5);
-  C.zoom=d3.zoom().scaleExtent([1,5]).on("zoom",e=>z.attr("transform",e.transform)); svg.call(C.zoom).on("dblclick.zoom",null);
+  const _vb=svg.node().viewBox.baseVal; C.zoom=d3.zoom().scaleExtent([1,5]).translateExtent([[_vb.x,_vb.y],[_vb.x+_vb.width,_vb.y+_vb.height]]).on("zoom",e=>z.attr("transform",e.transform)); svg.call(C.zoom).on("dblclick.zoom",null);
   chPaint(C);
 }
 function chTip(C,e,m){ const t=document.getElementById(C.id+"-tip"); const G=C.groups[m.group];
@@ -277,7 +277,7 @@ function renderChamber(id){
            [["Point at","or tap any dot to see who sits there."],["Click a seat","to zoom in and open that senator's details."],["Tap a group","above the seating plan to light up its seats and open its breakdown."],["Search","the list below to find a senator or province."]],
            "")}
          <div class="hbar"><div class="kicker">Two seats to a desk</div>
-         <div class="zbtn"><button id="${id}-flip" class="rotbtn" title="Swap which side is at the top">⇅ Flip chamber</button><button id="${id}-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="${id}-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="${id}-zr" aria-label="Reset view" title="Reset view" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Reset</span></button></div></div>
+         <div class="zbtn"><button id="${id}-flip" class="rotbtn" title="Swap which side is at the top">⇅ Flip chamber</button><button id="${id}-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="${id}-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="${id}-zr" aria-label="Fit to screen" title="Fit to screen" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Fit to screen</span></button></div></div>
          <div class="hstage" id="${id}-stage"><svg id="${id}-svg" role="img" aria-label="${C.title} chamber"></svg><div class="tip" id="${id}-tip" hidden></div></div>
          <div class="src">${C.approx}${id==="ontario"?` Seating plan: <a href="${ON_PLAN_SRC[1]}" target="_blank" rel="noopener">${ON_PLAN_SRC[0]}</a>.`:""}</div></div>
        <div class="nsec"><div class="hfilters"><input id="${id}-q" type="search" placeholder="Find a ${id==="senate"?"senator":"MPP"} or ${C.placeNoun.toLowerCase()}" aria-label="Search">
