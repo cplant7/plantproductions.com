@@ -34,8 +34,8 @@ function renderHome(){
    <section class="hero">
     <div class="hero-l">
      <div class="kicker">ParliVue Pilot · Canada</div>
-     <h1 class="hero-h">Canada's governments, at a glance</h1>
-     <p class="hero-p">Who holds each seat, which party they sit with, and who leads each department, from Parliament to your provincial legislature and city council. Every entry links to its <b>official source</b>.</p>
+     <h1 class="hero-h">Who represents you</h1>
+     <p class="hero-p">Every seat, party and department across Parliament, your provincial legislature and your city council, with each entry linked to its <b>official source</b>.</p>
      <div class="hero-cta">
       <button class="cta solid" data-go="commons">House of Commons <span class="ci">→</span></button>
       <button class="cta solid" data-go="senate">Senate <span class="ci">→</span></button>
