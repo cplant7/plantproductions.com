@@ -64,7 +64,7 @@ const RIDING_MAPS={
  nb:{title:"New Brunswick electoral districts",sub:"49 ridings",src:["Elections NB: Provincial electoral districts","https://www.electionsnb.ca/content/enb/en/maps/PED/provincial-electoral-distircts1.html"]},
  pe:{title:"Prince Edward Island electoral districts",sub:"27 districts",src:["Elections PEI: Provincial district and poll maps","https://www.electionspei.ca/provincial-election-by-elections/provincial-district-and-poll-maps"]},
  nl:{title:"Newfoundland and Labrador electoral districts",sub:"40 districts",src:["Elections NL: Electoral district maps","https://www.elections.gov.nl.ca/resources/maps/"]},
- ns:{title:"Nova Scotia electoral districts",sub:"55 electoral districts",src:["Elections Nova Scotia: Electoral district map","https://electionsnovascotia.ca/Electoral-District-Map"]},
+ ns:{title:"Nova Scotia electoral districts",sub:"55 electoral districts",src:["Elections Nova Scotia","https://electionsnovascotia.ca/"]},
  nt:{title:"Northwest Territories electoral districts",sub:"19 electoral districts",src:["Elections NWT: Maps","https://www.electionsnwt.ca/en/maps"]},
  yk:{title:"Yukon electoral districts",sub:"21 electoral districts",src:["Elections Yukon: 2025 electoral districts","https://electionsyukon.ca/en/electoral-districts-21"]},
  sk:{title:"Saskatchewan constituencies",sub:"61 constituencies",src:["Elections Saskatchewan: Maps","https://www.elections.sk.ca/candidates-political-parties/maps/"]}
