@@ -421,7 +421,7 @@ span.face{cursor:default}
 .ddbtn svg{width:13px;height:13px;transition:transform .25s}
 .ddbtn:hover,.dd.open .ddbtn{color:var(--ink);background:var(--faint)}.dd.open .ddbtn svg{transform:rotate(180deg)}
 .ddbtn:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
-.dd:has([aria-selected="true"])>.ddbtn{background:var(--ink);color:#0a0a0a}
+.dd:has([aria-selected="true"])>.ddbtn{background:var(--ink);color:var(--bg)}
 .ddmenu{position:absolute;left:0;top:calc(100% + 8px);min-width:290px;display:grid;gap:2px;padding:8px;background:var(--surface);border:1px solid var(--rule);border-radius:14px;box-shadow:0 22px 50px rgb(0 0 0 / .55);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s,transform .2s,visibility .2s;z-index:40}
 .dd.open .ddmenu{opacity:1;visibility:visible;transform:none}
 .ddmenu button{all:unset;cursor:pointer;display:grid;gap:1px;padding:9px 12px;border-radius:10px}
