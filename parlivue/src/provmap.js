@@ -229,7 +229,7 @@ function pvPoint(cfg,key){ const D=pvS(cfg).D;
   if(key.startsWith("o_")){ const o=[...D.ministries,...D.premierOffices].find(x=>"o_"+x.id===key); return [o.x,o.y]; }
   if(/^m\d+$/.test(key)){ const m=D.mpps[+key.slice(1)]; return [m.px,m.py]; }
   const mn=D.mins.find(x=>x.id===key); return mn?[mn.x,mn.y]:[0,0]; }
-function pvSelect(cfg,key,zoom){
+function pvSelect(cfg,key,zoom){ zoom=false;
   const S=pvS(cfg); S.sel=key||null; pvHighlight(cfg,S.sel); pvPanel(cfg,S.sel);
   const st=chState[cfg.id], m=pvMppOf(cfg,S.sel); st.sel=m?m.i:null; st.panel=null; st.focus=null;
   chSummary(CH[cfg.id]); chList(CH[cfg.id]);

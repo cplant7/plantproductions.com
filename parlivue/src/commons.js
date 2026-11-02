@@ -190,7 +190,7 @@ function moveSeats(){
     .attr("transform",s=>{ const [x,y]=seatPos(s); return `translate(${x},${y})`; });
   hocPaint();
 }
-function zoomToSeat(s){
+function zoomToSeat(s){ return;
   const svgH=d3.select("#hemi"); const [x,y]=rotPt(seatPos(s)); const k=2.6; const v=VB[hocRot]; const cx=v[0]+v[2]/2, cy=v[1]+v[3]/2;
   svgH.transition().duration(RM?0:750).ease(d3.easeCubicInOut).call(hz.transform, d3.zoomIdentity.translate(cx-x*k,cy-y*k).scale(k));
 }
@@ -259,7 +259,7 @@ function hocProfile(){
     h=`<div class="kicker">The House</div><h2>Key roles</h2>
      <ul class="list">${HOC_ROLES.map(([r,n])=>{ const st=seats.find(x=>x.mp===n); return `<li class="item">${st?`<button class="linkbtn" data-i="${st.i}">${n}</button>`:`<span class="nm">${n}</span>`}<span class="rl">${r}</span></li>`; }).join("")}</ul>
      <span class="src">Roles: <a href="${P45_SRC[1]}" target="_blank" rel="noopener">${P45_SRC[0]}</a>. The Commons' own roles page could not be loaded from here.</span>
-     <div class="note">Click any seat to zoom in and open that MP. Drag or pinch to pan and zoom the chamber.</div>`;
+     <div class="note">Click any seat to open that MP. Use + and − to zoom the chamber.</div>`;
   } else {
     const p=FPARTY[s.party], min=fedMinisterByName[s.mp];
     const roles=[...(roleByName[s.mp]||[]), ...(min&&!min.pm?[min.title]:[]), ...(sosByName[s.mp]?[sosByName[s.mp]]:[])];

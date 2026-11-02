@@ -280,7 +280,7 @@ function pmPoint(key){ const D=PM.D;
   if(key.startsWith("o_")){ const o=[...D.ministries,...D.premierOffices].find(x=>"o_"+x.id===key); return [o.x,o.y]; }
   if(/^m\d+$/.test(key)){ const m=D.mpps[+key.slice(1)]; return [m.px,m.py]; }
   const mn=D.mins.find(x=>x.id===key); return mn?[(mn.x+mn.mpp.px)/2,(mn.y+mn.mpp.py)/2]:[0,0]; }
-function pmSelect(key,zoom){
+function pmSelect(key,zoom){ zoom=false;
   PM.sel=key||null; pmHighlight(PM.sel); pmPanel(PM.sel);
   const st=chState.ontario, m=pmMppOf(PM.sel); st.sel=m?m.i:null; st.panel=null; st.focus=null;
   chSummary(CH.ontario); chList(CH.ontario);

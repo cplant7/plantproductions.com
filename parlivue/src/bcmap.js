@@ -242,7 +242,7 @@ function bmPoint(key){ const D=BM.D;
   if(key.startsWith("o_")){ const o=[...D.ministries,...D.premierOffices].find(x=>"o_"+x.id===key); return [o.x,o.y]; }
   if(/^m\d+$/.test(key)){ const m=D.mpps[+key.slice(1)]; return [m.px,m.py]; }
   const mn=D.mins.find(x=>x.id===key); return mn?[mn.x,mn.y]:[0,0]; }
-function bmSelect(key,zoom){
+function bmSelect(key,zoom){ zoom=false;
   BM.sel=key||null; bmHighlight(BM.sel); bmPanel(BM.sel);
   const st=chState.bcleg, m=bmMppOf(BM.sel); st.sel=m?m.i:null; st.panel=null; st.focus=null;
   chSummary(CH.bcleg); chList(CH.bcleg);

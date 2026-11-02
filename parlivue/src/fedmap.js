@@ -110,7 +110,7 @@ function fmSeatsFor(key){ const D=FM.D; if(!key) return null;
 function fmPanel(key){
   const D=FM.D, el=document.getElementById("hpanel"); let h="";
   const head=(name,seat,kicker)=>`<div class="pband" style="--pc:var(--p-lib)"></div><div class="who"><div class="ava" style="--pc:var(--p-lib)" aria-hidden="true">${initials(name)}</div><div class="who-t"><div class="kicker">${kicker}</div><h2>${name}</h2><div class="party"><i style="background:var(--p-lib)"></i><span>Liberal Party of Canada${seat?" · "+seat.riding:""}</span></div></div></div>`;
-  const seatBox=seat=>seat?`<div class="where"><div class="kicker">Seat in the House</div><div><b>${seat.side==="gov"?"Government side":"Opposition side"}</b>${seat.row?` · row ${seat.row} · desk ${seat.desk}`:""}</div><button class="chipbtn" data-seat="${seat.i}">Zoom to seat</button></div>`:"";
+  const seatBox=seat=>seat?`<div class="where"><div class="kicker">Seat in the House</div><div><b>${seat.side==="gov"?"Government side":"Opposition side"}</b>${seat.row?` · row ${seat.row} · desk ${seat.desk}`:""}</div></div>`:"";
   const deptLine=d=>`<li class="item"><button class="linkbtn" data-k="d_${d.id}">${d.name}</button><span class="rl">${d.heads.map(x=>x.name+" · "+x.role).join("<br>")}</span></li>`;
   if(!key){
     h=`<div class="kicker">Start here</div><h2>How the federal government is run</h2>

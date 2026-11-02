@@ -214,14 +214,14 @@ function chProfile(C){
     h=`<div class="kicker">The ${C.id==="senate"?"Senate":"Assembly"}</div><h2>Key roles</h2><ul class="list">${roles.map(([r,n])=>{ const mm=C.members.find(x=>x.sort===n||("Hon. "+x.name)===n||x.name===n); return `<li class="item">${mm?`<button class="linkbtn" data-i="${mm.i}">${mm.name}</button>`:`<span class="nm">${n}</span>`}<span class="rl">${r}</span></li>`; }).join("")}</ul>
       ${srcA(C.id==="ontario"?ON_ROLES_SRC:SEN_SPK_SRC)}
       ${C.id==="senate"?`<div class="note">Most senators do not belong to a political party. Only the Conservatives sit as a party caucus; the other groups are parliamentary groups that senators join for committee work and organization.</div>`:""}
-      <div class="note">Click any seat to zoom in and open that ${C.id==="senate"?"senator":"MPP"}.</div>`; }
+      <div class="note">Click any seat to open that ${C.id==="senate"?"senator":"MPP"}.</div>`; }
   el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap"); el.innerHTML=h;
   el.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>chSelect(C,+b.dataset.i,true));
   const tw=document.getElementById(C.id+"-towheel"); if(tw&&m) tw.onclick=()=>{ const mn=ON_MIN.find(x=>x.ola===m.name); document.getElementById("pm-stage").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"}); pmSelect(m.name==="Doug Ford"?"premier":mn.id,true); };
   const bk=document.getElementById(C.id+"-back"); if(bk) bk.onclick=()=>{ st.sel=null; st.panel=null; st.focus=null; if(C.map){ C.map.select(null,false); return; } chSummary(C); chProfile(C); chList(C); d3.select("#"+C.id+"-svg").transition().duration(RM?0:500).call(C.zoom.transform,d3.zoomIdentity); };
   const pl=document.getElementById(C.id+"-plist"); if(pl) pl.onclick=()=>{ document.getElementById(C.id+"-g").value=st.panel.g; chList(C); document.getElementById(C.id+"-tbl").scrollIntoView({behavior:RM?"auto":"smooth",block:"center"}); };
 }
-function chSelect(C,i,zoom){ if(C.map){ document.getElementById(C.map.stageId).scrollIntoView({behavior:RM?"auto":"smooth",block:"center"}); return C.map.select(C.map.key(i),zoom); } const st=chState[C.id]; st.sel=i; st.panel=null; st.focus=null; chSummary(C); chProfile(C); chList(C);
+function chSelect(C,i,zoom){ zoom=false; if(C.map){ document.getElementById(C.map.stageId).scrollIntoView({behavior:RM?"auto":"smooth",block:"center"}); return C.map.select(C.map.key(i),zoom); } const st=chState[C.id]; st.sel=i; st.panel=null; st.focus=null; chSummary(C); chProfile(C); chList(C);
   if(zoom){ const m=C.members[i], svg=d3.select("#"+C.id+"-svg"), vb=svg.attr("viewBox").split(" ").map(Number), k=2.6, cx=vb[0]+vb[2]/2, cy=vb[1]+vb[3]/2;
     const mx=C.portrait?-m.y:m.x, my=C.portrait?m.x:m.y; svg.transition().duration(RM?0:750).ease(d3.easeCubicInOut).call(C.zoom.transform,d3.zoomIdentity.translate(cx-mx*k,cy-my*k).scale(k)); }
   if(window.innerWidth<980) document.getElementById(C.id+"-panel").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"}); }
@@ -280,7 +280,7 @@ function renderChamber(id){
             ["The colour","shows the senator's parliamentary group. Most senators belong to a group, not a political party."],
             ["The Speaker","sits at the head of the room. The Government Representative's Office sits on the Speaker's right, and the Conservative opposition faces them."],
             ["Dashed circles","are empty seats waiting for a new senator."]],
-           [["Point at","or tap any dot to see who sits there."],["Click a seat","to zoom in and open that senator's details."],["Tap a group","above the seating plan to light up its seats and open its breakdown."],["Search","the list below to find a senator or province."]],
+           [["Point at","or tap any dot to see who sits there."],["Click a seat","to open that senator's details."],["Tap a group","above the seating plan to light up its seats and open its breakdown."],["Search","the list below to find a senator or province."]],
            "")}
          <div class="hbar"><div class="kicker">Two seats to a desk</div>
          <div class="zbtn">${id==="senate"?"":`<button id="${id}-flip" class="rotbtn" title="Swap which side is at the top">⇅ Flip chamber</button>`}<button id="${id}-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="${id}-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="${id}-zr" aria-label="Reset the chamber" title="Reset the chamber" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Reset</span></button></div></div>

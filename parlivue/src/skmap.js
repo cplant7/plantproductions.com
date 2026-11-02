@@ -238,7 +238,7 @@ function smPoint(key){ const D=SM.D;
   if(key.startsWith("o_")){ const o=[...D.ministries,...D.premierOffices].find(x=>"o_"+x.id===key); return [o.x,o.y]; }
   if(/^m\d+$/.test(key)){ const m=D.mpps[+key.slice(1)]; return [m.px,m.py]; }
   const mn=D.mins.find(x=>x.id===key); return mn?[mn.x,mn.y]:[0,0]; }
-function smSelect(key,zoom){
+function smSelect(key,zoom){ zoom=false;
   SM.sel=key||null; smHighlight(SM.sel); smPanel(SM.sel);
   const st=chState.skleg, m=smMppOf(SM.sel); st.sel=m?m.i:null; st.panel=null; st.focus=null;
   chSummary(CH.skleg); chList(CH.skleg);
