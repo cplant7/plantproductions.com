@@ -63,7 +63,7 @@ CH.ntleg.summary=(c,total)=>[`<div class="hsub"><span class="majtag">Consensus g
    `<div class="majbtn static"><span class="kicker">How it works</span><span class="bign" style="font-size:30px">No parties</span><span class="src">All MLAs are elected as independents. The whole Assembly chooses the Premier and Cabinet by secret ballot; the other MLAs act as a check on Cabinet.</span></div>
     <dl class="kv"><dt>Premier</dt><dd>R.J. Simpson</dd><dt>Speaker</dt><dd>Shane Thompson</dd><dt>Cabinet</dt><dd>${c.cab||0} incl. Premier</dd><dt>Regular members</dt><dd>${(c.reg||0)-1} plus the Speaker</dd><dt>Vacant</dt><dd>Inuvik Twin Lakes</dd></dl>`];
 const NT_T=(x,y)=>[-380+(x-625)*0.5, -280+(y-116)*0.85];
-const NT_CFG={id:"ntleg",pre:"nt",region:"the Northwest Territories",capital:"Yellowknife",gov:"cab",govName:"Cabinet",govWord:"territorial",
+const NT_CFG={ridingKey:"nt",id:"ntleg",pre:"nt",region:"the Northwest Territories",capital:"Yellowknife",gov:"cab",govName:"Cabinet",govWord:"territorial",
   crown:"Commissioner",crownSub:"FEDERAL APPOINTEE",crownKick:"Commissioner of the Northwest Territories · non-partisan",crownRole:"appointed by the federal government. The Commissioner gives assent to bills and swears in the Premier and Cabinet",assent:"assent",
   MIN:NT_MIN,OUT:NT_OUT,execId:"exec",execLabel:"Executive and Indigenous Affairs",LG:{name:"Gerald Kisoun",title:"Commissioner of the Northwest Territories",since:"May 14, 2024",src:NT_S.mla},
   OFFICERS:NT_OFFICERS,offTitle:"Statutory officers of the Legislative Assembly",S:NT_S,minTitle:"Departments",minNoun:"Department",dirLbl:"Ministers direct departments",

@@ -134,7 +134,7 @@ CH.nsleg.summary=(c,total)=>{ const gov=c.pc||0, others=total-gov, wm=gov-1-othe
    `<div class="majbtn static"><span class="kicker">Working majority</span><span class="bign">${wm}</span><span class="src">PC MLAs minus all other MLAs, leaving out the Speaker. No vacancies.</span></div>
     <dl class="kv"><dt>Premier</dt><dd>Tim Houston</dd><dt>Leader of the Opposition</dt><dd>Claudia Chender</dd><dt>Speaker</dt><dd>Danielle Barkhouse</dd><dt>Since election</dt><dd>1 party change · 1 new seat</dd></dl>`]; };
 const NS_T=(x,y)=>[-380+(311-y)*0.82, -260+(x-233)*0.85];
-const NS_CFG={id:"nsleg",pre:"ns",region:"Nova Scotia",capital:"Halifax",gov:"pc",govName:"Progressive Conservative Association",
+const NS_CFG={ridingKey:"ns",id:"nsleg",pre:"ns",region:"Nova Scotia",capital:"Halifax",gov:"pc",govName:"Progressive Conservative Association",
   MIN:NS_MIN,OUT:NS_OUT,execId:"exec",execLabel:"Executive Council Office",LG:{name:"Mike Savage",title:"Lieutenant Governor of Nova Scotia",src:NS_S.plan},
   OFFICERS:NS_OFFICERS,offTitle:"Independent officers of the House of Assembly",S:NS_S,minTitle:"Departments",minNoun:"Department",dirLbl:"Ministers direct departments",
   premier:{name:"Tim Houston",place:"Pictou East",lede:"Leader of the Progressive Conservative Association of Nova Scotia. Also President of the Executive Council and Minister of Intergovernmental Affairs, Trade and Energy."},

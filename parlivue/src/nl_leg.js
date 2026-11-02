@@ -105,7 +105,7 @@ chLayout(CH.nlleg);
 const NL_MID=((CH.nlleg.X0-80)+CH.nlleg.W)/2;
 const NL_SEATS={}; CH.nlleg.members.forEach(m=>{ if(m!==CH.nlleg.spk) NL_SEATS[m.name]=[m.x,m.y]; });
 const NL_T=(x,y)=>[-340-y, x-NL_MID];
-const NL_CFG={id:"nlleg",pre:"nl",region:"Newfoundland and Labrador",capital:"St. John's",gov:"pc",govName:"Progressive Conservative Party",
+const NL_CFG={ridingKey:"nl",id:"nlleg",pre:"nl",region:"Newfoundland and Labrador",capital:"St. John's",gov:"pc",govName:"Progressive Conservative Party",
   MIN:NL_MIN,OUT:NL_OUT,execId:"exec",execLabel:"Executive Council",LG:{name:"Joan Marie Aylward",title:"Lieutenant Governor of Newfoundland and Labrador",since:"November 14, 2023",src:NL_S.lg},
   OFFICERS:NL_OFFICERS,offTitle:"Statutory officers of the House of Assembly",S:NL_S,minTitle:"Portfolios",minNoun:"Portfolio",dirLbl:"Ministers lead portfolios",
   minSub:"Grouped by minister. Deputy ministers are shown where known.",

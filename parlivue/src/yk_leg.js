@@ -73,7 +73,7 @@ CH.ykleg.summary=(c,total)=>{ const gov=c.yp||0, others=total-gov, wm=gov-1-othe
    `<div class="majbtn static"><span class="kicker">Working majority</span><span class="bign">${wm}</span><span class="src">Yukon Party MLAs minus all other MLAs, leaving out the Speaker. No vacancies.</span></div>
     <dl class="kv"><dt>Premier</dt><dd>Currie Dixon</dd><dt>Leader of the Opposition</dt><dd>Kate White</dd><dt>Speaker</dt><dd>Yvonne Clarke</dd><dt>Since election</dt><dd>No changes</dd></dl>`]; };
 const YK_T=(x,y)=>[-400+(385-y)*0.8, -250+(x-65)*0.9];
-const YK_CFG={id:"ykleg",pre:"yk",region:"Yukon",capital:"Whitehorse",gov:"yp",govName:"Yukon Party",govWord:"territorial",
+const YK_CFG={ridingKey:"yk",id:"ykleg",pre:"yk",region:"Yukon",capital:"Whitehorse",gov:"yp",govName:"Yukon Party",govWord:"territorial",
   crown:"Commissioner",crownSub:"FEDERAL APPOINTEE",crownKick:"Commissioner of Yukon · non-partisan",crownRole:"appointed by the federal government. The Commissioner signs bills into law and swears in the Premier and Cabinet, much as a lieutenant governor does in a province",assent:"assent",
   MIN:YK_MIN,OUT:YK_OUT,execId:"exec",execLabel:"Executive Council Office",LG:{name:"Adeline Webber",title:"Commissioner of Yukon",since:"May 31, 2023",src:YK_S.com},
   OFFICERS:YK_OFFICERS,offTitle:"Independent officers of the Legislative Assembly",S:YK_S,minTitle:"Departments",minNoun:"Department",dirLbl:"Ministers direct departments",
