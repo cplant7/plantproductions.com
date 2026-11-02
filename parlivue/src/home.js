@@ -27,15 +27,15 @@ function renderHome(){
     bc:T("light",`<b>BC</b><span>Cabinet and ministries</span>`,"bc"),
     mis:T("light",`<b>12</b><span>Mississauga council seats</span>`,"mississauga"),
     sos:T("dark",`<b>${secretaries.length}</b><span>Secretaries of State</span>`,"commons"),
-    q:T("accent",`<em>Who answers to whom</em>`,"federal")
+    q:T("accent",`<em>Who answers to whom</em>`,"commons")
   };
   const col=(keys,dir,dur)=>`<div class="hcol ${dir}" style="--dur:${dur}s"><div class="hcol-in">${keys.map(k=>tiles[k]).join("")}${keys.map(k=>tiles[k]).join("")}</div></div>`;
   homeEl.innerHTML=`
    <section class="hero">
     <div class="hero-l">
      <div class="kicker">ParliVue Pilot · Canada</div>
-     <h1 class="hero-h">Who runs<br>Canada</h1>
-     <p class="hero-p">See who sits in each chamber, which party they belong to, and who is in charge of every department. Built from <b>official government sources</b>, snapshot October 2026.</p>
+     <h1 class="hero-h">Canada's governments, at a glance</h1>
+     <p class="hero-p">Who holds each seat, which party they sit with, and who leads each department, from Parliament to your provincial legislature and city council. Every entry links to its <b>official source</b>.</p>
      <div class="hero-cta">
       <button class="cta solid" data-go="commons">House of Commons <span class="ci">→</span></button>
       <button class="cta solid" data-go="senate">Senate <span class="ci">→</span></button>
@@ -46,7 +46,7 @@ function renderHome(){
    </section>
    <section class="hcards">
     <article class="hcard"><div class="kicker">Federal · Parliament of Canada</div><h2>House of Commons of Canada</h2><p>All 343 seats as the chamber sits, the Prime Minister's Cabinet, and the departments each minister is responsible for.</p>
-      <div class="hlinks"><button data-go="commons">House of Commons</button><button data-go="senate">Senate of Canada</button><button data-go="federal">Federal Cabinet wheel</button></div></article>
+      <div class="hlinks"><button data-go="commons">House of Commons</button><button data-go="senate">Senate of Canada</button></div></article>
     <article class="hcard"><div class="kicker">Provinces</div><h2>Provincial legislatures</h2><p>Each province's elected members, its Premier and Cabinet, and the ministries they run.</p>
       <div class="hlinks"><button data-go="ableg">Alberta</button><button data-go="ontario">Ontario</button><button data-go="onwheel">Ontario Cabinet wheel</button><button data-go="bcleg">British Columbia</button><button data-go="skleg">Saskatchewan</button><button data-go="mbleg">Manitoba</button><button data-go="nbleg">New Brunswick</button><button data-go="nlleg">Newfoundland and Labrador</button><button data-go="nsleg">Nova Scotia</button><button data-go="ntleg">Northwest Territories</button><button data-go="nuleg">Nunavut</button><button data-go="peleg">Prince Edward Island</button><button data-go="ykleg">Yukon</button></div>
       <div class="kicker" style="margin-top:14px">Cities</div>

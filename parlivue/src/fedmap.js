@@ -146,7 +146,7 @@ function fmPanel(key){
       ${seatBox(m.seat)}<div class="role"><div class="kicker">Two jobs</div><p>As a minister, ${m.name.split(" ")[0]} is responsible for ${m.depts.length>1?"these departments":"this department"} and answers for ${m.depts.length>1?"them":"it"} in the House. As an MP, ${m.name.split(" ")[0]} still represents ${m.seat?m.seat.riding:"a riding"} and votes in the House.</p></div>${srcA(S.cab)}`;
   }
   if(key) h+=`<button class="linkbtn" data-k="" style="font-size:13px">← How the government is run</button>`;
-  el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap"); el.innerHTML=h;
+  el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap"); el.innerHTML=h+(key?PV_BACK:"");
   el.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>fmSelect(b.dataset.k||null));
   el.querySelectorAll("[data-seat]").forEach(b=>b.onclick=()=>{ document.getElementById("hstage").scrollIntoView({behavior:RM?"auto":"smooth",block:"center"}); zoomToSeat(seats[+b.dataset.seat]); });
   el.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>hocSelect(+b.dataset.i,true));

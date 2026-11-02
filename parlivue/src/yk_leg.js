@@ -83,7 +83,7 @@ const YK_CFG={id:"ykleg",pre:"yk",region:"Yukon",capital:"Whitehorse",gov:"yp",g
   oppLeader:"Kate White",oppLeaderTitle:"Leader of the Official Opposition",
   roles:{"Kate White":"Leader of the Official Opposition","Lane Tredger":"Official Opposition House Leader","Debra-Leigh Reti":"Leader of the Third Party","Patti McLeod":"Deputy Speaker and Chair of Committee of the Whole","Tyler Porter":"Deputy Chair of Committee of the Whole"},
   notes:{"Kate White":"Leads the Yukon NDP, the Official Opposition.","Debra-Leigh Reti":"The only Liberal MLA, leading the third party. Her seat was confirmed by a recount on November 12, 2025.","Patti McLeod":"Sits with the governing Yukon Party and serves as Deputy Speaker."},
-  cabSub:"Chosen by the Premier from Yukon Party MLAs. Portfolios as of August 19, 2026.",
+  cabSub:"Chosen by the Premier from Yukon Party MLAs.",
   title:"Yukon Legislative Assembly",sub:"21 MLAs, 1 per electoral district, representing the people of Yukon",
   seats:YK_SEATS,T:YK_T,isGov:(x,y)=>y>385,rowOf:(x,y)=>({500:1,610:2,265:1,160:2})[y],chair:[65,385],spkLabel:"below",
   vacant:[[505,160]],aisle:[60,600,330,440],table:[260,385],sideLbl:{gov:[0,555],opp:[0,212]},cx:-400,titleX:-400,titleY:-342,bot:250,lineX:[-600,-150],deskW:58,deskH:56,

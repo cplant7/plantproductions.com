@@ -120,7 +120,7 @@ function drawChamber(){
     const front=r===0, shade=[30,26,23,21,19,17][r];
     if(front){ deskG.append("rect").attr("x",colX(0)-26).attr("y",y-22).attr("width",colX(row.length-1)-colX(0)+52).attr("height",44).attr("rx",12).attr("fill","var(--brass)").attr("fill-opacity",.07).attr("stroke","var(--brass)").attr("stroke-opacity",.45); }
     for(let ci=0;ci<row.length;ci+=2){ const x0=colX(ci)-15, x1=colX(Math.min(ci+1,row.length-1))+15;
-      deskG.append("rect").attr("x",x0).attr("y",y-15).attr("width",x1-x0).attr("height",30).attr("rx",9).attr("fill",`rgb(${shade},${shade},${shade})`).attr("stroke",front?"var(--brass)":"var(--rule)").attr("stroke-opacity",front?.6:1); }
+      deskG.append("rect").attr("x",x0).attr("y",y-15).attr("width",x1-x0).attr("height",30).attr("rx",9).attr("class","pmdesk").attr("fill",`rgb(${shade},${shade},${shade})`).attr("stroke",front?"var(--brass)":"var(--rule)").attr("stroke-opacity",front?.6:1); }
     // party blocks: outline each run of same-party seats along the row
     let start=0; for(let ci=1;ci<=row.length;ci++){ const p=seats[row[start][0]].party; if(ci===row.length||seats[row[ci][0]].party!==p){
         const x0=colX(start)-18, x1=colX(ci-1)+18, solidSide=(opp?"x":"lib");
@@ -278,7 +278,7 @@ function hocProfile(){
        ${srcA(HOC_SRC)}${srcA(PLAN_SRC)}<button class="linkbtn" id="hback" style="font-size:13px">← How the government is run</button>`;
   }
   el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap");
-  el.innerHTML=h;
+  el.innerHTML=h+(hocSel!=null?PV_BACK:"");
   const tw=document.getElementById("towheel"); if(tw) tw.onclick=()=>show("federal",{focusKey:fedMinisterByName[s.mp].pm?"hub":fedMinisterByName[s.mp].id});
   const hb=document.getElementById("hback"); if(hb) hb.onclick=()=>{ hocSel=null; FM.sel=null; hocPaint(); hocProfile(); hocList(); d3.select("#hemi").transition().duration(RM?0:600).call(hz.transform,d3.zoomIdentity); };
   el.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>hocSelect(+b.dataset.i,true));
@@ -333,7 +333,7 @@ function renderCommons(){
         "Ministers and Secretaries of State from the Prime Minister's website; deputy heads cross-checked against GEDS.")}
       <div class="pmbar"><label class="search" for="fm-q"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
         <input id="fm-q" type="search" placeholder="Search an MP, riding, minister or department" autocomplete="off" aria-label="Search the House of Commons"><ul class="results" id="fm-res" hidden></ul></label>
-        <button class="chipbtn" id="tofedwheel" title="Open the federal Cabinet wheel">Cabinet wheel →</button><div class="zbtn"><button id="hzin" aria-label="Zoom in" title="Zoom in">+</button><button id="hzout" aria-label="Zoom out" title="Zoom out">−</button><button id="hzr" aria-label="Fit to screen" title="Fit to screen" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Fit to screen</span></button></div></div>
+        <div class="zbtn"><button id="hzin" aria-label="Zoom in" title="Zoom in">+</button><button id="hzout" aria-label="Zoom out" title="Zoom out">−</button><button id="hzr" aria-label="Reset the chamber" title="Reset the chamber" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Reset</span></button></div></div>
       <div class="cmgrid" id="cmgrid">
         <div class="pmstage cmchamber"><div class="cmhead"><b>House of Commons of Canada</b><span>343 MPs, 1 per riding, representing the people of Canada</span></div>
           <div class="hstage" id="hstage"><svg id="hemi" viewBox="-312 -524 624 1250" role="img" aria-label="House of Commons chamber, seats by party"></svg><div class="tip" id="htip" hidden></div></div></div>
@@ -370,10 +370,10 @@ function renderCommons(){
         <span class="src">Sources: <a href="${P45_SRC[1]}" target="_blank" rel="noopener">${P45_SRC[0]}</a> · <a href="${BYE_SRC[1]}" target="_blank" rel="noopener">${BYE_SRC[0]}</a> · <a href="${GE25_SRC[1]}" target="_blank" rel="noopener">${GE25_SRC[0]}</a></span>
        </section>
      </div></div>`;
-    drawChamber(); wireFold("hoc-fold"); document.getElementById("tofedwheel").onclick=()=>show("federal"); renderFedMap(); window.addEventListener("resize",()=>drawLinks(FM.sel));
+    drawChamber(); wireFold("hoc-fold"); renderFedMap(); window.addEventListener("resize",()=>drawLinks(FM.sel));
     document.getElementById("hzin").onclick=()=>d3.select("#hemi").transition().duration(300).call(hz.scaleBy,1.4);
     document.getElementById("hzout").onclick=()=>d3.select("#hemi").transition().duration(300).call(hz.scaleBy,1/1.4);
-    document.getElementById("hzr").onclick=()=>d3.select("#hemi").transition().duration(RM?0:600).call(hz.transform,d3.zoomIdentity);
+    document.getElementById("hzr").onclick=()=>{ if(typeof fmSelect==="function"&&FM.D) fmSelect(null); else { hocSel=null; hocProfile(); hocList(); hocPaint(); } d3.select("#hemi").transition().duration(RM?0:600).call(hz.transform,d3.zoomIdentity); };
 
     document.querySelectorAll(".lgf").forEach(b=>b.onclick=()=>{ hocLogFilter=b.dataset.f; renderLog(); });
     hocBuilt=true;

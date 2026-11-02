@@ -275,7 +275,7 @@ function renderVicScore(){
 
   const tabs=[["card","Report card","Strategic Plan progress"],["y26","2026 plan","Budget by department"],["y25","2025 results","Plan vs actual"],["y24","2024 results","Plan vs actual"],["yoy","Year over year","2023–2025 actuals"],["check","Data validation","Sources checked"]];
   el.innerHTML=`<header class="vshead"><div><div class="kicker">City of Victoria · Accountability scorecard · 2024–2026</div><h2 class="nh">Council Scorecard 2024–2026</h2></div>
-     <p class="pagelede">Plans, budgets and results from the City's audited statements, with progress on the 2023–2026 Strategic Plan. Snapshot Nov 1, 2026.</p></header>
+     <p class="pagelede">Plans, budgets and results from the City's audited statements, with progress on the 2023–2026 Strategic Plan.</p></header>
     <div class="vsnav"><div class="vshint"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 2v10M4 8l4 4 4-4"/></svg>Choose a section</div>
     <div class="vstabs big" role="tablist" aria-label="Scorecard sections">${tabs.map((t,i)=>`<button role="tab" id="vst-${t[0]}" aria-controls="vsp-${t[0]}" aria-selected="${i?"false":"true"}" tabindex="${i?-1:0}" data-k="${t[0]}">${t[1]}<small>${t[2]}</small></button>`).join("")}</div></div>
     ${tabs.map((t,i)=>`<div role="tabpanel" id="vsp-${t[0]}" aria-labelledby="vst-${t[0]}" class="vspane" ${i?"hidden":""}>${panes[t[0]]}</div>`).join("")}`;

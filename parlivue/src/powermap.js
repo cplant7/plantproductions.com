@@ -307,7 +307,7 @@ function renderPowerMap(){
   const slot=document.getElementById("pm-slot"); if(!slot) return;
   slot.innerHTML=`<div class="pmbar"><label class="search" for="pm-q"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
       <input id="pm-q" type="search" placeholder="Search an MPP, riding, minister or ministry" autocomplete="off" aria-label="Search Ontario"><ul class="results" id="pm-res" hidden></ul></label>
-      <div class="zbtn"><button id="pm-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="pm-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="pm-zr" aria-label="Fit to screen" title="Fit to screen" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Fit to screen</span></button></div></div>
+      <div class="zbtn"><button id="pm-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="pm-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="pm-zr" aria-label="Reset the chamber" title="Reset the chamber" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Reset</span></button></div></div>
     <div class="pmgrid"><div class="pmstage" id="pm-stage"><svg id="pm-svg" viewBox="${PM_VB.join(" ")}" role="img" aria-label="Ontario power map: the Legislature, Premier, Cabinet and ministries"></svg><div class="tip" id="pm-tip" hidden></div></div>
       <aside class="hpanel pmpanel" id="pm-panel" aria-live="polite"></aside></div>`;
   pmBuild();

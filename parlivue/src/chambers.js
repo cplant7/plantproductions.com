@@ -32,7 +32,7 @@ const CH={
 };
 // build member lists
 CH.senate.members=SEN_RAW.split("\n").map((l,i)=>{ const [n,g,prov,app,ret,adv]=l.split("|"); const [last,first]=n.split(", ");
-CH.senate.flip=(()=>{ try{ const v=localStorage.getItem("pv-flip-senate"); return v==null?true:v==="1"; }catch(e){ return true; } })();
+CH.senate.flip=false;
   return {i,name:`${first} ${last}`,sort:n,group:g,place:prov,appointed:app,retires:ret,advisor:adv}; });
 Object.entries(SEN_VACANT).forEach(([prov,k])=>{ for(let j=0;j<k;j++) CH.senate.members.push({i:CH.senate.members.length,name:"",sort:"~",group:"vac",place:prov}); });
 CH.ontario.members=ON_RAW.split("\n").map((l,i)=>{ const [n,r,p]=l.split("|"); const nm=n.replace(/^Hon\. /,""); return {i,name:nm,hon:ON_CAB_OLA.has(nm),sort:nm,group:p,place:r}; });
@@ -113,8 +113,9 @@ function chDraw(C){
   chLayout(C);
   const svg=d3.select("#"+C.id+"-svg"); svg.selectAll("*").remove();
   const H=C.rowY(C.rows-1)+60, need=(C.W+80)-(C.X0-140), Wd=Math.max(need,900), x0=(C.X0-140)-(Wd-need)/2;
-  svg.attr("viewBox",`${x0} ${-H} ${Wd} ${2*H}`);
-  const z=svg.append("g"), g=z.append("g");
+  C.portrait=(C.id==="senate");
+  svg.attr("viewBox",C.portrait?`${-H} ${x0} ${2*H} ${Wd}`:`${x0} ${-H} ${Wd} ${2*H}`);
+  const z=svg.append("g"), g=z.append("g"); if(C.portrait) g.attr("transform","rotate(90)");
   g.append("rect").attr("x",C.X0-20).attr("y",-30).attr("width",C.W-C.X0+40).attr("height",60).attr("rx",8).attr("fill","#ffffff08");
   g.append("text").attr("x",C.X0-80).attr("y",-34).attr("text-anchor","middle").attr("class","clbl brass").text("SPEAKER");
   g.append("rect").attr("x",C.X0-104).attr("y",-24).attr("width",48).attr("height",48).attr("rx",10).attr("fill","none").attr("stroke","var(--brass)").attr("stroke-width",2);
@@ -126,7 +127,7 @@ function chDraw(C){
   [[C.govList,F],[C.oppList,-F]].forEach(([list,side])=>{ for(let r=0;r<C.rows;r++){ const row=list.slice(r*C.cols,(r+1)*C.cols); if(!row.length) continue; const y=side*C.rowY(r);
       if(r===0) dg.append("rect").attr("x",C.colX(0)-26).attr("y",y-22).attr("width",C.colX(row.length-1)-C.colX(0)+52).attr("height",44).attr("rx",12).attr("fill","var(--brass)").attr("fill-opacity",.07).attr("stroke","var(--brass)").attr("stroke-opacity",.45);
       const shade=[30,26,23,21,19,17][r];
-      for(let c=0;c<row.length;c+=2){ const a=C.colX(c)-15, b=C.colX(Math.min(c+1,row.length-1))+15; dg.append("rect").attr("x",a).attr("y",y-15).attr("width",b-a).attr("height",30).attr("rx",9).attr("fill",`rgb(${shade},${shade},${shade})`).attr("stroke",r===0?"var(--brass)":"var(--rule)").attr("stroke-opacity",r===0?.6:1); }
+      for(let c=0;c<row.length;c+=2){ const a=C.colX(c)-15, b=C.colX(Math.min(c+1,row.length-1))+15; dg.append("rect").attr("class","pmdesk").attr("x",a).attr("y",y-15).attr("width",b-a).attr("height",30).attr("rx",9).attr("fill",`rgb(${shade},${shade},${shade})`).attr("stroke",r===0?"var(--brass)":"var(--rule)").attr("stroke-opacity",r===0?.6:1); }
       let s=0; for(let c=1;c<=row.length;c++){ if(c===row.length||row[c].group!==row[s].group){ const gr=row[s].group; if(!(C.id==="ontario"&&gr==="pc")) pg.append("rect").attr("x",C.colX(s)-18).attr("y",y-18.5).attr("width",C.colX(c-1)-C.colX(s)+36).attr("height",37).attr("rx",12).attr("fill","none").attr("stroke",C.groups[gr].color).attr("stroke-width",1.4).attr("stroke-opacity",.6); s=c; } }
       dg.append("text").attr("x",C.colX(0)-34).attr("y",y+4).attr("text-anchor","end").attr("class","clbl").text(r+1);
   } });
@@ -138,6 +139,11 @@ function chDraw(C){
     .on("mouseleave",function(e,m){ if(!RM) d3.select(this).transition("h").duration(200).attr("r",chState[C.id].sel===m.i?15.5:12.5); document.getElementById(C.id+"-tip").hidden=true; });
   if(!RM) dots.transition().delay(m=>120+(m.x-C.X0)*1.6+Math.abs(m.y)*.6).duration(420).ease(d3.easeBackOut.overshoot(1.6)).attr("r",12.5);
   const _vb=svg.node().viewBox.baseVal; C.zoom=d3.zoom().scaleExtent([1,5]).translateExtent([[_vb.x,_vb.y],[_vb.x+_vb.width,_vb.y+_vb.height]]).on("zoom",e=>z.attr("transform",e.transform)); svg.call(C.zoom).on("dblclick.zoom",null);
+  if(C.portrait){ g.selectAll("text.side,text.brass").remove(); g.selectAll("text").each(function(){ const t=d3.select(this); const x=+t.attr("x")||0, y=+t.attr("y")||0; t.attr("transform",`rotate(-90,${x},${y})`).attr("text-anchor","middle"); });
+    const lg=z.insert("g",":first-child").attr("aria-hidden","true"), ry=C.rowY(C.rows-1);
+    lg.append("text").attr("x",0).attr("y",C.X0-114).attr("text-anchor","middle").attr("class","clbl brass").text("SPEAKER");
+    lg.append("text").attr("x",-(C.rowY(0)+ry)/2).attr("y",C.W+62).attr("text-anchor","middle").attr("class","clbl side").text("GOVERNMENT SIDE");
+    lg.append("text").attr("x",(C.rowY(0)+ry)/2).attr("y",C.W+62).attr("text-anchor","middle").attr("class","clbl side").text("OPPOSITION SIDE"); }
   chPaint(C);
 }
 function chTip(C,e,m){ const t=document.getElementById(C.id+"-tip"); const G=C.groups[m.group];
@@ -217,7 +223,7 @@ function chProfile(C){
 }
 function chSelect(C,i,zoom){ if(C.map){ document.getElementById(C.map.stageId).scrollIntoView({behavior:RM?"auto":"smooth",block:"center"}); return C.map.select(C.map.key(i),zoom); } const st=chState[C.id]; st.sel=i; st.panel=null; st.focus=null; chSummary(C); chProfile(C); chList(C);
   if(zoom){ const m=C.members[i], svg=d3.select("#"+C.id+"-svg"), vb=svg.attr("viewBox").split(" ").map(Number), k=2.6, cx=vb[0]+vb[2]/2, cy=vb[1]+vb[3]/2;
-    svg.transition().duration(RM?0:750).ease(d3.easeCubicInOut).call(C.zoom.transform,d3.zoomIdentity.translate(cx-m.x*k,cy-m.y*k).scale(k)); }
+    const mx=C.portrait?-m.y:m.x, my=C.portrait?m.x:m.y; svg.transition().duration(RM?0:750).ease(d3.easeCubicInOut).call(C.zoom.transform,d3.zoomIdentity.translate(cx-mx*k,cy-my*k).scale(k)); }
   if(window.innerWidth<980) document.getElementById(C.id+"-panel").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"}); }
 
 function renderChamber(id){
@@ -277,7 +283,7 @@ function renderChamber(id){
            [["Point at","or tap any dot to see who sits there."],["Click a seat","to zoom in and open that senator's details."],["Tap a group","above the seating plan to light up its seats and open its breakdown."],["Search","the list below to find a senator or province."]],
            "")}
          <div class="hbar"><div class="kicker">Two seats to a desk</div>
-         <div class="zbtn"><button id="${id}-flip" class="rotbtn" title="Swap which side is at the top">⇅ Flip chamber</button><button id="${id}-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="${id}-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="${id}-zr" aria-label="Fit to screen" title="Fit to screen" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Fit to screen</span></button></div></div>
+         <div class="zbtn">${id==="senate"?"":`<button id="${id}-flip" class="rotbtn" title="Swap which side is at the top">⇅ Flip chamber</button>`}<button id="${id}-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="${id}-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="${id}-zr" aria-label="Reset the chamber" title="Reset the chamber" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Reset</span></button></div></div>
          <div class="hstage" id="${id}-stage"><svg id="${id}-svg" role="img" aria-label="${C.title} chamber"></svg><div class="tip" id="${id}-tip" hidden></div></div>
          <div class="src">${C.approx}${id==="ontario"?` Seating plan: <a href="${ON_PLAN_SRC[1]}" target="_blank" rel="noopener">${ON_PLAN_SRC[0]}</a>.`:""}</div></div>
        <div class="nsec"><div class="hfilters"><input id="${id}-q" type="search" placeholder="Find a ${id==="senate"?"senator":"MPP"} or ${C.placeNoun.toLowerCase()}" aria-label="Search">
@@ -295,7 +301,7 @@ function renderChamber(id){
     document.getElementById(id+"-zin").onclick=()=>svg.transition().duration(300).call(C.zoom.scaleBy,1.4);
     document.getElementById(id+"-zout").onclick=()=>svg.transition().duration(300).call(C.zoom.scaleBy,1/1.4);
     const fb=document.getElementById(id+"-flip"); if(fb) fb.onclick=()=>{ C.flip=!C.flip; try{ localStorage.setItem("pv-flip-"+id,C.flip?"1":"0"); }catch(e){} chDraw(C); };
-    document.getElementById(id+"-zr").onclick=()=>svg.transition().duration(RM?0:600).call(C.zoom.transform,d3.zoomIdentity);
+    document.getElementById(id+"-zr").onclick=()=>{ const bk=document.getElementById(id+"-back"); if(bk&&chState[id]&&chState[id].sel!=null) bk.click(); svg.transition().duration(RM?0:600).call(C.zoom.transform,d3.zoomIdentity); };
     st.built=true;
   }
   chSummary(C); chProfile(C); chList(C);

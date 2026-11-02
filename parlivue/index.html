@@ -693,6 +693,52 @@ details.rc>summary:focus-visible{outline:2px solid var(--brass);outline-offset:2
 .src,.src a{font-size:12px!important;line-height:1.35!important}
 .src{margin-top:6px!important;color:var(--muted)}
 
+/* ---- Round 2 ---- */
+/* toggle under the flag */
+.meta{flex-direction:column;align-items:flex-end!important;gap:8px!important}
+.hflag figcaption{display:none}
+.themebtn{min-height:36px;padding:0 12px;font-size:13.5px}
+@media (max-width:600px){.meta{gap:6px!important}}
+/* calmer landing headline */
+.hero-h{font:800 clamp(30px,3.6vw,48px)/1.08 var(--f-mark)!important;letter-spacing:-.02em!important;text-transform:none!important;max-width:16ch}
+.hero-p{font-size:17px}
+/* compact riding map cards */
+.rmap{gap:10px!important;padding:8px 10px!important;border-radius:10px!important}
+.rmap-i{width:30px!important;height:30px!important;border-radius:8px!important}
+.rmap-i svg{width:18px!important;height:18px!important}
+.rmap-t .kicker{display:none}
+.rmap-t b{font-size:14px!important;font-weight:600}
+.rmap-t>span:last-child{font-size:12.5px!important}
+.hmaps{gap:8px}
+/* one colour for everything you can click through */
+.hlinks button,.chipbtn,.rbtn,.rmap,.cta.ghost{color:var(--brass)!important;border-color:color-mix(in srgb,var(--brass) 40%,var(--rule))!important;background:color-mix(in srgb,var(--brass) 6%,var(--surface))!important}
+.hlinks button:hover,.chipbtn:hover,.rbtn:hover,.rmap:hover{background:var(--brass)!important;color:#fff!important;border-color:var(--brass)!important}
+.rbtn:hover svg,.rbtn:hover .rbtn-s,.rmap:hover .rmap-i,.rmap:hover .rmap-t>span{color:#fff!important}
+.rbtn-s{color:inherit!important;opacity:.8}
+.cta.solid{background:var(--brass)!important;color:#fff!important}.cta.solid .ci{background:#fff!important;color:var(--brass)!important}
+.cta.ghost{box-shadow:inset 0 0 0 1.5px var(--brass)!important}.cta.ghost .ci{background:var(--brass)!important;color:#fff!important}
+.linkbtn{color:var(--brass)!important}
+/* riding map link inside the summary card */
+.hsum-r .rbtn{margin-top:12px}
+#fm-svg .mnlbl{font-size:13px}
+/* light-mode readability in the chambers */
+:root:not([data-theme="dark"]) .pmdesk{fill:#eceef2!important}
+:root:not([data-theme="dark"]) .pmdesk.front{fill:#e4e1f5!important}
+:root:not([data-theme="dark"]) .crownbox{fill:#ffffff}
+:root:not([data-theme="dark"]) .mlbl2{fill:var(--ink)}
+:root:not([data-theme="dark"]) .sosarea{fill:var(--muted)}
+:root:not([data-theme="dark"]) .clbl{fill:#4a4a4a}
+:root:not([data-theme="dark"]) .flowlbl{fill:#444}
+:root:not([data-theme="dark"]) .pmn.dim,:root:not([data-theme="dark"]) .mlink.dim{opacity:.28}
+/* Senate: wider finder */
+.hfilters input[type="search"]{flex:1 1 320px;min-width:0}
+/* back button under a person's card */
+.backbtn{display:inline-flex!important;align-items:center;gap:6px;margin-top:16px!important;min-height:44px;padding:0 16px!important;border:1px solid var(--brass);border-radius:999px;text-decoration:none!important;font-weight:650}
+/* site footer */
+.sitefoot{border-top:1px solid var(--rule);padding-top:16px;margin-top:8px;color:var(--muted);font-size:13px;line-height:1.55;display:grid;gap:6px}
+.sitefoot p{margin:0;max-width:none}
+.sitefoot a{color:var(--brass)}
+
 /* Theme toggle */
 .themebtn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--rule);border-radius:999px;background:var(--surface);color:var(--ink);font:600 14px var(--f-body);cursor:pointer}
 .themebtn:hover{border-color:var(--brass)}
@@ -732,8 +778,9 @@ details.about>div{margin-top:10px}
       </div>
     </div>
     <div class="meta"><span id="stamp" hidden></span><span id="scope" hidden></span>
-      <button class="themebtn" id="themebtn" type="button" aria-label="Switch to dark mode"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><span class="tlabel">Light</span></button>
+      
       <figure class="hflag" id="hflag" hidden><img id="hflag-img" alt=""><figcaption id="hflag-cap"></figcaption></figure>
+      <button class="themebtn" id="themebtn" type="button" aria-label="Switch to dark mode"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><span class="tlabel">Light</span></button>
     </div>
   </header>
 
@@ -783,8 +830,8 @@ details.about>div{margin-top:10px}
   <div class="main">
     <div class="stage" id="stage">
       <svg id="svg" viewBox="-560 -560 1120 1120" role="img" aria-label="Government wheel"></svg>
-      <div class="ctl"><button id="zin" aria-label="Zoom in" title="Zoom in">+</button><button id="zout" aria-label="Zoom out" title="Zoom out">−</button><button id="zfit" aria-label="Fit to screen" title="Fit to screen" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Fit to screen</span></button></div>
-      <div class="hint">Click any name to bring it to the helm · use + and − to zoom, Fit to screen to start over</div>
+      <div class="ctl"><button id="zin" aria-label="Zoom in" title="Zoom in">+</button><button id="zout" aria-label="Zoom out" title="Zoom out">−</button><button id="zfit" aria-label="Reset the chamber" title="Reset the chamber" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Reset</span></button></div>
+      <div class="hint">Click any name to bring it to the helm · use + and − to zoom, Reset to start over</div>
       <div class="tip" id="tip" hidden></div>
     </div>
     <aside id="panel" aria-live="polite"></aside>
@@ -816,9 +863,22 @@ details.about>div{margin-top:10px}
     <div>Federal ministers come from the Prime Minister's Cabinet page and deputy heads were cross-checked against the GEDS export of Oct 25, 2026. BC data comes from the Province's Executive Council and Deputy Ministers' Council pages. Victoria data comes from the 2026 preliminary election results, the City's audited 2024 and 2025 Annual Reports and the 2025–2029 and 2026–2030 Financial Plans; the Victoria scorecard's status labels compare the City's Strategic Plan with its own Annual Reports. This is a snapshot; confirm anything important at the source linked in each profile.</div>
     </details>
   </footer>
+  <footer class="sitefoot">
+    <p>Plant Productions and ParliVue Pilot is a personal, non-commercial website. Content is for general informational purposes only and may include AI-assisted material that can contain errors. It is not professional advice. Plant Productions is not responsible for third-party links or for decisions made based on this content. Unauthorized copying, scraping, or automated use of this site, including for AI training, is prohibited. See the full <a href="https://plantproductions.com/legal.html#disclaimer">Disclaimer</a> and <a href="https://plantproductions.com/legal.html#privacy">Privacy Policy</a>.</p>
+    <p>&copy; 2026 Plant Productions</p>
+  </footer>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+var PV_BACK='<button class="linkbtn backbtn" type="button" data-pvback>&larr; Back to chamber</button>';
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-pvback]");if(!b)return;
+  if(typeof fmSelect==="function"&&typeof FM!=="undefined"&&FM.D) fmSelect(null); else if(typeof hocSel!=="undefined"){hocSel=null;try{hocProfile();hocList();hocPaint();}catch(err){}}
+  try{d3.select("#hemi").transition().duration(400).call(hz.transform,d3.zoomIdentity);}catch(err){}
+  var st=document.getElementById("hstage")||document.getElementById("hemi"); if(st) st.scrollIntoView({behavior:"smooth",block:"start"});});
+(function(){function move(){document.querySelectorAll(".rbtn:not([data-moved])").forEach(function(a){var root=a.closest("#commons,.chwrap");if(!root)return;var t=root.querySelector(".hsum-r");if(!t)return;a.setAttribute("data-moved","1");t.appendChild(a);});}
+  new MutationObserver(function(){move();}).observe(document.documentElement,{childList:true,subtree:true});})();
+</script>
 <script>
 (function(){
   if(!window.d3||!d3.zoom) return;
@@ -1367,7 +1427,7 @@ function renderVicScore(){
 
   const tabs=[["card","Report card","Strategic Plan progress"],["y26","2026 plan","Budget by department"],["y25","2025 results","Plan vs actual"],["y24","2024 results","Plan vs actual"],["yoy","Year over year","2023–2025 actuals"],["check","Data validation","Sources checked"]];
   el.innerHTML=`<header class="vshead"><div><div class="kicker">City of Victoria · Accountability scorecard · 2024–2026</div><h2 class="nh">Council Scorecard 2024–2026</h2></div>
-     <p class="pagelede">Plans, budgets and results from the City's audited statements, with progress on the 2023–2026 Strategic Plan. Snapshot Nov 1, 2026.</p></header>
+     <p class="pagelede">Plans, budgets and results from the City's audited statements, with progress on the 2023–2026 Strategic Plan.</p></header>
     <div class="vsnav"><div class="vshint"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 2v10M4 8l4 4 4-4"/></svg>Choose a section</div>
     <div class="vstabs big" role="tablist" aria-label="Scorecard sections">${tabs.map((t,i)=>`<button role="tab" id="vst-${t[0]}" aria-controls="vsp-${t[0]}" aria-selected="${i?"false":"true"}" tabindex="${i?-1:0}" data-k="${t[0]}">${t[1]}<small>${t[2]}</small></button>`).join("")}</div></div>
     ${tabs.map((t,i)=>`<div role="tabpanel" id="vsp-${t[0]}" aria-labelledby="vst-${t[0]}" class="vspane" ${i?"hidden":""}>${panes[t[0]]}</div>`).join("")}`;
@@ -1620,7 +1680,7 @@ function drawChamber(){
     const front=r===0, shade=[30,26,23,21,19,17][r];
     if(front){ deskG.append("rect").attr("x",colX(0)-26).attr("y",y-22).attr("width",colX(row.length-1)-colX(0)+52).attr("height",44).attr("rx",12).attr("fill","var(--brass)").attr("fill-opacity",.07).attr("stroke","var(--brass)").attr("stroke-opacity",.45); }
     for(let ci=0;ci<row.length;ci+=2){ const x0=colX(ci)-15, x1=colX(Math.min(ci+1,row.length-1))+15;
-      deskG.append("rect").attr("x",x0).attr("y",y-15).attr("width",x1-x0).attr("height",30).attr("rx",9).attr("fill",`rgb(${shade},${shade},${shade})`).attr("stroke",front?"var(--brass)":"var(--rule)").attr("stroke-opacity",front?.6:1); }
+      deskG.append("rect").attr("x",x0).attr("y",y-15).attr("width",x1-x0).attr("height",30).attr("rx",9).attr("class","pmdesk").attr("fill",`rgb(${shade},${shade},${shade})`).attr("stroke",front?"var(--brass)":"var(--rule)").attr("stroke-opacity",front?.6:1); }
     // party blocks: outline each run of same-party seats along the row
     let start=0; for(let ci=1;ci<=row.length;ci++){ const p=seats[row[start][0]].party; if(ci===row.length||seats[row[ci][0]].party!==p){
         const x0=colX(start)-18, x1=colX(ci-1)+18, solidSide=(opp?"x":"lib");
@@ -1778,7 +1838,7 @@ function hocProfile(){
        ${srcA(HOC_SRC)}${srcA(PLAN_SRC)}<button class="linkbtn" id="hback" style="font-size:13px">← How the government is run</button>`;
   }
   el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap");
-  el.innerHTML=h;
+  el.innerHTML=h+(hocSel!=null?PV_BACK:"");
   const tw=document.getElementById("towheel"); if(tw) tw.onclick=()=>show("federal",{focusKey:fedMinisterByName[s.mp].pm?"hub":fedMinisterByName[s.mp].id});
   const hb=document.getElementById("hback"); if(hb) hb.onclick=()=>{ hocSel=null; FM.sel=null; hocPaint(); hocProfile(); hocList(); d3.select("#hemi").transition().duration(RM?0:600).call(hz.transform,d3.zoomIdentity); };
   el.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>hocSelect(+b.dataset.i,true));
@@ -1833,7 +1893,7 @@ function renderCommons(){
         "Ministers and Secretaries of State from the Prime Minister's website; deputy heads cross-checked against GEDS.")}
       <div class="pmbar"><label class="search" for="fm-q"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
         <input id="fm-q" type="search" placeholder="Search an MP, riding, minister or department" autocomplete="off" aria-label="Search the House of Commons"><ul class="results" id="fm-res" hidden></ul></label>
-        <button class="chipbtn" id="tofedwheel" title="Open the federal Cabinet wheel">Cabinet wheel →</button><div class="zbtn"><button id="hzin" aria-label="Zoom in" title="Zoom in">+</button><button id="hzout" aria-label="Zoom out" title="Zoom out">−</button><button id="hzr" aria-label="Fit to screen" title="Fit to screen" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Fit to screen</span></button></div></div>
+        <div class="zbtn"><button id="hzin" aria-label="Zoom in" title="Zoom in">+</button><button id="hzout" aria-label="Zoom out" title="Zoom out">−</button><button id="hzr" aria-label="Reset the chamber" title="Reset the chamber" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Reset</span></button></div></div>
       <div class="cmgrid" id="cmgrid">
         <div class="pmstage cmchamber"><div class="cmhead"><b>House of Commons of Canada</b><span>343 MPs, 1 per riding, representing the people of Canada</span></div>
           <div class="hstage" id="hstage"><svg id="hemi" viewBox="-312 -524 624 1250" role="img" aria-label="House of Commons chamber, seats by party"></svg><div class="tip" id="htip" hidden></div></div></div>
@@ -1870,10 +1930,10 @@ function renderCommons(){
         <span class="src">Sources: <a href="${P45_SRC[1]}" target="_blank" rel="noopener">${P45_SRC[0]}</a> · <a href="${BYE_SRC[1]}" target="_blank" rel="noopener">${BYE_SRC[0]}</a> · <a href="${GE25_SRC[1]}" target="_blank" rel="noopener">${GE25_SRC[0]}</a></span>
        </section>
      </div></div>`;
-    drawChamber(); wireFold("hoc-fold"); document.getElementById("tofedwheel").onclick=()=>show("federal"); renderFedMap(); window.addEventListener("resize",()=>drawLinks(FM.sel));
+    drawChamber(); wireFold("hoc-fold"); renderFedMap(); window.addEventListener("resize",()=>drawLinks(FM.sel));
     document.getElementById("hzin").onclick=()=>d3.select("#hemi").transition().duration(300).call(hz.scaleBy,1.4);
     document.getElementById("hzout").onclick=()=>d3.select("#hemi").transition().duration(300).call(hz.scaleBy,1/1.4);
-    document.getElementById("hzr").onclick=()=>d3.select("#hemi").transition().duration(RM?0:600).call(hz.transform,d3.zoomIdentity);
+    document.getElementById("hzr").onclick=()=>{ if(typeof fmSelect==="function"&&FM.D) fmSelect(null); else { hocSel=null; hocProfile(); hocList(); hocPaint(); } d3.select("#hemi").transition().duration(RM?0:600).call(hz.transform,d3.zoomIdentity); };
 
     document.querySelectorAll(".lgf").forEach(b=>b.onclick=()=>{ hocLogFilter=b.dataset.f; renderLog(); });
     hocBuilt=true;
@@ -2032,7 +2092,7 @@ function fmPanel(key){
       ${seatBox(m.seat)}<div class="role"><div class="kicker">Two jobs</div><p>As a minister, ${m.name.split(" ")[0]} is responsible for ${m.depts.length>1?"these departments":"this department"} and answers for ${m.depts.length>1?"them":"it"} in the House. As an MP, ${m.name.split(" ")[0]} still represents ${m.seat?m.seat.riding:"a riding"} and votes in the House.</p></div>${srcA(S.cab)}`;
   }
   if(key) h+=`<button class="linkbtn" data-k="" style="font-size:13px">← How the government is run</button>`;
-  el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap"); el.innerHTML=h;
+  el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap"); el.innerHTML=h+(key?PV_BACK:"");
   el.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>fmSelect(b.dataset.k||null));
   el.querySelectorAll("[data-seat]").forEach(b=>b.onclick=()=>{ document.getElementById("hstage").scrollIntoView({behavior:RM?"auto":"smooth",block:"center"}); zoomToSeat(seats[+b.dataset.seat]); });
   el.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>hocSelect(+b.dataset.i,true));
@@ -2112,15 +2172,15 @@ function renderHome(){
     bc:T("light",`<b>BC</b><span>Cabinet and ministries</span>`,"bc"),
     mis:T("light",`<b>12</b><span>Mississauga council seats</span>`,"mississauga"),
     sos:T("dark",`<b>${secretaries.length}</b><span>Secretaries of State</span>`,"commons"),
-    q:T("accent",`<em>Who answers to whom</em>`,"federal")
+    q:T("accent",`<em>Who answers to whom</em>`,"commons")
   };
   const col=(keys,dir,dur)=>`<div class="hcol ${dir}" style="--dur:${dur}s"><div class="hcol-in">${keys.map(k=>tiles[k]).join("")}${keys.map(k=>tiles[k]).join("")}</div></div>`;
   homeEl.innerHTML=`
    <section class="hero">
     <div class="hero-l">
      <div class="kicker">ParliVue Pilot · Canada</div>
-     <h1 class="hero-h">Who runs<br>Canada</h1>
-     <p class="hero-p">See who sits in each chamber, which party they belong to, and who is in charge of every department. Built from <b>official government sources</b>, snapshot October 2026.</p>
+     <h1 class="hero-h">Canada's governments, at a glance</h1>
+     <p class="hero-p">Who holds each seat, which party they sit with, and who leads each department, from Parliament to your provincial legislature and city council. Every entry links to its <b>official source</b>.</p>
      <div class="hero-cta">
       <button class="cta solid" data-go="commons">House of Commons <span class="ci">→</span></button>
       <button class="cta solid" data-go="senate">Senate <span class="ci">→</span></button>
@@ -2131,7 +2191,7 @@ function renderHome(){
    </section>
    <section class="hcards">
     <article class="hcard"><div class="kicker">Federal · Parliament of Canada</div><h2>House of Commons of Canada</h2><p>All 343 seats as the chamber sits, the Prime Minister's Cabinet, and the departments each minister is responsible for.</p>
-      <div class="hlinks"><button data-go="commons">House of Commons</button><button data-go="senate">Senate of Canada</button><button data-go="federal">Federal Cabinet wheel</button></div></article>
+      <div class="hlinks"><button data-go="commons">House of Commons</button><button data-go="senate">Senate of Canada</button></div></article>
     <article class="hcard"><div class="kicker">Provinces</div><h2>Provincial legislatures</h2><p>Each province's elected members, its Premier and Cabinet, and the ministries they run.</p>
       <div class="hlinks"><button data-go="ableg">Alberta</button><button data-go="ontario">Ontario</button><button data-go="onwheel">Ontario Cabinet wheel</button><button data-go="bcleg">British Columbia</button><button data-go="skleg">Saskatchewan</button><button data-go="mbleg">Manitoba</button><button data-go="nbleg">New Brunswick</button><button data-go="nlleg">Newfoundland and Labrador</button><button data-go="nsleg">Nova Scotia</button><button data-go="ntleg">Northwest Territories</button><button data-go="nuleg">Nunavut</button><button data-go="peleg">Prince Edward Island</button><button data-go="ykleg">Yukon</button></div>
       <div class="kicker" style="margin-top:14px">Cities</div>
@@ -2569,7 +2629,7 @@ const CH={
 };
 // build member lists
 CH.senate.members=SEN_RAW.split("\n").map((l,i)=>{ const [n,g,prov,app,ret,adv]=l.split("|"); const [last,first]=n.split(", ");
-CH.senate.flip=(()=>{ try{ const v=localStorage.getItem("pv-flip-senate"); return v==null?true:v==="1"; }catch(e){ return true; } })();
+CH.senate.flip=false;
   return {i,name:`${first} ${last}`,sort:n,group:g,place:prov,appointed:app,retires:ret,advisor:adv}; });
 Object.entries(SEN_VACANT).forEach(([prov,k])=>{ for(let j=0;j<k;j++) CH.senate.members.push({i:CH.senate.members.length,name:"",sort:"~",group:"vac",place:prov}); });
 CH.ontario.members=ON_RAW.split("\n").map((l,i)=>{ const [n,r,p]=l.split("|"); const nm=n.replace(/^Hon\. /,""); return {i,name:nm,hon:ON_CAB_OLA.has(nm),sort:nm,group:p,place:r}; });
@@ -2650,8 +2710,9 @@ function chDraw(C){
   chLayout(C);
   const svg=d3.select("#"+C.id+"-svg"); svg.selectAll("*").remove();
   const H=C.rowY(C.rows-1)+60, need=(C.W+80)-(C.X0-140), Wd=Math.max(need,900), x0=(C.X0-140)-(Wd-need)/2;
-  svg.attr("viewBox",`${x0} ${-H} ${Wd} ${2*H}`);
-  const z=svg.append("g"), g=z.append("g");
+  C.portrait=(C.id==="senate");
+  svg.attr("viewBox",C.portrait?`${-H} ${x0} ${2*H} ${Wd}`:`${x0} ${-H} ${Wd} ${2*H}`);
+  const z=svg.append("g"), g=z.append("g"); if(C.portrait) g.attr("transform","rotate(90)");
   g.append("rect").attr("x",C.X0-20).attr("y",-30).attr("width",C.W-C.X0+40).attr("height",60).attr("rx",8).attr("fill","#ffffff08");
   g.append("text").attr("x",C.X0-80).attr("y",-34).attr("text-anchor","middle").attr("class","clbl brass").text("SPEAKER");
   g.append("rect").attr("x",C.X0-104).attr("y",-24).attr("width",48).attr("height",48).attr("rx",10).attr("fill","none").attr("stroke","var(--brass)").attr("stroke-width",2);
@@ -2663,7 +2724,7 @@ function chDraw(C){
   [[C.govList,F],[C.oppList,-F]].forEach(([list,side])=>{ for(let r=0;r<C.rows;r++){ const row=list.slice(r*C.cols,(r+1)*C.cols); if(!row.length) continue; const y=side*C.rowY(r);
       if(r===0) dg.append("rect").attr("x",C.colX(0)-26).attr("y",y-22).attr("width",C.colX(row.length-1)-C.colX(0)+52).attr("height",44).attr("rx",12).attr("fill","var(--brass)").attr("fill-opacity",.07).attr("stroke","var(--brass)").attr("stroke-opacity",.45);
       const shade=[30,26,23,21,19,17][r];
-      for(let c=0;c<row.length;c+=2){ const a=C.colX(c)-15, b=C.colX(Math.min(c+1,row.length-1))+15; dg.append("rect").attr("x",a).attr("y",y-15).attr("width",b-a).attr("height",30).attr("rx",9).attr("fill",`rgb(${shade},${shade},${shade})`).attr("stroke",r===0?"var(--brass)":"var(--rule)").attr("stroke-opacity",r===0?.6:1); }
+      for(let c=0;c<row.length;c+=2){ const a=C.colX(c)-15, b=C.colX(Math.min(c+1,row.length-1))+15; dg.append("rect").attr("class","pmdesk").attr("x",a).attr("y",y-15).attr("width",b-a).attr("height",30).attr("rx",9).attr("fill",`rgb(${shade},${shade},${shade})`).attr("stroke",r===0?"var(--brass)":"var(--rule)").attr("stroke-opacity",r===0?.6:1); }
       let s=0; for(let c=1;c<=row.length;c++){ if(c===row.length||row[c].group!==row[s].group){ const gr=row[s].group; if(!(C.id==="ontario"&&gr==="pc")) pg.append("rect").attr("x",C.colX(s)-18).attr("y",y-18.5).attr("width",C.colX(c-1)-C.colX(s)+36).attr("height",37).attr("rx",12).attr("fill","none").attr("stroke",C.groups[gr].color).attr("stroke-width",1.4).attr("stroke-opacity",.6); s=c; } }
       dg.append("text").attr("x",C.colX(0)-34).attr("y",y+4).attr("text-anchor","end").attr("class","clbl").text(r+1);
   } });
@@ -2675,6 +2736,11 @@ function chDraw(C){
     .on("mouseleave",function(e,m){ if(!RM) d3.select(this).transition("h").duration(200).attr("r",chState[C.id].sel===m.i?15.5:12.5); document.getElementById(C.id+"-tip").hidden=true; });
   if(!RM) dots.transition().delay(m=>120+(m.x-C.X0)*1.6+Math.abs(m.y)*.6).duration(420).ease(d3.easeBackOut.overshoot(1.6)).attr("r",12.5);
   const _vb=svg.node().viewBox.baseVal; C.zoom=d3.zoom().scaleExtent([1,5]).translateExtent([[_vb.x,_vb.y],[_vb.x+_vb.width,_vb.y+_vb.height]]).on("zoom",e=>z.attr("transform",e.transform)); svg.call(C.zoom).on("dblclick.zoom",null);
+  if(C.portrait){ g.selectAll("text.side,text.brass").remove(); g.selectAll("text").each(function(){ const t=d3.select(this); const x=+t.attr("x")||0, y=+t.attr("y")||0; t.attr("transform",`rotate(-90,${x},${y})`).attr("text-anchor","middle"); });
+    const lg=z.insert("g",":first-child").attr("aria-hidden","true"), ry=C.rowY(C.rows-1);
+    lg.append("text").attr("x",0).attr("y",C.X0-114).attr("text-anchor","middle").attr("class","clbl brass").text("SPEAKER");
+    lg.append("text").attr("x",-(C.rowY(0)+ry)/2).attr("y",C.W+62).attr("text-anchor","middle").attr("class","clbl side").text("GOVERNMENT SIDE");
+    lg.append("text").attr("x",(C.rowY(0)+ry)/2).attr("y",C.W+62).attr("text-anchor","middle").attr("class","clbl side").text("OPPOSITION SIDE"); }
   chPaint(C);
 }
 function chTip(C,e,m){ const t=document.getElementById(C.id+"-tip"); const G=C.groups[m.group];
@@ -2754,7 +2820,7 @@ function chProfile(C){
 }
 function chSelect(C,i,zoom){ if(C.map){ document.getElementById(C.map.stageId).scrollIntoView({behavior:RM?"auto":"smooth",block:"center"}); return C.map.select(C.map.key(i),zoom); } const st=chState[C.id]; st.sel=i; st.panel=null; st.focus=null; chSummary(C); chProfile(C); chList(C);
   if(zoom){ const m=C.members[i], svg=d3.select("#"+C.id+"-svg"), vb=svg.attr("viewBox").split(" ").map(Number), k=2.6, cx=vb[0]+vb[2]/2, cy=vb[1]+vb[3]/2;
-    svg.transition().duration(RM?0:750).ease(d3.easeCubicInOut).call(C.zoom.transform,d3.zoomIdentity.translate(cx-m.x*k,cy-m.y*k).scale(k)); }
+    const mx=C.portrait?-m.y:m.x, my=C.portrait?m.x:m.y; svg.transition().duration(RM?0:750).ease(d3.easeCubicInOut).call(C.zoom.transform,d3.zoomIdentity.translate(cx-mx*k,cy-my*k).scale(k)); }
   if(window.innerWidth<980) document.getElementById(C.id+"-panel").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"}); }
 
 function renderChamber(id){
@@ -2814,7 +2880,7 @@ function renderChamber(id){
            [["Point at","or tap any dot to see who sits there."],["Click a seat","to zoom in and open that senator's details."],["Tap a group","above the seating plan to light up its seats and open its breakdown."],["Search","the list below to find a senator or province."]],
            "")}
          <div class="hbar"><div class="kicker">Two seats to a desk</div>
-         <div class="zbtn"><button id="${id}-flip" class="rotbtn" title="Swap which side is at the top">⇅ Flip chamber</button><button id="${id}-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="${id}-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="${id}-zr" aria-label="Fit to screen" title="Fit to screen" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Fit to screen</span></button></div></div>
+         <div class="zbtn">${id==="senate"?"":`<button id="${id}-flip" class="rotbtn" title="Swap which side is at the top">⇅ Flip chamber</button>`}<button id="${id}-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="${id}-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="${id}-zr" aria-label="Reset the chamber" title="Reset the chamber" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Reset</span></button></div></div>
          <div class="hstage" id="${id}-stage"><svg id="${id}-svg" role="img" aria-label="${C.title} chamber"></svg><div class="tip" id="${id}-tip" hidden></div></div>
          <div class="src">${C.approx}${id==="ontario"?` Seating plan: <a href="${ON_PLAN_SRC[1]}" target="_blank" rel="noopener">${ON_PLAN_SRC[0]}</a>.`:""}</div></div>
        <div class="nsec"><div class="hfilters"><input id="${id}-q" type="search" placeholder="Find a ${id==="senate"?"senator":"MPP"} or ${C.placeNoun.toLowerCase()}" aria-label="Search">
@@ -2832,7 +2898,7 @@ function renderChamber(id){
     document.getElementById(id+"-zin").onclick=()=>svg.transition().duration(300).call(C.zoom.scaleBy,1.4);
     document.getElementById(id+"-zout").onclick=()=>svg.transition().duration(300).call(C.zoom.scaleBy,1/1.4);
     const fb=document.getElementById(id+"-flip"); if(fb) fb.onclick=()=>{ C.flip=!C.flip; try{ localStorage.setItem("pv-flip-"+id,C.flip?"1":"0"); }catch(e){} chDraw(C); };
-    document.getElementById(id+"-zr").onclick=()=>svg.transition().duration(RM?0:600).call(C.zoom.transform,d3.zoomIdentity);
+    document.getElementById(id+"-zr").onclick=()=>{ const bk=document.getElementById(id+"-back"); if(bk&&chState[id]&&chState[id].sel!=null) bk.click(); svg.transition().duration(RM?0:600).call(C.zoom.transform,d3.zoomIdentity); };
     st.built=true;
   }
   chSummary(C); chProfile(C); chList(C);
@@ -3176,7 +3242,7 @@ function renderBcMap(){
   const slot=document.getElementById("bm-slot"); if(!slot) return;
   slot.innerHTML=`<div class="pmbar bmbar"><label class="search" for="bm-q"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
       <input id="bm-q" type="search" placeholder="Search an MLA, riding, minister or ministry" autocomplete="off" aria-label="Search British Columbia"><ul class="results" id="bm-res" hidden></ul></label>
-      <div class="zbtn"><button id="bm-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="bm-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="bm-zr" aria-label="Fit to screen" title="Fit to screen" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Fit to screen</span></button></div></div>
+      <div class="zbtn"><button id="bm-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="bm-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="bm-zr" aria-label="Reset the chamber" title="Reset the chamber" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Reset</span></button></div></div>
     <div class="pmgrid"><div class="pmstage" id="bm-stage"><svg id="bm-svg" viewBox="${BM_VB.join(" ")}" role="img" aria-label="British Columbia power map: the Legislature, Premier, Cabinet and ministries"></svg><div class="tip" id="bm-tip" hidden></div></div>
       <aside class="hpanel pmpanel" id="bm-panel" aria-live="polite"></aside></div>`;
   bmBuild();
@@ -3638,7 +3704,7 @@ function renderSkMap(){
   const slot=document.getElementById("sm-slot"); if(!slot) return;
   slot.innerHTML=`<div class="pmbar smbar"><label class="search" for="sm-q"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
       <input id="sm-q" type="search" placeholder="Search an MLA, constituency, minister or ministry" autocomplete="off" aria-label="Search Saskatchewan"><ul class="results" id="sm-res" hidden></ul></label>
-      <div class="zbtn"><button id="sm-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="sm-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="sm-zr" aria-label="Fit to screen" title="Fit to screen" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Fit to screen</span></button></div></div>
+      <div class="zbtn"><button id="sm-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="sm-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="sm-zr" aria-label="Reset the chamber" title="Reset the chamber" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Reset</span></button></div></div>
     <div class="pmgrid"><div class="pmstage" id="sm-stage"><svg id="sm-svg" viewBox="${SM_VB.join(" ")}" role="img" aria-label="Saskatchewan power map: the Legislature, Premier, Cabinet and ministries"></svg><div class="tip" id="sm-tip" hidden></div></div>
       <aside class="hpanel pmpanel" id="sm-panel" aria-live="polite"></aside></div>`;
   smBuild();
@@ -3909,7 +3975,7 @@ function renderPvMap(cfg){
   const slot=document.getElementById(`${pre}-slot`); if(!slot) return;
   slot.innerHTML=`<div class="pmbar ${pre}bar"><label class="search" for="${pre}-q"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
       <input id="${pre}-q" type="search" placeholder="${cfg.searchPh||`Search an ${cfg.memberWord||"MLA"}, ${cfg.placeNoun}, minister or ${(cfg.minNoun||"ministry").toLowerCase()}`}" autocomplete="off" aria-label="Search ${cfg.region}"><ul class="results" id="${pre}-res" hidden></ul></label>
-      <div class="zbtn"><button id="${pre}-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="${pre}-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="${pre}-zr" aria-label="Fit to screen" title="Fit to screen" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Fit to screen</span></button></div></div>
+      <div class="zbtn"><button id="${pre}-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="${pre}-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="${pre}-zr" aria-label="Reset the chamber" title="Reset the chamber" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Reset</span></button></div></div>
     <div class="pmgrid"><div class="pmstage" id="${pre}-stage"><svg id="${pre}-svg" viewBox="${PV_VB.join(" ")}" role="img" aria-label="${cfg.region} power map: the Legislative Assembly, Premier, Cabinet and ${(cfg.minTitle||"ministries").toLowerCase()}"></svg><div class="tip" id="${pre}-tip" hidden></div></div>
       <aside class="hpanel pmpanel" id="${pre}-panel" aria-live="polite"></aside></div>`;
   pvBuild(cfg);
@@ -4592,7 +4658,7 @@ const AB_CFG={id:"ableg",pre:"ab",region:"Alberta",capital:"Edmonton",gov:"ucp",
     "Angela Pitt":"Sits with the governing UCP and serves as Deputy Speaker and Chair of Committees.",
     "Nate Horner":"Sits with the governing UCP. Stepped down as Minister of Finance in May 2026."},
   noteSrc:{"Pete Guthrie":AB_S.guthrie,"Scott Sinclair":AB_S.guthrie,"Nate Horner":AB_S.shuf},
-  cabSub:"Chosen by the Premier from UCP MLAs. Titles as of October 27, 2026.",
+  cabSub:"Chosen by the Premier from UCP MLAs.",
   title:"Legislative Assembly of Alberta",sub:"87 seats, 1 per constituency, representing the people of Alberta",
   seats:AB_SEATS,T:AB_T,isGov:(x)=>x<626,rowOf:(x)=>({463:1,319:2,177:3,789:1,930:2,1072:3})[x],chair:[626,62],
   aisle:[510,745,95,710],table:[626,190],sideLbl:{gov:[319,0],opp:[930,0]},cx:AB_T(626,0)[0],titleX:-360,titleY:-342,bot:312,lineX:[-600,-150],deskW:54,deskH:30,
@@ -4688,7 +4754,7 @@ const YK_CFG={id:"ykleg",pre:"yk",region:"Yukon",capital:"Whitehorse",gov:"yp",g
   oppLeader:"Kate White",oppLeaderTitle:"Leader of the Official Opposition",
   roles:{"Kate White":"Leader of the Official Opposition","Lane Tredger":"Official Opposition House Leader","Debra-Leigh Reti":"Leader of the Third Party","Patti McLeod":"Deputy Speaker and Chair of Committee of the Whole","Tyler Porter":"Deputy Chair of Committee of the Whole"},
   notes:{"Kate White":"Leads the Yukon NDP, the Official Opposition.","Debra-Leigh Reti":"The only Liberal MLA, leading the third party. Her seat was confirmed by a recount on November 12, 2025.","Patti McLeod":"Sits with the governing Yukon Party and serves as Deputy Speaker."},
-  cabSub:"Chosen by the Premier from Yukon Party MLAs. Portfolios as of August 19, 2026.",
+  cabSub:"Chosen by the Premier from Yukon Party MLAs.",
   title:"Yukon Legislative Assembly",sub:"21 MLAs, 1 per electoral district, representing the people of Yukon",
   seats:YK_SEATS,T:YK_T,isGov:(x,y)=>y>385,rowOf:(x,y)=>({500:1,610:2,265:1,160:2})[y],chair:[65,385],spkLabel:"below",
   vacant:[[505,160]],aisle:[60,600,330,440],table:[260,385],sideLbl:{gov:[0,555],opp:[0,212]},cx:-400,titleX:-400,titleY:-342,bot:250,lineX:[-600,-150],deskW:58,deskH:56,
@@ -5623,7 +5689,7 @@ function renderPowerMap(){
   const slot=document.getElementById("pm-slot"); if(!slot) return;
   slot.innerHTML=`<div class="pmbar"><label class="search" for="pm-q"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
       <input id="pm-q" type="search" placeholder="Search an MPP, riding, minister or ministry" autocomplete="off" aria-label="Search Ontario"><ul class="results" id="pm-res" hidden></ul></label>
-      <div class="zbtn"><button id="pm-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="pm-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="pm-zr" aria-label="Fit to screen" title="Fit to screen" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Fit to screen</span></button></div></div>
+      <div class="zbtn"><button id="pm-zin" aria-label="Zoom in" title="Zoom in">+</button><button id="pm-zout" aria-label="Zoom out" title="Zoom out">−</button><button id="pm-zr" aria-label="Reset the chamber" title="Reset the chamber" class="zreset"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 2.5v3h3"/></svg><span>Reset</span></button></div></div>
     <div class="pmgrid"><div class="pmstage" id="pm-stage"><svg id="pm-svg" viewBox="${PM_VB.join(" ")}" role="img" aria-label="Ontario power map: the Legislature, Premier, Cabinet and ministries"></svg><div class="tip" id="pm-tip" hidden></div></div>
       <aside class="hpanel pmpanel" id="pm-panel" aria-live="polite"></aside></div>`;
   pmBuild();
