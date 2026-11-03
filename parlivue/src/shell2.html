@@ -555,10 +555,10 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .sct tr.tot th,.sct tr.tot td{font-weight:700;border-top:1px solid var(--muted)}
 .sct td.up{color:var(--check)} .sct td.dn{color:var(--ok)}
 .sct td:has(> .muted),.sct td.muted{text-align:left}
-#vsp-check .sct td,#vsp-y24 .sct td:nth-child(2){text-align:left}
+#vsp-check .sct td,#vsp-y24 .sct.st3 td{text-align:left}
 #vsp-y26 .sct td:nth-child(2),#vsp-y26 .sct td:nth-child(5),#vsp-card .sct td:nth-child(2),#vsp-card .sct td:nth-child(6){text-align:left}
 .vis{width:28%;min-width:140px}
-.sct th[scope=row]{min-width:150px} #vsp-check .sct td:last-child,#vsp-card .sct td:last-child,#vsp-y26 .sct td:last-child,#vsp-y24 .sct td:nth-child(2){min-width:240px}
+.sct th[scope=row]{min-width:150px} #vsp-check .sct td:last-child,#vsp-card .sct td:last-child,#vsp-y26 .sct td:last-child,#vsp-y24 .sct.st3 td:nth-child(2),#vsp-y24 .sct.st3 td:nth-child(4){min-width:220px}
 .pv{display:grid;gap:2px}
 .pv i,.pvkey i{display:block;height:5px;border-radius:3px}
 .pb{background:var(--muted);opacity:.55} .pa{background:var(--brass)}
@@ -869,6 +869,19 @@ details.about>div{margin-top:10px}
 .hlinks a:hover,.hlinks a:focus-visible{background:var(--brass);color:#fff;border-color:var(--brass)}
 .hsoon{font:500 13.5px var(--f-body);padding:8px 14px;border-radius:999px;border:1px dashed var(--rule);color:var(--muted)}
 .hero-big{display:block;font:800 clamp(56px,7.5vw,104px)/0.95 var(--f-mark);letter-spacing:-.03em;color:var(--ink);margin-bottom:10px}
+/* dashboard v4: traffic-light colours, one table style */
+:root{--yel:#d9a300} @media (prefers-color-scheme:dark){:root{--yel:#f2c94c}} :root[data-theme="dark"]{--yel:#f2c94c} :root[data-theme="light"]{--yel:#d9a300}
+.dgauge.watch{--gc:var(--yel)} .dgauge.off{--gc:var(--check)}
+.dpill.watch{color:color-mix(in srgb,var(--yel) 70%,var(--ink));background:color-mix(in srgb,var(--yel) 20%,transparent)}
+.dkey i.watch{background:var(--yel)}
+.sct td small{display:block;margin-left:0;font-size:12.5px}
+.sct td.up,.sct td.up small{color:var(--check)} .sct td.dn,.sct td.dn small{color:var(--ok)}
+.sct td.up,.sct td.dn{font-weight:600}
+.dtiming{font-size:13px;line-height:1.45;color:var(--muted);border-left:3px solid var(--rule);padding:2px 0 2px 10px;max-width:110ch}
+.rctrack{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:4px 0}
+.rctrack>div{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:6px 8px;font-size:13px;line-height:1.35}
+.rctrack span{display:block;font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--brass)}
+.sct td.cau,.sct td.cau small{color:color-mix(in srgb,var(--yel) 70%,var(--ink));font-weight:600}
 </style>
 
 <div class="wrap">
