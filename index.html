@@ -3,143 +3,285 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Plant Productions — Ideas into production.</title>
-<meta name="description" content="A home for projects, pilots and possibilities. Explore production work from Plant Productions, beginning with ParliVue Pilot.">
-<meta name="theme-color" content="#ffffff">
+<meta name="description" content="A home for projects, pilots and possibilities from Plant Productions, beginning with ParliVue Pilot.">
+<meta name="theme-color" content="#000000">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Poppins:wght@500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Space+Grotesk:wght@300;400&amp;display=swap">
 <style>
-* {box-sizing:border-box}
-html {scroll-behavior:smooth}
-body {margin:0;background:white;color:#171717;font:18px/1.55 Arial,Helvetica,sans-serif}
-.wrap {width:min(1200px,92%);margin:auto}
-a {color:inherit;text-decoration:none} a:focus-visible {outline:2px solid;outline-offset:5px}
-.skip {position:absolute;top:-80px}.skip:focus {top:0;background:white}
-header,.brand,.nav {display:flex;align-items:center}
-header {justify-content:space-between;min-height:96px;gap:12px}
-.brand {gap:12px}.mark {width:42px;height:44px}.wordmark {font-weight:bold;font-size:28px;line-height:1}.wordmark span {display:block;font-weight:400;font-size:13px;letter-spacing:2px;margin-top:5px}
-.nav {color:white;background:#202020;gap:24px;padding:11px 24px;border-radius:40px;font-size:16px}
-.hero {text-align:center;padding:48px 0 52px}.eyebrow,.tag {font-size:15px;letter-spacing:1.5px;color:#555}.eyebrow {margin:0 0 18px}
-h1 {margin:0;font-size:clamp(52px,7vw,94px);letter-spacing:-.065em;text-transform:uppercase;line-height:.95}
-h1 span {color:#666}.intro {margin:22px 0 0;font-size:20px;color:#555}
-h2 {font-size:20px;font-weight:500;margin:0 0 20px}
-.cards {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;perspective:1400px}
-.project {border-radius:18px;border:1px solid #dedede;background:#fff;overflow:hidden;box-shadow:0 12px 25px -16px #0004;animation:arrive .9s cubic-bezier(.22,.75,.2,1) backwards}
-.project:nth-child(2) {animation-delay:.13s}.project:nth-child(3) {animation-delay:.26s}
-@keyframes arrive {from{opacity:0;transform:translateX(26px) translateY(20px) rotateY(-9deg)}to{opacity:1;transform:none}}
-.art {margin:9px;height:clamp(155px,15vw,205px);border-radius:12px;background:radial-gradient(ellipse at 32% 22%,#fff,#ededed);display:grid;place-items:center;position:relative;overflow:hidden}
-.plaque {width:82%;height:58%;display:grid;place-items:center;padding:18px;background:#111;border-radius:10px;transform:rotate(-5deg);box-shadow:3px 4px #888,8px 13px 15px #0003}.plaque img {width:100%}
-.layers i {grid-area:1/1;width:43%;height:46%;border:1px solid #bbb;border-radius:8px;background:linear-gradient(140deg,#fff,#999);box-shadow:4px 7px 10px #0002;transform:rotate(-15deg) skewX(11deg) translateY(22px)}
-.layers i:nth-child(2){transform:rotate(-15deg) skewX(11deg)}.layers i:nth-child(3){transform:rotate(-15deg) skewX(11deg) translateY(-22px)}
-.folds i {width:50%;height:53%;background:repeating-linear-gradient(90deg,#797979 0%,#dedede 7%,#fafafa 10%,#777 11%);transform:skewY(-12deg) rotate(-9deg);box-shadow:5px 10px 13px #0002}
-.details {padding:18px 22px 24px}.tag {margin:0 0 8px}.details h3 {font-size:clamp(24px,2.3vw,34px);line-height:1.15;letter-spacing:-.04em;font-weight:550;margin:0}.details p:not(.tag) {color:#555;margin:12px 0}.status {display:inline-block;border:1px solid #ddd;border-radius:30px;padding:4px 12px;font-size:15px}
-#about {margin-top:54px;padding:32px 0;border-top:1px solid #ddd;display:flex;gap:45px;justify-content:space-between}#about p {
-  max-width: 38ch;
-  margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.375rem, 2.15vw, 1.875rem);
-  line-height: 1.4;
-  text-wrap: pretty;
-}footer {padding:22px 0;border-top:1px solid #ddd;font-size:15px;color:#555}
-@media(max-width:720px){.cards{grid-template-columns:1fr}.art{height:185px}.hero{padding:32px 0 40px}#about{display:block}.nav{gap:14px;padding:10px 16px}.mark{width:32px}.brand{gap:7px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.project{animation:none}}
-body {font-family:Inter,Arial,sans-serif}
-h1,h2,h3 {font-family:Poppins,Arial,sans-serif}
-h1 {font-weight:700;font-size:clamp(40px,7vw,94px)}
-.details h3 {font-weight:600}
-.studio-logo {display:block;width:clamp(150px,20vw,255px);height:auto}
-.disclaimer p {max-width:76ch}
-@media(max-width:480px){header{flex-wrap:wrap;padding:16px 0}.nav{flex-wrap:wrap;font-size:14px}}
-footer a{text-decoration:underline;text-underline-offset:3px}
-.status.launch {background:#171717;color:#fff;border-color:#171717;transition:background .2s}.status.launch:hover {background:#444}
-.details h3 a:hover {text-decoration:underline;text-underline-offset:4px}
+:root{--ink:#f4f4f2;--quiet:#8d8d8a;--line:#262626;--bg:#000}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible{outline:1px solid var(--ink);outline-offset:6px}
+.skip{position:absolute;top:-80px;left:16px;z-index:20}.skip:focus{top:12px;background:#000;padding:6px 10px}
 
-/* A black stage with light catching the lower edges of the rising bubbles. */
-.hero {
-  --stage-height: clamp(390px, 62svh, 640px);
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  height: var(--stage-height);
-  display: grid;
-  align-content: center;
-  padding: 32px 18px;
-  margin-bottom: 40px;
-  background: #020202;
-  color: #fafafa;
-  border-radius: 18px;
+/* Floating spheres */
+#spheres{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.page{position:relative;z-index:1}
+.wrap{width:min(1280px,100% - 32px);margin:auto}
+
+/* Header */
+header{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px 0}
+.brand img{display:block;width:clamp(120px,13vw,170px);height:auto}
+nav{display:flex;gap:clamp(16px,3vw,40px);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+nav a{position:relative;padding:6px 0;color:#cfcfcc;transition:color .3s}
+nav a:hover{color:#fff}
+
+/* Hero */
+.hero{min-height:calc(100svh - 104px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.2fr);align-items:end;gap:32px;padding-bottom:9vh}
+.lede{max-width:22ch;font-size:13px;font-weight:500;line-height:1.45;margin:0 0 22px}
+.cta{display:inline-flex;justify-content:space-between;width:140px;padding-bottom:6px;border-bottom:1px solid var(--ink);font-size:13px;font-weight:500}
+h1{margin:0;font:300 clamp(48px,7.6vw,120px)/1.02 "Space Grotesk",Inter,sans-serif;letter-spacing:-.035em}
+h1 .outline{color:transparent;-webkit-text-stroke:1px #bdbdb9}
+
+/* Projects */
+.projects{padding:12vh 0 14vh}
+.projects-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:36px}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--quiet);margin:0 0 12px}
+h2{margin:0;font:300 clamp(32px,4vw,56px)/1.05 "Space Grotesk",Inter,sans-serif;letter-spacing:-.03em}
+h2 .outline{color:transparent;-webkit-text-stroke:1px #bdbdb9}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.card{position:relative;display:block;aspect-ratio:4/5;border-radius:18px;overflow:hidden;background:#0b0b0b;isolation:isolate}
+.card::before{content:"";position:absolute;inset:0;z-index:3;border:1px solid var(--line);border-radius:inherit;pointer-events:none;transition:border-color .4s}
+.card:hover::before{border-color:#4a4a4a}
+.card .art{position:absolute;inset:0;z-index:-1;transition:transform 1s cubic-bezier(.2,.7,.2,1)}
+.card:hover .art,.card:focus-visible .art{transform:scale(1.05)}
+.card::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to top,#000 0%,#000c 30%,transparent 65%);transition:opacity .5s}
+.card .num{position:absolute;top:18px;left:20px;font-size:11px;letter-spacing:.14em;color:var(--quiet)}
+.card .go{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:1px solid #ffffff40;display:grid;place-items:center;font-size:14px;transition:background .3s,color .3s,transform .5s}
+.card:hover .go{background:#fff;color:#000;transform:rotate(45deg)}
+.card .body{position:absolute;left:20px;right:20px;bottom:20px}
+.card h3{margin:0;font:400 clamp(20px,1.9vw,26px)/1.15 "Space Grotesk",Inter,sans-serif;letter-spacing:-.02em}
+.card .status{display:inline-block;margin-top:8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--quiet)}
+.card .reveal{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s cubic-bezier(.2,.7,.2,1)}
+.card .reveal>div{overflow:hidden}
+.card .reveal p{margin:10px 0 0;font-size:13px;line-height:1.5;color:#d4d4d1;opacity:0;transform:translateY(8px);transition:opacity .45s .08s,transform .45s .08s}
+.card:hover .reveal,.card:focus-visible .reveal{grid-template-rows:1fr}
+.card:hover .reveal p,.card:focus-visible .reveal p{opacity:1;transform:none}
+.card.soon{cursor:default}
+
+/* Card art */
+.art-parlivue{display:grid;place-items:center;background:radial-gradient(circle at 50% 38%,#2a2a2a,#050505 62%)}
+.art-parlivue img{width:62%;transform:translateY(-30%);filter:grayscale(1) contrast(1.1);mix-blend-mode:lighten}
+.art svg{position:absolute;inset:0;width:100%;height:100%}
+
+/* Footer */
+footer{border-top:1px solid var(--line);padding:28px 0 36px;font-size:12px;color:var(--quiet);display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:24px}
+footer p{margin:0;max-width:78ch}
+footer a{text-decoration:underline;text-underline-offset:3px;color:#c9c9c6}
+.foot-right{text-align:right;display:grid;gap:8px;justify-items:end;align-content:start}
+.motion-toggle{background:none;border:0;padding:0;color:var(--quiet);font:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+
+/* White dot cursor (mouse devices only) */
+.dot{position:fixed;top:0;left:0;z-index:50;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:#fff;pointer-events:none;mix-blend-mode:difference;opacity:0;transition:width .35s cubic-bezier(.2,.7,.2,1),height .35s cubic-bezier(.2,.7,.2,1),margin .35s cubic-bezier(.2,.7,.2,1),opacity .3s}
+.dot.big{width:56px;height:56px;margin:-28px 0 0 -28px}
+@media (hover:hover) and (pointer:fine){
+  html.has-dot,html.has-dot a,html.has-dot button{cursor:none}
+  html.has-dot .dot{opacity:1}
 }
-.hero .eyebrow, .hero .intro { color: #ddd; }
-.hero h1 span { color: #eee; }
-.bubbles { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
-.bubbles i {
-  position: absolute;
-  top: 100%;
-  left: var(--x);
-  width: var(--size);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background:
-    radial-gradient(ellipse at 44% 88%, #58585855, transparent 25%),
-    radial-gradient(circle at 49% 34%, #020202 49%, #090909 65%, #222 78%, #505050 90%, #111 100%);
-  box-shadow: inset 0 -2px 3px #ddd5;
-  animation: rise var(--duration) linear var(--delay) infinite;
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;align-items:end;gap:28px}
+  .hero .side{order:2}
+  .cards{grid-template-columns:1fr;max-width:460px}
+  .card{aspect-ratio:2/3}
+  .projects-head{display:block}
+  footer{grid-template-columns:1fr}.foot-right{text-align:left;justify-items:start}
 }
-@keyframes rise {
-  from { transform: translate(0, 1px); }
-  to { transform: translate(var(--drift), calc(-100% - var(--stage-height) - 2px)); }
+@media (max-width:560px){
+  header{flex-direction:column;align-items:flex-start;gap:14px}
+  nav{flex-wrap:wrap;gap:8px 20px}
 }
-.motion-toggle {
-  position: absolute;
-  right: 16px;
-  bottom: 12px;
-  padding: 7px 12px;
-  color: #ddd;
-  background: #111;
-  border: 1px solid #555;
-  border-radius: 20px;
-  cursor: pointer;
+/* Touch screens have no hover, so descriptions stay open */
+@media (hover:none){
+  .card .reveal{display:block}.card .reveal>div{overflow:visible}.card .reveal p{opacity:1;transform:none}
 }
-.hero.paused .bubbles i { animation-play-state: paused; }
-@media (prefers-reduced-motion: reduce) {
-  .bubbles i { animation-play-state: paused; }
-  .motion-toggle { display: none; }
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .card .art,.card .reveal,.card .reveal p,.card .go{transition:none}
 }
 </style>
 </head>
 <body>
-
+<canvas id="spheres" aria-hidden="true"></canvas>
+<div class="dot" aria-hidden="true"></div>
 <a class="skip" href="#main">Skip to content</a>
-<div class="wrap">
-<header><a class="brand" href="./" aria-label="Plant Productions home"><img class="studio-logo" alt="Plant Productions" width="2172" height="724" src="Plant-Productions-Logo.png"></a><nav class="nav" aria-label="Main navigation"><a href="#projects">Projects</a><a href="#about">About</a><a href="legal.html">Legal</a></nav></header>
+
+<div class="page"><div class="wrap">
+<header>
+  <a class="brand" href="./" aria-label="Plant Productions home"><img alt="Plant Productions" width="1086" height="362" src="logo-white.png"></a>
+  <nav aria-label="Main navigation">
+    <a href="parlivue/">ParliVue Pilot</a>
+    <a href="#orcas">Orcas of the Pacific</a>
+    <a href="legal.html">Legal</a>
+  </nav>
+</header>
+
 <main id="main">
 <section class="hero">
-  <div class="bubbles" aria-hidden="true">
-    <i style="--x:-9%; --size:clamp(150px,23vw,300px); --duration:17s; --delay:-11s; --drift:12px"></i>
-    <i style="--x:4%; --size:clamp(95px,12vw,165px); --duration:15s; --delay:-3s; --drift:-9px"></i>
-    <i style="--x:18%; --size:clamp(60px,8vw,110px); --duration:19s; --delay:-14s; --drift:18px"></i>
-    <i style="--x:37%; --size:clamp(100px,14vw,190px); --duration:21s; --delay:-2s; --drift:-14px"></i>
-    <i style="--x:60%; --size:clamp(68px,8vw,110px); --duration:16s; --delay:-13s; --drift:14px"></i>
-    <i style="--x:76%; --size:clamp(110px,17vw,230px); --duration:20s; --delay:-9s; --drift:-12px"></i>
-    <i style="--x:90%; --size:clamp(150px,21vw,280px); --duration:18s; --delay:-15s; --drift:-18px"></i>
-    <i style="--x:96%; --size:88px; --duration:14s; --delay:-4s; --drift:-16px"></i>
+  <div class="side">
+    <p class="lede">A collection of digital creations and discoveries.</p>
+    <a class="cta" href="#projects"><span>View projects</span><span aria-hidden="true">&#8600;</span></a>
   </div>
-<p class="eyebrow">Plant Productions</p><h1>Ideas into<br><span>production.</span></h1><p class="intro">A collection of digital creations and discoveries.</p>
-<button class="motion-toggle" type="button" hidden>Pause motion</button>
+  <h1>Ideas into<br><span class="outline">production.</span></h1>
 </section>
-<section id="projects" aria-labelledby="collection"><h2 id="collection">The project collection</h2>
-<div class="cards">
-<article class="project"><a class="art" href="parlivue/" aria-label="Open ParliVue Pilot"><div class="plaque"><img alt="" src="parlivue-logo.png"></div></a><div class="details"><p class="tag">Project 01</p><h3><a href="parlivue/">ParliVue Pilot</a></h3><p>An independent project with summaries in English. The official parliamentary record is available in English and French.</p><a class="status launch" href="parlivue/">Open the pilot &rarr;</a></div></article>
-<article class="project"><div class="art layers" aria-hidden="true"><i></i><i></i><i></i></div><div class="details"><p class="tag">Project 02</p><h3>Coming soon</h3></div></article>
-<article class="project"><div class="art folds" aria-hidden="true"><i></i></div><div class="details"><p class="tag">Project 03</p><h3>Coming soon</h3></div></article>
-</div></section>
-<section id="about"><h2>About the collection</h2><p>Plant Productions is where I share the digital projects I build and the discoveries that inspire them.</p></section>
-</main><footer><section class="disclaimer" aria-labelledby="footer-disclaimer"><h2 id="footer-disclaimer">Disclaimer and Privacy Policy</h2><p>Plant Productions is a personal, non-commercial website. Content is for general informational purposes only and may include AI-assisted material that can contain errors. It is not professional advice. Plant Productions is not responsible for third-party links or for decisions made based on this content. Unauthorized copying, scraping, or automated use of this site, including for AI training, is prohibited. See the full <a href="legal.html#disclaimer">Disclaimer</a> and <a href="legal.html#privacy">Privacy Policy</a>.</p></section><p>Feedback: <a href="mailto:hello@plantproductions.com">hello@plantproductions.com</a></p>© 2026 Plant Productions</footer></div><script>
-const motionButton = document.querySelector('.motion-toggle');
-motionButton.hidden = false;
-motionButton.addEventListener('click', () => {
-  const paused = motionButton.closest('.hero').classList.toggle('paused');
-  motionButton.textContent = paused ? 'Resume motion' : 'Pause motion';
-});
-</script></body></html>
+
+<section class="projects" id="projects" aria-labelledby="projects-title">
+  <div class="projects-head">
+    <div><p class="eyebrow">Projects</p><h2 id="projects-title">Select a <span class="outline">production</span></h2></div>
+  </div>
+  <div class="cards">
+
+    <a class="card" href="parlivue/" id="parlivue">
+      <div class="art art-parlivue" aria-hidden="true"><img alt="" src="parlivue-logo.png"></div>
+      <span class="num">01</span><span class="go" aria-hidden="true">&#8599;</span>
+      <div class="body">
+        <h3>ParliVue Pilot</h3>
+        <span class="status">Live pilot</span>
+        <div class="reveal"><div><p>Who sits where and who runs what across Canada's governments. Summaries are in English; the official parliamentary record is available in English and French.</p></div></div>
+      </div>
+    </a>
+
+    <div class="card soon" id="orcas" tabindex="0">
+      <div class="art" aria-hidden="true">
+        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <defs><radialGradient id="g2" cx="50%" cy="30%" r="70%"><stop offset="0" stop-color="#1d1d1d"/><stop offset="1" stop-color="#050505"/></radialGradient></defs>
+          <rect width="400" height="500" fill="url(#g2)"/>
+          <g fill="none" stroke="#ffffff" stroke-opacity=".16" stroke-width="1">
+            <path d="M-10 250 C 60 238 120 262 200 250 S 340 238 410 250"/>
+            <path d="M-10 272 C 60 260 120 284 200 272 S 340 260 410 272" stroke-opacity=".11"/>
+            <path d="M-10 296 C 60 284 120 308 200 296 S 340 284 410 296" stroke-opacity=".07"/>
+          </g>
+          <path d="M150 250 C 176 236 196 196 214 128 C 220 170 236 222 262 250 Z" fill="#000" stroke="#ffffff" stroke-opacity=".55" stroke-width="1"/>
+        </svg>
+      </div>
+      <span class="num">02</span><span class="go" aria-hidden="true">&#8599;</span>
+      <div class="body">
+        <h3>Orcas of the Pacific</h3>
+        <span class="status">In development</span>
+        <div class="reveal"><div><p>A searchable catalogue of BC's killer whales (Southern Residents, Northern Residents and Bigg's), identified by their markings.</p></div></div>
+      </div>
+    </div>
+
+    <div class="card soon" tabindex="0">
+      <div class="art" aria-hidden="true">
+        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="g3" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#161616"/><stop offset="1" stop-color="#030303"/></radialGradient>
+            <radialGradient id="rim" cx="50%" cy="95%" r="60%"><stop offset="0" stop-color="#ffffff" stop-opacity=".35"/><stop offset=".6" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+          </defs>
+          <rect width="400" height="500" fill="url(#g3)"/>
+          <circle cx="200" cy="200" r="92" fill="#000"/>
+          <circle cx="200" cy="200" r="92" fill="url(#rim)"/>
+          <circle cx="200" cy="200" r="91.5" fill="none" stroke="#ffffff" stroke-opacity=".08"/>
+        </svg>
+      </div>
+      <span class="num">03</span><span class="go" aria-hidden="true">&#8599;</span>
+      <div class="body">
+        <h3>Coming soon</h3>
+        <span class="status">In the works</span>
+        <div class="reveal"><div><p>The next production is taking shape.</p></div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</main>
+
+<footer>
+  <p>Plant Productions is a personal, non-commercial website. Content is for general informational purposes only and may include AI-assisted material that can contain errors. It is not professional advice. Unauthorized copying, scraping, or automated use of this site, including for AI training, is prohibited. See the full <a href="legal.html#disclaimer">Disclaimer</a> and <a href="legal.html#privacy">Privacy Policy</a>.</p>
+  <div class="foot-right">
+    <a href="mailto:hello@plantproductions.com">hello@plantproductions.com</a>
+    <button class="motion-toggle" type="button">Pause motion</button>
+    <span>&copy; 2026 Plant Productions</span>
+  </div>
+</footer>
+</div></div>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let paused = reduce;
+
+  /* Spheres */
+  const cv = document.getElementById('spheres'), cx = cv.getContext('2d');
+  let W = 0, H = 0, dpr = 1, balls = [], mx = -999, my = -999;
+  const seed = [ // x, y (0-1), radius as share of the short side, drift speed
+    [.08,.08,.14,.6],[.30,.02,.09,.9],[.52,.12,.06,1.1],[.70,.05,.17,.5],[.92,.22,.12,.7],
+    [.86,.62,.08,1],[.62,.42,.05,1.3],[.18,.55,.11,.8],[.42,.85,.15,.45],[.97,.92,.2,.4],[.05,.95,.07,1.2]
+  ];
+  function size(){
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    cx.setTransform(dpr,0,0,dpr,0,0);
+    const s = Math.min(W, H) * (W < 700 ? 1.1 : 1);
+    if (!balls.length) balls = seed.map(([x,y,r,v],i) => ({x:x*W, y:y*H, r:r*s, br:r, v, a:i*1.7, ox:0, oy:0}));
+    else balls.forEach(b => b.r = b.br * s);
+  }
+  function sphere(x, y, r){
+    cx.save();
+    cx.beginPath(); cx.arc(x, y, r, 0, Math.PI*2); cx.closePath();
+    let g = cx.createRadialGradient(x - r*.2, y - r*.35, r*.1, x, y, r);
+    g.addColorStop(0,'#0a0a0a'); g.addColorStop(.75,'#030303'); g.addColorStop(1,'#151515');
+    cx.fillStyle = g; cx.fill(); cx.clip();
+    // light catching the lower rim
+    g = cx.createRadialGradient(x, y + r*1.15, r*.2, x, y + r*1.15, r*1.05);
+    g.addColorStop(0,'rgba(255,255,255,.55)'); g.addColorStop(.55,'rgba(200,200,200,.14)'); g.addColorStop(1,'rgba(255,255,255,0)');
+    cx.fillStyle = g; cx.fillRect(x - r, y - r, r*2, r*2);
+    // soft specular highlight
+    g = cx.createRadialGradient(x - r*.38, y - r*.42, 0, x - r*.38, y - r*.42, r*.32);
+    g.addColorStop(0,'rgba(255,255,255,.16)'); g.addColorStop(1,'rgba(255,255,255,0)');
+    cx.fillStyle = g; cx.fillRect(x - r, y - r, r*2, r*2);
+    cx.restore();
+    cx.beginPath(); cx.arc(x, y, r - .5, Math.PI*.15, Math.PI*.85);
+    cx.strokeStyle = 'rgba(255,255,255,.18)'; cx.lineWidth = 1; cx.stroke();
+  }
+  let t = 0, last = performance.now();
+  function frame(now){
+    const dt = Math.min(now - last, 50); last = now;
+    if (!paused) t += dt / 1000;
+    cx.clearRect(0,0,W,H);
+    for (const b of balls){
+      const px = b.x + Math.sin(t*.12*b.v + b.a) * 40, py = b.y + Math.cos(t*.09*b.v + b.a) * 34;
+      // spheres ease gently away from the cursor
+      const dx = px - mx, dy = py - my, d = Math.hypot(dx, dy), reach = b.r + 120;
+      const push = d < reach && !paused ? (1 - d/reach) * 36 : 0;
+      b.ox += ((d ? dx/d : 0) * push - b.ox) * .06; b.oy += ((d ? dy/d : 0) * push - b.oy) * .06;
+      sphere(px + b.ox, py + b.oy, b.r);
+    }
+    requestAnimationFrame(frame);
+  }
+  addEventListener('resize', size); size(); requestAnimationFrame(frame);
+
+  /* Motion toggle */
+  const btn = document.querySelector('.motion-toggle');
+  btn.textContent = paused ? 'Resume motion' : 'Pause motion';
+  btn.addEventListener('click', () => { paused = !paused; btn.textContent = paused ? 'Resume motion' : 'Pause motion'; });
+
+  /* White dot cursor */
+  const dot = document.querySelector('.dot');
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches){
+    document.documentElement.classList.add('has-dot');
+    let x = -100, y = -100, dx = x, dy = y;
+    addEventListener('mousemove', e => { x = e.clientX; y = e.clientY; mx = x; my = y; });
+    document.addEventListener('mouseleave', () => { dot.style.opacity = 0; mx = my = -999; });
+    document.addEventListener('mouseenter', () => { dot.style.opacity = ''; });
+    document.querySelectorAll('a, button').forEach(el => {
+      if (el.classList.contains('card')) return;
+      el.addEventListener('mouseenter', () => dot.classList.add('big'));
+      el.addEventListener('mouseleave', () => dot.classList.remove('big'));
+    });
+    (function follow(){
+      dx += (x - dx) * .22; dy += (y - dy) * .22;
+      dot.style.transform = `translate(${dx}px, ${dy}px)`;
+      requestAnimationFrame(follow);
+    })();
+  }
+})();
+</script>
+</body>
+</html>
