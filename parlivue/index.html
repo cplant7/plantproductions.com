@@ -602,12 +602,17 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .dspark i{flex:1;max-width:22px;background:color-mix(in srgb,var(--brass) 25%,var(--rule));border-radius:2px 2px 0 0}
 .dspark i.on{background:var(--brass)}
 .dk-y{font:500 11px var(--f-mono);color:var(--muted)}
-.dgauge{display:grid;justify-items:center;position:relative;width:96px;margin-top:4px;--gc:var(--brass)}
-.dgauge svg{width:96px;height:52px;overflow:visible}
+.dgauge{display:grid;justify-items:center;position:relative;width:112px;margin-top:4px;--gc:var(--brass)}
+.dgauge svg{width:112px;height:60px;overflow:visible}
 .dgauge path{fill:none;stroke-width:8;stroke-linecap:round}
 .dgauge .gt{stroke:var(--rule)} .dgauge .gf{stroke:var(--gc)} .dgauge .go{stroke:var(--ink);stroke-width:12;stroke-linecap:butt}
 .dgauge b{position:absolute;top:24px;font:800 16px var(--f-mark);font-variant-numeric:tabular-nums;color:var(--ink)}
-.dgauge small{font-size:11.5px;color:var(--muted);margin-top:-2px}
+.dgauge b{top:32px;font-size:15px}
+.fspark{display:grid;justify-items:end;margin-top:4px} .fspark svg{width:70px;height:24px;overflow:visible}
+.fspark line{stroke:var(--rule);stroke-dasharray:3 3} .fspark polyline{fill:none;stroke:var(--muted);stroke-width:1.4}
+.fspark circle.over{fill:var(--check)} .fspark circle.under{fill:var(--ok)}
+.fspark span{font:500 10.5px var(--f-mono);color:var(--muted);white-space:nowrap}
+.vsul{margin:0;padding-left:20px;display:grid;gap:4px;max-width:92ch}
 .dgauge.ok{--gc:var(--ok)} .dgauge.watch{--gc:var(--warn)} .dgauge.off{--gc:var(--check)} .dgauge.neu{--gc:var(--brass)}
 .dvar{display:grid;gap:1px;margin-top:4px}
 .dvar svg{width:100%;max-width:150px;height:28px;overflow:visible}
@@ -745,8 +750,8 @@ details.rc>summary:focus-visible{outline:2px solid var(--brass);outline-offset:2
 :root:not([data-theme="dark"]) .ht.dots circle{stroke:#00000030;stroke-width:.8}
 :root:not([data-theme="dark"]) .hchamber,:root:not([data-theme="dark"]) .nsec,:root:not([data-theme="dark"]) aside{box-shadow:0 20px 40px -32px rgb(0 0 0 / .35)}
 /* Source lines: small and tight */
-.src,.src a{font-size:12px!important;line-height:1.35!important}
-.src{margin-top:6px!important;color:var(--muted)}
+.src,.src a{font-size:11px!important;line-height:1.3!important}
+.src{margin-top:3px!important;color:var(--muted)}
 
 /* ---- Round 2 ---- */
 /* toggle under the flag */
@@ -1414,7 +1419,7 @@ const VSC_CAPYRS=[["2026",160080000],["2027",125127000],["2028",127481000],["202
 const VSC_CHECK=[
  ["2025 revenue, expenses, surplus, cash and accumulated surplus","Validated","Match the audited 2025 statements."],
  ["2025 expenses by function, plan and actual","Validated","Match Note 18 and the Statement of Operations."],
- ["2025 actual expenses compared with the Financial Plan ($41.88M difference)","Clarification","The figure is correct. The Financial Plan does not include amortization ($24.05M), and capital maintenance ($14.68M) is budgeted in the capital program but recorded as an expense. Together they account for $38.7M of the difference. 2024 follows the same pattern."],
+ ["2025 actual expenses compared with the Financial Plan ($41.88M difference)","Clarification","The figure is correct. The budget leaves out wear and tear on City assets ($24.05M) and repairs paid from the capital budget ($14.68M). Together they explain $38.7M of the difference. 2024 follows the same pattern."],
  ["Reasons for differences by function","Cannot validate","The Annual Report does not give reasons at the function level, so none are shown on this page."],
  ["Crystal Pool site and approval date","Corrected","Voters approved borrowing on Feb 8, 2025 to rebuild at the existing location. Planning began March 2025 (2025 Annual Report)."],
  ["2025 housing, community safety, downtown, cycling, fleet and fire figures","Validated","Confirmed in the 2025 Annual Report."],
@@ -1438,21 +1443,23 @@ const VSC_SEG={
 const vsMs=n=>"$"+(Math.abs(n)/1e6).toFixed(2)+"M";
 function vscExplain(y,i,v){
   const s=VSC_SEG[y], am=s.am[i], cm=s.cm[i], acc=am+cm, rest=v-acc;
-  if(!acc) return `No amortization or capital maintenance in this function. Difference not itemized in the Annual Report.`;
-  const parts=`Amortization ${vsMs(am)}${cm?` and capital maintenance ${vsMs(cm)}`:""}, not in the operating plan`;
-  if(Math.abs(rest)<0.05*Math.abs(v)||Math.abs(rest)<250000) return `${parts}, account for the difference.`;
-  return rest>0?`${parts}. Remaining ${vsMs(rest)} not itemized in the Annual Report.`
-              :`${parts}. Excluding them, actual was ${vsMs(rest)} under plan.`;
+  if(!acc) return `The Annual Report doesn’t break this difference down.`;
+  const parts=`${vsMs(acc)} is wear and tear on City assets${cm?" and repairs paid from the capital budget":""}, which the budget leaves out`;
+  if(Math.abs(rest)<0.05*Math.abs(v)||Math.abs(rest)<250000) return `${parts}. That explains the difference.`;
+  return rest>0?`${parts}. The other ${vsMs(rest)} isn’t broken down in the Annual Report.`
+              :`${parts}. Without them, spending was ${vsMs(rest)} under budget.`;
 }
-const vsVarBar=(v,mx)=>`<span class="vbar ${v<0?"neg":"pos"}"><i style="width:${Math.min(100,Math.abs(v)/mx*100).toFixed(1)}%"></i></span>`;
+/* Row sparkline: % over (+) or under (−) budget in 2024 and 2025; the table's own year has the larger dot. */
+const vsFnSpark=(i,y)=>{const v=[24,25].map(k=>vsPct(VSC_EXP["a"+k][i],VSC_EXP["b"+k][i])),M=Math.max(30,...v.map(Math.abs)),Y=x=>(12-x/M*10).toFixed(1),X=[8,62];
+  return `<span class="fspark" title="Over (+) or under (−) budget: 2024 ${vsP(v[0])}, 2025 ${vsP(v[1])}"><svg viewBox="0 0 70 24" aria-hidden="true"><line x1="0" x2="70" y1="12" y2="12"/><polyline points="${X.map((x,j)=>x+","+Y(v[j])).join(" ")}"/>${X.map((x,j)=>`<circle cx="${x}" cy="${Y(v[j])}" r="${j===(y===25?1:0)?3.6:2.4}" class="${v[j]>0?"over":"under"}"/>`).join("")}</svg><span>’24 ${vsP(v[0])} · ’25 ${vsP(v[1])}</span></span>`;};
 function vscFnTable(y,cap){
   const b=VSC_EXP["b"+y],a=VSC_EXP["a"+y]; const tb=b.reduce((s,x)=>s+x,0),ta=a.reduce((s,x)=>s+x,0);
   const mx=Math.max(...a.map((x,i)=>Math.abs(x-b[i])));
   return `<div class="sctwrap"><table class="sct fn"><caption>${cap}</caption><thead><tr><th scope="col">Function</th><th scope="col">Plan</th><th scope="col">Actual</th><th scope="col">Variance</th><th scope="col" class="exp">What explains it</th></tr></thead><tbody>
-  ${VSC_FN.map((f,i)=>{const v=a[i]-b[i],p=vsPct(a[i],b[i]);return `<tr><th scope="row">${f}</th><td>${vsM(b[i])}</td><td>${vsM(a[i])}</td><td class="vcell ${vcls(p)}">${vsSgn(v,vsM)} <small>${vsP(p)}</small>${vsVarBar(v,mx)}</td><td class="exp">${vscExplain(y,i,v)}</td></tr>`}).join("")}
+  ${VSC_FN.map((f,i)=>{const v=a[i]-b[i],p=vsPct(a[i],b[i]);return `<tr><th scope="row">${f}</th><td>${vsM(b[i])}</td><td>${vsM(a[i])}</td><td class="vcell ${vcls(p)}">${vsSgn(v,vsM)} <small>${vsP(p)}</small>${vsFnSpark(i,y)}</td><td class="exp">${vscExplain(y,i,v)}</td></tr>`}).join("")}
   <tr class="tot"><th scope="row">Total</th><td>${vsM(tb)}</td><td>${vsM(ta)}</td><td class="${vcls(vsPct(ta,tb))}">${vsSgn(ta-tb,vsM)} <small>${vsP(vsPct(ta,tb))}</small></td><td class="exp">${vscExplain0(y,ta-tb)}</td></tr></tbody></table></div>`;
 }
-const vscExplain0=(y,gap)=>{const T=VSC_TOT,ex=T.amort["a"+y]+T.capmaint["a"+y];return `Amortization ${vsMs(T.amort["a"+y])} and capital maintenance ${vsMs(T.capmaint["a"+y])} account for ${vsMs(ex)} (${Math.round(ex/gap*100)}%).`;};
+const vscExplain0=(y,gap)=>{const T=VSC_TOT,ex=T.amort["a"+y]+T.capmaint["a"+y];return `Costs the budget leaves out explain ${vsMs(ex)} of this (${Math.round(ex/gap*100)}%): wear and tear on assets ${vsMs(T.amort["a"+y])} and repairs paid from the capital budget ${vsMs(T.capmaint["a"+y])}.`;};
 function vscYoY(prevKey,curKey,cap,ylab){
   const b=VSC_EXP[prevKey],a=VSC_EXP[curKey]; const tb=b.reduce((s,x)=>s+x,0),ta=a.reduce((s,x)=>s+x,0);
   return `<div class="sctwrap"><table class="sct">${cap?`<caption>${cap}</caption>`:""}<thead><tr><th scope="col">Function</th><th scope="col">${ylab[0]}</th><th scope="col">${ylab[1]}</th><th scope="col">Change</th><th scope="col">%</th></tr></thead><tbody>
@@ -1460,8 +1467,8 @@ function vscYoY(prevKey,curKey,cap,ylab){
   <tr class="tot"><th scope="row">Total</th><td>${vsM(tb)}</td><td>${vsM(ta)}</td><td>${vsSgn(ta-tb,vsM)}</td><td class="${vcls(vsPct(ta,tb))}">${vsP(vsPct(ta,tb))}</td></tr></tbody></table></div>`;
 }
 const VSC_HNOTE={
-  25:{rev:"Sale of goods and services +$12.39M and investment income +$6.12M; government transfers −$5.96M.",exp:"Amortization ($24.05M) and capital maintenance ($14.68M) are not in the operating plan.",sur:"Result of the revenue and expense lines above.",cap:"Capital projects often span several years. The Annual Report doesn't list project timing."},
-  24:{rev:"Revenue by source is in Note 18 of the 2024 Annual Report.",exp:"Amortization ($21.70M) and capital maintenance ($12.93M) are not in the operating plan.",sur:"Result of the revenue and expense lines above.",cap:"Capital projects often span several years. The Annual Report doesn't list project timing."}
+  25:{rev:"Sale of goods and services +$12.39M and investment income +$6.12M; government transfers −$5.96M.",exp:"Mostly costs the budget leaves out: wear and tear on City assets ($24.05M) and repairs paid from the capital budget ($14.68M).",sur:"Result of the revenue and expense lines above.",cap:"Big projects often take several years, so spending lags the plan. The Annual Report doesn’t give project timing."},
+  24:{rev:"Revenue by source is in Note 18 of the 2024 Annual Report.",exp:"Mostly costs the budget leaves out: wear and tear on City assets ($21.70M) and repairs paid from the capital budget ($12.93M).",sur:"Result of the revenue and expense lines above.",cap:"Big projects often take several years, so spending lags the plan. The Annual Report doesn’t give project timing."}
 };
 function vscHeadline(y){
   const T=VSC_TOT,b="b"+y,a="a"+y,N=VSC_HNOTE[y];
@@ -1470,7 +1477,7 @@ function vscHeadline(y){
    ${row("Revenue","rev")}${row("Expenses","exp")}${row("Annual surplus","sur")}${row("Capital assets acquired","cap")}</tbody></table></div>`;
 }
 const vscWhy=y=>{const T=VSC_TOT,a="a"+y,b="b"+y,gap=T.exp[a]-T.exp[b],ex=T.amort[a]+T.capmaint[a];
-  return `<p class="vsp">The Financial Plan budget does not include amortization (${vsM(T.amort[a])} in 20${y}). Capital maintenance (${vsM(T.capmaint[a])}) is budgeted in the capital program but recorded as an expense in the audited statements. Together these account for ${vsM1(ex)}, or ${Math.round(ex/gap*100)}% of the ${vsM1(gap)} difference between planned and actual expenses. The function-level figures above come from the Segmented Information note.</p><div class="src">Based on Note 18 (reconciliation of the Financial Plan) and Note 19 (Segmented Information) of the audited statements.</div>`;};
+  return `<p class="vsp">The City’s budget and its audited year-end results count costs differently. Two costs appear in the results but not in the budget:</p><ul class="vsul"><li><b>Wear and tear on City assets</b> (${vsM(T.amort[a])}). Roads, buildings and vehicles lose value each year. Accountants record that as a cost, even though no cash is spent.</li><li><b>Repairs paid from the capital budget</b> (${vsM(T.capmaint[a])}). These are planned in the capital budget but counted as expenses in the results.</li></ul><p class="vsp">Together they explain ${vsM1(ex)}, or ${Math.round(ex/gap*100)}%, of the ${vsM1(gap)} gap between budgeted and actual expenses.</p><div class="src">Notes 18 and 19 of the audited statements.</div>`;};
 /* Election results: shown on the City Council page */
 function vscElectionHTML(){ return `<section class="nsec elec"><div class="kicker">Election · October 17, 2026</div><h2 class="nh">Election results</h2><p class="vsp">Votes by member, 2022 and 2026. Turnout 41.44%.</p>
       <div class="sctwrap"><table class="sct"><caption>2026 counts are preliminary</caption><thead><tr><th scope="col">Member</th><th scope="col">Role</th><th scope="col">2022 votes</th><th scope="col">2026 votes</th><th scope="col">Result</th><th scope="col">Note</th></tr></thead><tbody>
@@ -1528,7 +1535,7 @@ function renderVicScore(){
       ${VSC_REV25.map(r=>`<tr><th scope="row">${r[0]}</th><td>${vsM(r[1])}</td><td>${vsM(r[2])}</td><td class="${vcls(-vsPct(r[2],r[1]))}">${vsSgn(r[2]-r[1],vsM)}</td></tr>`).join("")}</tbody></table></div>`,false)}
      ${vRoll("Planned and completed projects","Capital plan $164.3M · acquired $64.2M",
       `<p class="vsp">The 2025 capital plan was $164.3M and capital assets acquired were $64.2M. Projects the City reports as completed in 2025 include Blanshard Street South, 5.1 km of cycling network, 17 crosswalks, 14 public fast chargers and fleet EVs. The City reports Crystal Pool planning and design continuing in 2026.</p>`,false)}
-     ${vRoll("How plan and actual are compared","Amortization and capital maintenance",vscWhy(25),false)}
+     ${vRoll("Why expenses look over budget","Two costs the budget leaves out",vscWhy(25),false)}
      ${vsSrc(["ar25","tax25"])}`,
 
    y24:`<div class="vskpis"><div class="stat"><b>+2.9%</b><span>Revenue vs 2023</span></div><div class="stat"><b>+12.3%</b><span>Expenses vs 2023</span></div><div class="stat"><b>${capPct(24)}%</b><span>Capital acquired vs plan</span></div><div class="stat"><b>7.93%</b><span>2024 tax increase (Times Colonist)</span></div></div>
@@ -1543,7 +1550,7 @@ function renderVicScore(){
       <tr><th scope="row">Crystal Pool</th><td>Accessibility upgrades to the existing pool; replacement identified as a future priority</td><td>${vgrade("T")}</td></tr>
       <tr><th scope="row">Official Community Plan</th><td>In public engagement (adopted Oct 2025)</td><td>${vgrade("T")}</td></tr>
       <tr><th scope="row">Capital program</th><td>$77.2M acquired vs $153.2M planned</td><td>${vgrade("B")}</td></tr></tbody></table></div>`,false)}
-     ${vRoll("How plan and actual are compared","Amortization and capital maintenance",vscWhy(24),false)}
+     ${vRoll("Why expenses look over budget","Two costs the budget leaves out",vscWhy(24),false)}
      ${vsSrc(["ar24","tc24"])}`,
 
    yoy:`${vRoll("High-level actuals, 2023–2025","Audited",
@@ -1563,8 +1570,9 @@ function renderVicScore(){
   const tabs=[["card","Report card","Strategic Plan progress"],["y26","2026 plan","Budget by department"],["y25","2025 results","Plan vs actual"],["y24","2024 results","Plan vs actual"],["yoy","Year over year","2023–2025 actuals"],["check","Data validation","Sources checked"]];
   const met=VSC_CARD.filter(c=>c.g==="D").length;
   const vpill=(cls,txt)=>`<span class="dpill ${cls}">${txt}</span>`;
+  const pf=x=>{const t=x.toFixed(1);return t.endsWith(".0")?t.slice(0,-2):t;};
   /* Half-circle gauge: actual as % of plan. Over 100% the arc fills and an outer tick marks the overrun. */
-  const gauge=(pct,cls,lab)=>{const r=34,L=Math.PI*r,f=Math.min(pct,100)/100;return `<span class="dgauge ${cls}" role="img" aria-label="${lab}: ${Math.round(pct)}% of plan"><svg viewBox="0 0 84 46"><path d="M8 42a34 34 0 0 1 68 0" class="gt"/><path d="M8 42a34 34 0 0 1 68 0" class="gf" stroke-dasharray="${(f*L).toFixed(1)} ${L.toFixed(1)}"/>${pct>100?`<path d="M8 42a34 34 0 0 1 68 0" class="go" stroke-dasharray="0 ${(L*0.985).toFixed(1)} ${(L*0.015).toFixed(1)}"/>`:""}</svg><b>${Math.round(pct)}%</b><small>${lab}</small></span>`;};
+  const gauge=(pct,cls,lab)=>{const r=34,L=Math.PI*r,f=Math.min(pct,100)/100;return `<span class="dgauge ${cls}" role="img" aria-label="${lab}: ${pf(pct)}%"><svg viewBox="0 0 84 46"><path d="M8 42a34 34 0 0 1 68 0" class="gt"/><path d="M8 42a34 34 0 0 1 68 0" class="gf" stroke-dasharray="${(f*L).toFixed(1)} ${L.toFixed(1)}"/>${pct>100?`<path d="M8 42a34 34 0 0 1 68 0" class="go" stroke-dasharray="0 ${(L*0.985).toFixed(1)} ${(L*0.015).toFixed(1)}"/>`:""}</svg><b>${pf(pct)}%</b></span>`;};
   /* Variance sparkline: % variance from plan, 2024 and 2025 (the two audited plan years). */
   const vspark=(k,good)=>{const v=[24,25].map(y=>vsPct(T[k]["a"+y],T[k]["b"+y])),mx=Math.max(...v.map(Math.abs),1),Y=x=>14-x/mx*11,X=[6,84];
     const c=v.map(x=>(x>0)===good?"ok":"bad");
@@ -1572,17 +1580,17 @@ function renderVicScore(){
   const vsPlan=(k,y,good)=>{const a=T[k]["a"+y],b=T[k]["b"+y],pc=vsPct(a,b),up=pc>0;return vpill((up===good)?"ok":"watch",(up?"Above":"Below")+" plan "+vsP(pc));};
   const gp=(k,good,lab)=>{const pc=T[k].a25/T[k].b25*100;return gauge(pc,((pc>100)===good)?"ok":(k==="cap"?"off":"watch"),lab);};
   const kp=[
-    ["y25","Revenue · 2025",vsM1(T.rev.a25),vsPlan("rev",25,true),"Plan "+vsM1(T.rev.b25),gp("rev",true,"of plan received")+vspark("rev",true)],
-    ["y25","Expenses · 2025",vsM1(T.exp.a25),vsPlan("exp",25,false),"Plan "+vsM1(T.exp.b25)+" · plan excludes amortization",gp("exp",false,"of plan spent")+vspark("exp",false)],
-    ["y25","Annual surplus · 2025",vsM1(T.sur.a25),vsPlan("sur",25,true),"Plan "+vsM1(T.sur.b25),gp("sur",true,"of plan")+vspark("sur",true)],
-    ["y25","Capital acquired · 2025",vsM1(T.cap.a25),vpill("off",capPct(25)+"% of plan"),"Plan "+vsM1(T.cap.b25),gp("cap",true,"of plan spent")+vspark("cap",true)],
-    ["y26","Operating budget · 2026",vsM1(tot26),vpill("neu","+8.87%"),"Capital budget $160.1M",`<span class="dnone">No 2026 actuals yet. Gauge and variance appear once the City reports 2026 results.</span>`],
-    ["card","Strategic Plan areas",met+" of "+VSC_CARD.length,vpill("neu","Target met"),"2023–2026 Strategic Plan",gauge(met/VSC_CARD.length*100,"neu","target met")+`<span class="dgrades">${counts.map(([g,n])=>`<i class="${VSC_GRADES[g][1]}" style="flex:${n}" title="${VSC_GRADES[g][0]}: ${n}"></i>`).join("")}</span>`]
+    ["y25","Revenue · 2025",vsM1(T.rev.a25),vsPlan("rev",25,true),"Plan "+vsM1(T.rev.b25),gp("rev",true,"Revenue received vs plan")],
+    ["y25","Expenses · 2025",vsM1(T.exp.a25),vsPlan("exp",25,false),"Plan "+vsM1(T.exp.b25)+" · see why in 2025 results",gp("exp",false,"Expenses vs plan")],
+    ["y25","Annual surplus · 2025",vsM1(T.sur.a25),vsPlan("sur",25,true),"Plan "+vsM1(T.sur.b25),gp("sur",true,"Surplus vs plan")],
+    ["y25","Capital acquired · 2025",vsM1(T.cap.a25),vpill("off",capPct(25)+"% of plan"),"Plan "+vsM1(T.cap.b25),gp("cap",true,"Capital spent vs plan")],
+    ["y26","Operating budget · 2026",vsM1(tot26),vpill("neu","+8.87%"),"Capital budget $160.1M",`<span class="dnone">No 2026 actuals yet. A gauge appears once the City reports 2026 results.</span>`],
+    ["card","Strategic Plan areas",met+" of "+VSC_CARD.length,vpill("neu","Target met"),"2023–2026 Strategic Plan",gauge(met/VSC_CARD.length*100,"neu","Strategic Plan areas with target met")+`<span class="dgrades">${counts.map(([g,n])=>`<i class="${VSC_GRADES[g][1]}" style="flex:${n}" title="${VSC_GRADES[g][0]}: ${n}"></i>`).join("")}</span>`]
   ];
   el.innerHTML=`<header class="dsh-head"><div><div class="kicker">City of Victoria · Department dashboard</div><h2 class="nh">Council Scorecard 2024–2026</h2>
      <p class="pagelede">Plans, budgets and results from the City's audited statements, with progress on the 2023–2026 Strategic Plan.</p></div>
      <div class="dsh-asof">Data as of Nov 1, 2026 · audited 2024 and 2025, adopted 2026 plan</div></header>
-    <div class="dkey"><span><i class="ok"></i>Favourable to plan</span><span><i class="watch"></i>Unfavourable to plan</span><span><i class="off"></i>Well below plan</span><span class="muted">Gauge: actual as % of plan · Line: variance from plan by year</span></div>
+    <div class="dkey"><span><i class="ok"></i>Favourable to plan</span><span><i class="watch"></i>Unfavourable to plan</span><span><i class="off"></i>Well below plan</span><span class="muted">Gauge: actual as % of plan · Line in tables: over or under budget, 2024 to 2025</span></div>
     <div class="dsh-kpis" aria-label="Key figures">${kp.map(k=>`<button class="dkpi" data-go="${k[0]}"><span class="dk-l">${k[1]}</span><b class="dk-v">${k[2]}</b><span class="dk-p">${k[3]}</span><span class="dk-s">${k[4]}</span>${k[5]}</button>`).join("")}</div>
     <div class="dsh">
     <nav class="dsh-rail" role="tablist" aria-orientation="vertical" aria-label="Scorecard sections"><div class="dsh-rl">Sections</div>${tabs.map((t,i)=>`<button role="tab" id="vst-${t[0]}" aria-controls="vsp-${t[0]}" aria-selected="${i?"false":"true"}" tabindex="${i?-1:0}" data-k="${t[0]}"><span>${t[1]}</span><small>${t[2]}</small></button>`).join("")}</nav>
