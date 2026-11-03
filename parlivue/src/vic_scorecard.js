@@ -274,13 +274,28 @@ function renderVicScore(){
 
 
   const tabs=[["card","Report card","Strategic Plan progress"],["y26","2026 plan","Budget by department"],["y25","2025 results","Plan vs actual"],["y24","2024 results","Plan vs actual"],["yoy","Year over year","2023–2025 actuals"],["check","Data validation","Sources checked"]];
-  el.innerHTML=`<header class="vshead"><div><div class="kicker">City of Victoria · Accountability scorecard · 2024–2026</div><h2 class="nh">Council Scorecard 2024–2026</h2></div>
-     <p class="pagelede">Plans, budgets and results from the City's audited statements, with progress on the 2023–2026 Strategic Plan.</p></header>
-    <div class="vsnav"><div class="vshint"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 2v10M4 8l4 4 4-4"/></svg>Choose a section</div>
-    <div class="vstabs big" role="tablist" aria-label="Scorecard sections">${tabs.map((t,i)=>`<button role="tab" id="vst-${t[0]}" aria-controls="vsp-${t[0]}" aria-selected="${i?"false":"true"}" tabindex="${i?-1:0}" data-k="${t[0]}">${t[1]}<small>${t[2]}</small></button>`).join("")}</div></div>
-    ${tabs.map((t,i)=>`<div role="tabpanel" id="vsp-${t[0]}" aria-labelledby="vst-${t[0]}" class="vspane" ${i?"hidden":""}>${panes[t[0]]}</div>`).join("")}`;
-  const bs=[...el.querySelectorAll(".vstabs button")];
+  const met=VSC_CARD.filter(c=>c.g==="D").length;
+  const vpill=(cls,txt)=>`<span class="dpill ${cls}">${txt}</span>`;
+  const spark=(vals,lab,cap)=>{const mx=Math.max(...vals);return `<span class="dspark" aria-hidden="true">${vals.map((v,i)=>`<i class="${i===vals.length-1?"on":""}" style="height:${Math.max(8,v/mx*100).toFixed(0)}%" title="${lab[i]}"></i>`).join("")}</span><span class="dk-y">${lab[0]}–${lab[lab.length-1]}${cap?" "+cap:""}</span>`;};
+  const vsPlan=(k,y,good)=>{const a=T[k]["a"+y],b=T[k]["b"+y],pc=vsPct(a,b),up=pc>0;return vpill((up===good)?"ok":"watch",(up?"Above":"Below")+" plan "+vsP(pc));};
+  const kp=[
+    ["y25","Revenue · 2025",vsM1(T.rev.a25),vsPlan("rev",25,true),"Plan "+vsM1(T.rev.b25),spark([T.rev.a23,T.rev.a24,T.rev.a25],["2023","2024","2025"])],
+    ["y25","Expenses · 2025",vsM1(T.exp.a25),vsPlan("exp",25,false),"Plan "+vsM1(T.exp.b25)+" · plan excludes amortization",spark([T.exp.a23,T.exp.a24,T.exp.a25],["2023","2024","2025"])],
+    ["y25","Annual surplus · 2025",vsM1(T.sur.a25),vsPlan("sur",25,true),"Plan "+vsM1(T.sur.b25),spark([T.sur.a23,T.sur.a24,T.sur.a25],["2023","2024","2025"])],
+    ["y25","Capital acquired · 2025",vsM1(T.cap.a25),vpill("off",capPct(25)+"% of plan"),"Plan "+vsM1(T.cap.b25)+" · 2024: "+capPct(24)+"%",spark([T.cap.a23,T.cap.a24,T.cap.a25],["2023","2024","2025"])],
+    ["y26","Operating budget · 2026",vsM1(tot26),vpill("neu","+8.87%"),"Capital budget $160.1M",spark(VSC_CAPYRS.map(r=>r[1]),VSC_CAPYRS.map(r=>r[0]),"capital plan")],
+    ["card","Strategic Plan areas",met+" of "+VSC_CARD.length,vpill("neu","Target met"),"2023–2026 Strategic Plan",`<span class="dgrades">${counts.map(([g,n])=>`<i class="${VSC_GRADES[g][1]}" style="flex:${n}" title="${VSC_GRADES[g][0]}: ${n}"></i>`).join("")}</span>`]
+  ];
+  el.innerHTML=`<header class="dsh-head"><div><div class="kicker">City of Victoria · Department dashboard</div><h2 class="nh">Council Scorecard 2024–2026</h2>
+     <p class="pagelede">Plans, budgets and results from the City's audited statements, with progress on the 2023–2026 Strategic Plan.</p></div>
+     <div class="dsh-asof">Data as of Nov 1, 2026 · audited 2024 and 2025, adopted 2026 plan</div></header>
+    <div class="dsh-kpis" aria-label="Key figures">${kp.map(k=>`<button class="dkpi" data-go="${k[0]}"><span class="dk-l">${k[1]}</span><b class="dk-v">${k[2]}</b><span class="dk-p">${k[3]}</span><span class="dk-s">${k[4]}</span>${k[5]}</button>`).join("")}</div>
+    <div class="dsh">
+    <nav class="dsh-rail" role="tablist" aria-orientation="vertical" aria-label="Scorecard sections"><div class="dsh-rl">Sections</div>${tabs.map((t,i)=>`<button role="tab" id="vst-${t[0]}" aria-controls="vsp-${t[0]}" aria-selected="${i?"false":"true"}" tabindex="${i?-1:0}" data-k="${t[0]}"><span>${t[1]}</span><small>${t[2]}</small></button>`).join("")}</nav>
+    <div class="dsh-main">${tabs.map((t,i)=>`<div role="tabpanel" id="vsp-${t[0]}" aria-labelledby="vst-${t[0]}" class="vspane" ${i?"hidden":""}><h3 class="dsh-ph">${t[1]}<small>${t[2]}</small></h3>${panes[t[0]]}</div>`).join("")}</div></div>`;
+  const bs=[...el.querySelectorAll(".dsh-rail button")];
   const pick=b=>{ bs.forEach(x=>{const on=x===b; x.setAttribute("aria-selected",on); x.tabIndex=on?0:-1; document.getElementById("vsp-"+x.dataset.k).hidden=!on;}); };
   el._pick=k=>pick(bs.find(b=>b.dataset.k===k));
-  bs.forEach((b,i)=>{ b.onclick=()=>pick(b); b.onkeydown=e=>{ const d=e.key==="ArrowRight"?1:e.key==="ArrowLeft"?-1:0; if(d){ const n=bs[(i+d+bs.length)%bs.length]; pick(n); n.focus(); e.preventDefault(); } }; });
+  el.querySelectorAll(".dkpi").forEach(k=>k.onclick=()=>{el._pick(k.dataset.go); el.querySelector(".dsh").scrollIntoView({behavior:"smooth",block:"start"});});
+  bs.forEach((b,i)=>{ b.onclick=()=>pick(b); b.onkeydown=e=>{ const d=(e.key==="ArrowDown"||e.key==="ArrowRight")?1:(e.key==="ArrowUp"||e.key==="ArrowLeft")?-1:0; if(d){ const n=bs[(i+d+bs.length)%bs.length]; pick(n); n.focus(); e.preventDefault(); } }; });
 }

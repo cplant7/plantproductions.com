@@ -580,6 +580,45 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .rccav{margin:0;font-size:14px;color:var(--muted);font-style:italic}
 .scorelink{all:unset;cursor:pointer;display:block;text-align:center;font:600 15px var(--f-body);color:var(--bg);background:var(--brass);border-radius:999px;padding:9px 14px}
 .scorelink:focus-visible{outline:2px solid var(--brass-2);outline-offset:2px}
+/* ===== Dashboard template (shared by Victoria, Mississauga, Federal) ===== */
+.dsh-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:10px 20px}
+.dsh-head .nh{font-size:clamp(26px,3vw,34px);line-height:1.15;margin:2px 0 4px}
+.dsh-head .pagelede{margin:0;max-width:70ch}
+.dsh-asof{font:500 12.5px var(--f-mono);color:var(--muted);border:1px solid var(--rule);border-radius:999px;padding:5px 11px;max-width:100%}
+.dsh-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border:1px solid var(--rule);border-radius:14px;background:var(--surface);overflow:hidden}
+@media (max-width:1280px){.dsh-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:620px){.dsh-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.dkpi{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:5px;align-content:start;padding:14px 14px 12px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);min-width:0}
+.dkpi:hover{background:var(--faint)} .dkpi:focus-visible{outline:2px solid var(--brass);outline-offset:-2px}
+.dk-l{font-size:13px;color:var(--muted)}
+.dk-v{font:800 24px var(--f-mark);line-height:1.1;font-variant-numeric:tabular-nums;color:var(--ink)}
+.dk-s{font-size:12.5px;color:var(--muted);line-height:1.35}
+.dpill{justify-self:start;font:600 12px var(--f-body);padding:2px 8px;border-radius:999px;white-space:nowrap}
+.dpill.ok{color:var(--ok);background:color-mix(in srgb,var(--ok) 13%,transparent)}
+.dpill.watch{color:var(--warn);background:color-mix(in srgb,var(--warn) 15%,transparent)}
+.dpill.off{color:var(--check);background:color-mix(in srgb,var(--check) 13%,transparent)}
+.dpill.neu{color:var(--brass);background:color-mix(in srgb,var(--brass) 12%,transparent)}
+.dspark{display:flex;align-items:end;gap:3px;height:30px;margin-top:4px}
+.dspark i{flex:1;max-width:22px;background:color-mix(in srgb,var(--brass) 25%,var(--rule));border-radius:2px 2px 0 0}
+.dspark i.on{background:var(--brass)}
+.dk-y{font:500 11px var(--f-mono);color:var(--muted)}
+.dgrades{display:flex;gap:2px;height:10px;margin-top:14px;border-radius:3px;overflow:hidden}
+.dgrades i{background:currentColor;opacity:.75}
+.dsh{display:grid;grid-template-columns:200px minmax(0,1fr);gap:18px;align-items:start}
+.dsh-rail{position:sticky;top:12px;display:grid;gap:2px;padding:8px;border:1px solid var(--rule);border-radius:14px;background:var(--surface)}
+.dsh-rl{font:600 11.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:6px 10px 4px}
+.dsh-rail button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:1px;padding:8px 10px;border-radius:9px;font:600 14.5px var(--f-body);color:var(--ink)}
+.dsh-rail button small{font:400 12.5px var(--f-body);color:var(--muted)}
+.dsh-rail button:hover{background:var(--faint)}
+.dsh-rail button[aria-selected="true"]{background:color-mix(in srgb,var(--brass) 13%,transparent);color:var(--brass)}
+.dsh-rail button:focus-visible{outline:2px solid var(--brass);outline-offset:1px}
+.dsh-main{min-width:0;display:grid}
+.dsh-main .vspane{border-top:0;padding-top:0}
+.dsh-ph{margin:0;font:800 22px var(--f-mark);display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.dsh-ph small{font:400 14px var(--f-body);color:var(--muted)}
+.dsh-main .stat{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:12px 14px}
+.dsh-main .roll{border-radius:14px}
+@media (max-width:860px){.dsh{grid-template-columns:minmax(0,1fr)}.dsh-rail{position:static;display:flex;overflow-x:auto;padding:6px}.dsh-rl{display:none}.dsh-rail button{white-space:nowrap}.dsh-rail button small{display:none}}
 /* Victoria chamber: larger type, same layout */
 #vc-svg .pmchamber .clbl{font-size:13px;letter-spacing:.1em}
 #vc-svg .pmchamber .pmcardh{font-size:31px}

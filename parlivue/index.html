@@ -580,6 +580,45 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .rccav{margin:0;font-size:14px;color:var(--muted);font-style:italic}
 .scorelink{all:unset;cursor:pointer;display:block;text-align:center;font:600 15px var(--f-body);color:var(--bg);background:var(--brass);border-radius:999px;padding:9px 14px}
 .scorelink:focus-visible{outline:2px solid var(--brass-2);outline-offset:2px}
+/* ===== Dashboard template (shared by Victoria, Mississauga, Federal) ===== */
+.dsh-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:10px 20px}
+.dsh-head .nh{font-size:clamp(26px,3vw,34px);line-height:1.15;margin:2px 0 4px}
+.dsh-head .pagelede{margin:0;max-width:70ch}
+.dsh-asof{font:500 12.5px var(--f-mono);color:var(--muted);border:1px solid var(--rule);border-radius:999px;padding:5px 11px;max-width:100%}
+.dsh-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border:1px solid var(--rule);border-radius:14px;background:var(--surface);overflow:hidden}
+@media (max-width:1280px){.dsh-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:620px){.dsh-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.dkpi{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:5px;align-content:start;padding:14px 14px 12px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);min-width:0}
+.dkpi:hover{background:var(--faint)} .dkpi:focus-visible{outline:2px solid var(--brass);outline-offset:-2px}
+.dk-l{font-size:13px;color:var(--muted)}
+.dk-v{font:800 24px var(--f-mark);line-height:1.1;font-variant-numeric:tabular-nums;color:var(--ink)}
+.dk-s{font-size:12.5px;color:var(--muted);line-height:1.35}
+.dpill{justify-self:start;font:600 12px var(--f-body);padding:2px 8px;border-radius:999px;white-space:nowrap}
+.dpill.ok{color:var(--ok);background:color-mix(in srgb,var(--ok) 13%,transparent)}
+.dpill.watch{color:var(--warn);background:color-mix(in srgb,var(--warn) 15%,transparent)}
+.dpill.off{color:var(--check);background:color-mix(in srgb,var(--check) 13%,transparent)}
+.dpill.neu{color:var(--brass);background:color-mix(in srgb,var(--brass) 12%,transparent)}
+.dspark{display:flex;align-items:end;gap:3px;height:30px;margin-top:4px}
+.dspark i{flex:1;max-width:22px;background:color-mix(in srgb,var(--brass) 25%,var(--rule));border-radius:2px 2px 0 0}
+.dspark i.on{background:var(--brass)}
+.dk-y{font:500 11px var(--f-mono);color:var(--muted)}
+.dgrades{display:flex;gap:2px;height:10px;margin-top:14px;border-radius:3px;overflow:hidden}
+.dgrades i{background:currentColor;opacity:.75}
+.dsh{display:grid;grid-template-columns:200px minmax(0,1fr);gap:18px;align-items:start}
+.dsh-rail{position:sticky;top:12px;display:grid;gap:2px;padding:8px;border:1px solid var(--rule);border-radius:14px;background:var(--surface)}
+.dsh-rl{font:600 11.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:6px 10px 4px}
+.dsh-rail button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:1px;padding:8px 10px;border-radius:9px;font:600 14.5px var(--f-body);color:var(--ink)}
+.dsh-rail button small{font:400 12.5px var(--f-body);color:var(--muted)}
+.dsh-rail button:hover{background:var(--faint)}
+.dsh-rail button[aria-selected="true"]{background:color-mix(in srgb,var(--brass) 13%,transparent);color:var(--brass)}
+.dsh-rail button:focus-visible{outline:2px solid var(--brass);outline-offset:1px}
+.dsh-main{min-width:0;display:grid}
+.dsh-main .vspane{border-top:0;padding-top:0}
+.dsh-ph{margin:0;font:800 22px var(--f-mark);display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.dsh-ph small{font:400 14px var(--f-body);color:var(--muted)}
+.dsh-main .stat{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:12px 14px}
+.dsh-main .roll{border-radius:14px}
+@media (max-width:860px){.dsh{grid-template-columns:minmax(0,1fr)}.dsh-rail{position:static;display:flex;overflow-x:auto;padding:6px}.dsh-rl{display:none}.dsh-rail button{white-space:nowrap}.dsh-rail button small{display:none}}
 /* Victoria chamber: larger type, same layout */
 #vc-svg .pmchamber .clbl{font-size:13px;letter-spacing:.1em}
 #vc-svg .pmchamber .pmcardh{font-size:31px}
@@ -1506,15 +1545,30 @@ function renderVicScore(){
 
 
   const tabs=[["card","Report card","Strategic Plan progress"],["y26","2026 plan","Budget by department"],["y25","2025 results","Plan vs actual"],["y24","2024 results","Plan vs actual"],["yoy","Year over year","2023–2025 actuals"],["check","Data validation","Sources checked"]];
-  el.innerHTML=`<header class="vshead"><div><div class="kicker">City of Victoria · Accountability scorecard · 2024–2026</div><h2 class="nh">Council Scorecard 2024–2026</h2></div>
-     <p class="pagelede">Plans, budgets and results from the City's audited statements, with progress on the 2023–2026 Strategic Plan.</p></header>
-    <div class="vsnav"><div class="vshint"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 2v10M4 8l4 4 4-4"/></svg>Choose a section</div>
-    <div class="vstabs big" role="tablist" aria-label="Scorecard sections">${tabs.map((t,i)=>`<button role="tab" id="vst-${t[0]}" aria-controls="vsp-${t[0]}" aria-selected="${i?"false":"true"}" tabindex="${i?-1:0}" data-k="${t[0]}">${t[1]}<small>${t[2]}</small></button>`).join("")}</div></div>
-    ${tabs.map((t,i)=>`<div role="tabpanel" id="vsp-${t[0]}" aria-labelledby="vst-${t[0]}" class="vspane" ${i?"hidden":""}>${panes[t[0]]}</div>`).join("")}`;
-  const bs=[...el.querySelectorAll(".vstabs button")];
+  const met=VSC_CARD.filter(c=>c.g==="D").length;
+  const vpill=(cls,txt)=>`<span class="dpill ${cls}">${txt}</span>`;
+  const spark=(vals,lab,cap)=>{const mx=Math.max(...vals);return `<span class="dspark" aria-hidden="true">${vals.map((v,i)=>`<i class="${i===vals.length-1?"on":""}" style="height:${Math.max(8,v/mx*100).toFixed(0)}%" title="${lab[i]}"></i>`).join("")}</span><span class="dk-y">${lab[0]}–${lab[lab.length-1]}${cap?" "+cap:""}</span>`;};
+  const vsPlan=(k,y,good)=>{const a=T[k]["a"+y],b=T[k]["b"+y],pc=vsPct(a,b),up=pc>0;return vpill((up===good)?"ok":"watch",(up?"Above":"Below")+" plan "+vsP(pc));};
+  const kp=[
+    ["y25","Revenue · 2025",vsM1(T.rev.a25),vsPlan("rev",25,true),"Plan "+vsM1(T.rev.b25),spark([T.rev.a23,T.rev.a24,T.rev.a25],["2023","2024","2025"])],
+    ["y25","Expenses · 2025",vsM1(T.exp.a25),vsPlan("exp",25,false),"Plan "+vsM1(T.exp.b25)+" · plan excludes amortization",spark([T.exp.a23,T.exp.a24,T.exp.a25],["2023","2024","2025"])],
+    ["y25","Annual surplus · 2025",vsM1(T.sur.a25),vsPlan("sur",25,true),"Plan "+vsM1(T.sur.b25),spark([T.sur.a23,T.sur.a24,T.sur.a25],["2023","2024","2025"])],
+    ["y25","Capital acquired · 2025",vsM1(T.cap.a25),vpill("off",capPct(25)+"% of plan"),"Plan "+vsM1(T.cap.b25)+" · 2024: "+capPct(24)+"%",spark([T.cap.a23,T.cap.a24,T.cap.a25],["2023","2024","2025"])],
+    ["y26","Operating budget · 2026",vsM1(tot26),vpill("neu","+8.87%"),"Capital budget $160.1M",spark(VSC_CAPYRS.map(r=>r[1]),VSC_CAPYRS.map(r=>r[0]),"capital plan")],
+    ["card","Strategic Plan areas",met+" of "+VSC_CARD.length,vpill("neu","Target met"),"2023–2026 Strategic Plan",`<span class="dgrades">${counts.map(([g,n])=>`<i class="${VSC_GRADES[g][1]}" style="flex:${n}" title="${VSC_GRADES[g][0]}: ${n}"></i>`).join("")}</span>`]
+  ];
+  el.innerHTML=`<header class="dsh-head"><div><div class="kicker">City of Victoria · Department dashboard</div><h2 class="nh">Council Scorecard 2024–2026</h2>
+     <p class="pagelede">Plans, budgets and results from the City's audited statements, with progress on the 2023–2026 Strategic Plan.</p></div>
+     <div class="dsh-asof">Data as of Nov 1, 2026 · audited 2024 and 2025, adopted 2026 plan</div></header>
+    <div class="dsh-kpis" aria-label="Key figures">${kp.map(k=>`<button class="dkpi" data-go="${k[0]}"><span class="dk-l">${k[1]}</span><b class="dk-v">${k[2]}</b><span class="dk-p">${k[3]}</span><span class="dk-s">${k[4]}</span>${k[5]}</button>`).join("")}</div>
+    <div class="dsh">
+    <nav class="dsh-rail" role="tablist" aria-orientation="vertical" aria-label="Scorecard sections"><div class="dsh-rl">Sections</div>${tabs.map((t,i)=>`<button role="tab" id="vst-${t[0]}" aria-controls="vsp-${t[0]}" aria-selected="${i?"false":"true"}" tabindex="${i?-1:0}" data-k="${t[0]}"><span>${t[1]}</span><small>${t[2]}</small></button>`).join("")}</nav>
+    <div class="dsh-main">${tabs.map((t,i)=>`<div role="tabpanel" id="vsp-${t[0]}" aria-labelledby="vst-${t[0]}" class="vspane" ${i?"hidden":""}><h3 class="dsh-ph">${t[1]}<small>${t[2]}</small></h3>${panes[t[0]]}</div>`).join("")}</div></div>`;
+  const bs=[...el.querySelectorAll(".dsh-rail button")];
   const pick=b=>{ bs.forEach(x=>{const on=x===b; x.setAttribute("aria-selected",on); x.tabIndex=on?0:-1; document.getElementById("vsp-"+x.dataset.k).hidden=!on;}); };
   el._pick=k=>pick(bs.find(b=>b.dataset.k===k));
-  bs.forEach((b,i)=>{ b.onclick=()=>pick(b); b.onkeydown=e=>{ const d=e.key==="ArrowRight"?1:e.key==="ArrowLeft"?-1:0; if(d){ const n=bs[(i+d+bs.length)%bs.length]; pick(n); n.focus(); e.preventDefault(); } }; });
+  el.querySelectorAll(".dkpi").forEach(k=>k.onclick=()=>{el._pick(k.dataset.go); el.querySelector(".dsh").scrollIntoView({behavior:"smooth",block:"start"});});
+  bs.forEach((b,i)=>{ b.onclick=()=>pick(b); b.onkeydown=e=>{ const d=(e.key==="ArrowDown"||e.key==="ArrowRight")?1:(e.key==="ArrowUp"||e.key==="ArrowLeft")?-1:0; if(d){ const n=bs[(i+d+bs.length)%bs.length]; pick(n); n.focus(); e.preventDefault(); } }; });
 }
 
 /* ================= PARTIES, RIDINGS, NEWS ================= */
