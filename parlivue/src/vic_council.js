@@ -55,7 +55,7 @@ function vccPanel(key,D){
      <li>Council appoints the <b>City Manager</b>, its only direct employee, who runs the City's departments through their directors.</li>
      <li>The <b>Police Board</b>, not Council, oversees the Victoria Police Department. Council funds it.</li></ol></details>
     <h3>Key roles</h3><ul class="list"><li class="item"><button class="linkbtn" data-k="premier">Marianne Alto</button><span class="rl">Mayor</span></li><li class="item"><button class="linkbtn" data-k="sec">Jocelyn Jenkyns</button><span class="rl">City Manager</span></li><li class="item"><button class="linkbtn" data-k="lg">Victoria voters</button><span class="rl">Elect the Mayor and Council</span></li></ul>
-    <div class="note">Hover or tap anything. Pick a department to see who runs it and its 2026 budget.</div>${vccScoreBtn("card","Council Scorecard 2024–2026")}${srcA(VCC_S.elec)}`;
+    <div class="note">Hover or tap anything. Pick a department to see who runs it and its 2026 budget.</div>${vccScoreBtn("card","Council Scorecard 2024–2026")}${ridingBtn("vic")}${srcA(VCC_S.elec)}`;
   if(key==="premier") return vccPerson(D.prem,D,G);
   if(/^m\d+$/.test(key)) return vccPerson(D.mpps[+key.slice(1)],D,G);
   const mn=D.mins.find(x=>x.id===key); if(mn) return vccPerson(mn.mpp,D,G);

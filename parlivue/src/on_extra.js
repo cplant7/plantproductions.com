@@ -57,6 +57,7 @@ const ON_CLERK={name:"Trevor Day",role:"Clerk of the Legislative Assembly",what:
 const RIDING_MAPS={
  commons:{title:"Federal electoral districts",sub:"343 ridings · 2023 Representation Order",src:["Elections Canada: Map of federal electoral districts (PDF)","https://www.elections.ca/res/cir/mapsCorner/ZZ/parlimap_45_e.pdf"]},
  ontario:{title:"Ontario electoral districts",sub:"124 ridings",src:["Elections Ontario: Current electoral district maps","https://www.elections.on.ca/en/resource-centre/electoral-districts/current-electoral-district-maps.html"]},
+ vic:{title:"BC provincial riding maps",sub:"2024 provincial election",src:["Elections BC: 2024 provincial election maps","https://elections.bc.ca/resources/maps/2024-provincial-election-maps/"]},
  bc:{title:"British Columbia electoral districts",sub:"93 ridings",src:["Elections BC: Provincial maps","https://elections.bc.ca/resources/maps/provincial-maps/"]},
  nu:{title:"Nunavut constituencies",sub:"22 constituencies",src:["Elections Nunavut: Constituency map","https://www.elections.nu.ca/en/constituency-map"]},
  ab:{title:"Alberta electoral divisions",sub:"87 electoral divisions",src:["Elections Alberta: Maps","https://www.elections.ab.ca/resources/maps/"]},
