@@ -4,7 +4,7 @@ Created October 31, 2026. Ready for GitHub Pages; not deployed.
 
 ## Preview
 Open index.html in your browser. The preview embeds its logo assets. Separate logo files are also included.
-The design uses white cards, the approved Plant Productions wordmark, and black/charcoal typography. Poppins and Inter load from Google Fonts, with Arial available offline.
+The site uses a black landing page with the Plant Productions wordmark. Two fonts load from Google Fonts: Space Grotesk (headings) and Inter (body), with Arial as an offline fallback.
 
 ## 1. Create and upload
 Sign in to GitHub as cplant7. Create a public repository named plantproductions. Extract this ZIP first; upload index.html, logo.svg, Plant-Productions-Logo.png and parlivue-logo.png to the repository root, then commit. Do not upload the ZIP itself.
