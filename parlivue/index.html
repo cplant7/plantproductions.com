@@ -1445,7 +1445,7 @@ const VSC_CAPYRS=[["2026",160080000],["2027",125127000],["2028",127481000],["202
 const VSC_CHECK=[
  ["2025 revenue, expenses, surplus, cash and accumulated surplus","Validated","Match the audited 2025 statements."],
  ["2025 expenses by function, plan and actual","Validated","Match Note 18 and the Statement of Operations."],
- ["2025 actual expenses compared with the Financial Plan ($41.88M difference)","Clarification","The figure is correct. The budget leaves out wear and tear on City assets ($24.05M) and repairs paid from the capital budget ($14.68M). Together they explain $38.7M of the difference. 2024 follows the same pattern."],
+ ["2025 actual expenses compared with the Financial Plan ($41.88M difference)","Clarification","The figure is correct. The budget leaves out amortization ($24.05M) and capital maintenance ($14.68M). Together they explain $38.7M of the difference. 2024 follows the same pattern."],
  ["Reasons for differences by function","Cannot validate","The Annual Report does not give reasons at the function level, so none are shown on this page."],
  ["Crystal Pool site and approval date","Corrected","Voters approved borrowing on Feb 8, 2025 to rebuild at the existing location. Planning began March 2025 (2025 Annual Report)."],
  ["2025 housing, community safety, downtown, cycling, fleet and fire figures","Validated","Confirmed in the 2025 Annual Report."],
@@ -1472,7 +1472,7 @@ const vsMs=n=>"$"+(Math.abs(n)/1e6).toFixed(2)+"M";
 function vscExplain(y,i,v){
   const s=VSC_SEG[y], am=s.am[i], cm=s.cm[i], acc=am+cm, rest=v-acc;
   if(!acc) return `The Annual Report doesn’t break this difference down.`;
-  const parts=`${vsMs(acc)} is wear and tear on City assets${cm?" and repairs paid from the capital budget":""}, an overage not in the budget`;
+  const parts=`${vsMs(acc)} is amortization${cm?" and capital maintenance":""}, an overage not in the budget`;
   if(Math.abs(rest)<0.05*Math.abs(v)||Math.abs(rest)<250000) return `${parts}. That explains the difference.`;
   return rest>0?`${parts}. The other ${vsMs(rest)} isn’t broken down in the Annual Report.`
               :`${parts}. Without them, spending was ${vsMs(rest)} under budget.`;
@@ -1487,7 +1487,7 @@ function vscFnTable(y,cap){
   ${VSC_FN.map((f,i)=>{const v=a[i]-b[i],p=vsPct(a[i],b[i]);return `<tr><th scope="row">${f}</th><td>${vsM(b[i])}</td><td>${vsM(a[i])}</td><td class="vcell ${vcls(p)}">${vsSgn(v,vsM)} <small>${vsP(p)}</small></td><td class="exp">${vscExplain(y,i,v)}</td></tr>`}).join("")}
   <tr class="tot"><th scope="row">Total</th><td>${vsM(tb)}</td><td>${vsM(ta)}</td><td class="${vcls(vsPct(ta,tb))}">${vsSgn(ta-tb,vsM)} <small>${vsP(vsPct(ta,tb))}</small></td><td class="exp">${vscExplain0(y,ta-tb)}</td></tr></tbody></table></div>`;
 }
-const vscExplain0=(y,gap)=>{const T=VSC_TOT,ex=T.amort["a"+y]+T.capmaint["a"+y];return `Overage not in the budget: ${vsMs(ex)} of this (${Math.round(ex/gap*100)}%): wear and tear on assets ${vsMs(T.amort["a"+y])} and repairs paid from the capital budget ${vsMs(T.capmaint["a"+y])}.`;};
+const vscExplain0=(y,gap)=>{const T=VSC_TOT,ex=T.amort["a"+y]+T.capmaint["a"+y];return `Overage not in the budget: ${vsMs(ex)} of this (${Math.round(ex/gap*100)}%): amortization ${vsMs(T.amort["a"+y])} and capital maintenance ${vsMs(T.capmaint["a"+y])}.`;};
 function vscYoY(prevKey,curKey,cap,ylab){
   const b=VSC_EXP[prevKey],a=VSC_EXP[curKey]; const tb=b.reduce((s,x)=>s+x,0),ta=a.reduce((s,x)=>s+x,0);
   return `<div class="sctwrap"><table class="sct">${cap?`<caption>${cap}</caption>`:""}<thead><tr><th scope="col">Function</th><th scope="col">${ylab[0]}</th><th scope="col">${ylab[1]}</th><th scope="col">Change</th><th scope="col">%</th></tr></thead><tbody>
@@ -1495,8 +1495,8 @@ function vscYoY(prevKey,curKey,cap,ylab){
   <tr class="tot"><th scope="row">Total</th><td>${vsM(tb)}</td><td>${vsM(ta)}</td><td>${vsSgn(ta-tb,vsM)}</td><td class="${vcls(vsPct(ta,tb))}">${vsP(vsPct(ta,tb))}</td></tr></tbody></table></div>`;
 }
 const VSC_HNOTE={
-  25:{rev:"Sale of goods and services +$12.39M and investment income +$6.12M; government transfers −$5.96M.",exp:"Mostly an overage not in the budget: wear and tear on City assets ($24.05M) and repairs paid from the capital budget ($14.68M).",sur:"Result of the revenue and expense lines above.",cap:"Big projects often take several years, so spending lags the plan. The Annual Report doesn’t give project timing."},
-  24:{rev:"Revenue by source is in Note 18 of the 2024 Annual Report.",exp:"Mostly an overage not in the budget: wear and tear on City assets ($21.70M) and repairs paid from the capital budget ($12.93M).",sur:"Result of the revenue and expense lines above.",cap:"Big projects often take several years, so spending lags the plan. The Annual Report doesn’t give project timing."}
+  25:{rev:"Sale of goods and services +$12.39M and investment income +$6.12M; government transfers −$5.96M.",exp:"Mostly an overage not in the budget: amortization ($24.05M) and capital maintenance ($14.68M).",sur:"Result of the revenue and expense lines above.",cap:"Big projects often take several years, so spending lags the plan. The Annual Report doesn’t give project timing."},
+  24:{rev:"Revenue by source is in Note 18 of the 2024 Annual Report.",exp:"Mostly an overage not in the budget: amortization ($21.70M) and capital maintenance ($12.93M).",sur:"Result of the revenue and expense lines above.",cap:"Big projects often take several years, so spending lags the plan. The Annual Report doesn’t give project timing."}
 };
 function vscHeadline(y){
   const T=VSC_TOT,b="b"+y,a="a"+y,N=VSC_HNOTE[y];
@@ -1505,7 +1505,7 @@ function vscHeadline(y){
    ${row("Revenue","rev")}${row("Expenses","exp")}${row("Annual surplus","sur")}${row("Capital assets acquired","cap")}</tbody></table></div>`;
 }
 const vscWhy=y=>{const T=VSC_TOT,a="a"+y,b="b"+y,gap=T.exp[a]-T.exp[b],ex=T.amort[a]+T.capmaint[a];
-  return `<p class="vsp">The City’s budget and its audited year-end results count costs differently. Two costs appear in the results but not in the budget:</p><ul class="vsul"><li><b>Wear and tear on City assets</b> (${vsM(T.amort[a])}). Roads, buildings and vehicles lose value each year. Accountants record that as a cost, even though no cash is spent.</li><li><b>Repairs paid from the capital budget</b> (${vsM(T.capmaint[a])}). These are planned in the capital budget but counted as expenses in the results.</li></ul><p class="vsp">Together they explain ${vsM1(ex)}, or ${Math.round(ex/gap*100)}%, of the ${vsM1(gap)} gap between budgeted and actual expenses.</p><div class="src">Notes 18 and 19 of the audited statements.</div>`;};
+  return `<p class="vsp">The City’s budget and its audited year-end results count costs differently. Two costs appear in the results but not in the budget:</p><ul class="vsul"><li><b>Amortization</b> (${vsM(T.amort[a])}). The annual cost of roads, buildings, vehicles and equipment as they are used up over their useful life. It is recorded as an expense, but no cash leaves the City that year.</li><li><b>Capital maintenance</b> (${vsM(T.capmaint[a])}). Maintenance work funded through the capital budget but recorded as an operating expense in the audited results.</li></ul><p class="vsp">Together they explain ${vsM1(ex)}, or ${Math.round(ex/gap*100)}%, of the ${vsM1(gap)} gap between budgeted and actual expenses.</p><div class="src">Notes 18 and 19 of the audited statements.</div>`;};
 /* Overage not in the budget: costs in the audited results that the operating budget did not include. Tracked year to year. */
 function vscOverage(){
   const T=VSC_TOT,yr=[24,25].map(y=>{const g=T.exp["a"+y]-T.exp["b"+y],am=T.amort["a"+y],cm=T.capmaint["a"+y];return {y,g,am,cm,ov:am+cm,rest:g-am-cm};});
@@ -1513,8 +1513,8 @@ function vscOverage(){
   return `<p class="vsp">Each year the audited results include costs the operating budget did not include. This page tracks them as an <b>overage not in the budget</b>, so the 2026 figure can be compared when the City reports it.</p>
   <div class="sctwrap"><table class="sct fn"><thead><tr><th scope="col">Item</th><th scope="col">2024</th><th scope="col">2025</th><th scope="col">2026</th></tr></thead><tbody>
   <tr><th scope="row">Expenses over budget (total)</th>${td(o=>`<td class="up">${vsMs(o.g)}</td>`)}<td class="muted" rowspan="5">Not yet reported. 2026 actuals come with the 2026 Annual Report, published in 2027.</td></tr>
-  <tr><th scope="row">Wear and tear on City assets <small>(no cash spent)</small></th>${td(o=>`<td>${vsMs(o.am)}</td>`)}</tr>
-  <tr><th scope="row">Repairs paid from the capital budget</th>${td(o=>`<td>${vsMs(o.cm)}</td>`)}</tr>
+  <tr><th scope="row">Amortization <small>(no cash spent)</small></th>${td(o=>`<td>${vsMs(o.am)}</td>`)}</tr>
+  <tr><th scope="row">Capital maintenance <small>(funded by the capital budget)</small></th>${td(o=>`<td>${vsMs(o.cm)}</td>`)}</tr>
   <tr class="tot"><th scope="row">Overage not in the budget</th>${td(o=>`<td class="up">${vsMs(o.ov)} <small>${Math.round(o.ov/o.g*100)}% of the total</small></td>`)}</tr>
   <tr><th scope="row">Remaining over budget, not explained in the Annual Report</th>${td(o=>`<td class="up">${vsMs(o.rest)}</td>`)}</tr>
   </tbody></table></div>
@@ -1579,7 +1579,7 @@ function renderVicScore(){
       ${VSC_REV25.map(r=>`<tr><th scope="row">${r[0]}</th><td>${vsM(r[1])}</td><td>${vsM(r[2])}</td><td class="${vplan("rev",vsPct(r[2],r[1]))}">${vsSgn(r[2]-r[1],vsM)}</td></tr>`).join("")}</tbody></table></div>`,false)}
      ${vRoll("Planned and completed projects","Capital plan $164.3M · acquired $64.2M",
       `<p class="vsp">The 2025 capital plan was $164.3M and capital assets acquired were $64.2M. Projects the City reports as completed in 2025 include Blanshard Street South, 5.1 km of cycling network, 17 crosswalks, 14 public fast chargers and fleet EVs. The City reports Crystal Pool planning and design continuing in 2026.</p>`,false)}
-     ${vRoll("What the overage is","Wear and tear, and capital-funded repairs",vscWhy(25),false)}
+     ${vRoll("What the overage is","Amortization and capital maintenance",vscWhy(25),false)}
      ${vsSrc(["ar25","tax25"])}`,
 
    y24:`<div class="vskpis"><div class="stat"><b>+2.9%</b><span>Revenue vs 2023</span></div><div class="stat"><b>+12.3%</b><span>Expenses vs 2023</span></div><div class="stat"><b>${capPct(24)}%</b><span>Capital acquired vs plan</span></div><div class="stat"><b>7.93%</b><span>2024 tax increase (Times Colonist)</span></div></div>
@@ -1596,7 +1596,7 @@ function renderVicScore(){
       <tr><th scope="row">Official Community Plan</th><td>In public engagement</td><td>${vgrade("T")}</td><td>Completed: Victoria 2050 adopted Oct 2, 2025. <span class="muted">(City of Victoria)</span></td><td>${vgrade("D")}</td></tr>
       <tr><th scope="row">Capital program</th><td>$77.2M acquired vs $153.2M planned</td><td>${vgrade("B")}</td><td>2025: $64.2M acquired vs $164.3M planned (39%). <span class="muted">(2025 Annual Report)</span></td><td>${vgrade("B")}</td></tr>
       </tbody></table></div><div class="note"><b>Latest available</b> comes from the 2025 Annual Report and the 2026 Financial Plan. The City has not yet published a 2026 progress report, so nothing after those documents is shown.</div>`,false)}
-     ${vRoll("What the overage is","Wear and tear, and capital-funded repairs",vscWhy(24),false)}
+     ${vRoll("What the overage is","Amortization and capital maintenance",vscWhy(24),false)}
      ${vsSrc(["ar24","tc24"])}`,
 
    yoy:`${vRoll("High-level actuals, 2023–2025","Audited",
