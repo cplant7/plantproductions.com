@@ -38,7 +38,7 @@ The pilot lives in the parlivue folder and opens at plantproductions.com/parlivu
 To update it, replace parlivue/index.html with the new version and commit. The parlivue/src folder and build.py hold the source; `python3 parlivue/build.py` rebuilds parlivue/index.html from them.
 
 ## Feedback later
-A suggested address is hello@plantproductions.com. It has not been created or tested. Once the mailbox or forwarding works, add a Feedback mailto link. No messages are collected by this page.
+hello@plantproductions.com is live and linked from the footer and Legal page. No messages are collected by the site itself.
 
 ## Official setup references
 - GitHub Pages publishing: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
