@@ -868,6 +868,7 @@ details.about>div{margin-top:10px}
 .hlinks a{all:unset;cursor:pointer;font:600 14px var(--f-body);padding:8px 14px;border-radius:999px;border:1px solid color-mix(in srgb,var(--brass) 40%,var(--rule));color:var(--brass);background:color-mix(in srgb,var(--brass) 6%,var(--surface));transition:background .2s,color .2s}
 .hlinks a:hover,.hlinks a:focus-visible{background:var(--brass);color:#fff;border-color:var(--brass)}
 .hsoon{font:500 13.5px var(--f-body);padding:8px 14px;border-radius:999px;border:1px dashed var(--rule);color:var(--muted)}
+.hero-big{display:block;font:800 clamp(56px,7.5vw,104px)/0.95 var(--f-mark);letter-spacing:-.03em;color:var(--ink);margin-bottom:10px}
 </style>
 
 <div class="wrap">
@@ -2356,9 +2357,8 @@ function renderHome(){
   homeEl.innerHTML=`
    <section class="hero">
     <div class="hero-l">
-     <div class="kicker">Canada</div>
-     <h1 class="hero-h">Parliament and Government</h1>
-     <p class="hero-p">Where Canadians are represented, laws are debated and government is held to account. Explore the people, seats, goals and financials.</p>
+     <h1 class="hero-h"><span class="hero-big">Canada</span>Parliament and Government</h1>
+     <p class="hero-p">Explore how sovereignty and representation shape Canadian democracy. See who holds the seats, how laws are debated and how governments are held to account for their priorities and spending.</p>
      <div class="hero-cta">
       <button class="cta solid" data-go="commons">House of Commons <span class="ci">→</span></button>
       <button class="cta solid" data-go="senate">Senate <span class="ci">→</span></button>

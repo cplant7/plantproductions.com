@@ -34,9 +34,8 @@ function renderHome(){
   homeEl.innerHTML=`
    <section class="hero">
     <div class="hero-l">
-     <div class="kicker">Canada</div>
-     <h1 class="hero-h">Parliament and Government</h1>
-     <p class="hero-p">Where Canadians are represented, laws are debated and government is held to account. Explore the people, seats, goals and financials.</p>
+     <h1 class="hero-h"><span class="hero-big">Canada</span>Parliament and Government</h1>
+     <p class="hero-p">Explore how sovereignty and representation shape Canadian democracy. See who holds the seats, how laws are debated and how governments are held to account for their priorities and spending.</p>
      <div class="hero-cta">
       <button class="cta solid" data-go="commons">House of Commons <span class="ci">→</span></button>
       <button class="cta solid" data-go="senate">Senate <span class="ci">→</span></button>
