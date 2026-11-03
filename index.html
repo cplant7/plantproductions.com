@@ -8,7 +8,7 @@
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Space+Grotesk:wght@300;400&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Space+Grotesk:wght@400;700&amp;display=swap">
 <style>
 :root{--ink:#f4f4f2;--quiet:#8d8d8a;--line:#262626;--bg:#000}
 *{box-sizing:border-box}
@@ -34,15 +34,15 @@ nav a:hover{color:#fff}
 .hero{min-height:calc(100svh - 104px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.2fr);align-items:end;gap:32px;padding-bottom:9vh}
 .lede{max-width:22ch;font-size:13px;font-weight:500;line-height:1.45;margin:0 0 22px}
 .cta{display:inline-flex;justify-content:space-between;width:140px;padding-bottom:6px;border-bottom:1px solid var(--ink);font-size:13px;font-weight:500}
-h1{margin:0;font:300 clamp(48px,7.6vw,120px)/1.02 "Space Grotesk",Inter,sans-serif;letter-spacing:-.035em}
-h1 .outline{color:transparent;-webkit-text-stroke:1px #bdbdb9}
+h1{margin:0;font:700 clamp(48px,7.6vw,120px)/1.02 "Space Grotesk",Inter,sans-serif;letter-spacing:-.04em}
+h1 .outline{color:transparent;-webkit-text-stroke:1.5px #d6d6d2}
 
 /* Projects */
 .projects{padding:12vh 0 14vh}
 .projects-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:36px}
 .eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--quiet);margin:0 0 12px}
-h2{margin:0;font:300 clamp(32px,4vw,56px)/1.05 "Space Grotesk",Inter,sans-serif;letter-spacing:-.03em}
-h2 .outline{color:transparent;-webkit-text-stroke:1px #bdbdb9}
+h2{margin:0;font:700 clamp(32px,4vw,56px)/1.05 "Space Grotesk",Inter,sans-serif;letter-spacing:-.035em}
+h2 .outline{color:transparent;-webkit-text-stroke:1.2px #d6d6d2}
 .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .card{position:relative;display:block;aspect-ratio:4/5;border-radius:18px;overflow:hidden;background:#0b0b0b;isolation:isolate}
 .card::before{content:"";position:absolute;inset:0;z-index:3;border:1px solid var(--line);border-radius:inherit;pointer-events:none;transition:border-color .4s}
@@ -54,7 +54,7 @@ h2 .outline{color:transparent;-webkit-text-stroke:1px #bdbdb9}
 .card .go{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:1px solid #ffffff40;display:grid;place-items:center;font-size:14px;transition:background .3s,color .3s,transform .5s}
 .card:hover .go{background:#fff;color:#000;transform:rotate(45deg)}
 .card .body{position:absolute;left:20px;right:20px;bottom:20px}
-.card h3{margin:0;font:400 clamp(20px,1.9vw,26px)/1.15 "Space Grotesk",Inter,sans-serif;letter-spacing:-.02em}
+.card h3{margin:0;font:700 clamp(20px,1.9vw,26px)/1.15 "Space Grotesk",Inter,sans-serif;letter-spacing:-.02em}
 .card .status{display:inline-block;margin-top:8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--quiet)}
 .card .reveal{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s cubic-bezier(.2,.7,.2,1)}
 .card .reveal>div{overflow:hidden}
