@@ -276,19 +276,26 @@ function renderVicScore(){
   const tabs=[["card","Report card","Strategic Plan progress"],["y26","2026 plan","Budget by department"],["y25","2025 results","Plan vs actual"],["y24","2024 results","Plan vs actual"],["yoy","Year over year","2023–2025 actuals"],["check","Data validation","Sources checked"]];
   const met=VSC_CARD.filter(c=>c.g==="D").length;
   const vpill=(cls,txt)=>`<span class="dpill ${cls}">${txt}</span>`;
-  const spark=(vals,lab,cap)=>{const mx=Math.max(...vals);return `<span class="dspark" aria-hidden="true">${vals.map((v,i)=>`<i class="${i===vals.length-1?"on":""}" style="height:${Math.max(8,v/mx*100).toFixed(0)}%" title="${lab[i]}"></i>`).join("")}</span><span class="dk-y">${lab[0]}–${lab[lab.length-1]}${cap?" "+cap:""}</span>`;};
+  /* Half-circle gauge: actual as % of plan. Over 100% the arc fills and an outer tick marks the overrun. */
+  const gauge=(pct,cls,lab)=>{const r=34,L=Math.PI*r,f=Math.min(pct,100)/100;return `<span class="dgauge ${cls}" role="img" aria-label="${lab}: ${Math.round(pct)}% of plan"><svg viewBox="0 0 84 46"><path d="M8 42a34 34 0 0 1 68 0" class="gt"/><path d="M8 42a34 34 0 0 1 68 0" class="gf" stroke-dasharray="${(f*L).toFixed(1)} ${L.toFixed(1)}"/>${pct>100?`<path d="M8 42a34 34 0 0 1 68 0" class="go" stroke-dasharray="0 ${(L*0.985).toFixed(1)} ${(L*0.015).toFixed(1)}"/>`:""}</svg><b>${Math.round(pct)}%</b><small>${lab}</small></span>`;};
+  /* Variance sparkline: % variance from plan, 2024 and 2025 (the two audited plan years). */
+  const vspark=(k,good)=>{const v=[24,25].map(y=>vsPct(T[k]["a"+y],T[k]["b"+y])),mx=Math.max(...v.map(Math.abs),1),Y=x=>14-x/mx*11,X=[6,84];
+    const c=v.map(x=>(x>0)===good?"ok":"bad");
+    return `<span class="dvar"><svg viewBox="0 0 90 28" aria-hidden="true"><line x1="0" x2="90" y1="14" y2="14" class="z"/><polyline points="${X.map((x,i)=>x+","+Y(v[i]).toFixed(1)).join(" ")}"/>${X.map((x,i)=>`<circle cx="${x}" cy="${Y(v[i]).toFixed(1)}" r="3" class="${c[i]}"/>`).join("")}</svg><span class="dk-y">Variance ’24 ${vsP(v[0])} · ’25 ${vsP(v[1])}</span></span>`;};
   const vsPlan=(k,y,good)=>{const a=T[k]["a"+y],b=T[k]["b"+y],pc=vsPct(a,b),up=pc>0;return vpill((up===good)?"ok":"watch",(up?"Above":"Below")+" plan "+vsP(pc));};
+  const gp=(k,good,lab)=>{const pc=T[k].a25/T[k].b25*100;return gauge(pc,((pc>100)===good)?"ok":(k==="cap"?"off":"watch"),lab);};
   const kp=[
-    ["y25","Revenue · 2025",vsM1(T.rev.a25),vsPlan("rev",25,true),"Plan "+vsM1(T.rev.b25),spark([T.rev.a23,T.rev.a24,T.rev.a25],["2023","2024","2025"])],
-    ["y25","Expenses · 2025",vsM1(T.exp.a25),vsPlan("exp",25,false),"Plan "+vsM1(T.exp.b25)+" · plan excludes amortization",spark([T.exp.a23,T.exp.a24,T.exp.a25],["2023","2024","2025"])],
-    ["y25","Annual surplus · 2025",vsM1(T.sur.a25),vsPlan("sur",25,true),"Plan "+vsM1(T.sur.b25),spark([T.sur.a23,T.sur.a24,T.sur.a25],["2023","2024","2025"])],
-    ["y25","Capital acquired · 2025",vsM1(T.cap.a25),vpill("off",capPct(25)+"% of plan"),"Plan "+vsM1(T.cap.b25)+" · 2024: "+capPct(24)+"%",spark([T.cap.a23,T.cap.a24,T.cap.a25],["2023","2024","2025"])],
-    ["y26","Operating budget · 2026",vsM1(tot26),vpill("neu","+8.87%"),"Capital budget $160.1M",spark(VSC_CAPYRS.map(r=>r[1]),VSC_CAPYRS.map(r=>r[0]),"capital plan")],
-    ["card","Strategic Plan areas",met+" of "+VSC_CARD.length,vpill("neu","Target met"),"2023–2026 Strategic Plan",`<span class="dgrades">${counts.map(([g,n])=>`<i class="${VSC_GRADES[g][1]}" style="flex:${n}" title="${VSC_GRADES[g][0]}: ${n}"></i>`).join("")}</span>`]
+    ["y25","Revenue · 2025",vsM1(T.rev.a25),vsPlan("rev",25,true),"Plan "+vsM1(T.rev.b25),gp("rev",true,"of plan received")+vspark("rev",true)],
+    ["y25","Expenses · 2025",vsM1(T.exp.a25),vsPlan("exp",25,false),"Plan "+vsM1(T.exp.b25)+" · plan excludes amortization",gp("exp",false,"of plan spent")+vspark("exp",false)],
+    ["y25","Annual surplus · 2025",vsM1(T.sur.a25),vsPlan("sur",25,true),"Plan "+vsM1(T.sur.b25),gp("sur",true,"of plan")+vspark("sur",true)],
+    ["y25","Capital acquired · 2025",vsM1(T.cap.a25),vpill("off",capPct(25)+"% of plan"),"Plan "+vsM1(T.cap.b25),gp("cap",true,"of plan spent")+vspark("cap",true)],
+    ["y26","Operating budget · 2026",vsM1(tot26),vpill("neu","+8.87%"),"Capital budget $160.1M",`<span class="dnone">No 2026 actuals yet. Gauge and variance appear once the City reports 2026 results.</span>`],
+    ["card","Strategic Plan areas",met+" of "+VSC_CARD.length,vpill("neu","Target met"),"2023–2026 Strategic Plan",gauge(met/VSC_CARD.length*100,"neu","target met")+`<span class="dgrades">${counts.map(([g,n])=>`<i class="${VSC_GRADES[g][1]}" style="flex:${n}" title="${VSC_GRADES[g][0]}: ${n}"></i>`).join("")}</span>`]
   ];
   el.innerHTML=`<header class="dsh-head"><div><div class="kicker">City of Victoria · Department dashboard</div><h2 class="nh">Council Scorecard 2024–2026</h2>
      <p class="pagelede">Plans, budgets and results from the City's audited statements, with progress on the 2023–2026 Strategic Plan.</p></div>
      <div class="dsh-asof">Data as of Nov 1, 2026 · audited 2024 and 2025, adopted 2026 plan</div></header>
+    <div class="dkey"><span><i class="ok"></i>Favourable to plan</span><span><i class="watch"></i>Unfavourable to plan</span><span><i class="off"></i>Well below plan</span><span class="muted">Gauge: actual as % of plan · Line: variance from plan by year</span></div>
     <div class="dsh-kpis" aria-label="Key figures">${kp.map(k=>`<button class="dkpi" data-go="${k[0]}"><span class="dk-l">${k[1]}</span><b class="dk-v">${k[2]}</b><span class="dk-p">${k[3]}</span><span class="dk-s">${k[4]}</span>${k[5]}</button>`).join("")}</div>
     <div class="dsh">
     <nav class="dsh-rail" role="tablist" aria-orientation="vertical" aria-label="Scorecard sections"><div class="dsh-rl">Sections</div>${tabs.map((t,i)=>`<button role="tab" id="vst-${t[0]}" aria-controls="vsp-${t[0]}" aria-selected="${i?"false":"true"}" tabindex="${i?-1:0}" data-k="${t[0]}"><span>${t[1]}</span><small>${t[2]}</small></button>`).join("")}</nav>
