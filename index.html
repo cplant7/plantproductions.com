@@ -219,7 +219,7 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#c9c9c6}
     cv.width = W * dpr; cv.height = H * dpr;
     cx.setTransform(dpr,0,0,dpr,0,0);
     const s = Math.min(W, H) * (W < 700 ? 1.1 : 1);
-    if (!balls.length) balls = seed.map(([x,y,r,v],i) => ({x:x*W, y:y*H, r:r*s, br:r, v, a:i*1.7, ox:0, oy:0}));
+    if (!balls.length) balls = seed.map(([x,y,r,v],i) => ({x:x*W, y:y*H, r:r*s, br:r, v, a:i*1.7, i, ox:0, oy:0}));
     else balls.forEach(b => b.r = b.br * s);
   }
   function sphere(x, y, r){
@@ -241,12 +241,17 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#c9c9c6}
     cx.strokeStyle = 'rgba(255,255,255,.18)'; cx.lineWidth = 1; cx.stroke();
   }
   let t = 0, last = performance.now();
+  const start = last;
+  // On load, each sphere drops in from above, staggered, with a soft settle
+  const settle = k => { const c = 1.6; return 1 + (c + 1) * Math.pow(k - 1, 3) + c * Math.pow(k - 1, 2); };
   function frame(now){
     const dt = Math.min(now - last, 50); last = now;
     if (!paused) t += dt / 1000;
     cx.clearRect(0,0,W,H);
     for (const b of balls){
-      const px = b.x + Math.sin(t*.12*b.v + b.a) * 40, py = b.y + Math.cos(t*.09*b.v + b.a) * 34;
+      const k = reduce ? 1 : Math.min(Math.max((now - start - b.i * 110) / 1500, 0), 1);
+      const drop = (1 - settle(k)) * (b.y + b.r * 2 + 80);
+      const px = b.x + Math.sin(t*.3*b.v + b.a) * 130, py = b.y + Math.cos(t*.24*b.v + b.a) * 100 - drop;
       // spheres ease gently away from the cursor
       const dx = px - mx, dy = py - my, d = Math.hypot(dx, dy), reach = b.r + 120;
       const push = d < reach && !paused ? (1 - d/reach) * 36 : 0;
