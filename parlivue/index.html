@@ -1518,6 +1518,7 @@ function vscOverage(){
   <tr class="tot"><th scope="row">Overage not in the operating budget</th>${td(o=>`<td class="up">${vsMs(o.ov)} <small>${Math.round(o.ov/o.g*100)}% of the total</small></td>`)}</tr>
   <tr><th scope="row">Remaining over budget, not explained in the Annual Report</th>${td(o=>`<td class="up">${vsMs(o.rest)}</td>`)}</tr>
   </tbody></table></div>
+  <div class="why"><b>Our reading of 2025.</b> It appears the overage is mostly a difference in how costs are recorded, not new spending. Capital maintenance ($14.68M) was funded through the capital program, then recorded as an operating expense in the audited results. Amortization is not in the operating budget, but the statements’ own budget column estimated it at $16.5M; the actual was $24.05M, so the estimate was $7.6M low. Both reduced the reported surplus rather than requiring new tax money.<span class="muted">Based on Note 18, Note 19 and the Statement of Change in Net Financial Assets, 2025 Annual Report.</span></div>
   <div class="note"><b>What to watch in 2026:</b> whether the overage not in the operating budget keeps growing ($34.6M in 2024, $38.7M in 2025), and whether the unexplained remainder shrinks. The documents used here do not say whether the 2026 budget includes these costs.</div>${vsSrc(["ar24","ar25","fp26"])}`;
 }
 /* Election results: shown on the City Council page */
