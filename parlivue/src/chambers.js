@@ -228,6 +228,7 @@ function chSelect(C,i,zoom){ zoom=false; if(C.map){ document.getElementById(C.ma
 
 function renderChamber(id){
   if(id==="vicscore") return renderVicScorePage();
+  if(id==="misscore") return renderMisScorePage();
   if(id==="bcleg") return renderBcLeg();
   if(id==="skleg") return renderSkLeg();
   if(typeof PV_CFG!=="undefined"&&PV_CFG[id]) return renderPvLeg(PV_CFG[id]);

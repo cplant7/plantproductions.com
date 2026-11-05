@@ -19,8 +19,9 @@ const VSC_S={
   amal:["Daily Hive, Oct 27 2026","https://dailyhive.com/vancouver/victoria-saanich-october-2026-amalgamation-plebiscite-election-results"],
   ca:["CTV News, Jun 24 2026","https://www.ctvnews.ca/vancouver/vancouver-island/article/province-halts-binding-victoria-saanich-merger-referendum"]
 };
-const vsM=n=>"$"+(n/1e6).toFixed(2)+"M";
-const vsM1=n=>"$"+(n/1e6).toFixed(1)+"M";
+const vsFmt=(n,d)=>"$"+(n/1e6).toLocaleString("en-CA",{minimumFractionDigits:d,maximumFractionDigits:d})+"M";
+const vsM=n=>vsFmt(n,2);
+const vsM1=n=>vsFmt(n,1);
 const vsSgn=(n,f)=>(n>0?"+":n<0?"−":"")+f(Math.abs(n));
 const vsPct=(a,b)=>((a-b)/b*100);
 const vsP=(x)=>(x>0?"+":x<0?"−":"")+Math.abs(x).toFixed(1)+"%";
@@ -151,7 +152,7 @@ const VSC_SEG={
   25:{am:[4284682,3115035,10919761,665179,0,677079,2585631,1132366,674598],cm:[1723950,171837,2891211,2823101,0,33309,3879467,2257194,902021]},
   24:{am:[3740589,2942779,9575286,600320,0,674561,2500539,1064813,602475],cm:[2063800,323537,4294625,974327,0,24552,2863606,610396,1772687]}
 };
-const vsMs=n=>"$"+(Math.abs(n)/1e6).toFixed(2)+"M";
+const vsMs=n=>vsFmt(Math.abs(n),2);
 function vscExplain(y,i,v){
   const s=VSC_SEG[y], am=s.am[i], cm=s.cm[i], acc=am+cm, rest=v-acc;
   if(!acc) return `The Annual Report doesn’t break this difference down.`;

@@ -718,7 +718,7 @@ details.rc>summary:focus-visible{outline:2px solid var(--brass);outline-offset:2
 .vswk{font:600 13px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--brass)}
 .vsw b{font:800 18px var(--f-mark)}
 .vsws{font-size:14px;color:var(--muted)}
-#ch-vicscore{display:grid;gap:16px}
+#ch-vicscore,#ch-misscore{display:grid;gap:16px}
 .vsec{display:grid;gap:12px;border:1px solid var(--rule);border-radius:12px;background:var(--surface);padding:14px 16px 16px}
 .elec .sct td:nth-child(2),.elec .sct td:last-child,.elec .sct thead th:nth-child(2),.elec .sct thead th:last-child{text-align:left}
 .elec .sct td:nth-child(5),.elec .sct thead th:nth-child(5){text-align:center}
@@ -895,6 +895,7 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
 .dsh-kh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;font:700 15px var(--f-body);color:var(--ink);margin-bottom:-6px}
 .dsh-kh span{font:400 13px var(--f-body);color:var(--muted)}
 .ddmenu.pvportal{box-sizing:border-box}
+#msp-check .sct th,#msp-check .sct td{text-align:left}
 </style>
 
 <div class="wrap">
@@ -936,7 +937,7 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
     <div class="dd" id="dd-city"><button class="ddbtn" aria-haspopup="true" aria-expanded="false">Cities<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></button>
       <div class="ddmenu" role="menu">
         <div class="ddprov"><button role="menuitem" class="ddname" data-tab="victoria" tabindex="-1">Victoria, BC</button><div class="ddlinks"><button role="menuitem" id="t-victoria" data-tab="victoria">City Council</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-vicscore" data-tab="vicscore">Scorecard</button></div></div>
-        <button role="menuitem" id="t-mississauga" data-tab="mississauga"><b>Mississauga, ON</b><span>Mayor-elect, council and city departments</span></button>
+        <div class="ddprov"><button role="menuitem" class="ddname" data-tab="mississauga" tabindex="-1">Mississauga, ON</button><div class="ddlinks"><button role="menuitem" id="t-mississauga" data-tab="mississauga">City Council</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-misscore" data-tab="misscore">Scorecard</button></div></div>
       </div></div>
     <button role="tab" id="t-news" data-tab="news">News</button>
   </div>
@@ -984,6 +985,7 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
   <div id="ch-nuleg" class="chwrap" hidden></div>
   <div id="ch-victoria" class="chwrap" hidden></div>
   <div id="ch-vicscore" class="chwrap" hidden></div>
+  <div id="ch-misscore" class="chwrap" hidden></div>
 
   <footer id="wheelfoot">
     <details class="about"><summary>About this data</summary>

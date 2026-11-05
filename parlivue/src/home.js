@@ -58,7 +58,7 @@ function renderHome(){
     <article class="hcard hmaps"><div class="kicker">Where the ridings are</div><h2>Riding maps</h2><p>Official maps of the electoral districts each member represents. Each opens on the elections agency's site.</p>
       <div class="hlinks">${HOME_MAPS.map(([k,l])=>`<a href="${RIDING_MAPS[k].src[1]}" target="_blank" rel="noopener" title="${RIDING_MAPS[k].title} · ${RIDING_MAPS[k].sub}">${l} ↗</a>`).join("")}</div></article>
     <article class="hcard"><div class="kicker">Goals and financials</div><h2>Scorecards</h2><p>What each government planned, budgeted and reported, compared year by year.</p>
-      <div class="hlinks"><button data-go="vicscore">City of Victoria</button><span class="hsoon">City of Mississauga · coming soon</span><span class="hsoon">Federal departments · coming soon</span></div></article>
+      <div class="hlinks"><button data-go="vicscore">City of Victoria</button><button data-go="misscore">City of Mississauga</button><span class="hsoon">Federal departments · coming soon</span></div></article>
    </section>`;
   homeEl.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.go)));
   homeBuilt=true;

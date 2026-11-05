@@ -288,7 +288,7 @@ function render(key){
     const hr=ds.id==="federal"?RIDING.carney:(ds.hub.riding||null); h=personHead("At the helm",ds.hub.name,ds.party,hr)+`<div class="lede">${ds.hub.title}.</div>`+partySrc(ds.party,hr);
     if(ds.id==="mississauga"){
       h+=`<div class="statgrid"><div class="stat"><b>11</b><span>Ward councillors</span></div><div class="stat"><b>5</b><span>Commissioners</span></div><div class="stat"><b>2</b><span>New to Council</span></div></div>
-        <div class="note">Certified October 28, 2026. The new term begins November 15, 2026. Carolyn Parrish is mayor until then.</div>
+        <div class="note">Certified October 28, 2026. The new term begins November 15, 2026. Carolyn Parrish is mayor until then.</div><button class="chipbtn" onclick="show('misscore');window.scrollTo(0,0)">Council Scorecard 2024–2026 →</button>
         <h3>Council, 2026 to 2030</h3><ul class="list">${ds.inner.filter(n=>n.role==="mis_council").map(n=>`<li class="item">${go(n.id,n.name)}<span class="rl">${n.riding}${n.isNew?'<span class="newtag">NEW</span>':""}</span></li>`).join("")}</ul>
         <h3>Administration</h3><ul class="list"><li class="item">${go("cm","Geoff Wright")}<span class="rl">City Manager and Chief Administrative Officer</span></li></ul>
         ${roleBox(ds.hub.role)}${srcK("res")}`;
@@ -388,8 +388,8 @@ function legend(){
 const tabs=[...document.querySelectorAll(".tabs button[data-tab]")];
 const newsEl=document.getElementById("news"), bannerEl=document.getElementById("banner");
 const wheelEls=[document.querySelector(".toolbar"),document.getElementById("legend"),document.querySelector(".main")];
-const chEls={senate:document.getElementById("ch-senate"),ontario:document.getElementById("ch-ontario"),bcleg:document.getElementById("ch-bcleg"),skleg:document.getElementById("ch-skleg"),mbleg:document.getElementById("ch-mbleg"),nbleg:document.getElementById("ch-nbleg"),peleg:document.getElementById("ch-peleg"),ableg:document.getElementById("ch-ableg"),ykleg:document.getElementById("ch-ykleg"),nlleg:document.getElementById("ch-nlleg"),nsleg:document.getElementById("ch-nsleg"),ntleg:document.getElementById("ch-ntleg"),nuleg:document.getElementById("ch-nuleg"),victoria:document.getElementById("ch-victoria"),vicscore:document.getElementById("ch-vicscore")};
-const CH_META={vicscore:["Snapshot · Nov 1 2026","City of Victoria, BC · Council Scorecard 2024–2026","What the City planned, budgeted and reported, and when: 2024 and 2025 results and the 2026 plan."],
+const chEls={senate:document.getElementById("ch-senate"),ontario:document.getElementById("ch-ontario"),bcleg:document.getElementById("ch-bcleg"),skleg:document.getElementById("ch-skleg"),mbleg:document.getElementById("ch-mbleg"),nbleg:document.getElementById("ch-nbleg"),peleg:document.getElementById("ch-peleg"),ableg:document.getElementById("ch-ableg"),ykleg:document.getElementById("ch-ykleg"),nlleg:document.getElementById("ch-nlleg"),nsleg:document.getElementById("ch-nsleg"),ntleg:document.getElementById("ch-ntleg"),nuleg:document.getElementById("ch-nuleg"),victoria:document.getElementById("ch-victoria"),vicscore:document.getElementById("ch-vicscore"),misscore:document.getElementById("ch-misscore")};
+const CH_META={misscore:["Snapshot · Nov 1 2026","City of Mississauga, ON · Council Scorecard 2024–2026","What the City planned, budgeted and reported: 2024 and 2025 audited results and the 2026 budget."],vicscore:["Snapshot · Nov 1 2026","City of Victoria, BC · Council Scorecard 2024–2026","What the City planned, budgeted and reported, and when: 2024 and 2025 results and the 2026 plan."],
   victoria:["Snapshot · Nov 1 2026","City of Victoria, BC · Council 2026–2030","The Mayor and eight councillors elected October 17, 2026, the City Manager, and every department with its 2026 budget."],
   senate:["Snapshot · Nov 1 2026","Parliament of Canada · Senate","All 105 Senate seats by parliamentary group, with every senator, their province and when they retire."],
   bcleg:["Snapshot · Nov 1 2026","Legislative Assembly of British Columbia · In transition","All 93 members-elect from the October 24, 2026 election, with the caretaker Cabinet and every ministry."],
@@ -528,7 +528,7 @@ show((location.hash||"").slice(1)||"home");
 
 /* ---------- masthead: page name + date under the wordmark, flag on the right, page description in the page ---------- */
 const HFLAG={home:["CA","Canada"],commons:["CA","Canada"],senate:["CA","Canada"],federal:["CA","Canada"],news:["CA","Canada"],
-  ontario:["ON","Ontario"],onwheel:["ON","Ontario"],mississauga:["ON","Ontario"],bcleg:["BC","British Columbia"],bc:["BC","British Columbia"],victoria:["BC","British Columbia"],vicscore:["BC","British Columbia"],
+  ontario:["ON","Ontario"],onwheel:["ON","Ontario"],mississauga:["ON","Ontario"],misscore:["ON","Ontario"],bcleg:["BC","British Columbia"],bc:["BC","British Columbia"],victoria:["BC","British Columbia"],vicscore:["BC","British Columbia"],
   skleg:["SK","Saskatchewan"],ableg:["AB","Alberta"],ykleg:["YT","Yukon"],nlleg:["NL","Newfoundland and Labrador"],nsleg:["NS","Nova Scotia"],ntleg:["NT","Northwest Territories"],nuleg:["NU","Nunavut"],mbleg:["MB","Manitoba"],nbleg:["NB","New Brunswick"],peleg:["PE","Prince Edward Island"]};
 function syncHead(id){
   const st=document.getElementById("stamp").textContent, sc=document.getElementById("scope").textContent, tg=document.getElementById("tagline").textContent;
