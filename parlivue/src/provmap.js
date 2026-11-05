@@ -273,6 +273,7 @@ function renderPvLeg(cfg){
   const C=CH[cfg.id], st=chState[cfg.id], el=document.getElementById("ch-"+cfg.id);
   if(!st.built){
     el.innerHTML=`<section class="hsum" id="${cfg.id}-sum"></section>
+     ${minIndexHTML(cfg.id)}
      <section class="nsec pmwrap"><div class="kicker">Power map · ${cfg.capital}</div><h2 class="nh pmtitle">Elected Officials</h2>
        ${foldHTML(cfg.pre+"-fold","How to read this map","What each part means and how to explore it",
          cfg.foldLeft||[["The room on the left",`is where ${cfg.region}'s laws are made. Each dot is one MLA, a person voters chose to speak for their area. ${cfg.colourNote||"The colour shows their party."}`],
@@ -300,6 +301,7 @@ function renderPvLeg(cfg){
     if(cfg.memberWord) el.querySelectorAll(".nsec").forEach(x=>{ x.innerHTML=x.innerHTML.replace(/\bMLA(s?)\b/g,cfg.memberWord+"$1"); });
     el.querySelectorAll(".hlog [data-i]").forEach(b=>{ if(b.dataset.i!=="") b.onclick=()=>chSelect(C,+b.dataset.i,true); });
     renderPvMap(cfg); wireFold(cfg.pre+"-fold");
+    pvMinIndex(cfg);
     if(cfg.after) cfg.after(el);
     st.built=true;
   }
@@ -309,3 +311,55 @@ function pvWire(cfg){ const C=CH[cfg.id];
   C.map={svg:`#${cfg.pre}-svg`,panelId:`${cfg.pre}-panel`,stageId:`${cfg.pre}-stage`,st:()=>pvS(cfg),panel:k=>pvPanel(cfg,k),hl:k=>pvHighlight(cfg,k),select:(k,z)=>pvSelect(cfg,k,z),key:i=>pvKeyForMpp(cfg,i)};
   chState[cfg.id]={sel:null,focus:null,built:false}; PV_CFG[cfg.id]=cfg; }
 const PV_CFG={};
+
+/* ================= MINISTRIES / DEPARTMENTS LANDING =================
+   Same pattern as the federal Departments page: every organization listed on the first page,
+   each one linked to its own view, with a link back to the power map. Used by every province,
+   territory and the Victoria council page. o = {kicker, title, noun, lede, OUT, MIN, noMin, src} */
+const MI_ESC=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const MI_B=n=>n==null?"":Math.abs(n)>=1e9?"$"+(n/1e9).toFixed(2)+"B":"$"+(n/1e6).toFixed(1)+"M";
+function minIndexHTML(id){ return `<section class="nsec minidx" id="${id}-minidx" aria-live="polite"></section>`; }
+function minIndexInit(id,o){
+  const el=document.getElementById(id+"-minidx"); if(!el) return;
+  const rows=o.OUT.map(x=>({o:x,ms:(o.MIN||[]).filter(m=>(m.links||[]).includes(x.id))}));
+  const hasMin=(o.MIN||[]).some(m=>(m.links||[]).length), hasBud=rows.some(r=>r.o.budget), N=rows.length, lc=o.title.toLowerCase();
+  const toMap=oid=>{ const C=CH[id]; if(!C||!C.map) return; C.map.select("o_"+oid,true); const s=document.getElementById(C.map.stageId); if(s) s.scrollIntoView({behavior:"smooth",block:"start"}); };
+  const list=()=>{
+    el.innerHTML=`<div class="kicker">${o.kicker}</div><h2 class="nh">${o.title}</h2><p class="vsp">${o.lede}</p>
+     <div class="sctwrap"><table class="sct minidx-t"><caption>${N} ${lc} · select one for details</caption><thead><tr><th scope="col">${o.noun}</th>${hasMin?`<th scope="col">Minister responsible</th>`:""}<th scope="col">Run day to day by</th>${hasBud?`<th scope="col" class="num">2026 budget</th>`:""}</tr></thead><tbody>
+     ${rows.map((r,i)=>`<tr><th scope="row"><button class="linkbtn" data-mi="${i}">${MI_ESC(r.o.name)}</button></th>${hasMin?`<td>${r.ms.length?r.ms.map(m=>MI_ESC(m.name)).join("<br>"):`<span class="muted">${MI_ESC(o.noMin||"—")}</span>`}</td>`:""}<td>${r.o.heads.length?MI_ESC(r.o.heads[0].name)+`<small>${MI_ESC(r.o.heads[0].role)}${r.o.heads.length>1?` · and ${r.o.heads.length-1} more`:""}</small>`:'<span class="muted">—</span>'}</td>${hasBud?`<td class="num">${MI_B(r.o.budget)}</td>`:""}</tr>`).join("")}</tbody></table></div>
+     ${o.src?`<div class="src">${o.src}</div>`:""}`;
+    el.querySelectorAll("[data-mi]").forEach(b=>b.onclick=()=>{ one(+b.dataset.mi); el.scrollIntoView({behavior:"smooth",block:"start"}); });
+  };
+  const one=i=>{ const r=rows[i], x=r.o;
+    el.innerHTML=`<button class="chipbtn" data-back>← All ${N} ${lc}</button>
+     <div class="kicker">${o.kicker} · ${o.noun}</div><h2 class="nh">${MI_ESC(x.name)}</h2>${x.desc?`<p class="vsp">${MI_ESC(x.desc)}</p>`:""}
+     <div class="mi-grid">
+      ${hasMin?`<section><div class="kicker">Minister responsible</div>${r.ms.length?`<ul class="mi-l">${r.ms.map(m=>`<li><b>${MI_ESC(m.name)}</b><span>${MI_ESC(m.title)}</span></li>`).join("")}</ul>`:`<p class="vsp">${MI_ESC(o.noMin||"—")}</p>`}</section>`:""}
+      <section><div class="kicker">Run day to day by</div>${x.heads.length?`<ul class="mi-l">${x.heads.map(h=>`<li><b>${MI_ESC(h.name)}</b><span>${MI_ESC(h.role)}</span></li>`).join("")}</ul>`:`<p class="vsp muted">Not listed in the sources used.</p>`}</section>
+      ${x.budget?`<section><div class="kicker">2026 budget</div><p class="mi-big">${MI_B(x.budget)}</p>${x.lines&&x.lines.length?`<ul class="mi-l">${x.lines.map(l=>`<li><b>${MI_ESC(l[0])}</b><span>${MI_B(l[1])}</span></li>`).join("")}</ul>`:""}</section>`:""}
+     </div>
+     <div class="mi-act"><button class="chipbtn" data-map>Show on the power map</button>${i>0?`<button class="chipbtn" data-go2="${i-1}">← ${MI_ESC(rows[i-1].o.name)}</button>`:""}${i<N-1?`<button class="chipbtn" data-go2="${i+1}">${MI_ESC(rows[i+1].o.name)} →</button>`:""}</div>
+     ${o.src?`<div class="src">${o.src}</div>`:""}`;
+    el.querySelector("[data-back]").onclick=()=>{ list(); el.scrollIntoView({behavior:"smooth",block:"start"}); };
+    el.querySelector("[data-map]").onclick=()=>toMap(x.id);
+    el.querySelectorAll("[data-go2]").forEach(b=>b.onclick=()=>one(+b.dataset.go2));
+  };
+  list();
+}
+/* standard wording for a provincial or territorial government */
+function minIndexProv(id,region,title,noun,OUT,MIN,premierName,srcHTML,headWord){
+  const lc=title.toLowerCase();
+  minIndexInit(id,{kicker:`Government of ${region}`,title,noun,OUT,MIN,src:srcHTML,
+    noMin:`${headWord||"Premier"} ${premierName}`,
+    lede:`The ${OUT.length} ${lc} and offices of the Government of ${region}. Each has a minister responsible in Cabinet and is run day to day by a senior public servant. Select one to see who is responsible for it, or find it on the power map below.`});
+}
+
+const MI_SRC=list=>{ const L=list.filter(Boolean); return L.length?"Sources: "+L.map(x=>`<a href="${x[1]}" target="_blank" rel="noopener">${x[0]}</a>`).join(" · "):""; };
+function pvMinIndex(cfg){
+  const title=cfg.minTitle||"Ministries", noun=cfg.minNoun||"Ministry";
+  if(cfg.id==="victoria") return minIndexInit("victoria",{kicker:"City of Victoria",title,noun,OUT:cfg.OUT.filter(o=>o.id!==cfg.execId),MIN:[],src:MI_SRC([cfg.S.fp]),
+    lede:"Every City department and service, with who runs it and its 2026 operating budget. Directors report to the City Manager; police and library are governed by boards. Select one for details, or find it on the power map below."});
+  const region={ntleg:"the Northwest Territories"}[cfg.id]||cfg.region;
+  minIndexProv(cfg.id,region,title,noun,cfg.OUT,cfg.MIN,cfg.premier.name,MI_SRC([cfg.S.cab,cfg.S.dm]),cfg.headWord);
+}

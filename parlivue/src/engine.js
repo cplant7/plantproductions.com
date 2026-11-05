@@ -404,7 +404,7 @@ const CH_META={fedscore:["Snapshot · Nov 1 2026","Government of Canada · Feder
   mbleg:["Snapshot · Nov 1 2026","Legislative Assembly of Manitoba · 43rd Legislature","All 57 seats in Winnipeg, with every MLA, the Cabinet and every department."],
   skleg:["Snapshot · Nov 1 2026","Legislative Assembly of Saskatchewan · 30th Legislature","All 61 seats in Regina, with every MLA, the Cabinet and every ministry."],
   ontario:["Snapshot · Nov 1 2026","Legislative Assembly of Ontario · 44th Parliament","All 124 seats at Queen's Park, with every MPP, riding and party."]};
-function show(id,{focusKey}={}){
+function show(id,{focusKey}={}){ { const fs=document.getElementById("fed-switch"); if(fs&&id!=="federal") fs.hidden=true; }
   const homeE=document.getElementById("landing"); if(homeE) homeE.hidden=id!=="home";
   if(id==="home"){ tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab==="home"?"true":"false")); Object.values(chEls).forEach(el=>el.hidden=true);
     wheelHome(); wheelEls.forEach(el=>el.hidden=true); bannerEl.hidden=true; newsEl.hidden=true; commonsEl.hidden=true; const wf0=document.getElementById("wheelfoot"); if(wf0) wf0.hidden=true; renderHome();
@@ -446,6 +446,7 @@ function mountWheel(id,focusKey){
   if(ds.banner){ bannerEl.innerHTML=`<p>${ds.banner.text}</p><div class="src">Sources: ${ds.banner.srcs.map(s=>`<a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a>`).join(" · ")}</div>`; bannerEl.hidden=false; } else bannerEl.hidden=true;
   build(); legend();
   { const vs=document.getElementById("vicscore"); if(vs){ vs.hidden=id!=="victoria"; if(id==="victoria") renderVicScore(); } }
+  { let sw=document.getElementById("fed-switch"); if(id==="federal"&&typeof fedSwitch==="function"){ if(!sw){ bannerEl.insertAdjacentHTML("beforebegin",`<div id="fed-switch">${fedSwitch("federal")}</div>`); sw=document.getElementById("fed-switch"); sw.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{ if(!b.classList.contains("on")){ show(b.dataset.go); window.scrollTo(0,0); } }); } sw.hidden=false; } else if(sw) sw.hidden=true; }
   { let sw=document.getElementById("mis-switch"); if(id==="mississauga"&&typeof misSwitch==="function"){ if(!sw){ bannerEl.insertAdjacentHTML("beforebegin",`<div id="mis-switch">${misSwitch("mississauga")}</div>`); sw=document.getElementById("mis-switch"); sw.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{ if(!b.classList.contains("on")){ show(b.dataset.go); window.scrollTo(0,0); } }); } sw.hidden=false; } else if(sw) sw.hidden=true; }
   rot=-0.9; layout(); select("hub",{spin:false});
   if(focusKey) select(focusKey); else rotateTo(0,1400);

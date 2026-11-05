@@ -236,6 +236,7 @@ function renderChamber(id){
   const C=CH[id], st=chState[id], el=document.getElementById("ch-"+id);
   if(!st.built&&id==="ontario"){
     el.innerHTML=`<section class="hsum" id="${id}-sum"></section>
+     ${minIndexHTML("ontario")}
      <section class="nsec pmwrap"><div class="kicker">Power map · Queen's Park</div><h2 class="nh pmtitle">Elected Officials</h2>
        ${foldHTML("on-fold","How to read this map","What each part means and how to explore it",
          [["The room on the left","is where Ontario's laws are made. Each dot is one MPP, a person voters chose to speak for their area. The colour shows their party."],
@@ -247,6 +248,7 @@ function renderChamber(id){
        <div id="pm-slot"></div>
        <div class="src">${C.approx} Seating plan: <a href="${ON_PLAN_SRC[1]}" target="_blank" rel="noopener">${ON_PLAN_SRC[0]}</a>.</div></section>`;
     renderPowerMap();
+    minIndexProv("ontario","Ontario","Ministries","Ministry",ON_OUT,ON_MIN,"Doug Ford",MI_SRC([ON_S.cab,ON_S.dm]));
     wireFold("on-fold");
     el.insertAdjacentHTML("beforeend",`<div class="hgrid"><div class="hmain"><section class="nsec"><div class="kicker">About the Assembly</div><h2 class="nh">What the Legislative Assembly does</h2>
         <div class="does">

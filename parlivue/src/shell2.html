@@ -901,6 +901,24 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
 .fcr{display:block;font-weight:400;font-size:12.5px;color:var(--muted);margin-top:2px}
 .sct.find th[scope=row],.sct.find td,.sct.fexp td,.sct.fsrc td,.sct.fsrc th{text-align:left;white-space:normal}
 .sct.find th[scope=row]{font-weight:500;min-width:260px} .sct.find td{min-width:150px;font-size:13.5px}
+.sct.find td,.sct.find thead th:not(:first-child){text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sct.find td{min-width:120px;width:140px}
+.sct.find td small{display:block;margin-left:0}
+.fedtbl td{font-variant-numeric:tabular-nums} .fedtbl th,.fedtbl td{padding-left:8px;padding-right:8px}
+.fth{display:block;font:400 11px var(--f-body);letter-spacing:0;text-transform:none;color:var(--muted)}
+.fneutral{margin:8px 0 0;font-size:14px;color:var(--muted);max-width:92ch}
+.minidx{display:grid;gap:12px}
+.minidx-t th[scope=row],.minidx-t td,.minidx-t thead th{text-align:left;white-space:normal}
+.minidx-t td small{display:block;margin-left:0;color:var(--muted);font-size:12.5px}
+.minidx-t td.num,.minidx-t th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.minidx-t th[scope=row]{min-width:220px}
+.mi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.mi-grid section{border:1px solid var(--rule);border-radius:10px;padding:12px 14px;display:grid;gap:8px;align-content:start;min-width:0}
+.mi-l{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.mi-l li{display:grid;gap:1px}.mi-l li span{color:var(--muted);font-size:13.5px}
+.mi-big{margin:0;font:700 26px var(--f-body);font-variant-numeric:tabular-nums}
+.mi-act{display:flex;flex-wrap:wrap;gap:8px}
+.minidx>.chipbtn{justify-self:start}
 .sct.fexp td:last-child{min-width:320px;font-size:13.5px;color:var(--muted)}
 .fsh{margin:6px 0 0;font:700 17px var(--f-body)}
 .fback{justify-self:start}
@@ -931,7 +949,10 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
     <button role="tab" id="t-home" data-tab="home">Home</button>
     <button role="tab" id="t-commons" data-tab="commons">House of Commons</button>
     <button role="tab" id="t-senate" data-tab="senate">Senate</button>
-    <button role="tab" id="t-fedscore" data-tab="fedscore">Departments</button>
+    <div class="dd" id="dd-fed"><button class="ddbtn" aria-haspopup="true" aria-expanded="false">Federal<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></button>
+      <div class="ddmenu" role="menu">
+        <div class="ddprov"><button role="menuitem" class="ddname" data-tab="fedscore" tabindex="-1">Government of Canada</button><div class="ddlinks"><button role="menuitem" id="t-fedscore" data-tab="fedscore">Departments</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-federal" data-tab="federal">Cabinet wheel</button></div></div>
+      </div></div>
     <div class="dd" id="dd-prov"><button class="ddbtn" aria-haspopup="true" aria-expanded="false">Provinces / Territories<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></button>
       <div class="ddmenu" role="menu">
         <div class="ddprov"><button role="menuitem" class="ddname" data-tab="ableg" tabindex="-1">Alberta</button><div class="ddlinks"><button role="menuitem" id="t-ableg" data-tab="ableg">Legislature</button></div></div>
