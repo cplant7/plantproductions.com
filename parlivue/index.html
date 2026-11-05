@@ -818,7 +818,7 @@ svg .clbl{paint-order:stroke;stroke:var(--bg);stroke-width:3px;stroke-linejoin:r
 
 
 @media (max-width:760px){
-  .tabs{flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;width:auto!important;max-width:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:2px!important}
+  .tabs{flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;width:auto!important;max-width:100%;scrollbar-width:none;gap:2px!important}
   .tabs::-webkit-scrollbar{display:none}
   .tabs button,.ddbtn{padding:8px 12px!important;font-size:15px!important;flex:none}
   .tabs .dd{flex:none}
@@ -882,6 +882,19 @@ details.about>div{margin-top:10px}
 .rctrack>div{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:6px 8px;font-size:13px;line-height:1.35}
 .rctrack span{display:block;font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--brass)}
 .sct td.cau,.sct td.cau small{color:color-mix(in srgb,var(--yel) 70%,var(--ink));font-weight:600}
+.ddmenu.pvportal{position:fixed!important;left:12px!important;right:12px!important;width:auto!important;min-width:0!important;max-width:none!important;display:grid!important;grid-template-columns:1fr!important;gap:0!important;padding:6px 14px!important;opacity:1!important;visibility:visible!important;transform:none!important;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;z-index:1000}
+.ddmenu.pvportal .ddprov{display:flex!important;flex-wrap:wrap;align-items:center;gap:0 12px;padding:2px 0!important;border-bottom:1px solid var(--rule)}
+.ddmenu.pvportal .ddprov:last-of-type{border-bottom:0}
+.ddmenu.pvportal .ddlinks{display:flex!important;align-items:center;gap:4px}
+.ddmenu.pvportal button{min-height:40px!important;padding:4px 6px!important;margin:0!important;font-size:15px!important}
+/* dashboard v5: current-year strip on top, actual-vs-plan cards in each year */
+.dsh-kpis.k5{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media (max-width:1280px){.dsh-kpis.k5{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:620px){.dsh-kpis.k5{grid-template-columns:repeat(2,minmax(0,1fr))}}
+div.dkpi{cursor:default} div.dkpi:hover{background:none}
+.dsh-kh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;font:700 15px var(--f-body);color:var(--ink);margin-bottom:-6px}
+.dsh-kh span{font:400 13px var(--f-body);color:var(--muted)}
+.ddmenu.pvportal{box-sizing:border-box}
 </style>
 
 <div class="wrap">
@@ -987,9 +1000,18 @@ details.about>div{margin-top:10px}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script>
-document.addEventListener("click",function(e){ var b=e.target.closest&&e.target.closest(".ddbtn"); if(!b||window.innerWidth>760) return;
-  setTimeout(function(){ var m=b.parentNode.querySelector(".ddmenu"); if(!m) return; var r=b.getBoundingClientRect(); m.classList.add("pvfixed"); m.style.top=(r.bottom+6)+"px"; },0); }, true);
-window.addEventListener("scroll",function(){ if(window.innerWidth>760) return; document.querySelectorAll(".dd.open").forEach(function(d){ var b=d.querySelector(".ddbtn"), m=d.querySelector(".ddmenu"); if(b&&m) m.style.top=(b.getBoundingClientRect().bottom+6)+"px"; }); },{passive:true});
+/* Phone menus: while open, move the menu to <body> so iPhone Safari cannot clip it inside the scrolling tab strip; keep it fixed under its button and scroll inside it. */
+(function(){
+  function place(dd,m){ var r=dd.querySelector(".ddbtn").getBoundingClientRect(), top=Math.max(8,Math.min(r.bottom+6,window.innerHeight-160));
+    m.style.top=top+"px"; m.style.maxHeight=(window.innerHeight-top-12)+"px"; }
+  document.querySelectorAll(".dd").forEach(function(dd){ var m=dd.querySelector(".ddmenu"); if(!m) return;
+    new MutationObserver(function(){ var open=dd.classList.contains("open");
+      if(open&&window.innerWidth<=760&&m.parentNode===dd){ document.body.appendChild(m); m.classList.add("pvportal"); place(dd,m); }
+      else if(!open&&m.parentNode!==dd){ m.classList.remove("pvportal"); m.style.top=""; m.style.maxHeight=""; dd.appendChild(m); }
+    }).observe(dd,{attributes:true,attributeFilter:["class"]}); });
+  document.addEventListener("click",function(e){ if(e.target.closest&&e.target.closest(".pvportal")&&!e.target.closest("button")) e.stopPropagation(); },true);
+  window.addEventListener("resize",function(){ document.querySelectorAll(".dd.open").forEach(function(dd){ var m=document.querySelector(".pvportal"); if(m) place(dd,m); }); });
+})();
 </script>
 <script>
 /* Provinces: fit oval labels, and draw the public-service line from the Clerk to the departments */
@@ -1552,12 +1574,7 @@ function renderVicScore(){
          <p class="rccav">${c.cav}</p>${vsSrc(c.src)}</div></article>`).join("")}</div>
        <div class="note"><b>About the status labels.</b> Each label compares the 2023–2026 Strategic Plan with what the City reports in its Annual Reports and Financial Plans. The Strategic Plan sets few numeric targets, so labels reflect reported progress. "Not reported" means the documents used here don't cover that area.</div></section>`,
 
-   y26:`<div class="vskpis">
-       <div class="stat"><b>$394.1M</b><span>2026 operating budget, +8.87%</span></div>
-       <div class="stat"><b>$160.1M</b><span>2026 capital budget</span></div>
-       <div class="stat"><b>7.28%</b><span>Tax increase: police 5.06 pts, all else 2.22</span></div>
-       <div class="stat"><b>+14.2%</b><span>Police budget, $83.2M → $95.0M</span></div></div>
-     <p class="vsp">Council adopted the 2026–2030 Financial Plan on May 7, 2026. The Financial Plan lists each department's core services; the "Mandate" column reflects that.</p>
+   y26:`     <p class="vsp">Council adopted the 2026–2030 Financial Plan on May 7, 2026. The Financial Plan lists each department's core services; the "Mandate" column reflects that.</p>
      ${vRoll("Operating budget by department","20 lines · $394.1M",
       `<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Department</th><th scope="col">Head</th><th scope="col">2026 budget</th><th scope="col">Share</th><th scope="col">Mandate</th></tr></thead><tbody>
       ${d26.map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]||"—"}</td><td>${vsM(r[2])}</td><td>${(r[2]/tot26*100).toFixed(1)}%</td><td class="muted">${r[3]}</td></tr>`).join("")}
@@ -1571,7 +1588,7 @@ function renderVicScore(){
       `<div class="sctwrap"><table class="sct"><thead><tr>${VSC_CAPYRS.map(r=>`<th scope="col">${r[0]}</th>`).join("")}</tr></thead><tbody><tr>${VSC_CAPYRS.map(r=>`<td>${vsM1(r[1])}</td>`).join("")}</tr></tbody></table></div>
       <div class="note">For comparison, capital assets acquired were $64.2M in 2025 (2025 Annual Report).</div>${vsSrc(["fp26"])}`,false)}`,
 
-   y25:`<div class="vskpis"><div class="stat"><b>+6.0%</b><span>Revenue vs 2024</span></div><div class="stat"><b>+7.8%</b><span>Expenses vs 2024</span></div><div class="stat"><b>$175.8M</b><span>Cash, up from $121.9M</span></div><div class="stat"><b>6.99%</b><span>2025 tax increase (police 3.23 pts)</span></div></div>
+   y25:`%%KPI25%%
      ${vRoll("Plan vs actual: headline","Revenue, expenses, surplus and capital",vscHeadline(25),true)}
      ${vRoll("Overage not in the operating budget","Tracked 2024 → 2025 → 2026",vscOverage(),true)}
      ${vRoll("Expenses by function","Variance and what explains it",vscFnTable(25,"2025 · plan vs actual"),true)}
@@ -1583,7 +1600,7 @@ function renderVicScore(){
      ${vRoll("What the overage is","Amortization and capital maintenance",vscWhy(25),false)}
      ${vsSrc(["ar25","tax25"])}`,
 
-   y24:`<div class="vskpis"><div class="stat"><b>+2.9%</b><span>Revenue vs 2023</span></div><div class="stat"><b>+12.3%</b><span>Expenses vs 2023</span></div><div class="stat"><b>${capPct(24)}%</b><span>Capital acquired vs plan</span></div><div class="stat"><b>7.93%</b><span>2024 tax increase (Times Colonist)</span></div></div>
+   y24:`%%KPI24%%
      ${vRoll("Plan vs actual: headline","Revenue, expenses, surplus and capital",vscHeadline(24),true)}
      ${vRoll("Overage not in the operating budget","Tracked 2024 → 2025 → 2026",vscOverage(),false)}
      ${vRoll("Expenses by function","Variance and what explains it",vscFnTable(24,"2024 · plan vs actual, as first reported"),true)}
@@ -1625,29 +1642,40 @@ function renderVicScore(){
     const c=v.map(x=>(x>0)===good?"ok":"bad");
     return `<span class="dvar"><svg viewBox="0 0 90 28" aria-hidden="true"><line x1="0" x2="90" y1="14" y2="14" class="z"/><polyline points="${X.map((x,i)=>x+","+Y(v[i]).toFixed(1)).join(" ")}"/>${X.map((x,i)=>`<circle cx="${x}" cy="${Y(v[i]).toFixed(1)}" r="3" class="${c[i]}"/>`).join("")}</svg><span class="dk-y">Variance ’24 ${vsP(v[0])} · ’25 ${vsP(v[1])}</span></span>`;};
   const vsPlan=(k,y,good)=>{const a=T[k]["a"+y],b=T[k]["b"+y],pc=vsPct(a,b),up=pc>0;return vpill((up===good)?"ok":(k==="exp"?"off":"watch"),(k==="exp"&&up?"Over budget ":(up?"Above":"Below")+" plan ")+vsP(pc));};
-  const gp=(k,good,lab)=>{const pc=T[k].a25/T[k].b25*100;return gauge(pc,((pc>100)===good)?"ok":(k==="exp"?"off":"watch"),lab);};
-  const kp=[
-    ["y25","Revenue · 2025",vsM1(T.rev.a25),vsPlan("rev",25,true),"Plan "+vsM1(T.rev.b25),gp("rev",true,"Revenue received vs plan")],
-    ["y25","Expenses · 2025",vsM1(T.exp.a25),vsPlan("exp",25,false),"Plan "+vsM1(T.exp.b25)+" · $"+((T.amort.a25+T.capmaint.a25)/1e6).toFixed(1)+"M is an overage not in the operating budget",gp("exp",false,"Expenses vs plan")],
-    ["y25","Annual surplus · 2025",vsM1(T.sur.a25),vsPlan("sur",25,true),"Plan "+vsM1(T.sur.b25),gp("sur",true,"Surplus vs plan")],
-    ["y25","Capital acquired · 2025",vsM1(T.cap.a25),vpill("watch",capPct(25)+"% of plan"),"Plan "+vsM1(T.cap.b25),gp("cap",true,"Capital spent vs plan")],
-    ["y26","Operating budget · 2026",vsM1(tot26),vpill("neu","+8.87%"),"Capital budget $160.1M",`<span class="dnone">No 2026 actuals yet. A gauge appears once the City reports 2026 results.</span>`],
-    ["card","Strategic Plan · 2023–2026",VSC_CARD.length+" areas",vpill("neu",met+" target met"),counts.map(([g,n])=>n+" "+VSC_GRADES[g][0].toLowerCase()).join(" · "),`<span class="dgrades">${counts.map(([g,n])=>`<i class="${VSC_GRADES[g][1]}" style="flex:${n}" title="${VSC_GRADES[g][0]}: ${n}"></i>`).join("")}</span>`]
-  ];
+  const gp=(k,good,lab,y=25)=>{const pc=T[k]["a"+y]/T[k]["b"+y]*100;return gauge(pc,((pc>100)===good)?"ok":(k==="exp"?"off":"watch"),lab);};
+  const card=(k)=>`<div class="dkpi"><span class="dk-l">${k[0]}</span><b class="dk-v">${k[1]}</b><span class="dk-p">${k[2]}</span><span class="dk-s">${k[3]}</span>${k[4]||""}</div>`;
+  /* Actual vs plan for one audited year */
+  const yearCards=y=>{const ov=T.amort["a"+y]+T.capmaint["a"+y],gap=T.exp["a"+y]-T.exp["b"+y];
+    return `<div class="dsh-kpis k5" aria-label="20${y} actual vs plan">${[
+    ["Revenue · 20"+y,vsM1(T.rev["a"+y]),vsPlan("rev",y,true),"Plan "+vsM1(T.rev["b"+y]),gp("rev",true,"Revenue received vs plan",y)],
+    ["Expenses · 20"+y,vsM1(T.exp["a"+y]),vsPlan("exp",y,false),"Plan "+vsM1(T.exp["b"+y]),gp("exp",false,"Expenses vs plan",y)],
+    ["Annual surplus · 20"+y,vsM1(T.sur["a"+y]),vsPlan("sur",y,true),"Plan "+vsM1(T.sur["b"+y]),gp("sur",true,"Surplus vs plan",y)],
+    ["Capital acquired · 20"+y,vsM1(T.cap["a"+y]),vpill("watch",capPct(y)+"% of plan"),"Plan "+vsM1(T.cap["b"+y]),gp("cap",true,"Capital spent vs plan",y)],
+    ["Overage not in the operating budget · 20"+y,vsM1(ov),vpill("off",Math.round(ov/gap*100)+"% of the overspend"),"Amortization "+vsM1(T.amort["a"+y])+" · capital maintenance "+vsM1(T.capmaint["a"+y]),""]
+    ].map(card).join("")}</div>`;};
+  /* Current year: the adopted budget (no actuals until the 2026 Annual Report in 2027) */
+  const kp26=`<div class="dsh-kpis k5" aria-label="2026 budget">${[
+    ["Operating budget · 2026",vsM1(tot26),vpill("neu","+8.87% vs 2025"),"Adopted May 7, 2026",""],
+    ["Capital budget · 2026",vsM1(VSC_CAPYRS[0][1]),vpill("watch","2025: "+capPct(25)+"% of plan spent"),"Largest: vehicle replacement $12.3M, Crystal Pool $12.0M",""],
+    ["Property tax increase · 2026","7.28%",vpill("neu","Police 5.06 pts"),"All other services 2.22 pts",""],
+    ["Police budget · 2026","$95.0M",vpill("neu","+14.2% vs 2025"),"Up from $83.2M · set by the Police Board",""],
+    ["Strategic Plan · 2023–2026",VSC_CARD.length+" areas",vpill("neu",met+" target met"),counts.map(([g,n])=>n+" "+VSC_GRADES[g][0].toLowerCase()).join(" · "),`<span class="dgrades">${counts.map(([g,n])=>`<i class="${VSC_GRADES[g][1]}" style="flex:${n}" title="${VSC_GRADES[g][0]}: ${n}"></i>`).join("")}</span>`]
+    ].map(card).join("")}</div>`;
+  panes.y25=panes.y25.replace("%%KPI25%%",yearCards(25)); panes.y24=panes.y24.replace("%%KPI24%%",yearCards(24));
   el.innerHTML=`<header class="dsh-head"><div><div class="kicker">City of Victoria · Department dashboard</div><h2 class="nh">Council Scorecard 2024–2026</h2>
      <p class="pagelede">Plans, budgets and results from the City's audited statements, with progress on the 2023–2026 Strategic Plan.</p></div>
      <div class="dsh-asof">Data as of Nov 1, 2026 · audited 2024 and 2025, adopted 2026 plan</div></header>
     <div class="dkey"><span><i class="ok"></i>Good: on or better than plan</span><span><i class="watch"></i>Caution: behind plan</span><span><i class="off"></i>Over budget</span><span class="muted">Gauge: actual as % of plan</span></div>
     <div class="dtiming"><b>About timing.</b> The City’s financial year runs January to December. Actual results are published once a year, in the audited Annual Report released the following year. Until then, figures for the current year are budgets, not results. This page uses documents available on Nov 1, 2026: audited results for 2024 and 2025 and the adopted 2026 budget.</div>
-    <div class="dsh-kpis" aria-label="Key figures">${kp.map(k=>`<button class="dkpi" data-go="${k[0]}"><span class="dk-l">${k[1]}</span><b class="dk-v">${k[2]}</b><span class="dk-p">${k[3]}</span><span class="dk-s">${k[4]}</span>${k[5]}</button>`).join("")}</div>
+    <div class="dsh-kh">2026 · current year budget<span>Actual results for each year are in its own section below.</span></div>
+    ${kp26}
     <div class="dsh">
     <nav class="dsh-rail" role="tablist" aria-orientation="vertical" aria-label="Scorecard sections"><div class="dsh-rl">Sections</div>${tabs.map((t,i)=>`<button role="tab" id="vst-${t[0]}" aria-controls="vsp-${t[0]}" aria-selected="${i?"false":"true"}" tabindex="${i?-1:0}" data-k="${t[0]}"><span>${t[1]}</span><small>${t[2]}</small></button>`).join("")}</nav>
     <div class="dsh-main">${tabs.map((t,i)=>`<div role="tabpanel" id="vsp-${t[0]}" aria-labelledby="vst-${t[0]}" class="vspane" ${i?"hidden":""}><h3 class="dsh-ph">${t[1]}<small>${t[2]}</small></h3>${panes[t[0]]}</div>`).join("")}</div></div>`;
   const bs=[...el.querySelectorAll(".dsh-rail button")];
   const pick=b=>{ bs.forEach(x=>{const on=x===b; x.setAttribute("aria-selected",on); x.tabIndex=on?0:-1; document.getElementById("vsp-"+x.dataset.k).hidden=!on;}); };
   el._pick=k=>pick(bs.find(b=>b.dataset.k===k));
-  el.querySelectorAll(".dkpi").forEach(k=>k.onclick=()=>{el._pick(k.dataset.go); el.querySelector(".dsh").scrollIntoView({behavior:"smooth",block:"start"});});
-  bs.forEach((b,i)=>{ b.onclick=()=>pick(b); b.onkeydown=e=>{ const d=(e.key==="ArrowDown"||e.key==="ArrowRight")?1:(e.key==="ArrowUp"||e.key==="ArrowLeft")?-1:0; if(d){ const n=bs[(i+d+bs.length)%bs.length]; pick(n); n.focus(); e.preventDefault(); } }; });
+    bs.forEach((b,i)=>{ b.onclick=()=>pick(b); b.onkeydown=e=>{ const d=(e.key==="ArrowDown"||e.key==="ArrowRight")?1:(e.key==="ArrowUp"||e.key==="ArrowLeft")?-1:0; if(d){ const n=bs[(i+d+bs.length)%bs.length]; pick(n); n.focus(); e.preventDefault(); } }; });
 }
 
 /* ================= PARTIES, RIDINGS, NEWS ================= */
@@ -6396,7 +6424,7 @@ document.querySelectorAll(".dd").forEach(dd=>{ const btn=dd.querySelector(".ddbt
   btn.onclick=e=>{ e.stopPropagation(); set(!dd.classList.contains("open")); if(dd.classList.contains("open")){ const f=dd.querySelector(".ddmenu button"); if(f&&e.detail===0) f.focus(); } };
   dd.addEventListener("keydown",e=>{ if(e.key==="Escape"){ set(false); btn.focus(); } }); });
 { const br=document.querySelector(".brand"); if(br){ br.style.cursor="pointer"; br.setAttribute("title","Home"); br.addEventListener("click",()=>show("home")); } }
-document.addEventListener("click",e=>{ if(!e.target.closest(".dd")) document.querySelectorAll(".dd.open").forEach(d=>{ d.classList.remove("open"); d.querySelector(".ddbtn").setAttribute("aria-expanded","false"); }); });
+document.addEventListener("click",e=>{ if(!e.target.closest(".dd")&&!e.target.closest(".pvportal")) document.querySelectorAll(".dd.open").forEach(d=>{ d.classList.remove("open"); d.querySelector(".ddbtn").setAttribute("aria-expanded","false"); }); });
 window.addEventListener("hashchange",()=>{ const id=location.hash.slice(1); if(id==="home"||id==="onwheel"||id==="bcleg"||id==="skleg"||chEls[id]||id==="news"||id==="commons"||id==="senate"||id==="ontario"||(DS[id]&&(!ds||ds.id!==id))) show(id); });
 
 /* ---------- search across all tabs ---------- */

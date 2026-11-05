@@ -818,7 +818,7 @@ svg .clbl{paint-order:stroke;stroke:var(--bg);stroke-width:3px;stroke-linejoin:r
 
 
 @media (max-width:760px){
-  .tabs{flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;width:auto!important;max-width:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:2px!important}
+  .tabs{flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;width:auto!important;max-width:100%;scrollbar-width:none;gap:2px!important}
   .tabs::-webkit-scrollbar{display:none}
   .tabs button,.ddbtn{padding:8px 12px!important;font-size:15px!important;flex:none}
   .tabs .dd{flex:none}
@@ -882,6 +882,19 @@ details.about>div{margin-top:10px}
 .rctrack>div{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:6px 8px;font-size:13px;line-height:1.35}
 .rctrack span{display:block;font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--brass)}
 .sct td.cau,.sct td.cau small{color:color-mix(in srgb,var(--yel) 70%,var(--ink));font-weight:600}
+.ddmenu.pvportal{position:fixed!important;left:12px!important;right:12px!important;width:auto!important;min-width:0!important;max-width:none!important;display:grid!important;grid-template-columns:1fr!important;gap:0!important;padding:6px 14px!important;opacity:1!important;visibility:visible!important;transform:none!important;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;z-index:1000}
+.ddmenu.pvportal .ddprov{display:flex!important;flex-wrap:wrap;align-items:center;gap:0 12px;padding:2px 0!important;border-bottom:1px solid var(--rule)}
+.ddmenu.pvportal .ddprov:last-of-type{border-bottom:0}
+.ddmenu.pvportal .ddlinks{display:flex!important;align-items:center;gap:4px}
+.ddmenu.pvportal button{min-height:40px!important;padding:4px 6px!important;margin:0!important;font-size:15px!important}
+/* dashboard v5: current-year strip on top, actual-vs-plan cards in each year */
+.dsh-kpis.k5{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media (max-width:1280px){.dsh-kpis.k5{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:620px){.dsh-kpis.k5{grid-template-columns:repeat(2,minmax(0,1fr))}}
+div.dkpi{cursor:default} div.dkpi:hover{background:none}
+.dsh-kh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;font:700 15px var(--f-body);color:var(--ink);margin-bottom:-6px}
+.dsh-kh span{font:400 13px var(--f-body);color:var(--muted)}
+.ddmenu.pvportal{box-sizing:border-box}
 </style>
 
 <div class="wrap">
@@ -987,9 +1000,18 @@ details.about>div{margin-top:10px}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script>
-document.addEventListener("click",function(e){ var b=e.target.closest&&e.target.closest(".ddbtn"); if(!b||window.innerWidth>760) return;
-  setTimeout(function(){ var m=b.parentNode.querySelector(".ddmenu"); if(!m) return; var r=b.getBoundingClientRect(); m.classList.add("pvfixed"); m.style.top=(r.bottom+6)+"px"; },0); }, true);
-window.addEventListener("scroll",function(){ if(window.innerWidth>760) return; document.querySelectorAll(".dd.open").forEach(function(d){ var b=d.querySelector(".ddbtn"), m=d.querySelector(".ddmenu"); if(b&&m) m.style.top=(b.getBoundingClientRect().bottom+6)+"px"; }); },{passive:true});
+/* Phone menus: while open, move the menu to <body> so iPhone Safari cannot clip it inside the scrolling tab strip; keep it fixed under its button and scroll inside it. */
+(function(){
+  function place(dd,m){ var r=dd.querySelector(".ddbtn").getBoundingClientRect(), top=Math.max(8,Math.min(r.bottom+6,window.innerHeight-160));
+    m.style.top=top+"px"; m.style.maxHeight=(window.innerHeight-top-12)+"px"; }
+  document.querySelectorAll(".dd").forEach(function(dd){ var m=dd.querySelector(".ddmenu"); if(!m) return;
+    new MutationObserver(function(){ var open=dd.classList.contains("open");
+      if(open&&window.innerWidth<=760&&m.parentNode===dd){ document.body.appendChild(m); m.classList.add("pvportal"); place(dd,m); }
+      else if(!open&&m.parentNode!==dd){ m.classList.remove("pvportal"); m.style.top=""; m.style.maxHeight=""; dd.appendChild(m); }
+    }).observe(dd,{attributes:true,attributeFilter:["class"]}); });
+  document.addEventListener("click",function(e){ if(e.target.closest&&e.target.closest(".pvportal")&&!e.target.closest("button")) e.stopPropagation(); },true);
+  window.addEventListener("resize",function(){ document.querySelectorAll(".dd.open").forEach(function(dd){ var m=document.querySelector(".pvportal"); if(m) place(dd,m); }); });
+})();
 </script>
 <script>
 /* Provinces: fit oval labels, and draw the public-service line from the Clerk to the departments */

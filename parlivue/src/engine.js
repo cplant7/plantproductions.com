@@ -464,7 +464,7 @@ document.querySelectorAll(".dd").forEach(dd=>{ const btn=dd.querySelector(".ddbt
   btn.onclick=e=>{ e.stopPropagation(); set(!dd.classList.contains("open")); if(dd.classList.contains("open")){ const f=dd.querySelector(".ddmenu button"); if(f&&e.detail===0) f.focus(); } };
   dd.addEventListener("keydown",e=>{ if(e.key==="Escape"){ set(false); btn.focus(); } }); });
 { const br=document.querySelector(".brand"); if(br){ br.style.cursor="pointer"; br.setAttribute("title","Home"); br.addEventListener("click",()=>show("home")); } }
-document.addEventListener("click",e=>{ if(!e.target.closest(".dd")) document.querySelectorAll(".dd.open").forEach(d=>{ d.classList.remove("open"); d.querySelector(".ddbtn").setAttribute("aria-expanded","false"); }); });
+document.addEventListener("click",e=>{ if(!e.target.closest(".dd")&&!e.target.closest(".pvportal")) document.querySelectorAll(".dd.open").forEach(d=>{ d.classList.remove("open"); d.querySelector(".ddbtn").setAttribute("aria-expanded","false"); }); });
 window.addEventListener("hashchange",()=>{ const id=location.hash.slice(1); if(id==="home"||id==="onwheel"||id==="bcleg"||id==="skleg"||chEls[id]||id==="news"||id==="commons"||id==="senate"||id==="ontario"||(DS[id]&&(!ds||ds.id!==id))) show(id); });
 
 /* ---------- search across all tabs ---------- */
