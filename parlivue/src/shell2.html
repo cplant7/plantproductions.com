@@ -718,7 +718,7 @@ details.rc>summary:focus-visible{outline:2px solid var(--brass);outline-offset:2
 .vswk{font:600 13px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--brass)}
 .vsw b{font:800 18px var(--f-mark)}
 .vsws{font-size:14px;color:var(--muted)}
-#ch-vicscore,#ch-misscore{display:grid;gap:16px}
+#ch-vicscore,#ch-misscore,#ch-fedscore{display:grid;gap:16px}
 .vsec{display:grid;gap:12px;border:1px solid var(--rule);border-radius:12px;background:var(--surface);padding:14px 16px 16px}
 .elec .sct td:nth-child(2),.elec .sct td:last-child,.elec .sct thead th:nth-child(2),.elec .sct thead th:last-child{text-align:left}
 .elec .sct td:nth-child(5),.elec .sct thead th:nth-child(5){text-align:center}
@@ -896,6 +896,15 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
 .dsh-kh span{font:400 13px var(--f-body);color:var(--muted)}
 .ddmenu.pvportal{box-sizing:border-box}
 #msp-check .sct th,#msp-check .sct td{text-align:left}
+/* federal departments scorecard */
+.fedtbl th[scope=row]{min-width:240px} .fedtbl .linkbtn{text-align:left;font-weight:600}
+.fcr{display:block;font-weight:400;font-size:12.5px;color:var(--muted);margin-top:2px}
+.sct.find th[scope=row],.sct.find td,.sct.fexp td,.sct.fsrc td,.sct.fsrc th{text-align:left;white-space:normal}
+.sct.find th[scope=row]{font-weight:500;min-width:260px} .sct.find td{min-width:150px;font-size:13.5px}
+.sct.fexp td:last-child{min-width:320px;font-size:13.5px;color:var(--muted)}
+.fsh{margin:6px 0 0;font:700 17px var(--f-body)}
+.fback{justify-self:start}
+#fedscore{display:grid;gap:16px}
 </style>
 
 <div class="wrap">
@@ -918,6 +927,7 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
     <button role="tab" id="t-home" data-tab="home">Home</button>
     <button role="tab" id="t-commons" data-tab="commons">House of Commons</button>
     <button role="tab" id="t-senate" data-tab="senate">Senate</button>
+    <button role="tab" id="t-fedscore" data-tab="fedscore">Departments</button>
     <div class="dd" id="dd-prov"><button class="ddbtn" aria-haspopup="true" aria-expanded="false">Provinces / Territories<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></button>
       <div class="ddmenu" role="menu">
         <div class="ddprov"><button role="menuitem" class="ddname" data-tab="ableg" tabindex="-1">Alberta</button><div class="ddlinks"><button role="menuitem" id="t-ableg" data-tab="ableg">Legislature</button></div></div>
@@ -986,6 +996,7 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
   <div id="ch-victoria" class="chwrap" hidden></div>
   <div id="ch-vicscore" class="chwrap" hidden></div>
   <div id="ch-misscore" class="chwrap" hidden></div>
+  <div id="ch-fedscore" class="chwrap" hidden></div>
 
   <footer id="wheelfoot">
     <details class="about"><summary>About this data</summary>
