@@ -907,6 +907,18 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
 .fedtbl td{font-variant-numeric:tabular-nums} .fedtbl th,.fedtbl td{padding-left:8px;padding-right:8px}
 .fth{display:block;font:400 11px var(--f-body);letter-spacing:0;text-transform:none;color:var(--muted)}
 .fneutral{margin:8px 0 0;font-size:14px;color:var(--muted);max-width:92ch}
+.minidx{display:grid;gap:12px}
+.minidx-t th[scope=row],.minidx-t td,.minidx-t thead th{text-align:left;white-space:normal}
+.minidx-t td small{display:block;margin-left:0;color:var(--muted);font-size:12.5px}
+.minidx-t td.num,.minidx-t th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.minidx-t th[scope=row]{min-width:220px}
+.mi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.mi-grid section{border:1px solid var(--rule);border-radius:10px;padding:12px 14px;display:grid;gap:8px;align-content:start;min-width:0}
+.mi-l{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.mi-l li{display:grid;gap:1px}.mi-l li span{color:var(--muted);font-size:13.5px}
+.mi-big{margin:0;font:700 26px var(--f-body);font-variant-numeric:tabular-nums}
+.mi-act{display:flex;flex-wrap:wrap;gap:8px}
+.minidx>.chipbtn{justify-self:start}
 .sct.fexp td:last-child{min-width:320px;font-size:13.5px;color:var(--muted)}
 .fsh{margin:6px 0 0;font:700 17px var(--f-body)}
 .fback{justify-self:start}
@@ -937,7 +949,10 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
     <button role="tab" id="t-home" data-tab="home">Home</button>
     <button role="tab" id="t-commons" data-tab="commons">House of Commons</button>
     <button role="tab" id="t-senate" data-tab="senate">Senate</button>
-    <button role="tab" id="t-fedscore" data-tab="fedscore">Departments</button>
+    <div class="dd" id="dd-fed"><button class="ddbtn" aria-haspopup="true" aria-expanded="false">Federal<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></button>
+      <div class="ddmenu" role="menu">
+        <div class="ddprov"><button role="menuitem" class="ddname" data-tab="fedscore" tabindex="-1">Government of Canada</button><div class="ddlinks"><button role="menuitem" id="t-fedscore" data-tab="fedscore">Departments</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-federal" data-tab="federal">Cabinet wheel</button></div></div>
+      </div></div>
     <div class="dd" id="dd-prov"><button class="ddbtn" aria-haspopup="true" aria-expanded="false">Provinces / Territories<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></button>
       <div class="ddmenu" role="menu">
         <div class="ddprov"><button role="menuitem" class="ddname" data-tab="ableg" tabindex="-1">Alberta</button><div class="ddlinks"><button role="menuitem" id="t-ableg" data-tab="ableg">Legislature</button></div></div>
@@ -1875,6 +1890,10 @@ const FSC_SRC={
   ai:["Government of Canada: AI Strategy for the Federal Public Service 2025–2027","https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/responsible-use-ai/gc-ai-strategy-full-text.html"]
 };
 let FSC=null;
+function fedSwitch(cur){
+  const b=(id,t,sub)=>`<button class="vsw ${cur===id?"on":""}" data-go="${id}" ${cur===id?'aria-current="page"':""}><span class="vswk">Government of Canada</span><b>${t}</b><span class="vsws">${sub}</span></button>`;
+  return `<nav class="vswitch" aria-label="Government of Canada pages">${b("fedscore","Departments","31 departments and agencies: plans, spending and results")}${b("federal","Cabinet wheel","Prime Minister, ministers and the deputy heads of each department")}</nav>`;
+}
 const fB=n=>n==null?"—":Math.abs(n)>=1e9?"$"+(n/1e9).toLocaleString("en-CA",{minimumFractionDigits:2,maximumFractionDigits:2})+"B":"$"+(n/1e6).toLocaleString("en-CA",{minimumFractionDigits:1,maximumFractionDigits:1})+"M";
 const fN=n=>n==null?"—":Math.round(n).toLocaleString("en-CA");
 const fPf=x=>{const t=x.toFixed(1);return t.endsWith(".0")?t.slice(0,-2):t;};
@@ -1899,7 +1918,8 @@ const fRatio=(a,b)=>b?{pct:a/b*100,txt:a+" of "+b,cls:a/b>=.9?"dn":a/b>=.5?"cau"
 function renderFedScorePage(){
   const el=document.getElementById("ch-fedscore"); if(!el) return;
   if(el.dataset.built) return; el.dataset.built="1";
-  el.innerHTML=`<section id="fedscore" class="nsec vicscore" aria-label="Federal departments scorecard"><p class="muted">Loading the departments…</p></section>`;
+  el.innerHTML=fedSwitch("fedscore")+`<section id="fedscore" class="nsec vicscore" aria-label="Federal departments scorecard"><p class="muted">Loading the departments…</p></section>`;
+  el.querySelectorAll(".vswitch [data-go]").forEach(b=>b.onclick=()=>{ if(!b.classList.contains("on")){ show(b.dataset.go); window.scrollTo(0,0); } });
   fetch("fedscore.json").then(r=>{if(!r.ok) throw new Error(r.status); return r.json();}).then(j=>{FSC=j; fedOverview();})
    .catch(()=>{document.getElementById("fedscore").innerHTML=`<p class="note">The department data could not be loaded. Please refresh the page.</p>`; el.dataset.built="";});
 }
@@ -3419,6 +3439,7 @@ function renderChamber(id){
   const C=CH[id], st=chState[id], el=document.getElementById("ch-"+id);
   if(!st.built&&id==="ontario"){
     el.innerHTML=`<section class="hsum" id="${id}-sum"></section>
+     ${minIndexHTML("ontario")}
      <section class="nsec pmwrap"><div class="kicker">Power map · Queen's Park</div><h2 class="nh pmtitle">Elected Officials</h2>
        ${foldHTML("on-fold","How to read this map","What each part means and how to explore it",
          [["The room on the left","is where Ontario's laws are made. Each dot is one MPP, a person voters chose to speak for their area. The colour shows their party."],
@@ -3430,6 +3451,7 @@ function renderChamber(id){
        <div id="pm-slot"></div>
        <div class="src">${C.approx} Seating plan: <a href="${ON_PLAN_SRC[1]}" target="_blank" rel="noopener">${ON_PLAN_SRC[0]}</a>.</div></section>`;
     renderPowerMap();
+    minIndexProv("ontario","Ontario","Ministries","Ministry",ON_OUT,ON_MIN,"Doug Ford",MI_SRC([ON_S.cab,ON_S.dm]));
     wireFold("on-fold");
     el.insertAdjacentHTML("beforeend",`<div class="hgrid"><div class="hmain"><section class="nsec"><div class="kicker">About the Assembly</div><h2 class="nh">What the Legislative Assembly does</h2>
         <div class="does">
@@ -3533,6 +3555,7 @@ function renderBcLeg(){
   const C=CH.bcleg, st=chState.bcleg, el=document.getElementById("ch-bcleg");
   if(!st.built){
     el.innerHTML=`<section class="hsum" id="bcleg-sum"></section>
+     ${minIndexHTML("bcleg")}
      <div class="banner bcban"><p>${BC_TRANSITION.text.replace("This wheel shows","This page shows")}</p><div class="src">Sources: ${BC_TRANSITION.srcs.map(s=>`<a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a>`).join(" · ")}</div></div>
      <section class="nsec pmwrap"><div class="kicker">Power map · Victoria, BC</div><h2 class="nh pmtitle">Elected Officials</h2>
        ${foldHTML("bc-fold","How to read this map","What each part means and how to explore it",
@@ -3558,6 +3581,7 @@ function renderBcLeg(){
         <ol class="hlog">${BC_TIMELINE.map(([d,t,x])=>`<li class="lgi"><button tabindex="-1"><span class="lg-t"><b>${t}</b><span class="muted">${fmtDate(d)} · ${x}</span></span></button></li>`).join("")}</ol>
         ${srcA(BC_RES_SRC)}${srcA(BC_ODC_SRC)}${srcA(BC_WIKI_SRC)}</section></div></div>`;
     renderBcMap(); wireFold("bc-fold");
+    minIndexProv("bcleg","British Columbia","Ministries","Ministry",BC_OUT,BC_MIN,"David Eby",MI_SRC([BC_S.cab,BC_S.dm]),"Caretaker Premier");
     st.built=true;
   }
   chSummary(C); chProfile(C); chList(C);
@@ -3999,6 +4023,7 @@ function renderSkLeg(){
   const C=CH.skleg, st=chState.skleg, el=document.getElementById("ch-skleg");
   if(!st.built){
     el.innerHTML=`<section class="hsum" id="skleg-sum"></section>
+     ${minIndexHTML("skleg")}
      <section class="nsec pmwrap"><div class="kicker">Power map · Regina</div><h2 class="nh pmtitle">Elected Officials</h2>
        ${foldHTML("sk-fold","How to read this map","What each part means and how to explore it",
          [["The room on the left","is where Saskatchewan's laws are made. Each dot is one MLA, a person voters chose to speak for their area. The colour shows their party."],
@@ -4025,6 +4050,7 @@ function renderSkLeg(){
         ${srcA(SK_S.nip)}${srcA(SK_S.ge)}</section></div></div>`;
     el.querySelectorAll(".hlog [data-i]").forEach(b=>{ if(b.dataset.i!=="") b.onclick=()=>chSelect(C,+b.dataset.i,true); });
     renderSkMap(); wireFold("sk-fold");
+    minIndexProv("skleg","Saskatchewan","Ministries","Ministry",SK_OUT,SK_MIN,"Scott Moe",MI_SRC([SK_S.cab,SK_S.dm]));
     st.built=true;
   }
   chSummary(C); chProfile(C); chList(C);
@@ -4585,6 +4611,7 @@ function renderPvLeg(cfg){
   const C=CH[cfg.id], st=chState[cfg.id], el=document.getElementById("ch-"+cfg.id);
   if(!st.built){
     el.innerHTML=`<section class="hsum" id="${cfg.id}-sum"></section>
+     ${minIndexHTML(cfg.id)}
      <section class="nsec pmwrap"><div class="kicker">Power map · ${cfg.capital}</div><h2 class="nh pmtitle">Elected Officials</h2>
        ${foldHTML(cfg.pre+"-fold","How to read this map","What each part means and how to explore it",
          cfg.foldLeft||[["The room on the left",`is where ${cfg.region}'s laws are made. Each dot is one MLA, a person voters chose to speak for their area. ${cfg.colourNote||"The colour shows their party."}`],
@@ -4612,6 +4639,7 @@ function renderPvLeg(cfg){
     if(cfg.memberWord) el.querySelectorAll(".nsec").forEach(x=>{ x.innerHTML=x.innerHTML.replace(/\bMLA(s?)\b/g,cfg.memberWord+"$1"); });
     el.querySelectorAll(".hlog [data-i]").forEach(b=>{ if(b.dataset.i!=="") b.onclick=()=>chSelect(C,+b.dataset.i,true); });
     renderPvMap(cfg); wireFold(cfg.pre+"-fold");
+    pvMinIndex(cfg);
     if(cfg.after) cfg.after(el);
     st.built=true;
   }
@@ -4621,6 +4649,58 @@ function pvWire(cfg){ const C=CH[cfg.id];
   C.map={svg:`#${cfg.pre}-svg`,panelId:`${cfg.pre}-panel`,stageId:`${cfg.pre}-stage`,st:()=>pvS(cfg),panel:k=>pvPanel(cfg,k),hl:k=>pvHighlight(cfg,k),select:(k,z)=>pvSelect(cfg,k,z),key:i=>pvKeyForMpp(cfg,i)};
   chState[cfg.id]={sel:null,focus:null,built:false}; PV_CFG[cfg.id]=cfg; }
 const PV_CFG={};
+
+/* ================= MINISTRIES / DEPARTMENTS LANDING =================
+   Same pattern as the federal Departments page: every organization listed on the first page,
+   each one linked to its own view, with a link back to the power map. Used by every province,
+   territory and the Victoria council page. o = {kicker, title, noun, lede, OUT, MIN, noMin, src} */
+const MI_ESC=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const MI_B=n=>n==null?"":Math.abs(n)>=1e9?"$"+(n/1e9).toFixed(2)+"B":"$"+(n/1e6).toFixed(1)+"M";
+function minIndexHTML(id){ return `<section class="nsec minidx" id="${id}-minidx" aria-live="polite"></section>`; }
+function minIndexInit(id,o){
+  const el=document.getElementById(id+"-minidx"); if(!el) return;
+  const rows=o.OUT.map(x=>({o:x,ms:(o.MIN||[]).filter(m=>(m.links||[]).includes(x.id))}));
+  const hasMin=(o.MIN||[]).some(m=>(m.links||[]).length), hasBud=rows.some(r=>r.o.budget), N=rows.length, lc=o.title.toLowerCase();
+  const toMap=oid=>{ const C=CH[id]; if(!C||!C.map) return; C.map.select("o_"+oid,true); const s=document.getElementById(C.map.stageId); if(s) s.scrollIntoView({behavior:"smooth",block:"start"}); };
+  const list=()=>{
+    el.innerHTML=`<div class="kicker">${o.kicker}</div><h2 class="nh">${o.title}</h2><p class="vsp">${o.lede}</p>
+     <div class="sctwrap"><table class="sct minidx-t"><caption>${N} ${lc} · select one for details</caption><thead><tr><th scope="col">${o.noun}</th>${hasMin?`<th scope="col">Minister responsible</th>`:""}<th scope="col">Run day to day by</th>${hasBud?`<th scope="col" class="num">2026 budget</th>`:""}</tr></thead><tbody>
+     ${rows.map((r,i)=>`<tr><th scope="row"><button class="linkbtn" data-mi="${i}">${MI_ESC(r.o.name)}</button></th>${hasMin?`<td>${r.ms.length?r.ms.map(m=>MI_ESC(m.name)).join("<br>"):`<span class="muted">${MI_ESC(o.noMin||"—")}</span>`}</td>`:""}<td>${r.o.heads.length?MI_ESC(r.o.heads[0].name)+`<small>${MI_ESC(r.o.heads[0].role)}${r.o.heads.length>1?` · and ${r.o.heads.length-1} more`:""}</small>`:'<span class="muted">—</span>'}</td>${hasBud?`<td class="num">${MI_B(r.o.budget)}</td>`:""}</tr>`).join("")}</tbody></table></div>
+     ${o.src?`<div class="src">${o.src}</div>`:""}`;
+    el.querySelectorAll("[data-mi]").forEach(b=>b.onclick=()=>{ one(+b.dataset.mi); el.scrollIntoView({behavior:"smooth",block:"start"}); });
+  };
+  const one=i=>{ const r=rows[i], x=r.o;
+    el.innerHTML=`<button class="chipbtn" data-back>← All ${N} ${lc}</button>
+     <div class="kicker">${o.kicker} · ${o.noun}</div><h2 class="nh">${MI_ESC(x.name)}</h2>${x.desc?`<p class="vsp">${MI_ESC(x.desc)}</p>`:""}
+     <div class="mi-grid">
+      ${hasMin?`<section><div class="kicker">Minister responsible</div>${r.ms.length?`<ul class="mi-l">${r.ms.map(m=>`<li><b>${MI_ESC(m.name)}</b><span>${MI_ESC(m.title)}</span></li>`).join("")}</ul>`:`<p class="vsp">${MI_ESC(o.noMin||"—")}</p>`}</section>`:""}
+      <section><div class="kicker">Run day to day by</div>${x.heads.length?`<ul class="mi-l">${x.heads.map(h=>`<li><b>${MI_ESC(h.name)}</b><span>${MI_ESC(h.role)}</span></li>`).join("")}</ul>`:`<p class="vsp muted">Not listed in the sources used.</p>`}</section>
+      ${x.budget?`<section><div class="kicker">2026 budget</div><p class="mi-big">${MI_B(x.budget)}</p>${x.lines&&x.lines.length?`<ul class="mi-l">${x.lines.map(l=>`<li><b>${MI_ESC(l[0])}</b><span>${MI_B(l[1])}</span></li>`).join("")}</ul>`:""}</section>`:""}
+     </div>
+     <div class="mi-act"><button class="chipbtn" data-map>Show on the power map</button>${i>0?`<button class="chipbtn" data-go2="${i-1}">← ${MI_ESC(rows[i-1].o.name)}</button>`:""}${i<N-1?`<button class="chipbtn" data-go2="${i+1}">${MI_ESC(rows[i+1].o.name)} →</button>`:""}</div>
+     ${o.src?`<div class="src">${o.src}</div>`:""}`;
+    el.querySelector("[data-back]").onclick=()=>{ list(); el.scrollIntoView({behavior:"smooth",block:"start"}); };
+    el.querySelector("[data-map]").onclick=()=>toMap(x.id);
+    el.querySelectorAll("[data-go2]").forEach(b=>b.onclick=()=>one(+b.dataset.go2));
+  };
+  list();
+}
+/* standard wording for a provincial or territorial government */
+function minIndexProv(id,region,title,noun,OUT,MIN,premierName,srcHTML,headWord){
+  const lc=title.toLowerCase();
+  minIndexInit(id,{kicker:`Government of ${region}`,title,noun,OUT,MIN,src:srcHTML,
+    noMin:`${headWord||"Premier"} ${premierName}`,
+    lede:`The ${OUT.length} ${lc} and offices of the Government of ${region}. Each has a minister responsible in Cabinet and is run day to day by a senior public servant. Select one to see who is responsible for it, or find it on the power map below.`});
+}
+
+const MI_SRC=list=>{ const L=list.filter(Boolean); return L.length?"Sources: "+L.map(x=>`<a href="${x[1]}" target="_blank" rel="noopener">${x[0]}</a>`).join(" · "):""; };
+function pvMinIndex(cfg){
+  const title=cfg.minTitle||"Ministries", noun=cfg.minNoun||"Ministry";
+  if(cfg.id==="victoria") return minIndexInit("victoria",{kicker:"City of Victoria",title,noun,OUT:cfg.OUT.filter(o=>o.id!==cfg.execId),MIN:[],src:MI_SRC([cfg.S.fp]),
+    lede:"Every City department and service, with who runs it and its 2026 operating budget. Directors report to the City Manager; police and library are governed by boards. Select one for details, or find it on the power map below."});
+  const region={ntleg:"the Northwest Territories"}[cfg.id]||cfg.region;
+  minIndexProv(cfg.id,region,title,noun,cfg.OUT,cfg.MIN,cfg.premier.name,MI_SRC([cfg.S.cab,cfg.S.dm]),cfg.headWord);
+}
 
 /* ================= MANITOBA: LEGISLATIVE ASSEMBLY ================= */
 const MB_S={
@@ -6701,7 +6781,7 @@ const CH_META={fedscore:["Snapshot · Nov 1 2026","Government of Canada · Feder
   mbleg:["Snapshot · Nov 1 2026","Legislative Assembly of Manitoba · 43rd Legislature","All 57 seats in Winnipeg, with every MLA, the Cabinet and every department."],
   skleg:["Snapshot · Nov 1 2026","Legislative Assembly of Saskatchewan · 30th Legislature","All 61 seats in Regina, with every MLA, the Cabinet and every ministry."],
   ontario:["Snapshot · Nov 1 2026","Legislative Assembly of Ontario · 44th Parliament","All 124 seats at Queen's Park, with every MPP, riding and party."]};
-function show(id,{focusKey}={}){
+function show(id,{focusKey}={}){ { const fs=document.getElementById("fed-switch"); if(fs&&id!=="federal") fs.hidden=true; }
   const homeE=document.getElementById("landing"); if(homeE) homeE.hidden=id!=="home";
   if(id==="home"){ tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab==="home"?"true":"false")); Object.values(chEls).forEach(el=>el.hidden=true);
     wheelHome(); wheelEls.forEach(el=>el.hidden=true); bannerEl.hidden=true; newsEl.hidden=true; commonsEl.hidden=true; const wf0=document.getElementById("wheelfoot"); if(wf0) wf0.hidden=true; renderHome();
@@ -6743,6 +6823,7 @@ function mountWheel(id,focusKey){
   if(ds.banner){ bannerEl.innerHTML=`<p>${ds.banner.text}</p><div class="src">Sources: ${ds.banner.srcs.map(s=>`<a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a>`).join(" · ")}</div>`; bannerEl.hidden=false; } else bannerEl.hidden=true;
   build(); legend();
   { const vs=document.getElementById("vicscore"); if(vs){ vs.hidden=id!=="victoria"; if(id==="victoria") renderVicScore(); } }
+  { let sw=document.getElementById("fed-switch"); if(id==="federal"&&typeof fedSwitch==="function"){ if(!sw){ bannerEl.insertAdjacentHTML("beforebegin",`<div id="fed-switch">${fedSwitch("federal")}</div>`); sw=document.getElementById("fed-switch"); sw.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{ if(!b.classList.contains("on")){ show(b.dataset.go); window.scrollTo(0,0); } }); } sw.hidden=false; } else if(sw) sw.hidden=true; }
   { let sw=document.getElementById("mis-switch"); if(id==="mississauga"&&typeof misSwitch==="function"){ if(!sw){ bannerEl.insertAdjacentHTML("beforebegin",`<div id="mis-switch">${misSwitch("mississauga")}</div>`); sw=document.getElementById("mis-switch"); sw.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{ if(!b.classList.contains("on")){ show(b.dataset.go); window.scrollTo(0,0); } }); } sw.hidden=false; } else if(sw) sw.hidden=true; }
   rot=-0.9; layout(); select("hub",{spin:false});
   if(focusKey) select(focusKey); else rotateTo(0,1400);

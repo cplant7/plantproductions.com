@@ -38,6 +38,7 @@ function renderBcLeg(){
   const C=CH.bcleg, st=chState.bcleg, el=document.getElementById("ch-bcleg");
   if(!st.built){
     el.innerHTML=`<section class="hsum" id="bcleg-sum"></section>
+     ${minIndexHTML("bcleg")}
      <div class="banner bcban"><p>${BC_TRANSITION.text.replace("This wheel shows","This page shows")}</p><div class="src">Sources: ${BC_TRANSITION.srcs.map(s=>`<a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a>`).join(" · ")}</div></div>
      <section class="nsec pmwrap"><div class="kicker">Power map · Victoria, BC</div><h2 class="nh pmtitle">Elected Officials</h2>
        ${foldHTML("bc-fold","How to read this map","What each part means and how to explore it",
@@ -63,6 +64,7 @@ function renderBcLeg(){
         <ol class="hlog">${BC_TIMELINE.map(([d,t,x])=>`<li class="lgi"><button tabindex="-1"><span class="lg-t"><b>${t}</b><span class="muted">${fmtDate(d)} · ${x}</span></span></button></li>`).join("")}</ol>
         ${srcA(BC_RES_SRC)}${srcA(BC_ODC_SRC)}${srcA(BC_WIKI_SRC)}</section></div></div>`;
     renderBcMap(); wireFold("bc-fold");
+    minIndexProv("bcleg","British Columbia","Ministries","Ministry",BC_OUT,BC_MIN,"David Eby",MI_SRC([BC_S.cab,BC_S.dm]),"Caretaker Premier");
     st.built=true;
   }
   chSummary(C); chProfile(C); chList(C);

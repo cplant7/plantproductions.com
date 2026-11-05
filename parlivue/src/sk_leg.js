@@ -146,6 +146,7 @@ function renderSkLeg(){
   const C=CH.skleg, st=chState.skleg, el=document.getElementById("ch-skleg");
   if(!st.built){
     el.innerHTML=`<section class="hsum" id="skleg-sum"></section>
+     ${minIndexHTML("skleg")}
      <section class="nsec pmwrap"><div class="kicker">Power map · Regina</div><h2 class="nh pmtitle">Elected Officials</h2>
        ${foldHTML("sk-fold","How to read this map","What each part means and how to explore it",
          [["The room on the left","is where Saskatchewan's laws are made. Each dot is one MLA, a person voters chose to speak for their area. The colour shows their party."],
@@ -172,6 +173,7 @@ function renderSkLeg(){
         ${srcA(SK_S.nip)}${srcA(SK_S.ge)}</section></div></div>`;
     el.querySelectorAll(".hlog [data-i]").forEach(b=>{ if(b.dataset.i!=="") b.onclick=()=>chSelect(C,+b.dataset.i,true); });
     renderSkMap(); wireFold("sk-fold");
+    minIndexProv("skleg","Saskatchewan","Ministries","Ministry",SK_OUT,SK_MIN,"Scott Moe",MI_SRC([SK_S.cab,SK_S.dm]));
     st.built=true;
   }
   chSummary(C); chProfile(C); chList(C);
