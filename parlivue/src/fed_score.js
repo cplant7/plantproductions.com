@@ -33,6 +33,23 @@ const FY=y=>String(y).slice(0,4);
 const FYR=y=>{const a=+FY(y);return `April ${a} – March ${a+1}`;};
 const FYS=y=>{const a=+FY(y);return `Apr ${a} – Mar ${a+1}`;};
 const FY_NOTE=`<p class="fynote fyhead"><b>Years are federal fiscal years</b>, named by the year they start: 2024 means April 1, 2024 to March 31, 2025 (the Government of Canada writes this as 2024–25). <b>Budgeted</b> is the planned spending in each department's Departmental Plan.</p>`;
+/* unit from the goal's wording only: % for percentages, $ for dollars, hours/days where stated; otherwise the plain count */
+const fUnit=t=>{t=String(t||"");
+  if(/percentage points?/i.test(t)) return " pts";
+  if(/^\s*%|%\s*(of|increase|decrease|change)\b|\bpercent(age)?\b|\(%\)/i.test(t)) return "%";
+  if(/\$\s*billions?|billions of dollars|\(\$B\)/i.test(t)) return "$B";
+  if(/\$\s*millions?|millions of dollars|\(\$M\)/i.test(t)) return "$M";
+  if(/per dollar|per (each )?\$\d|\(in dollars\)|\(\$\)/i.test(t)) return "$";
+  if(/\$|\bdollars?\b/i.test(t)) return "$?";
+  if(/\(in hours\)|\(hours\)|\bnumber of hours\b|#\s*of hours/i.test(t)) return " hours";
+  if(/\(in days\)|\(days\)|\bnumber of days\b|#\s*of days/i.test(t)) return " days";
+  return "";};
+/* adds the unit to a plain number only; the number itself is shown exactly as published (with separators) */
+const fValU=(v,u)=>{const x=fVal(v); if(!u||!/^[-–−]?[\d,]+(\.\d+)?$/.test(x)) return x;
+  const neg=/^[-–−]/.test(x), m=neg?x.slice(1):x, sg=neg?"−":"", n=Number(m.replace(/,/g,""));
+  if(u==="$?") u=n>=1000?"$":""; if(!u) return x;
+  if(u==="$") return sg+"$"+m; if(u==="$B") return sg+"$"+m+"B"; if(u==="$M") return sg+"$"+m+"M";
+  return x+u;};
 const fRep=(d,y,cat)=>(d.src||[]).find(s=>s.y===y&&s.cat===cat);
 /* reporting transparency: share of large variances with an explanation; share of due indicators with a result */
 const fRatio=(a,b)=>b?{pct:a/b*100,txt:a+" of "+b,cls:a/b>=.9?"dn":a/b>=.5?"cau":"up",kc:a/b>=.9?"ok":a/b>=.5?"watch":"off"}:{pct:null,txt:"—",cls:"",kc:"neu"};
@@ -108,9 +125,9 @@ function fedDept(id){
        <div class="fgoal-r"><div class="fgoal-chips">${cnt.map(([k,n])=>`<span class="fgc"><span class="grade ${ST[k][1]}">${ST[k][0]}</span> <b>${n}</b></span>`).join("")}</div>
        <span class="dgrades" aria-hidden="true">${cnt.map(([k,n])=>`<i class="${ST[k][1]}" style="flex:${n}" title="${ST[k][0]}: ${n}"></i>`).join("")}</span></div></div>`;
     const areas=[...new Set(L.map(z=>z.act||"Other"))];
-    const rows=areas.map(ar=>{const G=L.filter(z=>(z.act||"Other")===ar);return G.map((z,k)=>`<tr>${k?"":`<th scope="rowgroup" rowspan="${G.length}" class="farea">${fEsc(ar)}</th>`}<td class="fgd">${fEsc(z.i)}</td><td class="num">${z.t?fVal(z.t):'<span class="muted">—</span>'}${after(z.by,2024)?`<small>carried over: due ${fBy(z.by)}</small>`:""}</td><td class="num">${z.r?fVal(z.r):'<span class="muted">—</span>'}</td><td><span class="grade ${ST[z.s]?ST[z.s][1]:"g-n"}">${ST[z.s]?ST[z.s][0]:fEsc(z.s)}</span></td></tr>`).join("");}).join("");
+    const rows=areas.map(ar=>{const G=L.filter(z=>(z.act||"Other")===ar);return G.map((z,k)=>`<tr>${k?"":`<th scope="rowgroup" rowspan="${G.length}" class="farea">${fEsc(ar)}</th>`}<td class="fgd">${fEsc(z.i)}</td><td class="num">${z.t?fValU(z.t,fUnit(z.i)):'<span class="muted">—</span>'}${after(z.by,2024)?`<small>carried over: due ${fBy(z.by)}</small>`:""}</td><td class="num">${z.r?fValU(z.r,fUnit(z.i)):'<span class="muted">—</span>'}</td><td><span class="grade ${ST[z.s]?ST[z.s][1]:"g-n"}">${ST[z.s]?ST[z.s][0]:fEsc(z.s)}</span></td></tr>`).join("");}).join("");
     return sum+`<div class="sctwrap"><table class="sct fgoals"><caption>${L.length} goals · grouped by program area</caption><thead><tr><th scope="col">Program area</th><th scope="col">Goal</th><th scope="col" class="num">Target</th><th scope="col" class="num">Result</th><th scope="col">Status</th></tr></thead><tbody>${rows}</tbody></table></div>
-      <div class="note"><b>Self-reported.</b> Each department chooses its goals (the Government of Canada calls them performance indicators), sets the targets and rates its own results; Treasury Board publishes them as submitted. Targets are for the fiscal year unless marked <i>carried over</i>, which means the department set a later deadline. Units are as the department published them.</div>`; })();
+      <div class="note"><b>Self-reported.</b> Each department chooses its goals (the Government of Canada calls them performance indicators), sets the targets and rates its own results; Treasury Board publishes them as submitted. Targets are for the fiscal year unless marked <i>carried over</i>, which means the department set a later deadline. Targets and results show %, $ or time units where the goal's wording states them; other numbers are counts. Values are shown as published.</div>`; })();
   /* history */
   const hist=`<div class="sctwrap"><table class="sct"><caption>Budgeted vs actual spending and staff, as published</caption><thead><tr><th scope="col">Fiscal year<small class="fth">April to March</small></th><th scope="col">Budgeted</th><th scope="col">Actual</th><th scope="col">Variance</th><th scope="col">Staff budgeted</th><th scope="col">Staff actual</th></tr></thead><tbody>${d.hist.map(x=>{const pc=x[1]?(x[2]-x[1])/x[1]*100:null;return `<tr><th scope="row">${FY(x[0])}</th><td>${fB(x[1])}</td><td>${fB(x[2])}</td><td class="vcell ${pc!=null?vplan("exp",pc):""}">${vsSgn(x[2]-x[1],fB)}${pc!=null?` <small>${vsP(pc)}</small>`:""}</td><td>${fN(x[3])}</td><td>${fN(x[4])}</td></tr>${x[5]&&x[5].v?`<tr class="fwhy"><td colspan="6"><b>Largest change: ${fEsc(x[5].n)} (${vsSgn(x[5].v,fB)}).</b> ${x[5].x?fEsc(x[5].x):'<span class="muted">No explanation in the open data.</span>'}</td></tr>`:""}`;}).join("")}
     <tr><th scope="row">2025 <small>budget</small></th><td>${fB(d.plan.y25)}</td><td class="muted">Due fall 2026</td><td></td><td>${fN(d.plan.f25)}</td><td></td></tr>
@@ -119,8 +136,7 @@ function fedDept(id){
   const srcTbl=`<div class="sctwrap"><table class="sct fsrc"><thead><tr><th scope="col">Report</th><th scope="col">Fiscal year</th><th scope="col">Use for</th></tr></thead><tbody>${[...new Map(d.src.map(s=>[s.u+s.y,s])).values()].map(s=>`<tr><th scope="row">${s.u?`<a href="${s.u}" target="_blank" rel="noopener">${fEsc(s.txt)}</a>`:fEsc(s.txt)}</th><td>${s.y}</td><td>${d.src.filter(z=>z.u===s.u&&z.y===s.y).map(z=>z.cat).join(", ")}</td></tr>`).join("")}</tbody></table></div>`;
   const tabs=[["ov","Overview","Mandate and AI"],["y26","2026","Apr 2026 – Mar 2027 · current year"],["y25","2025","Apr 2025 – Mar 2026 · results due fall 2026"],["y24","2024","Apr 2024 – Mar 2025 · results"],["hist","Spending history","2020 to 2024"],["src","Sources","Reports by year"]];
   const unexpl=(()=>{const e=fRatio(d.tr.bigx,d.tr.big);const un=pr.filter(p=>Math.abs(p.v)>=1e6&&(p.p===0||Math.abs(p.v)/Math.max(p.p,1)>=.1)&&!p.x).sort((a,b)=>Math.abs(b.v)-Math.abs(a.v));
-     return `<p class="vsp"><b>Large variances explained:</b> ${e.pct==null?"no program was off budget by 10% and $1M or more.":`${e.txt} programs that were off budget by 10% and $1M or more carry the department's explanation in the open data.`}</p>
-     ${un.length?vRoll("Large variances with no explanation in the open data",un.length+" programs, 2024",`<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Program</th><th scope="col">Budgeted</th><th scope="col">Actual</th><th scope="col">Variance</th></tr></thead><tbody>${un.map(p=>`<tr><th scope="row">${fEsc(p.n)}</th><td>${fB(p.p)}</td><td>${fB(p.a)}</td><td class="vcell ${p.pc!=null?vplan("exp",p.pc):""}">${vsSgn(p.v,fB)}${p.pc!=null?` <small>${vsP(p.pc)}</small>`:""}</td></tr>`).join("")}</tbody></table></div><div class="note">The department may explain these in the text of its 2024–25 Departmental Results Report; see Sources.</div>`,true):""}`;})();
+     return `${un.length?vRoll("Large variances with no explanation in the open data",un.length+" programs, 2024",`<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Program</th><th scope="col">Budgeted</th><th scope="col">Actual</th><th scope="col">Variance</th></tr></thead><tbody>${un.map(p=>`<tr><th scope="row">${fEsc(p.n)}</th><td>${fB(p.p)}</td><td>${fB(p.a)}</td><td class="vcell ${p.pc!=null?vplan("exp",p.pc):""}">${vsSgn(p.v,fB)}${p.pc!=null?` <small>${vsP(p.pc)}</small>`:""}</td></tr>`).join("")}</tbody></table></div><div class="note">The department may explain these in the text of its 2024–25 Departmental Results Report; see Sources.</div>`,true):""}`;})();
   const rep=(y,cat,lab)=>{const s=fRep(d,y,cat);return s&&s.u?`<a href="${s.u}" target="_blank" rel="noopener">${fEsc(s.txt)}</a>`:lab;};
   const crpTbl=(cols,cap)=>d.crp.length?`<div class="sctwrap"><table class="sct"><caption>${cap}</caption><thead><tr><th scope="col">Core responsibility</th>${cols.map(c=>`<th scope="col">${c[0]}</th>`).join("")}</tr></thead><tbody>${d.crp.map(c=>`<tr><th scope="row">${fEsc(c[0])}</th>${cols.map(k=>`<td>${k[1](c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`:"";
   const panes={
