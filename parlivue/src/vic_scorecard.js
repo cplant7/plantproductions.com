@@ -326,7 +326,7 @@ function renderVicScore(){
   panes.y25=panes.y25.replace("%%KPI25%%",yearCards(25)); panes.y24=panes.y24.replace("%%KPI24%%",yearCards(24));
   el.innerHTML=`<header class="dsh-head"><div><div class="kicker">City of Victoria · Department dashboard</div><h2 class="nh">Council Scorecard 2024–2026</h2>
      <p class="pagelede">Plans, budgets and results from the City's audited statements, with progress on the 2023–2026 Strategic Plan.</p></div>
-     <div class="dsh-asof">Data as of Nov 1, 2026 · audited 2024 and 2025, adopted 2026 plan</div></header>
+     </header>
     <div class="dkey"><span><i class="ok"></i>Good: on or better than plan</span><span><i class="watch"></i>Caution: behind plan</span><span><i class="off"></i>Over budget</span><span class="muted">Gauge: actual as % of plan</span></div>
     <div class="dtiming"><b>About timing.</b> The City’s financial year runs January to December. Actual results are published once a year, in the audited Annual Report released the following year. Until then, figures for the current year are budgets, not results. This page uses documents available on Nov 1, 2026: audited results for 2024 and 2025 and the adopted 2026 budget.</div>
     <div class="dsh-kh">2026 · current year budget<span>Actual results for each year are in its own section below.</span></div>
