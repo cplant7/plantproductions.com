@@ -1904,7 +1904,7 @@ const FSC_SRC={
 let FSC=null;
 function fedSwitch(cur){
   const b=(id,t,sub)=>`<button class="vsw ${cur===id?"on":""}" data-go="${id}" ${cur===id?'aria-current="page"':""}><span class="vswk">Government of Canada</span><b>${t}</b><span class="vsws">${sub}</span></button>`;
-  return `<nav class="vswitch" aria-label="Government of Canada pages">${b("fedscore","Departments","31 departments and agencies: plans, spending and results")}${b("federal","Cabinet wheel","Prime Minister, ministers and the deputy heads of each department")}</nav>`;
+  return `<nav class="vswitch" aria-label="Government of Canada pages">${b("fedscore","Departments","31 departments and agencies: budgets, spending and results")}${b("federal","Cabinet wheel","Prime Minister, ministers and the deputy heads of each department")}</nav>`;
 }
 const fB=n=>n==null?"—":Math.abs(n)>=1e9?"$"+(n/1e9).toLocaleString("en-CA",{minimumFractionDigits:2,maximumFractionDigits:2})+"B":"$"+(n/1e6).toLocaleString("en-CA",{minimumFractionDigits:1,maximumFractionDigits:1})+"M";
 const fN=n=>n==null?"—":Math.round(n).toLocaleString("en-CA");
@@ -1915,7 +1915,7 @@ const fCard=k=>`<div class="dkpi"><span class="dk-l">${k[0]}</span><b class="dk-
 const fA=s=>`<a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a>`;
 const fEsc=s=>String(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 /* spending vs plan: over = red, under = green (same rule as the city scorecards) */
-const fSpend=(p,a)=>{if(!p) return {pc:null,cls:"",pill:fPill("neu","No plan figure")};const pc=(a-p)/p*100;return {pc,cls:vplan("exp",pc),pill:fPill(pc>0.05?"off":"ok",(pc>0.05?"Over budget ":"Within budget ")+vsP(pc))};};
+const fSpend=(p,a)=>{if(!p) return {pc:null,cls:"",pill:fPill("neu","No budget figure")};const pc=(a-p)/p*100;return {pc,cls:vplan("exp",pc),pill:fPill(pc>0.05?"off":"ok",(pc>0.05?"Over budget ":"Within budget ")+vsP(pc))};};
 /* targets: share met of those assessed (met + not met) */
 const fTgt=c=>{const n=c["met"]+c["not met"];return n?{pct:c["met"]/n*100,n,cls:c["met"]/n>=.75?"ok":c["met"]/n>=.5?"watch":"off"}:{pct:null,n:0,cls:"neu"};};
 const fLast=d=>d.hist.find(h=>h[0]==="2024–25");
@@ -1958,8 +1958,8 @@ function renderFedScorePage(){
    .catch(()=>{document.getElementById("fedscore").innerHTML=`<p class="note">The department data could not be loaded. Please refresh the page.</p>`; el.dataset.built="";});
 }
 function fedHead(sub){
-  return `<header class="dsh-head"><div><div class="kicker">Government of Canada · Department dashboard</div><h2 class="nh">${sub||"Federal Departments Scorecard 2024–2027"}</h2>
-     <p class="pagelede">What each department planned to spend and achieve, and what it reported, from the Treasury Board's open data on Departmental Plans and Results Reports.</p></div></header>
+  return `<header class="dsh-head"><div><div class="kicker">Government of Canada · Department dashboard</div><h2 class="nh">${sub||"Federal Departments Scorecard 2024–2026"}</h2>
+     <p class="pagelede">What each department budgeted to spend, the goals it set, and what it reported, from the Treasury Board's open data on Departmental Plans and Results Reports.</p></div></header>
     <div class="dkey"><span><i class="ok"></i>Good: within budget, or 75%+ of targets met</span><span><i class="watch"></i>Caution: 50–74% of targets met</span><span><i class="off"></i>Over budget, or under 50% of targets met</span><span class="muted">Gauge: actual as % of budget</span></div>${FY_NOTE}`;
 }
 function fedTiming(){
@@ -1973,7 +1973,7 @@ function fedOverview(){
   const TX=D.reduce((t,d)=>{t.x+=d.tr.bigx;t.b+=d.tr.big;return t;},{x:0,b:0});
   const p26=D.reduce((s,d)=>s+(d.plan.y26||0),0), p25=D.reduce((s,d)=>s+(d.plan.y25||0),0), tp=C.m/(C.m+C.n)*100, sp=fSpend(P,A);
   const kp=`<div class="dsh-kpis k5" aria-label="Federal summary">${[
-    ["Budgeted spending · 2026",fB(p26),fPill("neu",(p26>=p25?"+":"−")+Math.abs((p26-p25)/p25*100).toFixed(1)+"% vs 2025"),"31 departments · forecast in the 2025–26 plans; may change with the Nov 5 budget",""],
+    ["Budgeted spending · 2026",fB(p26),fPill("neu",(p26>=p25?"+":"−")+Math.abs((p26-p25)/p25*100).toFixed(1)+"% vs 2025"),"31 departments · forecast in the 2025–26 Departmental Plans; may change with the Nov 5 budget",""],
     ["Budgeted spending · 2025",fB(p25),fPill("neu","Results due fall 2026"),"Not yet reported in the open data",""],
     ["Actual spending · 2024",fB(A),sp.pill,"Budget "+fB(P)+" · "+have.length+" departments",fGauge(A/P*100,sp.cls==="up"?"off":"ok","Actual vs budget")],
     ["Departments over budget · 2024",over+" of "+have.length,fPill(over>have.length/2?"off":"watch",Math.round(over/have.length*100)+"%"),"Spent more than budgeted at the start of the year",""],
@@ -2000,10 +2000,10 @@ function fedDept(id){
   const ftep=h&&h[3]?h[4]/h[3]*100:null;
   const cards=`<div class="dsh-kh">2026 · current year (April 2026 – March 2027)<span>Each year has its own section below.</span></div>
    <div class="dsh-kpis k5">${[
-    ["Budgeted spending · 2026",fB(d.plan.y26),fPill("neu",d.plan.f26?fN(d.plan.f26)+" planned staff (FTEs)":"Budget"),"Forecast in the 2025–26 plan · may change with the Nov 5 budget",""],
+    ["Budgeted spending · 2026",fB(d.plan.y26),fPill("neu",d.plan.f26?fN(d.plan.f26)+" budgeted staff (FTEs)":"Budget"),"Forecast in the 2025–26 Departmental Plan · may change with the Nov 5 budget",""],
     ["Budgeted spending · 2025",fB(d.plan.y25),fPill("neu","Results due fall 2026"),"2025–26 Departmental Plan",""],
     ["Actual spending · 2024",h?fB(h[2]):"Not reported",h?sp.pill:fPill("neu","Not in open data"),h?"Budget "+fB(h[1]):"The 2024 results are not in the open data",h?fGauge(h[2]/h[1]*100,sp.cls==="up"?"off":"ok","Spending vs budget"):""],
-    ["Staff (FTEs) · 2024",h?fN(h[4]):"—",h?fPill(h[4]>h[3]?"watch":"ok",(h[4]>h[3]?"Above":"Within")+" plan "+vsP((h[4]-h[3])/h[3]*100)):"",h?"Plan "+fN(h[3]):"",h&&ftep?fGauge(ftep,h[4]>h[3]?"watch":"ok","Staff vs plan"):""],
+    ["Staff (FTEs) · 2024",h?fN(h[4]):"—",h?fPill(h[4]>h[3]?"watch":"ok",(h[4]>h[3]?"Above":"Within")+" budget "+vsP((h[4]-h[3])/h[3]*100)):"",h?"Budget "+fN(h[3]):"",h&&ftep?fGauge(ftep,h[4]>h[3]?"watch":"ok","Staff vs budget"):""],
     ["Targets met · 2024",t.n?d.c24["met"]+" of "+t.n:"—",t.n?fPill(t.cls,fPf(t.pct)+"% met"):fPill("neu","Not in open data"),(d.c24["not available"]+d.c24["to be achieved"]+d.c24[""])+" more not yet measurable",t.n?fGauge(t.pct,t.cls,"Targets met"):""]
    ].map(fCard).join("")}</div>`;
   /* programs */
@@ -6800,7 +6800,7 @@ const tabs=[...document.querySelectorAll(".tabs button[data-tab]")];
 const newsEl=document.getElementById("news"), bannerEl=document.getElementById("banner");
 const wheelEls=[document.querySelector(".toolbar"),document.getElementById("legend"),document.querySelector(".main")];
 const chEls={senate:document.getElementById("ch-senate"),ontario:document.getElementById("ch-ontario"),bcleg:document.getElementById("ch-bcleg"),skleg:document.getElementById("ch-skleg"),mbleg:document.getElementById("ch-mbleg"),nbleg:document.getElementById("ch-nbleg"),peleg:document.getElementById("ch-peleg"),ableg:document.getElementById("ch-ableg"),ykleg:document.getElementById("ch-ykleg"),nlleg:document.getElementById("ch-nlleg"),nsleg:document.getElementById("ch-nsleg"),ntleg:document.getElementById("ch-ntleg"),nuleg:document.getElementById("ch-nuleg"),victoria:document.getElementById("ch-victoria"),vicscore:document.getElementById("ch-vicscore"),misscore:document.getElementById("ch-misscore"),fedscore:document.getElementById("ch-fedscore")};
-const CH_META={fedscore:["Snapshot · Nov 1 2026","Government of Canada · Federal Departments Scorecard","What 31 departments planned to spend and achieve, and what they reported: 2024–25 results and plans to 2026–27."],misscore:["Snapshot · Nov 1 2026","City of Mississauga, ON · Council Scorecard 2024–2026","What the City planned, budgeted and reported: 2024 and 2025 audited results and the 2026 budget."],vicscore:["Snapshot · Nov 1 2026","City of Victoria, BC · Council Scorecard 2024–2026","What the City planned, budgeted and reported, and when: 2024 and 2025 results and the 2026 plan."],
+const CH_META={fedscore:["Snapshot · Nov 1 2026","Government of Canada · Federal Departments Scorecard","What 31 departments budgeted and set as goals, and what they reported: 2024 results and the 2025 and 2026 budgets (fiscal years start April 1)."],misscore:["Snapshot · Nov 1 2026","City of Mississauga, ON · Council Scorecard 2024–2026","What the City planned, budgeted and reported: 2024 and 2025 audited results and the 2026 budget."],vicscore:["Snapshot · Nov 1 2026","City of Victoria, BC · Council Scorecard 2024–2026","What the City planned, budgeted and reported, and when: 2024 and 2025 results and the 2026 plan."],
   victoria:["Snapshot · Nov 1 2026","City of Victoria, BC · Council 2026–2030","The Mayor and eight councillors elected October 17, 2026, the City Manager, and every department with its 2026 budget."],
   senate:["Snapshot · Nov 1 2026","Parliament of Canada · Senate","All 105 Senate seats by parliamentary group, with every senator, their province and when they retire."],
   bcleg:["Snapshot · Nov 1 2026","Legislative Assembly of British Columbia · In transition","All 93 members-elect from the October 24, 2026 election, with the caretaker Cabinet and every ministry."],
