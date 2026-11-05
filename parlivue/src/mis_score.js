@@ -135,7 +135,7 @@ function renderMisScore(){
   const tabs=[["card","Report card","Goals and progress"],["y26","2026 plan","Budget and forecast"],["y25","2025 results","Plan vs actual"],["y24","2024 results","Plan vs actual"],["yoy","Year over year","2023–2025 actuals"],["check","Data validation","Sources checked"]];
   el.innerHTML=`<header class="dsh-head"><div><div class="kicker">City of Mississauga · Department dashboard</div><h2 class="nh">Council Scorecard 2024–2026</h2>
      <p class="pagelede">Plans, budgets and results from the City's audited statements and financial reports.</p></div>
-     <div class="dsh-asof">Data as of Nov 1, 2026 · audited 2024 and 2025, adopted 2026 budget</div></header>
+     </header>
     <div class="dkey"><span><i class="ok"></i>Good: on or better than plan</span><span><i class="watch"></i>Caution: behind plan</span><span><i class="off"></i>Over budget</span><span class="muted">Gauge: actual as % of plan</span></div>
     <div class="dtiming"><b>About timing.</b> The City's financial year runs January to December. Audited results are published once a year, the following spring. Until then, current-year figures are budgets, not results. This page uses documents available on Nov 1, 2026: audited results for 2024 and 2025 and the adopted 2026 budget.</div>
     <div class="dsh-kh">2026 · current year budget<span>Actual results for each year are in its own section below.</span></div>

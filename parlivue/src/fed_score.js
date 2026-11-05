@@ -42,13 +42,11 @@ function renderFedScorePage(){
 }
 function fedHead(sub){
   return `<header class="dsh-head"><div><div class="kicker">Government of Canada · Department dashboard</div><h2 class="nh">${sub||"Federal Departments Scorecard 2024–2027"}</h2>
-     <p class="pagelede">What each department planned to spend and achieve, and what it reported, from the Treasury Board's open data on Departmental Plans and Results Reports.</p>
-     <p class="fneutral">This page presents the published data as extracted from Government of Canada sources. No figures have been altered, and the information is shown without opinion.</p></div>
-     <div class="dsh-asof">Data as of Nov 1, 2026 · open data updated Oct 4, 2026</div></header>
+     <p class="pagelede">What each department planned to spend and achieve, and what it reported, from the Treasury Board's open data on Departmental Plans and Results Reports.</p></div></header>
     <div class="dkey"><span><i class="ok"></i>Good: within plan, or 75%+ of targets met</span><span><i class="watch"></i>Caution: 50–74% of targets met</span><span><i class="off"></i>Over plan, or under 50% of targets met</span><span class="muted">Gauge: actual as % of plan</span></div>`;
 }
 function fedTiming(){
-  return `<div class="dtiming"><b>About timing.</b> The federal fiscal year runs April 1 to March 31. Results for a year are published in the Departmental Results Report the following fall. This page uses reported results for 2024–25 and plans for 2025–26 and 2026–27; 2025–26 results are not yet in the open data. Planned spending is set at the start of the year; Parliament can approve more during the year through Supplementary Estimates, so this page shows spending above the start-of-year plan as over plan even when Parliament later approved the extra funds. Results are self-reported: each department sets its own indicators and targets and rates its own results, so rates are not comparable between departments. <b>The federal budget is scheduled to be tabled November 5, 2026</b> and may change the 2026–27 plans shown here.</div>`;
+  return `<div class="dtiming"><b>About timing.</b> The federal fiscal year runs April 1 to March 31. Results for a year are published in the Departmental Results Report the following fall. This page uses reported results for 2024–25 and plans for 2025–26 and 2026–27; 2025–26 results are not yet in the open data. Planned spending is set at the start of the year; Parliament can approve more during the year through Supplementary Estimates, so this page shows spending above the start-of-year plan as over plan even when Parliament later approved the extra funds. Results are self-reported: each department sets its own indicators and targets and rates its own results, so rates are not comparable between departments. <b>The federal budget was scheduled for tabling on November 5, 2026</b> and may change the 2026–27 plans shown here.</div>`;
 }
 function fedOverview(){
   const el=document.getElementById("fedscore"), D=FSC.depts;
@@ -58,7 +56,7 @@ function fedOverview(){
   const TX=D.reduce((t,d)=>{t.x+=d.tr.bigx;t.b+=d.tr.big;return t;},{x:0,b:0});
   const p26=D.reduce((s,d)=>s+(d.plan.y26||0),0), p25=D.reduce((s,d)=>s+(d.plan.y25||0),0), tp=C.m/(C.m+C.n)*100, sp=fSpend(P,A);
   const kp=`<div class="dsh-kpis k5" aria-label="Federal summary">${[
-    ["Planned spending · 2026–27",fB(p26),fPill("neu",(p26>=p25?"+":"−")+Math.abs((p26-p25)/p25*100).toFixed(1)+"% vs 2025–26"),"31 departments · 2025–26 plan forecasts; may change with the Nov 5 budget",""],
+    ["Planned spending · 2026–27",fB(p26),fPill("neu",(p26>=p25?"+":"−")+Math.abs((p26-p25)/p25*100).toFixed(1)+"% vs 2025–26"),"31 departments · forecast in the 2025–26 plans; may change with the Nov 5 budget",""],
     ["Planned spending · 2025–26",fB(p25),fPill("neu","Results due fall 2026"),"Not yet reported in the open data",""],
     ["Actual spending · 2024–25",fB(A),sp.pill,"Plan "+fB(P)+" · "+have.length+" departments",fGauge(A/P*100,sp.cls==="up"?"off":"ok","Actual vs plan")],
     ["Departments over plan · 2024–25",over+" of "+have.length,fPill(over>have.length/2?"off":"watch",Math.round(over/have.length*100)+"%"),"Spent more than planned at the start of the year",""],
@@ -73,10 +71,10 @@ function fedOverview(){
       <td>${fB(d.plan.y25)}</td><td>${fB(d.plan.y26)}</td></tr>`;}).join("");
   el.innerHTML=fedHead()+`<div class="dsh-kh">2026–27 · current year plan<span>2024–25 is the latest year with reported results.</span></div>${kp}
     <div class="sctwrap"><table class="sct fedtbl"><caption>31 departments · select one for its dashboard</caption><thead><tr><th scope="col">Department</th><th scope="col">2024–25 planned</th><th scope="col">2024–25 actual</th><th scope="col">Variance</th><th scope="col">Targets met</th><th scope="col">Variances explained</th><th scope="col">2025–26 planned<small class="fth">results due fall 2026</small></th><th scope="col">2026–27 planned</th></tr></thead><tbody>${rows}
-      <tr class="tot"><th scope="row">Total, ${have.length} departments with 2024–25 results</th><td>${fB(P)}</td><td>${fB(A)}</td><td class="vcell ${sp.cls}">${vsSgn(A-P,fB)} <small>${vsP(sp.pc)}</small></td><td>${fPf(tp)}% <small>${fN(C.m)} of ${fN(C.m+C.n)}</small></td><td>${TX.x} of ${TX.b}</td><td>${fB(p25)}</td><td>${fB(p26)}</td></tr></tbody></table></div>
+      <tr class="tot"><th scope="row">Total<small class="fcr">2024–25 columns: ${have.length} departments with results in the open data${D.length>have.length?" (excludes "+D.filter(d=>!fLast(d)).map(d=>d.name).join(", ")+")":""} · 2025–26 and 2026–27 columns: all ${D.length}</small></th><td>${fB(P)}</td><td>${fB(A)}</td><td class="vcell ${sp.cls}">${vsSgn(A-P,fB)} <small>${vsP(sp.pc)}</small></td><td>${fPf(tp)}% <small>${fN(C.m)} of ${fN(C.m+C.n)}</small></td><td>${TX.x} of ${TX.b}</td><td>${fB(p25)}</td><td>${fB(p26)}</td></tr></tbody></table></div>
     ${fedTiming()}
     <div class="note"><b>Targets met</b> counts indicators the department rated "met" out of those rated "met" or "not met". Indicators not yet measurable or due in a later year are left out of the percentage. <b>Variances explained</b> counts programs whose spending differed from plan by at least 10% and $1M, and how many of those carry the department’s explanation in the open data; a department may still explain them in the report itself. Finance Canada and Employment and Social Development Canada include large statutory transfers (for example, payments to provinces, Old Age Security and Employment Insurance), which dominate the totals.</div>
-    <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${fA(FSC_SRC.pipo)}</div>`;
+    <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${fA(FSC_SRC.pipo)} · open data updated Oct 4, 2026</div>`;
   el.querySelectorAll(".fdgo").forEach(b=>b.onclick=()=>{fedDept(+b.dataset.id); window.scrollTo(0,el.offsetTop-10);});
 }
 function fedDept(id){
@@ -125,14 +123,14 @@ function fedDept(id){
        ["Planned staff (FTEs)",fN(d.plan.f26),fPill("neu",d.plan.f25?vsP((d.plan.f26-d.plan.f25)/d.plan.f25*100)+" vs 2025–26":"Plan"),"Full-time equivalents",""],
        ["Results indicators",String(d.n26),fPill("neu","2025–26: "+d.n25),"Indicators the department set for 2026–27",""]].map(fCard).join("")}</div>
      ${crpTbl([["2026–27 planned",c=>fB(c[2])],["Change from 2025–26",c=>c[1]?vsP((c[2]-c[1])/c[1]*100):"—"]],"2026–27 · planned spending by core responsibility")}
-     <p class="vsp">The fiscal year runs April 1, 2026 to March 31, 2027. Results will be published in the 2026–27 Departmental Results Report in fall 2027. The amounts above are the forecast published in the 2025–26 Departmental Plan; the spending tables from the 2026–27 Departmental Plan are not yet in the open data. The federal budget tabled November 5, 2026 may change these plans.</p>
+     <p class="fynote">The fiscal year runs April 1, 2026 to March 31, 2027. Results will be published in the 2026–27 Departmental Results Report in fall 2027. The amounts above are the forecast published in the 2025–26 Departmental Plan; the spending tables from the 2026–27 Departmental Plan are not yet in the open data. The federal budget scheduled for November 5, 2026 may change these plans.</p>
      <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${rep("2026","Goals","2026–27 Departmental Plan")}</div>`,
    y25:`<div class="dsh-kpis k3">${[
        ["Planned spending",fB(d.plan.y25),fPill("neu","Results due fall 2026"),"2025–26 Departmental Plan",""],
        ["Planned staff (FTEs)",fN(d.plan.f25),fPill("neu","Plan"),"Full-time equivalents",""],
        ["Results indicators",String(d.n25),fPill("neu","2024–25: "+d.i24.length),"Indicators the department set for 2025–26",""]].map(fCard).join("")}</div>
      ${crpTbl([["2025–26 planned",c=>fB(c[1])]],"2025–26 · planned spending by core responsibility")}
-     <p class="vsp">The fiscal year ended March 31, 2026. Actual spending and results for 2025–26 will appear here once the 2025–26 Departmental Results Report is published and added to the open data, expected in fall 2026.</p>
+     <p class="fynote">The fiscal year ended March 31, 2026. Actual spending and results for 2025–26 will appear here once the 2025–26 Departmental Results Report is published and added to the open data, expected in fall 2026.</p>
      <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${rep("2025","Goals","2025–26 Departmental Plan")}</div>`,
    y24:h?`${why}${vRoll("Spending by program","Planned vs actual, 2024–25",progTbl,false)}
      <h4 class="fsh">Results indicators, 2024–25</h4>
