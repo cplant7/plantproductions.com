@@ -901,6 +901,12 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
 .fcr{display:block;font-weight:400;font-size:12.5px;color:var(--muted);margin-top:2px}
 .sct.find th[scope=row],.sct.find td,.sct.fexp td,.sct.fsrc td,.sct.fsrc th{text-align:left;white-space:normal}
 .sct.find th[scope=row]{font-weight:500;min-width:260px} .sct.find td{min-width:150px;font-size:13.5px}
+.sct.find td,.sct.find thead th:not(:first-child){text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sct.find td{min-width:120px;width:140px}
+.sct.find td small{display:block;margin-left:0}
+.fedtbl td{font-variant-numeric:tabular-nums} .fedtbl th,.fedtbl td{padding-left:8px;padding-right:8px}
+.fth{display:block;font:400 11px var(--f-body);letter-spacing:0;text-transform:none;color:var(--muted)}
+.fneutral{margin:8px 0 0;font-size:14px;color:var(--muted);max-width:92ch}
 .sct.fexp td:last-child{min-width:320px;font-size:13.5px;color:var(--muted)}
 .fsh{margin:6px 0 0;font:700 17px var(--f-body)}
 .fback{justify-self:start}
@@ -1882,6 +1888,11 @@ const fSpend=(p,a)=>{if(!p) return {pc:null,cls:"",pill:fPill("neu","No plan fig
 /* targets: share met of those assessed (met + not met) */
 const fTgt=c=>{const n=c["met"]+c["not met"];return n?{pct:c["met"]/n*100,n,cls:c["met"]/n>=.75?"ok":c["met"]/n>=.5?"watch":"off"}:{pct:null,n:0,cls:"neu"};};
 const fLast=d=>d.hist.find(h=>h[0]==="2024–25");
+/* display formatting only: "170000.0" → "170,000", "3.0/2025" → "Mar 2025"; the values themselves are unchanged */
+const fVal=s=>{s=String(s??"").trim(); if(!/^-?\d+(\.\d+)?$/.test(s)) return fEsc(s); const n=Number(s), dec=(s.split(".")[1]||"").replace(/0+$/,"").length; return n.toLocaleString("en-CA",{minimumFractionDigits:dec,maximumFractionDigits:dec});};
+const FMON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const fBy=s=>{const m=String(s||"").match(/^(\d+)(?:\.0)?\/(\d{4})$/); return m&&+m[1]>=1&&+m[1]<=12?FMON[+m[1]-1]+" "+m[2]:fEsc(s);};
+const fRep=(d,y,cat)=>(d.src||[]).find(s=>s.y===y&&s.cat===cat);
 /* reporting transparency: share of large variances with an explanation; share of due indicators with a result */
 const fRatio=(a,b)=>b?{pct:a/b*100,txt:a+" of "+b,cls:a/b>=.9?"dn":a/b>=.5?"cau":"up",kc:a/b>=.9?"ok":a/b>=.5?"watch":"off"}:{pct:null,txt:"—",cls:"",kc:"neu"};
 
@@ -1894,10 +1905,13 @@ function renderFedScorePage(){
 }
 function fedHead(sub){
   return `<header class="dsh-head"><div><div class="kicker">Government of Canada · Department dashboard</div><h2 class="nh">${sub||"Federal Departments Scorecard 2024–2027"}</h2>
-     <p class="pagelede">What each department planned to spend and achieve, and what it reported, from the Treasury Board's open data on Departmental Plans and Results Reports.</p></div>
+     <p class="pagelede">What each department planned to spend and achieve, and what it reported, from the Treasury Board's open data on Departmental Plans and Results Reports.</p>
+     <p class="fneutral">This page presents the published data as extracted from Government of Canada sources. No figures have been altered, and the information is shown without opinion.</p></div>
      <div class="dsh-asof">Data as of Nov 1, 2026 · open data updated Oct 4, 2026</div></header>
-    <div class="dkey"><span><i class="ok"></i>Good: within plan, or 75%+ of targets met</span><span><i class="watch"></i>Caution: 50–74% of targets met</span><span><i class="off"></i>Over plan, or under 50% of targets met</span><span class="muted">Gauge: actual as % of plan</span></div>
-    <div class="dtiming"><b>About timing.</b> The federal fiscal year runs April 1 to March 31. Results for a year are published in the Departmental Results Report the following fall. This page uses reported results for 2024–25 and plans for 2025–26 and 2026–27; 2025–26 results are not yet in the open data. Planned spending is set at the start of the year; Parliament can approve more during the year through Supplementary Estimates, so this page shows spending above the start-of-year plan as over plan even when Parliament later approved the extra funds. Results are self-reported: each department sets its own indicators and targets and rates its own results, so rates are not comparable between departments. <b>The federal budget is scheduled to be tabled November 5, 2026</b> and may change the 2026–27 plans shown here.</div>`;
+    <div class="dkey"><span><i class="ok"></i>Good: within plan, or 75%+ of targets met</span><span><i class="watch"></i>Caution: 50–74% of targets met</span><span><i class="off"></i>Over plan, or under 50% of targets met</span><span class="muted">Gauge: actual as % of plan</span></div>`;
+}
+function fedTiming(){
+  return `<div class="dtiming"><b>About timing.</b> The federal fiscal year runs April 1 to March 31. Results for a year are published in the Departmental Results Report the following fall. This page uses reported results for 2024–25 and plans for 2025–26 and 2026–27; 2025–26 results are not yet in the open data. Planned spending is set at the start of the year; Parliament can approve more during the year through Supplementary Estimates, so this page shows spending above the start-of-year plan as over plan even when Parliament later approved the extra funds. Results are self-reported: each department sets its own indicators and targets and rates its own results, so rates are not comparable between departments. <b>The federal budget is scheduled to be tabled November 5, 2026</b> and may change the 2026–27 plans shown here.</div>`;
 }
 function fedOverview(){
   const el=document.getElementById("fedscore"), D=FSC.depts;
@@ -1919,10 +1933,11 @@ function fedOverview(){
       <td class="vcell ${s?s.cls:""}">${h&&s.pc!=null?vsSgn(h[2]-h[1],fB)+` <small>${vsP(s.pc)}</small>`:'<span class="muted">Not in open data</span>'}</td>
       <td class="vcell ${t.n?(t.cls==="ok"?"dn":t.cls==="off"?"up":"cau"):""}">${t.n?fPf(t.pct)+"%"+` <small>${d.c24["met"]} of ${t.n}</small>`:'<span class="muted">—</span>'}</td>
       <td class="vcell ${fRatio(d.tr.bigx,d.tr.big).cls}">${d.tr.big?fRatio(d.tr.bigx,d.tr.big).txt:'<span class="muted">—</span>'}</td>
-      <td>${fB(d.plan.y26)}</td></tr>`;}).join("");
+      <td>${fB(d.plan.y25)}</td><td>${fB(d.plan.y26)}</td></tr>`;}).join("");
   el.innerHTML=fedHead()+`<div class="dsh-kh">2026–27 · current year plan<span>2024–25 is the latest year with reported results.</span></div>${kp}
-    <div class="sctwrap"><table class="sct fedtbl"><caption>31 departments · select one for its dashboard</caption><thead><tr><th scope="col">Department</th><th scope="col">2024–25 planned</th><th scope="col">2024–25 actual</th><th scope="col">Variance</th><th scope="col">Targets met</th><th scope="col">Variances explained</th><th scope="col">2026–27 planned</th></tr></thead><tbody>${rows}
-      <tr class="tot"><th scope="row">Total, ${have.length} departments with 2024–25 results</th><td>${fB(P)}</td><td>${fB(A)}</td><td class="vcell ${sp.cls}">${vsSgn(A-P,fB)} <small>${vsP(sp.pc)}</small></td><td>${fPf(tp)}% <small>${fN(C.m)} of ${fN(C.m+C.n)}</small></td><td>${TX.x} of ${TX.b}</td><td>${fB(p26)}</td></tr></tbody></table></div>
+    <div class="sctwrap"><table class="sct fedtbl"><caption>31 departments · select one for its dashboard</caption><thead><tr><th scope="col">Department</th><th scope="col">2024–25 planned</th><th scope="col">2024–25 actual</th><th scope="col">Variance</th><th scope="col">Targets met</th><th scope="col">Variances explained</th><th scope="col">2025–26 planned<small class="fth">results due fall 2026</small></th><th scope="col">2026–27 planned</th></tr></thead><tbody>${rows}
+      <tr class="tot"><th scope="row">Total, ${have.length} departments with 2024–25 results</th><td>${fB(P)}</td><td>${fB(A)}</td><td class="vcell ${sp.cls}">${vsSgn(A-P,fB)} <small>${vsP(sp.pc)}</small></td><td>${fPf(tp)}% <small>${fN(C.m)} of ${fN(C.m+C.n)}</small></td><td>${TX.x} of ${TX.b}</td><td>${fB(p25)}</td><td>${fB(p26)}</td></tr></tbody></table></div>
+    ${fedTiming()}
     <div class="note"><b>Targets met</b> counts indicators the department rated "met" out of those rated "met" or "not met". Indicators not yet measurable or due in a later year are left out of the percentage. <b>Variances explained</b> counts programs whose spending differed from plan by at least 10% and $1M, and how many of those carry the department’s explanation in the open data; a department may still explain them in the report itself. Finance Canada and Employment and Social Development Canada include large statutory transfers (for example, payments to provinces, Old Age Security and Employment Insurance), which dominate the totals.</div>
     <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${fA(FSC_SRC.pipo)}</div>`;
   el.querySelectorAll(".fdgo").forEach(b=>b.onclick=()=>{fedDept(+b.dataset.id); window.scrollTo(0,el.offsetTop-10);});
@@ -1947,30 +1962,47 @@ function fedDept(id){
   /* indicators grouped by status */
   const grp=[["not met","Not met","off",true],["met","Met","ok",false],["not available","Not available","neu",false],["to be achieved","Due in a later year","neu",false],["","No status given","neu",false]];
   const indHtml=d.i24.length?grp.map(([k,l,c,open])=>{const L=d.i24.filter(z=>z.s===k);if(!L.length) return "";
-    return `<details class="roll"${open?" open":""}><summary><span class="rollh"><span class="rollt">${l} · ${L.length}</span></span><span class="rollc" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6l4 4 4-4"/></svg></span></summary><div class="rollb"><div class="sctwrap"><table class="sct find"><thead><tr><th scope="col">Indicator</th><th scope="col">Target</th><th scope="col">Result</th></tr></thead><tbody>${L.map(z=>`<tr><th scope="row">${fEsc(z.i)}<small class="fcr">${fEsc(z.act)}</small></th><td>${fEsc(z.t)}${z.by?` <small>by ${z.by}</small>`:""}</td><td>${fEsc(z.r)||'<span class="muted">—</span>'}</td></tr>`).join("")}</tbody></table></div></div></details>`;}).join(""):`<p class="note">The 2024–25 results indicators for this organization are not in the open data. ${d.c23["met"]+d.c23["not met"]?`In 2023–24 it reported ${d.c23["met"]} of ${d.c23["met"]+d.c23["not met"]} assessed targets met.`:""}</p>`;
+    return `<details class="roll"${open?" open":""}><summary><span class="rollh"><span class="rollt">${l} · ${L.length}</span></span><span class="rollc" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6l4 4 4-4"/></svg></span></summary><div class="rollb"><div class="sctwrap"><table class="sct find"><thead><tr><th scope="col">Indicator</th><th scope="col">Target</th><th scope="col">Result</th></tr></thead><tbody>${L.map(z=>`<tr><th scope="row">${fEsc(z.i)}<small class="fcr">${fEsc(z.act)}</small></th><td>${fVal(z.t)}${z.by?`<small>by ${fBy(z.by)}</small>`:""}</td><td>${z.r?fVal(z.r):'<span class="muted">—</span>'}</td></tr>`).join("")}</tbody></table></div></div></details>`;}).join(""):`<p class="note">The 2024–25 results indicators for this organization are not in the open data. ${d.c23["met"]+d.c23["not met"]?`In 2023–24 it reported ${d.c23["met"]} of ${d.c23["met"]+d.c23["not met"]} assessed targets met.`:""}</p>`;
   /* history */
   const hist=`<div class="sctwrap"><table class="sct"><caption>Planned vs actual spending and staff, as published</caption><thead><tr><th scope="col">Fiscal year</th><th scope="col">Planned</th><th scope="col">Actual</th><th scope="col">Variance</th><th scope="col">Staff planned</th><th scope="col">Staff actual</th></tr></thead><tbody>${d.hist.map(x=>{const pc=x[1]?(x[2]-x[1])/x[1]*100:null;return `<tr><th scope="row">${x[0]}</th><td>${fB(x[1])}</td><td>${fB(x[2])}</td><td class="vcell ${pc!=null?vplan("exp",pc):""}">${vsSgn(x[2]-x[1],fB)}${pc!=null?` <small>${vsP(pc)}</small>`:""}</td><td>${fN(x[3])}</td><td>${fN(x[4])}</td></tr>${x[5]&&x[5].v?`<tr class="fwhy"><td colspan="6"><b>Largest change: ${fEsc(x[5].n)} (${vsSgn(x[5].v,fB)}).</b> ${x[5].x?fEsc(x[5].x):'<span class="muted">No explanation in the open data.</span>'}</td></tr>`:""}`;}).join("")}
     <tr><th scope="row">2025–26 <small>plan</small></th><td>${fB(d.plan.y25)}</td><td class="muted">Due fall 2026</td><td></td><td>${fN(d.plan.f25)}</td><td></td></tr>
     <tr><th scope="row">2026–27 <small>plan</small></th><td>${fB(d.plan.y26)}</td><td></td><td></td><td>${fN(d.plan.f26)}</td><td></td></tr></tbody></table></div>
     <div class="note">Each row's planned figure is the one published with that year's results. Large gaps can reflect funding added during the year through Supplementary Estimates, programs moved between departments, or one-time statutory payments. The department's own explanations are in the 2024–25 results section.</div>`;
-  const crp=d.crp.length?`<div class="sctwrap"><table class="sct"><caption>Planned spending by core responsibility</caption><thead><tr><th scope="col">Core responsibility</th><th scope="col">2025–26</th><th scope="col">2026–27</th><th scope="col">Change</th></tr></thead><tbody>${d.crp.map(c=>{const pc=c[1]?(c[2]-c[1])/c[1]*100:null;return `<tr><th scope="row">${fEsc(c[0])}</th><td>${fB(c[1])}</td><td>${fB(c[2])}</td><td>${pc!=null?vsP(pc):"—"}</td></tr>`;}).join("")}</tbody></table></div>`:"";
   const srcTbl=`<div class="sctwrap"><table class="sct fsrc"><thead><tr><th scope="col">Report</th><th scope="col">Year</th><th scope="col">Use for</th></tr></thead><tbody>${[...new Map(d.src.map(s=>[s.u+s.y,s])).values()].map(s=>`<tr><th scope="row">${s.u?`<a href="${s.u}" target="_blank" rel="noopener">${fEsc(s.txt)}</a>`:fEsc(s.txt)}</th><td>${s.y}</td><td>${d.src.filter(z=>z.u===s.u&&z.y===s.y).map(z=>z.cat).join(", ")}</td></tr>`).join("")}</tbody></table></div>`;
-  const tabs=[["ov","Overview","Mandate and AI"],["r24","2024–25 results","Plan vs actual"],["hist","Spending history","2020–21 to 2024–25"],["tr","Transparency","What was explained"],["plan","Plans","2025–26 and 2026–27"],["src","Sources","Reports by year"]];
-  const panes={
-   ov:`<p class="vslede">${fEsc(d.ov)}</p><p class="rccav">Summary from the ParliVue source guide, compiled with AI assistance; not yet checked line by line against the department's own reports.</p>${d.ai?`<div class="why"><b>AI and digital.</b> ${fEsc(d.ai)}<span class="muted">From the ParliVue source guide (AI-assisted, not yet verified). ${fA(FSC_SRC.ai)}</span></div>`:""}
-     <p class="vsp">Organization in the open data: ${fEsc(d.org)}. In 2024–25 it reported on ${d.i24.length} indicators; its 2025–26 plan sets ${d.n25} and its 2026–27 plan ${d.n26}.</p>`,
-   r24:h?`${why}${vRoll("Spending by program","Planned vs actual, 2024–25",progTbl,false)}<h4 class="fsh">Results indicators, 2024–25</h4>${indHtml}<div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${fA(FSC_SRC.pipo)}</div>`:`<p class="note">The 2024–25 spending and results for this organization are not in the open data. See its 2024–25 Departmental Results Report under Sources.</p>${indHtml}`,
-   hist:hist+`<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`,
-   tr:(()=>{const e=fRatio(d.tr.bigx,d.tr.big),r=fRatio(d.tr.duer,d.tr.due);const un=pr.filter(p=>Math.abs(p.v)>=1e6&&(p.p===0||Math.abs(p.v)/Math.max(p.p,1)>=.1)&&!p.x).sort((a,b)=>Math.abs(b.v)-Math.abs(a.v));
+  const tabs=[["ov","Overview","Mandate and AI"],["y26","2026–27","Current year · plan"],["y25","2025–26","Plan · results due fall 2026"],["y24","2024–25","Results · plan vs actual"],["hist","Spending history","2020–21 to 2024–25"],["src","Sources","Reports by year"]];
+  const trHtml=(()=>{const e=fRatio(d.tr.bigx,d.tr.big),r=fRatio(d.tr.duer,d.tr.due);const un=pr.filter(p=>Math.abs(p.v)>=1e6&&(p.p===0||Math.abs(p.v)/Math.max(p.p,1)>=.1)&&!p.x).sort((a,b)=>Math.abs(b.v)-Math.abs(a.v));
      return `<div class="dsh-kpis k3">${[
        ["Large variances explained · 2024–25",e.txt,fPill(e.kc,e.pct==null?"None to explain":fPf(e.pct)+"%"),"Programs off plan by 10%+ and $1M+, with an explanation in the open data",e.pct!=null?fGauge(e.pct,e.kc,"Variances explained"):""],
        ["Results reported · 2024–25",r.txt,fPill(r.kc,r.pct==null?"No results due":fPf(r.pct)+"%"),"Indicators due this year with a result, rather than 'not available'",r.pct!=null?fGauge(r.pct,r.kc,"Results reported"):""],
        ["Indicators · plans","2025–26: "+d.n25,fPill("neu","2026–27: "+d.n26),"Number of indicators the department committed to; changes between years make trends harder to follow",""]].map(fCard).join("")}</div>
      <div class="note"><b>Self-reported.</b> Each department chooses its indicators, sets its targets and rates its own results. Treasury Board publishes them as departments submit them.</div>
      ${un.length?vRoll("Large variances with no explanation in the open data",un.length+" programs, 2024–25",`<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Program</th><th scope="col">Planned</th><th scope="col">Actual</th><th scope="col">Variance</th></tr></thead><tbody>${un.map(p=>`<tr><th scope="row">${fEsc(p.n)}</th><td>${fB(p.p)}</td><td>${fB(p.a)}</td><td class="vcell ${p.pc!=null?vplan("exp",p.pc):""}">${vsSgn(p.v,fB)}${p.pc!=null?` <small>${vsP(p.pc)}</small>`:""}</td></tr>`).join("")}</tbody></table></div><div class="note">The department may explain these in the text of its 2024–25 Departmental Results Report; see Sources.</div>`,true):""}
-     <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${fA(FSC_SRC.pipo)}</div>`;})(),
-   plan:`${crp}<p class="vsp">The 2026–27 amounts are the forecast published in the 2025–26 Departmental Plan; the 2026–27 Departmental Plan's spending tables are not yet in the open data.</p><div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`,
-   src:`${srcTbl}<div class="note">Report links come from the ParliVue 31-department source guide (Nov 1, 2026). Some links open a publication index; choose the named report and year there.</div>`
+     <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${fA(FSC_SRC.pipo)}</div>`;})();
+  const rep=(y,cat,lab)=>{const s=fRep(d,y,cat);return s&&s.u?`<a href="${s.u}" target="_blank" rel="noopener">${fEsc(s.txt)}</a>`:lab;};
+  const crpTbl=(cols,cap)=>d.crp.length?`<div class="sctwrap"><table class="sct"><caption>${cap}</caption><thead><tr><th scope="col">Core responsibility</th>${cols.map(c=>`<th scope="col">${c[0]}</th>`).join("")}</tr></thead><tbody>${d.crp.map(c=>`<tr><th scope="row">${fEsc(c[0])}</th>${cols.map(k=>`<td>${k[1](c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`:"";
+  const panes={
+   ov:`<p class="vslede">${fEsc(d.ov)}</p>${d.ai?`<div class="why"><b>AI and digital.</b> ${fEsc(d.ai)}</div>`:""}
+     <div class="src">Source: ${rep("2025","Goals","2025–26 Departmental Plan")} · ${fA(FSC_SRC.ai)}</div>`,
+   y26:`<div class="dsh-kpis k3">${[
+       ["Planned spending",fB(d.plan.y26),fPill("neu",d.plan.y25?vsP((d.plan.y26-d.plan.y25)/d.plan.y25*100)+" vs 2025–26":"Plan"),"Forecast in the 2025–26 Departmental Plan",""],
+       ["Planned staff (FTEs)",fN(d.plan.f26),fPill("neu",d.plan.f25?vsP((d.plan.f26-d.plan.f25)/d.plan.f25*100)+" vs 2025–26":"Plan"),"Full-time equivalents",""],
+       ["Results indicators",String(d.n26),fPill("neu","2025–26: "+d.n25),"Indicators the department set for 2026–27",""]].map(fCard).join("")}</div>
+     ${crpTbl([["2026–27 planned",c=>fB(c[2])],["Change from 2025–26",c=>c[1]?vsP((c[2]-c[1])/c[1]*100):"—"]],"2026–27 · planned spending by core responsibility")}
+     <p class="vsp">The fiscal year runs April 1, 2026 to March 31, 2027. Results will be published in the 2026–27 Departmental Results Report in fall 2027. The amounts above are the forecast published in the 2025–26 Departmental Plan; the spending tables from the 2026–27 Departmental Plan are not yet in the open data. The federal budget tabled November 5, 2026 may change these plans.</p>
+     <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${rep("2026","Goals","2026–27 Departmental Plan")}</div>`,
+   y25:`<div class="dsh-kpis k3">${[
+       ["Planned spending",fB(d.plan.y25),fPill("neu","Results due fall 2026"),"2025–26 Departmental Plan",""],
+       ["Planned staff (FTEs)",fN(d.plan.f25),fPill("neu","Plan"),"Full-time equivalents",""],
+       ["Results indicators",String(d.n25),fPill("neu","2024–25: "+d.i24.length),"Indicators the department set for 2025–26",""]].map(fCard).join("")}</div>
+     ${crpTbl([["2025–26 planned",c=>fB(c[1])]],"2025–26 · planned spending by core responsibility")}
+     <p class="vsp">The fiscal year ended March 31, 2026. Actual spending and results for 2025–26 will appear here once the 2025–26 Departmental Results Report is published and added to the open data, expected in fall 2026.</p>
+     <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${rep("2025","Goals","2025–26 Departmental Plan")}</div>`,
+   y24:h?`${why}${vRoll("Spending by program","Planned vs actual, 2024–25",progTbl,false)}
+     <h4 class="fsh">Results indicators, 2024–25</h4>
+     <p class="vsp">Each department sets indicators to measure progress on its goals, with a target and a date to reach it. After the year ends, it reports the result and rates each indicator. The tables below group the indicators by that rating. <b>Target</b> is the value the department aimed for and the date it set; <b>Result</b> is the value it reported. Units are as the department published them.</p>
+     ${indHtml}<h4 class="fsh">Transparency</h4>${trHtml}`:`<p class="note">The 2024–25 spending and results for this organization are not in the open data. See its 2024–25 Departmental Results Report under Sources.</p>${indHtml}`,
+   hist:hist+`<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`,
+   src:`${srcTbl}<div class="note">Spending and indicators come from the Treasury Board's open data, where this organization is listed as ${fEsc(d.org)}. Some report links open a publication index; choose the named report and year there.</div><div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${fA(FSC_SRC.pipo)}</div>`
   };
   el.innerHTML=`<button class="chipbtn fback">← All 31 departments</button>`+fedHead(d.name)+cards+`<div class="dsh">
     <nav class="dsh-rail" role="tablist" aria-orientation="vertical" aria-label="Department sections"><div class="dsh-rl">Sections</div>${tabs.map((t,i)=>`<button role="tab" id="fdt-${t[0]}" aria-controls="fdp-${t[0]}" aria-selected="${i?"false":"true"}" tabindex="${i?-1:0}" data-k="${t[0]}"><span>${t[1]}</span><small>${t[2]}</small></button>`).join("")}</nav>
