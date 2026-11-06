@@ -53,7 +53,7 @@ const FED_SECTORS=[
  {id:"global",label:"Global, Security & Justice",ids:["anand","sidhu","mcguinty","mcknight","anandasangaree","fraser"]}
 ];
 const DS={
- federal:{id:"federal",tab:"Federal",stamp:"Federal · Snapshot Nov 1 2026",
+ federal:{id:"federal",tab:"Federal",stamp:"Federal · Snapshot Nov 5 2026",
    tagline:"Who steers the federal government of Canada: the Prime Minister, every Cabinet minister, and the deputy heads who run each department.",
    party:"lib", hub:{name:"Mark Carney",kicker:"PRIME MINISTER",l1:"Mark",l2:"Carney",title:"Prime Minister of Canada",role:"fed_pm",src:"cab"},
    S, sectors:FED_SECTORS, innerNoun:"Cabinet minister", outerNoun:"Department / agency", outerRole:"fed_dh",
@@ -61,7 +61,7 @@ const DS={
    outer:depts, hubLinks:[],
    sats:[{key:"sos",pos:"top",label:"Secretaries of State",sub:"10 · OUTSIDE CABINET",color:"var(--muted)",role:"fed_sos",list:secretaries.map(s=>[s[0],"Secretary of State ("+s[1]+")"+(SOS_RIDING[s[0]]?" · "+SOS_RIDING[s[0]]:"")]),src:"sos"},
          {key:"clerk",pos:"bottom",label:"Clerk of the PC",sub:"PUBLIC SERVICE",color:"var(--brass)",ps:true,person:"Michael Sabia",title:"Clerk of the Privy Council and Secretary to the Cabinet",role:"fed_clerk",status:"A",src:"pco"}]},
- bc:{id:"bc",tab:"BC",stamp:"British Columbia · Snapshot Nov 1 2026",
+ bc:{id:"bc",tab:"BC",stamp:"British Columbia · Snapshot Nov 5 2026",
    tagline:"Who steers the Government of British Columbia: the Premier, every Cabinet minister, and the deputy ministers who run each ministry.",
    party:"ndp", banner:BC_TRANSITION, hub:{name:"David Eby",kicker:"PREMIER",l1:"David",l2:"Eby",title:"Premier of British Columbia",role:"bc_premier",src:"cab"},
    S:BC_S, sectors:BC_SECTORS, innerNoun:"Cabinet minister", outerNoun:"Ministry", outerRole:"bc_dm",
@@ -69,14 +69,14 @@ const DS={
    outer:BC_OUT, hubLinks:["premier"],
    sats:[{key:"mos",pos:"top",label:"Ministers of State",sub:"3 · WITHIN PORTFOLIOS",color:"var(--muted)",role:"bc_mos",list:BC_MOS.map(m=>[m[0],"Minister of State for "+m[1]]),src:"cab"},
          {key:"head",pos:"bottom",label:"Head of Public Service",sub:"DEPUTY MINISTERS' COUNCIL",color:"var(--brass)",ps:true,person:"Shannon Salter",title:"Deputy Minister to the Premier, Cabinet Secretary and Head of the Public Service",role:"bc_head",status:"A",src:"dm"}]},
- victoria:{id:"victoria",tab:"Victoria",stamp:"City of Victoria · Snapshot Nov 1 2026",
+ victoria:{id:"victoria",tab:"Victoria",stamp:"City of Victoria · Snapshot Nov 5 2026",
    tagline:"Who runs the City of Victoria: the Mayor and Council, the City Manager and department directors, the independent boards, and where the 2026 budget goes.",
    party:"ind", hub:{name:"Marianne Alto",kicker:"MAYOR",l1:"Marianne",l2:"Alto",title:"Mayor of Victoria",role:"vic_mayor",src:"elec"},
    S:VIC_S, sectors:VIC_SECTORS, innerNoun:"Council & administration", outerNoun:"Department / body", outerRole:"vic_head",
    inner:VIC_IN, outer:VIC_OUT, hubLinks:[], budget:true,
    sats:[{key:"crd",pos:"top",label:"CRD Board",sub:"REGIONAL · MAYOR SITS ON IT",color:"var(--muted)",role:null,src:"guide",
           text:"The Capital Regional District Board governs regional services for Greater Victoria. The City automatically appoints its mayor to the board. The regional layer isn't mapped here yet."}]},
- mississauga:{id:"mississauga",tab:"Mississauga",stamp:"City of Mississauga · Snapshot Nov 1 2026",
+ mississauga:{id:"mississauga",tab:"Mississauga",stamp:"City of Mississauga · Snapshot Nov 5 2026",
    tagline:"Who runs the City of Mississauga: the Mayor-elect and Council for 2026 to 2030, the City Manager, the commissioners and the departments they lead.",
    party:"mun", banner:MIS_TRANSITION, hub:{name:"Alvin Tedjo",kicker:"MAYOR-ELECT",l1:"Alvin",l2:"Tedjo",title:"Mayor-elect of Mississauga (74,479 votes, 39.21%). Takes office November 15, 2026",role:"mis_mayor",src:"res"},
    S:MIS_S, sectors:MIS_SECTORS, innerNoun:"Council & administration", outerNoun:"Department / division", outerRole:"mis_head",
@@ -85,7 +85,7 @@ const DS={
           text:"The Region of Peel runs regional services such as water, waste, paramedics and social services, and funds Peel Regional Police. Mississauga's Mayor and all 11 councillors also sit on Regional Council. The regional layer is not mapped here yet."},
          {key:"reps",pos:"bottom",label:"MPs and MPPs",sub:"FEDERAL AND PROVINCIAL · 12 MEMBERS",color:"var(--muted)",role:null,src:"res",list:MIS_REPS,
           text:"Mississauga's six ridings each elect one MP to the House of Commons and one MPP to Queen's Park. See the House of Commons and Ontario pages for their seats."}]},
- ontario:{id:"ontario",tab:"Ontario",stamp:"Snapshot · Nov 1 2026",
+ ontario:{id:"ontario",tab:"Ontario",stamp:"Snapshot · Nov 5 2026",
    tagline:"Who steers the Government of Ontario: the Premier, every Cabinet and associate minister, and the deputy ministers who run each ministry.",
    party:"onpc", hub:{name:"Doug Ford",kicker:"PREMIER",l1:"Doug",l2:"Ford",title:"Premier of Ontario and Minister of Intergovernmental Affairs",role:"on_premier",src:"wiki",riding:"Etobicoke North"},
    S:ON_S, sectors:ON_SECTORS, innerNoun:"Cabinet minister", outerNoun:"Ministry", outerRole:"on_dm",
@@ -389,26 +389,26 @@ const tabs=[...document.querySelectorAll(".tabs button[data-tab]")];
 const newsEl=document.getElementById("news"), bannerEl=document.getElementById("banner");
 const wheelEls=[document.querySelector(".toolbar"),document.getElementById("legend"),document.querySelector(".main")];
 const chEls={senate:document.getElementById("ch-senate"),ontario:document.getElementById("ch-ontario"),bcleg:document.getElementById("ch-bcleg"),skleg:document.getElementById("ch-skleg"),mbleg:document.getElementById("ch-mbleg"),nbleg:document.getElementById("ch-nbleg"),peleg:document.getElementById("ch-peleg"),ableg:document.getElementById("ch-ableg"),ykleg:document.getElementById("ch-ykleg"),nlleg:document.getElementById("ch-nlleg"),nsleg:document.getElementById("ch-nsleg"),ntleg:document.getElementById("ch-ntleg"),nuleg:document.getElementById("ch-nuleg"),victoria:document.getElementById("ch-victoria"),vicscore:document.getElementById("ch-vicscore"),misscore:document.getElementById("ch-misscore"),fedscore:document.getElementById("ch-fedscore"),fedbudget:document.getElementById("ch-fedbudget")};
-const CH_META={fedbudget:["Snapshot · Nov 5 2026","Government of Canada · Budget 2026","The federal budget tabled November 5, 2026: fiscal projections, the cost of new measures by chapter, and the departments it names."],fedscore:["Snapshot · Nov 1 2026","Government of Canada · Federal Departments Scorecard","What 31 departments budgeted and set as goals, and what they reported: 2024 results and the 2025 and 2026 budgets (fiscal years start April 1)."],misscore:["Snapshot · Nov 1 2026","City of Mississauga, ON · Council Scorecard 2024–2026","What the City planned, budgeted and reported: 2024 and 2025 audited results and the 2026 budget."],vicscore:["Snapshot · Nov 1 2026","City of Victoria, BC · Council Scorecard 2024–2026","What the City planned, budgeted and reported, and when: 2024 and 2025 results and the 2026 plan."],
-  victoria:["Snapshot · Nov 1 2026","City of Victoria, BC · Council 2026–2030","The Mayor and eight councillors elected October 17, 2026, the City Manager, and every department with its 2026 budget."],
-  senate:["Snapshot · Nov 1 2026","Parliament of Canada · Senate","All 105 Senate seats by parliamentary group, with every senator, their province and when they retire."],
-  bcleg:["Snapshot · Nov 1 2026","Legislative Assembly of British Columbia · In transition","All 93 members-elect from the October 24, 2026 election, with the caretaker Cabinet and every ministry."],
-  ntleg:["Snapshot · Nov 1 2026","Legislative Assembly of the Northwest Territories · 20th Assembly","All 19 seats in Yellowknife: a consensus government with no political parties."],
-  nuleg:["Snapshot · Nov 1 2026","Legislative Assembly of Nunavut · 7th Assembly","All 22 seats in Iqaluit: a consensus government with no political parties."],
-  nsleg:["Snapshot · Nov 1 2026","Nova Scotia House of Assembly · 65th General Assembly","All 56 seats in Halifax, with every MLA, the Cabinet and every department."],
-  nlleg:["Snapshot · Nov 1 2026","House of Assembly of Newfoundland and Labrador · 51st General Assembly","All 40 seats in St. John's, with every MHA, the Cabinet and every portfolio. Seats are grouped by party."],
-  ykleg:["Snapshot · Nov 1 2026","Yukon Legislative Assembly · 36th Legislative Assembly","All 21 seats in Whitehorse, with every MLA, the Cabinet and every department."],
-  ableg:["Snapshot · Nov 1 2026","Legislative Assembly of Alberta · 31st Legislature","All 87 seats in Edmonton, with every MLA, the Cabinet and every ministry."],
-  peleg:["Snapshot · Nov 1 2026","Legislative Assembly of Prince Edward Island · 67th General Assembly","All 27 seats in Charlottetown, with every MLA, the Cabinet and every department."],
-  nbleg:["Snapshot · Nov 1 2026","Legislative Assembly of New Brunswick · 61st Legislature","All 49 seats in Fredericton, with every MLA, the Cabinet and every department."],
-  mbleg:["Snapshot · Nov 1 2026","Legislative Assembly of Manitoba · 43rd Legislature","All 57 seats in Winnipeg, with every MLA, the Cabinet and every department."],
-  skleg:["Snapshot · Nov 1 2026","Legislative Assembly of Saskatchewan · 30th Legislature","All 61 seats in Regina, with every MLA, the Cabinet and every ministry."],
-  ontario:["Snapshot · Nov 1 2026","Legislative Assembly of Ontario · 44th Parliament","All 124 seats at Queen's Park, with every MPP, riding and party."]};
+const CH_META={fedbudget:["Snapshot · Nov 5 2026","Government of Canada · Budget 2026","The federal budget tabled November 5, 2026: fiscal projections, the cost of new measures by chapter, and the departments it names."],fedscore:["Snapshot · Nov 5 2026","Government of Canada · Federal Departments Scorecard","What 31 departments budgeted and set as goals, and what they reported: 2024 results and the 2025 and 2026 budgets (fiscal years start April 1)."],misscore:["Snapshot · Nov 5 2026","City of Mississauga, ON · Council Scorecard 2024–2026","What the City planned, budgeted and reported: 2024 and 2025 audited results and the 2026 budget."],vicscore:["Snapshot · Nov 5 2026","City of Victoria, BC · Council Scorecard 2024–2026","What the City planned, budgeted and reported, and when: 2024 and 2025 results and the 2026 plan."],
+  victoria:["Snapshot · Nov 5 2026","City of Victoria, BC · Council 2026–2030","The Mayor and eight councillors elected October 17, 2026, the City Manager, and every department with its 2026 budget."],
+  senate:["Snapshot · Nov 5 2026","Parliament of Canada · Senate","All 105 Senate seats by parliamentary group, with every senator, their province and when they retire."],
+  bcleg:["Snapshot · Nov 5 2026","Legislative Assembly of British Columbia · In transition","All 93 members-elect from the October 24, 2026 election, with the caretaker Cabinet and every ministry."],
+  ntleg:["Snapshot · Nov 5 2026","Legislative Assembly of the Northwest Territories · 20th Assembly","All 19 seats in Yellowknife: a consensus government with no political parties."],
+  nuleg:["Snapshot · Nov 5 2026","Legislative Assembly of Nunavut · 7th Assembly","All 22 seats in Iqaluit: a consensus government with no political parties."],
+  nsleg:["Snapshot · Nov 5 2026","Nova Scotia House of Assembly · 65th General Assembly","All 56 seats in Halifax, with every MLA, the Cabinet and every department."],
+  nlleg:["Snapshot · Nov 5 2026","House of Assembly of Newfoundland and Labrador · 51st General Assembly","All 40 seats in St. John's, with every MHA, the Cabinet and every portfolio. Seats are grouped by party."],
+  ykleg:["Snapshot · Nov 5 2026","Yukon Legislative Assembly · 36th Legislative Assembly","All 21 seats in Whitehorse, with every MLA, the Cabinet and every department."],
+  ableg:["Snapshot · Nov 5 2026","Legislative Assembly of Alberta · 31st Legislature","All 87 seats in Edmonton, with every MLA, the Cabinet and every ministry."],
+  peleg:["Snapshot · Nov 5 2026","Legislative Assembly of Prince Edward Island · 67th General Assembly","All 27 seats in Charlottetown, with every MLA, the Cabinet and every department."],
+  nbleg:["Snapshot · Nov 5 2026","Legislative Assembly of New Brunswick · 61st Legislature","All 49 seats in Fredericton, with every MLA, the Cabinet and every department."],
+  mbleg:["Snapshot · Nov 5 2026","Legislative Assembly of Manitoba · 43rd Legislature","All 57 seats in Winnipeg, with every MLA, the Cabinet and every department."],
+  skleg:["Snapshot · Nov 5 2026","Legislative Assembly of Saskatchewan · 30th Legislature","All 61 seats in Regina, with every MLA, the Cabinet and every ministry."],
+  ontario:["Snapshot · Nov 5 2026","Legislative Assembly of Ontario · 44th Parliament","All 124 seats at Queen's Park, with every MPP, riding and party."]};
 function show(id,{focusKey}={}){ { const fs=document.getElementById("fed-switch"); if(fs&&id!=="federal") fs.hidden=true; }
   const homeE=document.getElementById("landing"); if(homeE) homeE.hidden=id!=="home";
   if(id==="home"){ tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab==="home"?"true":"false")); Object.values(chEls).forEach(el=>el.hidden=true);
     wheelHome(); wheelEls.forEach(el=>el.hidden=true); bannerEl.hidden=true; newsEl.hidden=true; commonsEl.hidden=true; const wf0=document.getElementById("wheelfoot"); if(wf0) wf0.hidden=true; renderHome();
-    document.getElementById("tagline").textContent="Who sits where and who runs what, across Canada's governments."; document.getElementById("stamp").textContent="Snapshot · Nov 1 2026"; document.getElementById("scope").textContent="Federal · Provinces · Cities";
+    document.getElementById("tagline").textContent="Who sits where and who runs what, across Canada's governments."; document.getElementById("stamp").textContent="Snapshot · Nov 5 2026"; document.getElementById("scope").textContent="Federal · Provinces · Cities";
     try{ if(location.hash!=="#home") history.replaceState(null,"","#home"); }catch(e){} window.scrollTo(0,0); return; }
   const wf=document.getElementById("wheelfoot"); if(wf) wf.hidden=!!(chEls[id]||id==="commons"||id==="news");
   Object.values(chEls).forEach(el=>el.hidden=true);
@@ -420,13 +420,13 @@ function show(id,{focusKey}={}){ { const fs=document.getElementById("fed-switch"
   if(id==="commons"){ tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab==="commons"?"true":"false"));
     wheelHome(); wheelEls.forEach(el=>el.hidden=true); bannerEl.hidden=true; newsEl.hidden=true; commonsEl.hidden=false; renderCommons();
     document.getElementById("tagline").textContent="All 343 seats in the House of Commons, laid out like the chamber, with every MP, riding and party.";
-    document.getElementById("stamp").textContent="Snapshot · Nov 1 2026"; document.getElementById("scope").textContent="Parliament of Canada · 45th Parliament";
+    document.getElementById("stamp").textContent="Snapshot · Nov 5 2026"; document.getElementById("scope").textContent="Parliament of Canada · 45th Parliament";
     try{ if(location.hash!=="#commons") history.replaceState(null,"","#commons"); }catch(e){} return; }
   commonsEl.hidden=true;
   if(id==="news"){ tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab==="news"?"true":"false"));
     wheelHome(); wheelEls.forEach(el=>el.hidden=true); bannerEl.hidden=true; newsEl.hidden=false; renderNews();
     document.getElementById("tagline").textContent="Federal news centred on Prime Minister Carney, linked to the ministers and departments on the federal wheel.";
-    document.getElementById("stamp").textContent="News · Snapshot Nov 1 2026"; document.getElementById("scope").textContent="Federal";
+    document.getElementById("stamp").textContent="News · Snapshot Nov 5 2026"; document.getElementById("scope").textContent="Federal";
     try{ if(location.hash!=="#news") history.replaceState(null,"","#news"); }catch(e){} window.scrollTo(0,0); return; }
   wheelHome(); wheelEls.forEach(el=>el.hidden=false); newsEl.hidden=true;
   if(id!=="onwheel"&&(!DS[id]||id==="ontario")) id="federal";
