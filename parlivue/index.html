@@ -619,6 +619,9 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .dvar .z{stroke:var(--rule);stroke-dasharray:3 3} .dvar polyline{fill:none;stroke:var(--muted);stroke-width:1.6}
 .dvar circle.ok{fill:var(--ok)} .dvar circle.bad{fill:var(--warn)}
 .dnone{font-size:12.5px;color:var(--muted);font-style:italic;margin-top:6px}
+.dhow{display:grid;gap:8px;border:1px solid var(--rule);border-radius:12px;padding:10px 14px;background:var(--faint)}
+.dhow-h{font:600 12.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--brass)}
+.dhow .fynote{margin:0}
 .dkey{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted)}
 .dkey span{display:inline-flex;align-items:center;gap:6px} .dkey i{width:10px;height:10px;border-radius:50%}
 .dkey i.ok{background:var(--ok)} .dkey i.watch{background:var(--warn)} .dkey i.off{background:var(--check)}
@@ -1973,7 +1976,7 @@ function renderFedScorePage(){
 function fedHead(sub){
   return `<header class="dsh-head"><div><div class="kicker">Government of Canada · Department dashboard</div><h2 class="nh">${sub||"Federal Departments Scorecard · FY 2024–25 to FY 2026–27"}</h2>
      <p class="pagelede">What each department budgeted to spend, the goals it set, and what it reported, from the Treasury Board's open data on Departmental Plans and Results Reports.</p></div></header>
-    <div class="dkey"><span><i class="ok"></i>Good: within budget, or 75%+ of targets met</span><span><i class="watch"></i>Caution: 50–74% of targets met</span><span><i class="off"></i>Over budget, or under 50% of targets met</span><span class="muted">Gauge: actual as % of budget</span></div>${FY_NOTE}`;
+    <div class="dhow"><div class="dhow-h">How to read this page</div><div class="dkey"><span><i class="ok"></i>Good: within budget, or 75%+ of targets met</span><span><i class="watch"></i>Caution: 50–74% of targets met</span><span><i class="off"></i>Over budget, or under 50% of targets met</span><span class="muted">Gauge: actual as % of budget</span></div>${FY_NOTE}</div>`;
 }
 function fedTiming(){
   return `<div class="dtiming"><b>About timing.</b> The federal fiscal year runs April 1 to March 31. Results for a year are published in the Departmental Results Report the following fall. This page uses reported results for FY 2024–25 and budgets for FY 2025–26 and FY 2026–27; FY 2025–26 results are not yet published: the Public Accounts for that year must be tabled by Dec 31, 2026 under the <i>Financial Administration Act</i>, and had not been tabled as of Nov 5, 2026. The previous year's Public Accounts and Departmental Results Reports were tabled together on Nov 7, 2025. The budget is the spending planned at the start of the year; Parliament can approve more during the year through Supplementary Estimates, so this page shows spending above the start-of-year budget as over budget even when Parliament later approved the extra funds. Results are self-reported: each department sets its own indicators and targets and rates its own results, so rates are not comparable between departments. <b>Budget 2026 was tabled on Nov 5, 2026.</b> The FY 2026–27 budgets shown here come from the 2025–26 Departmental Plans and do not include its proposals; each department's Budget 2026 section lists the measures that name it.</div>`;
