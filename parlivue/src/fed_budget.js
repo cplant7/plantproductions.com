@@ -1,0 +1,101 @@
+/* ================= GOVERNMENT OF CANADA · BUDGET 2026 =================
+   Data: Budget 2026, "Masters of our destiny", tabled November 5, 2026 (Department of Finance Canada),
+   loaded on demand from budget2026.json. Department items list only measures where the budget itself names the
+   department; wording is quoted from the budget. Page numbers are the printed page numbers of the budget PDF. */
+const B26_SRC=["Budget 2026: Masters of our destiny (Department of Finance Canada, tabled Nov 5, 2026)","https://budget.canada.ca"];
+let B26=null, B26_P=null;
+function loadB26(){ if(B26) return Promise.resolve(B26); if(!B26_P) B26_P=fetch("budget2026.json").then(r=>{if(!r.ok) throw new Error(r.status); return r.json();}).then(j=>(B26=j)).catch(e=>{B26_P=null; throw e;}); return B26_P; }
+/* $ formatting for budget tables: billions with one decimal, millions as whole numbers (as published) */
+const bB=n=>n==null?"—":(n<0?"−":"")+"$"+Math.abs(n).toLocaleString("en-CA",{minimumFractionDigits:1,maximumFractionDigits:1})+"B";
+const bM=n=>n==null?"—":(n<0?"−":"")+"$"+Math.abs(n).toLocaleString("en-CA",{maximumFractionDigits:0})+"M";
+const bP=n=>n==null?"—":(n<0?"−":"")+Math.abs(n).toFixed(1)+"%";
+const bPg=(p,p2)=>`<span class="b26pg">p.&nbsp;${p}${p2&&p2!==p?"–"+p2:""}</span>`;
+/* fiscal years named by the year they start, as elsewhere on ParliVue; the budget writes 2026-27 */
+const bYH=y=>`${y.slice(0,4)}<small class="fth">${y.replace("-","–")}</small>`;
+function b26Sec(id){ if(!B26) return ""; if(/^C\d$/.test(id)){ const c=B26.chapters.find(c=>c.n===+id[1]); return c?`Chapter ${c.n} · ${c.t} · chapter table`:""; }
+  for(const c of B26.chapters){ const s=c.secs.find(s=>s.id===id); if(s) return `${s.id} ${s.t}`; } return ""; }
+function b26ForDept(id){ const I=(B26?B26.items:[]).filter(x=>x.d.includes(id)); return {p:I.filter(x=>x.k==="p"),t:I.filter(x=>x.k==="t"),a:I.filter(x=>x.k==="a")}; }
+const B26_NOTE=`<div class="note"><b>How this list is built.</b> It includes only measures where Budget 2026 names this department, quoted as written, with the page in the budget document. Many measures name a fund or program without naming the department that delivers it; those are not attributed here and are counted in the chapter totals on the <button class="linkbtn b26go" data-go="fedbudget">Budget 2026 page</button>. When the budget names several departments for one amount without dividing it, the full amount appears on each of their pages, so amounts here should not be added across departments. Most budget measures need Parliament's approval, through a budget implementation act or the Estimates, before money is spent.</div>`;
+
+/* ---------- department dashboard: Budget 2026 tab ---------- */
+function fedBudgetPane(d){
+  if(!B26) return `<p class="note">The Budget 2026 data could not be loaded. Please refresh the page.</p>`;
+  const G=b26ForDept(d.id), n=G.p.length+G.t.length+G.a.length;
+  const tSum=G.t.reduce((s,x)=>s+x.tot+x.less,0), aSum=G.a.reduce((s,x)=>s+x.tot+x.less,0);
+  const kp=`<div class="dsh-kpis k3">${[
+    ["Named in the budget text",String(G.p.length),fPill("neu",G.p.length===1?"funding proposal":"funding proposals"),"Amounts as stated; periods differ by measure",""],
+    ["Itemised in chapter tables",String(G.t.length),fPill("neu",G.t.length?bM(tSum)+" net":"None"),"2026–27 to 2030–31, after listed offsets",""],
+    ["Actions since the spring update",String(G.a.length),fPill("neu",G.a.length?bM(aSum)+" net":"None"),"Table A1.19 · 2026–27 to 2030–31, after listed offsets",""]
+  ].map(fCard).join("")}</div>`;
+  if(!n) return `<p class="vslede">Budget 2026 does not name ${fEsc(d.name)} in a funding measure, a chapter table item, or the list of policy actions since the Spring Economic Update 2026.</p>${kp}${B26_NOTE}<div class="src">Source: ${fA(B26_SRC)}</div>`;
+  const pTbl=G.p.length?`<div class="sctwrap"><table class="sct b26t"><caption>${G.p.length} proposal${G.p.length>1?"s":""} naming ${fEsc(d.name)}</caption><thead><tr><th scope="col">Measure</th><th scope="col">Amount</th><th scope="col">What the budget says</th></tr></thead><tbody>${G.p.map(x=>`<tr><th scope="row">${fEsc(x.t)}<small class="fcr">${fEsc(b26Sec(x.s))} · ${bPg(x.pg)}</small>${x.d.length>1?`<small class="fcr">Also names: ${x.d.filter(k=>k!==d.id).map(k=>fEsc(B26.names[k])).join(", ")}</small>`:""}</th><td class="b26a">${fEsc(x.a)}</td><td class="b26x">“${fEsc(x.x)}”${x.c?`<small class="fcr">${fEsc(x.c)}</small>`:""}</td></tr>`).join("")}</tbody></table></div>`:"";
+  const tTbl=G.t.length?`<div class="sctwrap"><table class="sct b26t"><caption>Chapter table items · millions of dollars, 2026–27 to 2030–31</caption><thead><tr><th scope="col">Measure</th><th scope="col">Total</th><th scope="col">Offsets</th><th scope="col">What the budget says</th></tr></thead><tbody>${G.t.map(x=>`<tr><th scope="row">${fEsc(x.t)}<small class="fcr">${fEsc(b26Sec(x.s))} · ${bPg(x.pg)}</small></th><td>${bM(x.tot)}</td><td${x.less?"":' class="b26z"'}>${x.less?bM(x.less):"—"}</td><td class="b26x">“${fEsc(x.x)}”</td></tr>`).join("")}</tbody></table></div>`:"";
+  const aTbl=G.a.length?`<div class="sctwrap"><table class="sct b26t"><caption>Table A1.19 · policy actions since the Spring Economic Update 2026 · millions of dollars, 2026–27 to 2030–31</caption><thead><tr><th scope="col">Measure</th><th scope="col">Departments listed</th><th scope="col">Total</th><th scope="col">Offsets</th></tr></thead><tbody>${G.a.map(x=>`<tr><th scope="row">${fEsc(x.t)}<small class="fcr">${bPg(x.pg)}${x.prev?" · previously announced or in the 2026–27 Supplementary Estimates (A)":""}</small>${x.x?`<small class="fcr">${fEsc(x.x)}</small>`:""}</th><td class="b26x">${fEsc(x.who)}</td><td>${bM(x.tot)}</td><td${x.less?"":' class="b26z"'}>${x.less?bM(x.less):"—"}</td></tr>`).join("")}</tbody></table></div>`:"";
+  return `<p class="vslede">What Budget 2026, tabled November 5, 2026, proposes for ${fEsc(d.name)}, in the budget's own words.</p>${kp}
+    ${pTbl?vRoll("Funding proposed in the budget text","Amounts and periods as written",pTbl,true):""}
+    ${tTbl?vRoll("Itemised in the chapter tables","Five-year totals as published",tTbl,true):""}
+    ${aTbl?vRoll("Policy actions since the Spring Economic Update 2026","Annex 1, Table A1.19",aTbl,true):""}
+    ${B26_NOTE}<div class="src">Source: ${fA(B26_SRC)} · Chapters 1–6 and Annex 1</div>`;
+}
+
+/* ---------- Budget 2026 page ---------- */
+function renderFedBudgetPage(){
+  const el=document.getElementById("ch-fedbudget"); if(!el) return;
+  if(el.dataset.built) return; el.dataset.built="1";
+  el.innerHTML=fedSwitch("fedbudget")+`<section id="fedbudget" class="nsec vicscore" aria-label="Federal Budget 2026"><p class="muted">Loading Budget 2026…</p></section>`;
+  el.querySelectorAll(".vswitch [data-go]").forEach(b=>b.onclick=()=>{ if(!b.classList.contains("on")){ show(b.dataset.go); window.scrollTo(0,0); } });
+  loadB26().then(fedBudgetOverview).catch(()=>{document.getElementById("fedbudget").innerHTML=`<p class="note">The Budget 2026 data could not be loaded. Please refresh the page.</p>`; el.dataset.built="";});
+}
+function fedBudgetOverview(){
+  const el=document.getElementById("fedbudget"), F=B26.fiscal, Y=F.years, i=1;
+  const mTot=B26.chapters.reduce((s,c)=>s+c.tot,0);
+  const kp=`<div class="dsh-kpis k5" aria-label="Budget 2026 summary">${[
+    ["Budgetary balance · 2026",bB(F.bal[i]),fPill("neu",bP(F.balp[i])+" of GDP"),"Projected deficit, April 2026 – March 2027",""],
+    ["Revenues · 2026",bB(F.rev[i]),fPill("neu",(F.rev[i]>=F.rev[0]?"+":"−")+Math.abs((F.rev[i]-F.rev[0])/F.rev[0]*100).toFixed(1)+"% vs 2025"),"Budgetary revenues",""],
+    ["Expenses · 2026",bB(F.prog[i]+F.pdc[i]),fPill("neu","Debt charges "+bB(F.pdc[i])),"Program expenses plus public debt charges, before net actuarial losses (gains)",""],
+    ["Federal debt · 2026",bB(F.debt[i]),fPill("neu",bP(F.debtp[i])+" of GDP"),"Projected at March 31, 2027",""],
+    ["New measures · 5 years",bB(mTot/1000),fPill("neu","6 chapters"),"Net fiscal impact of Budget 2026 measures, 2026–27 to 2030–31",""]
+  ].map(fCard).join("")}</div>`;
+  const yh=Y.map(y=>`<th scope="col">${bYH(y)}</th>`).join("");
+  const row=(lab,arr,fmt,cls)=>`<tr${cls?` class="${cls}"`:""}><th scope="row">${lab}</th>${arr.map(v=>v==null?`<td class="b26z">—</td>`:`<td>${fmt(v)}</td>`).join("")}</tr>`;
+  const sumTbl=`<div class="sctwrap"><table class="sct"><caption>Summary statement of transactions · billions of dollars</caption><thead><tr><th scope="col">Item</th>${yh}</tr></thead><tbody>
+    ${row("Budgetary revenues",F.rev,bB)}${row("Program expenses<small class='fcr'>excluding net actuarial losses (gains)</small>",F.prog,bB)}${row("Public debt charges",F.pdc,bB)}${row("Net actuarial losses (gains)",F.act,bB)}
+    ${row("Budgetary balance",F.bal,bB,"tot")}${row("Budgetary balance, % of GDP",F.balp,bP)}${row("Federal debt",F.debt,bB)}${row("Federal debt, % of GDP",F.debtp,bP)}</tbody></table></div>
+    <div class="note">2025 (April 2025 – March 2026) is the government's estimate for the year just ended; later years are projections. Budgetary balance equals revenues less program expenses, public debt charges and net actuarial losses (gains).</div>
+    <div class="src">Source: ${fA(B26_SRC)} · Annex 1, Table A1.8 (${bPg(F.pg.a18)})</div>`;
+  const chgTbl=`<div class="sctwrap"><table class="sct"><caption>Budgetary balance: Spring Economic Update 2026 to Budget 2026 · billions of dollars</caption><thead><tr><th scope="col">Item</th>${yh}</tr></thead><tbody>
+    ${row("Balance in the Spring Economic Update 2026",F.seu,bB)}${row("Economic and fiscal developments since then",F.dev,bB)}${row("Policy actions since the spring update",F.pol,bB)}${row("Budget 2026 measures",F.meas,bB)}${row("Budgetary balance in Budget 2026",F.bal,bB,"tot")}</tbody></table></div>
+    <div class="note">A negative number lowers the balance (lower revenue or higher spending); a positive number raises it. Policy actions since the spring update are itemised in Table A1.19; the budget also includes a combined amount for measures it does not announce individually.</div>
+    <div class="src">Source: ${fA(B26_SRC)} · Annex 1, Table A1.4 (${bPg(F.pg.a14)})</div>`;
+  const opTbl=`<div class="sctwrap"><table class="sct"><caption>Day-to-day operating balance and capital investment · billions of dollars</caption><thead><tr><th scope="col">Item</th>${yh}</tr></thead><tbody>
+    ${row("Day-to-day operating balance",F.opbal,bB,"tot")}${row("Capital investments",F.capinv,bB)}</tbody></table></div>
+    <div class="note">The budget separates spending that builds capital (infrastructure, housing supply, research and development, and tax incentives for investment) from day-to-day operating spending. The operating balance adds the estimated revenue forgone through capital-focused tax measures back to revenues. These are the government's own classifications under its Capital Budgeting Framework.</div>
+    <div class="src">Source: ${fA(B26_SRC)} · Annex 1, Tables A1.5 and A1.6 (${bPg(F.pg.a15)})</div>`;
+  const chRows=B26.chapters.map(c=>`<tr class="tot"><th scope="row">Chapter ${c.n}: ${fEsc(c.t)}<small class="fcr">${bPg(c.pg0,c.pg)}</small></th>${c.yrs.map(v=>`<td>${bM(v)}</td>`).join("")}<td>${bM(c.tot)}</td></tr>`+
+    c.secs.map(s=>`<tr><th scope="row" class="b26in">${/^\d/.test(s.id)?s.id+" ":""}${fEsc(s.t)}</th><td colspan="5"></td><td>${bM(s.tot)}</td></tr>`).join("")).join("");
+  const sums=[0,1,2,3,4].map(k=>B26.chapters.reduce((s,c)=>s+c.yrs[k],0));
+  const chTbl=`<div class="sctwrap"><table class="sct b26ch"><caption>Net fiscal impact of Budget 2026 measures · millions of dollars</caption><thead><tr><th scope="col">Chapter and section</th>${Y.slice(1).map(y=>`<th scope="col">${bYH(y)}</th>`).join("")}<th scope="col">Total</th></tr></thead><tbody>${chRows}
+    <tr class="tot"><th scope="row">All Budget 2026 measures</th>${sums.map(v=>`<td>${bM(v)}</td>`).join("")}<td>${bM(mTot)}</td></tr></tbody></table></div>
+    <div class="note">Net fiscal impact is the change to the budgetary balance: new spending and tax relief, less any amounts the budget sources from existing departmental funding, projected revenues or savings. Negative amounts (for example, section 6.3) are net savings or revenue. Totals may not add because of rounding in the budget's tables.</div>
+    <div class="src">Source: ${fA(B26_SRC)} · chapter tables in Chapters 1–6</div>`;
+  const D=Object.entries(B26.names).map(([id,name])=>({id:+id,name,...b26ForDept(+id)}));
+  const dRows=D.map(x=>{const n=x.p.length+x.t.length+x.a.length;return `<tr><th scope="row"><button class="linkbtn b26d" data-id="${x.id}">${fEsc(x.name)}</button></th>${[x.p.length,x.t.length,x.a.length].map(v=>`<td${v?"":' class="b26z"'}>${v}</td>`).join("")}<td${n?"":' class="b26z"'}>${n||"Not named"}</td></tr>`;}).join("");
+  const dTbl=`<div class="sctwrap"><table class="sct"><caption>Where Budget 2026 names each of the 31 departments · select one for its Budget 2026 section</caption><thead><tr><th scope="col">Department</th><th scope="col">Budget text</th><th scope="col">Chapter tables</th><th scope="col">Since spring update</th><th scope="col">Total</th></tr></thead><tbody>${dRows}</tbody></table></div>${B26_NOTE.replace(/ on the <button[^>]*>Budget 2026 page<\/button>/," above")}`;
+  el.innerHTML=`<header class="dsh-head"><div><div class="kicker">Government of Canada · Federal budget</div><h2 class="nh">Budget 2026: Masters of our destiny</h2>
+     <p class="pagelede">The federal budget tabled in the House of Commons on November 5, 2026: the government's fiscal projections, the cost of its new measures by chapter, and which departments it names.</p></div></header>
+    ${FY_NOTE.replace(" <b>Budgeted</b> is the planned spending in each department's Departmental Plan.","")}
+    <div class="dsh-kh">2026 · current year (April 2026 – March 2027)<span>Projections as published in Budget 2026.</span></div>${kp}
+    ${vRoll("Revenues, expenses, balance and debt","2025 to 2030 · Table A1.8",sumTbl,true)}
+    ${vRoll("What changed since the Spring Economic Update 2026","Table A1.4",chgTbl,true)}
+    ${vRoll("Budget 2026 measures by chapter","Net fiscal impact, 2026–27 to 2030–31",chTbl,true)}
+    ${vRoll("Operating balance and capital investment","Tables A1.5 and A1.6",opTbl,false)}
+    ${vRoll("Departments named in Budget 2026","31 departments",dTbl,true)}
+    <div class="dtiming"><b>About this page.</b> Figures are the government's projections as published in Budget 2026 and are not audited results. Actual revenues and spending are reported in the Public Accounts of Canada after each year ends. Budget measures are proposals; most need Parliament's approval before money is spent. Page numbers refer to the printed pages of the budget document.</div>
+    <div class="src">Source: ${fA(B26_SRC)}</div>`;
+  el.querySelectorAll(".b26d").forEach(b=>b.onclick=()=>fedGoDept(+b.dataset.id,"b26"));
+}
+/* open a department dashboard on a given tab, from any page */
+function fedGoDept(id,tab){
+  show("fedscore"); window.scrollTo(0,0);
+  const go=()=>{ if(typeof fedDept==="function"&&FSC) fedDept(id,tab); else setTimeout(go,60); }; go();
+}
