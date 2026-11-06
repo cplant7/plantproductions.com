@@ -90,6 +90,7 @@ function fedBudgetOverview(){
     ${FY_NOTE.replace(" <b>Budgeted</b> is the planned spending in each department's Departmental Plan.","")}
     <div class="dsh-kh">FY 2026–27 · current fiscal year (April 1, 2026 – March 31, 2027)<span>Projections as published in Budget 2026 (Nov 5, 2026).</span></div>${kp}
     ${K?vRoll("Key measures","As listed by the Department of Finance · "+K.groups.reduce((n,g)=>n+g.items.length,0)+" measures",kmTbl,true):""}
+    ${B26.ai?vRoll("Artificial intelligence in Budget 2026",B26.ai.length+" items · government-wide and by department",`<div class="sctwrap"><table class="sct b26t b26km"><thead><tr><th scope="col">Item</th><th scope="col">What the budget says</th></tr></thead><tbody>${B26.ai.map(x=>`<tr><th scope="row">${fEsc(x[0])}<small class="fcr">${bPg(x[2])}</small></th><td class="b26x">${fEsc(x[1])}</td></tr>`).join("")}</tbody></table></div><div class="note">Summarised from Budget 2026 in neutral wording, with page numbers. Some items were announced before the budget and are described in it as progress. Department-specific items also appear in the Overview of each department's dashboard.</div><div class="src">Source: ${fA(B26_SRC)}</div>`,false):""}
     ${vRoll("Revenues, expenses, balance and debt","FY 2025–26 to FY 2030–31 · Table A1.8",sumTbl,true)}
     ${vRoll("What changed since the Spring Economic Update 2026","Table A1.4",chgTbl,true)}
     ${vRoll("Budget 2026 measures by chapter","Net fiscal impact, FY 2026–27 to FY 2030–31",chTbl,true)}
