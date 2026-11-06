@@ -944,6 +944,7 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
 .sct.b26t td.b26x small.fcr{color:var(--muted)}
 .sct.b26ch th.b26in{font-weight:400;padding-left:26px}
 .sct.b26t thead th{text-align:left}
+.sct.b26km th[scope=row]{min-width:220px;max-width:340px}
 .sct td.b26z{color:var(--muted)}
 .b26pg{font-family:var(--f-mono);font-size:12.5px;white-space:nowrap}
 .dsh-kpis.k3{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -2165,10 +2166,14 @@ function fedBudgetOverview(){
   const D=Object.entries(B26.names).map(([id,name])=>({id:+id,name,...b26ForDept(+id)}));
   const dRows=D.map(x=>{const n=x.p.length+x.t.length+x.a.length;return `<tr><th scope="row"><button class="linkbtn b26d" data-id="${x.id}">${fEsc(x.name)}</button></th>${[x.p.length,x.t.length,x.a.length].map(v=>`<td${v?"":' class="b26z"'}>${v}</td>`).join("")}<td${n?"":' class="b26z"'}>${n||"Not named"}</td></tr>`;}).join("");
   const dTbl=`<div class="sctwrap"><table class="sct"><caption>Where Budget 2026 names each of the 31 departments · select one for its Budget 2026 section</caption><thead><tr><th scope="col">Department</th><th scope="col">Budget text</th><th scope="col">Chapter tables</th><th scope="col">Since spring update</th><th scope="col">Total</th></tr></thead><tbody>${dRows}</tbody></table></div>${B26_NOTE.replace(/ on the <button[^>]*>Budget 2026 page<\/button>/," above")}`;
+  const K=B26.km, kmSrc=K?[K.t+" ("+K.pub+", "+K.date.slice(8).replace(/^0/,"")+" Nov "+K.date.slice(0,4)+")",K.url]:null;
+  const kmTbl=K?K.groups.map(g=>`<div class="sctwrap"><table class="sct b26t b26km"><caption>${fEsc(g.h)} · ${g.items.length} measures</caption><thead><tr><th scope="col">Measure</th><th scope="col">As listed</th></tr></thead><tbody>${g.items.map(x=>`<tr><th scope="row">${fEsc(x.n)}</th><td class="b26x">${fEsc(x.x)}</td></tr>`).join("")}</tbody></table></div>`).join("")+
+    `<div class="note">This is the Department of Finance's own selection and grouping of Budget 2026 measures, with its headings. Some figures combine several budget measures, cover different periods, or are on a cash basis, so they do not match the chapter totals on this page and should not be added together. Defence percentages are shares of GDP, not dollar amounts.</div><div class="src">Source: ${fA(kmSrc)} · ${fA(B26_SRC)}</div>`:"";
   el.innerHTML=`<header class="dsh-head"><div><div class="kicker">Government of Canada · Federal budget</div><h2 class="nh">Budget 2026: Masters of our destiny</h2>
      <p class="pagelede">The federal budget tabled in the House of Commons on November 5, 2026: the government's fiscal projections, the cost of its new measures by chapter, and which departments it names.</p></div></header>
     ${FY_NOTE.replace(" <b>Budgeted</b> is the planned spending in each department's Departmental Plan.","")}
     <div class="dsh-kh">2026 · current year (April 2026 – March 2027)<span>Projections as published in Budget 2026.</span></div>${kp}
+    ${K?vRoll("Key measures","As listed by the Department of Finance · "+K.groups.reduce((n,g)=>n+g.items.length,0)+" measures",kmTbl,true):""}
     ${vRoll("Revenues, expenses, balance and debt","2025 to 2030 · Table A1.8",sumTbl,true)}
     ${vRoll("What changed since the Spring Economic Update 2026","Table A1.4",chgTbl,true)}
     ${vRoll("Budget 2026 measures by chapter","Net fiscal impact, 2026–27 to 2030–31",chTbl,true)}
