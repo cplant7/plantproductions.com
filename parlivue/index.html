@@ -1975,9 +1975,9 @@ function renderFedScorePage(){
   Promise.all([fetch("fedscore.json").then(r=>{if(!r.ok) throw new Error(r.status); return r.json();}),loadB26().catch(()=>null)]).then(([j])=>{FSC=j; fedOverview();})
    .catch(()=>{document.getElementById("fedscore").innerHTML=`<p class="note">The department data could not be loaded. Please refresh the page.</p>`; el.dataset.built="";});
 }
-function fedHead(sub){
+function fedHead(sub,intro){
   return `<header class="dsh-head"><div><div class="kicker">Government of Canada · Department dashboard</div><h2 class="nh">${sub||"Federal Departments Scorecard · FY 2024–25 to FY 2026–27"}</h2>
-     <p class="pagelede">What each department budgeted to spend, the goals it set, and what it reported, from the Treasury Board's open data on Departmental Plans and Results Reports.</p></div></header>
+     ${intro||`<p class="pagelede">What each department budgeted to spend, the goals it set, and what it reported, from the Treasury Board's open data on Departmental Plans and Results Reports.</p>`}</div></header>
     <div class="dhow"><div class="dhow-h">How to read this page</div><div class="dkey"><span><i class="ok"></i>Good: within budget, or 75%+ of targets met</span><span><i class="watch"></i>Caution: 50–74% of targets met</span><span><i class="off"></i>Over budget, or under 50% of targets met</span><span class="muted">Gauge: actual as % of budget</span></div>${FY_NOTE}</div>`;
 }
 function fedTiming(){
@@ -2080,15 +2080,16 @@ function fedDept(id,tab0){
     <tr><th scope="row">FY 2026–27 <small>budget</small></th><td>${fB(d.plan.y26)}</td><td></td><td></td><td>${fN(d.plan.f26)}</td><td></td></tr></tbody></table></div>
     <div class="note">Each row's budgeted figure is the one published with that year's results. Large gaps can reflect funding added during the year through Supplementary Estimates, programs moved between departments, or one-time statutory payments. The department's own explanations for FY 2024–25 are in the FY 2024–25 section.</div>`;
   const srcTbl=`<div class="sctwrap"><table class="sct fsrc"><thead><tr><th scope="col">Report</th><th scope="col">Fiscal year</th><th scope="col">Use for</th></tr></thead><tbody>${[...new Map(d.src.map(s=>[s.u+s.y,s])).values()].map(s=>`<tr><th scope="row">${s.u?`<a href="${s.u}" target="_blank" rel="noopener">${fEsc(s.txt)}</a>`:fEsc(s.txt)}</th><td>${s.y}</td><td>${d.src.filter(z=>z.u===s.u&&z.y===s.y).map(z=>z.cat).join(", ")}</td></tr>`).join("")}</tbody></table></div>`;
-  const tabs=[["ov","Overview","Mandate and AI"],["b26","Budget 2026","Tabled Nov 5, 2026 · measures that name this department"],["y26","FY 2026–27","Apr 1, 2026 – Mar 31, 2027 · current"],["y25","FY 2025–26","Apr 1, 2025 – Mar 31, 2026 · results not yet published"],["y24","FY 2024–25","Apr 1, 2024 – Mar 31, 2025 · results"],["hist","Spending history","FY 2020–21 to FY 2024–25"],["src","Sources","Reports by year"]];
+  const tabs=[["b26","Budget 2026","Tabled Nov 5, 2026 · measures that name this department"],["y26","FY 2026–27","Apr 1, 2026 – Mar 31, 2027 · current"],["y25","FY 2025–26","Apr 1, 2025 – Mar 31, 2026 · results not yet published"],["y24","FY 2024–25","Apr 1, 2024 – Mar 31, 2025 · results"],["hist","Spending history","FY 2020–21 to FY 2024–25"],["src","Sources","Reports by year"]];
   const unexpl=(()=>{const e=fRatio(d.tr.bigx,d.tr.big);const un=pr.filter(p=>Math.abs(p.v)>=1e6&&(p.p===0||Math.abs(p.v)/Math.max(p.p,1)>=.1)&&!p.x).sort((a,b)=>Math.abs(b.v)-Math.abs(a.v));
      return `${un.length?vRoll("Large variances with no explanation in the open data",un.length+" programs, FY 2024–25",`<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Program</th><th scope="col">Budgeted</th><th scope="col">Actual</th><th scope="col">Variance</th></tr></thead><tbody>${un.map(p=>`<tr><th scope="row">${fEsc(p.n)}</th><td>${fB(p.p)}</td><td>${fB(p.a)}</td><td class="vcell ${p.pc!=null?vplan("exp",p.pc):""}">${vsSgn(p.v,fB)}${p.pc!=null?` <small>${vsP(p.pc)}</small>`:""}</td></tr>`).join("")}</tbody></table></div><div class="note">The department may explain these in the text of its 2024–25 Departmental Results Report; see Sources.</div>`,true):""}`;})();
-  const sel=tabs.some(t=>t[0]===tab0)?tab0:"ov";
+  const sel=tabs.some(t=>t[0]===tab0)?tab0:"y26";
   const rep=(y,cat,lab)=>{const s=fRep(d,y,cat);return s&&s.u?`<a href="${s.u}" target="_blank" rel="noopener">${fEsc(s.txt)}</a>`:lab;};
   const crpTbl=(cols,cap)=>d.crp.length?`<div class="sctwrap"><table class="sct"><caption>${cap}</caption><thead><tr><th scope="col">Core responsibility</th>${cols.map(c=>`<th scope="col">${c[0]}</th>`).join("")}</tr></thead><tbody>${d.crp.map(c=>`<tr><th scope="row">${fEsc(c[0])}</th>${cols.map(k=>`<td>${k[1](c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`:"";
+  const intro=`<p class="pagelede">${fEsc(d.ov)}</p>${d.ai||d.ai26?`<div class="why"><b>AI and digital.</b> ${fEsc(d.ai)}${d.ai26&&d.ai26.length?`<ul class="aiu">${d.ai26.map(x=>`<li>${fEsc(x[0])} <span class="muted">(${fEsc(x[1])}${x[2]?", p. "+x[2]:""})</span></li>`).join("")}</ul>`:`<span class="muted"> Budget 2026 (Nov 5, 2026) names no AI measure for this department.</span>`}</div>`:""}
+     <div class="src">Source: ${rep("2025","Goals","2025–26 Departmental Plan")} · ${fA(FSC_SRC.ai)}${typeof B26_SRC!=="undefined"?" · "+fA(B26_SRC):""}</div>`;
   const panes={
-   ov:`<p class="vslede">${fEsc(d.ov)}</p>${d.ai||d.ai26?`<div class="why"><b>AI and digital.</b> ${fEsc(d.ai)}${d.ai26&&d.ai26.length?`<ul class="aiu">${d.ai26.map(x=>`<li>${fEsc(x[0])} <span class="muted">(${fEsc(x[1])}${x[2]?", p. "+x[2]:""})</span></li>`).join("")}</ul>`:`<span class="muted"> Budget 2026 (Nov 5, 2026) names no AI measure for this department.</span>`}</div>`:""}
-     <div class="src">Source: ${rep("2025","Goals","2025–26 Departmental Plan")} · ${fA(FSC_SRC.ai)}${typeof B26_SRC!=="undefined"?" · "+fA(B26_SRC):""}</div>`,
+
    y26:`<p class="fynote">${FYR(2026)}.</p>${d.tabNotes&&d.tabNotes.y26?`<div class="why"><b>${fEsc(d.tabNotes.y26[0])}.</b> ${fEsc(d.tabNotes.y26[1])}</div>`:""}<div class="dsh-kpis k3">${[
        ["Budgeted spending",fB(d.plan.y26),fPill("neu",d.plan.cmp26?d.plan.cmp26:d.plan.y25?vsP((d.plan.y26-d.plan.y25)/d.plan.y25*100)+" vs FY 2025–26 budget":"Budget"),d.plan.s26?"Planned in the "+d.plan.s26:"Forecast in the 2025–26 Departmental Plan",""],
        ["Budgeted staff (FTEs)",fN(d.plan.f26),fPill("neu",d.plan.cmp26?"Not comparable with FY 2025–26":d.plan.f25?vsP((d.plan.f26-d.plan.f25)/d.plan.f25*100)+" vs FY 2025–26":"Budget"),"Full-time equivalents",""],
@@ -2114,7 +2115,7 @@ function fedDept(id,tab0){
    hist:hist+`<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`,
    src:`${srcTbl}<div class="note">Spending and indicators come from the Treasury Board's open data, where this organization is listed as ${fEsc(d.org)}. Some report links open a publication index; choose the named report and year there.</div><div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${fA(FSC_SRC.pipo)}</div>`
   };
-  el.innerHTML=`<button class="chipbtn fback">← All 31 departments</button>`+fedHead(d.name)+cards+`<div class="dsh">
+  el.innerHTML=`<button class="chipbtn fback">← All 31 departments</button>`+fedHead(d.name,intro)+cards+`<div class="dsh">
     <nav class="dsh-rail" role="tablist" aria-orientation="vertical" aria-label="Department sections"><div class="dsh-rl">Sections</div>${tabs.map((t,i)=>`<button role="tab" id="fdt-${t[0]}" aria-controls="fdp-${t[0]}" aria-selected="${t[0]===sel?"true":"false"}" tabindex="${t[0]===sel?0:-1}" data-k="${t[0]}"><span>${t[1]}</span><small>${t[2]}</small></button>`).join("")}</nav>
     <div class="dsh-main">${tabs.map((t,i)=>`<div role="tabpanel" id="fdp-${t[0]}" aria-labelledby="fdt-${t[0]}" class="vspane" ${t[0]===sel?"":"hidden"}><h3 class="dsh-ph">${t[1]}<small>${t[2]}</small></h3>${panes[t[0]]}</div>`).join("")}</div></div>`;
   el.querySelector(".fback").onclick=()=>{fedOverview(); window.scrollTo(0,el.offsetTop-10);};
