@@ -619,6 +619,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .dvar .z{stroke:var(--rule);stroke-dasharray:3 3} .dvar polyline{fill:none;stroke:var(--muted);stroke-width:1.6}
 .dvar circle.ok{fill:var(--ok)} .dvar circle.bad{fill:var(--warn)}
 .dnone{font-size:12.5px;color:var(--muted);font-style:italic;margin-top:6px}
+.sct td .fcrn{display:block;text-align:left;font-size:12.5px;color:var(--muted);max-width:340px;margin-left:auto}
 .dhow{display:grid;gap:8px;border:1px solid var(--rule);border-radius:12px;padding:10px 14px;background:var(--faint)}
 .dhow-h{font:600 12.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--brass)}
 .dhow .fynote{margin:0}
@@ -2016,10 +2017,11 @@ function fedOverview(){
       <td class="vcell ${s?s.cls:""}">${h&&s.pc!=null?vsSgn(h[2]-h[1],fB)+` <small>${vsP(s.pc)}</small>`:'<span class="muted">Not in open data</span>'}</td>
       <td class="vcell ${t.n?(t.cls==="ok"?"dn":t.cls==="off"?"up":"cau"):""}">${t.n?fPf(t.pct)+"%"+` <small>${d.c24["met"]} of ${t.n}</small>`:'<span class="muted">—</span>'}</td>
       <td class="vcell ${fRatio(d.tr.bigx,d.tr.big).cls}">${d.tr.big?fRatio(d.tr.bigx,d.tr.big).txt:'<span class="muted">—</span>'}</td>
-      <td>${fB(d.plan.y25)}</td><td>${fB(d.plan.y26)}</td></tr>`;}).join("");
+      <td>${fB(d.plan.y25)}</td><td>${fB(d.plan.y26)}${d.plan.s26?`<small class="fcr">${fEsc(d.plan.s26)}</small>`:""}</td></tr>`;}).join("");
   el.innerHTML=fedHead()+`<div class="dsh-kh">FY 2026–27 · current fiscal year (April 1, 2026 – March 31, 2027)<span>FY 2024–25 is the latest year with reported results.</span></div>${kp}
     <div class="sctwrap"><table class="sct fedtbl"><caption>31 departments · select one for its dashboard</caption><thead><tr><th scope="col">Department</th><th scope="col">FY 2024–25 budgeted</th><th scope="col">FY 2024–25 actual</th><th scope="col">Variance</th><th scope="col">FY 2024–25 targets met</th><th scope="col">Variances explained</th><th scope="col">FY 2025–26 budgeted<small class="fth">results not yet published</small></th><th scope="col">FY 2026–27 budgeted</th></tr></thead><tbody>${rows}
-      <tr class="tot"><th scope="row">Total<small class="fcr">FY 2024–25 columns: ${have.length} departments with results in the open data${D.length>have.length?" (excludes "+D.filter(d=>!fLast(d)).map(d=>d.name).join(", ")+")":""} · FY 2025–26 and FY 2026–27 columns: all ${D.length}</small></th><td>${fB(P)}</td><td>${fB(A)}</td><td class="vcell ${sp.cls}">${vsSgn(A-P,fB)} <small>${vsP(sp.pc)}</small></td><td>${fPf(tp)}% <small>${fN(C.m)} of ${fN(C.m+C.n)}</small></td><td>${TX.x} of ${TX.b}</td><td>${fB(p25)}</td><td>${fB(p26)}</td></tr></tbody></table></div>
+      <tr class="tot"><th scope="row">Total<small class="fcr">FY 2024–25 columns: ${have.length} departments with results in the open data${D.length>have.length?" (excludes "+D.filter(d=>!fLast(d)).map(d=>d.name).join(", ")+")":""} · FY 2025–26 and FY 2026–27 columns: all ${D.length}${D.some(d=>d.plan.s26)?" · FY 2026–27 column: see note below":""}</small></th><td>${fB(P)}</td><td>${fB(A)}</td><td class="vcell ${sp.cls}">${vsSgn(A-P,fB)} <small>${vsP(sp.pc)}</small></td><td>${fPf(tp)}% <small>${fN(C.m)} of ${fN(C.m+C.n)}</small></td><td>${TX.x} of ${TX.b}</td><td>${fB(p25)}</td><td>${fB(p26)}</td></tr></tbody></table></div>
+    ${D.some(d=>d.plan.s26)?`<div class="note"><b>FY 2026–27 column.</b> Forecasts from the 2025–26 Departmental Plans, except ${D.filter(d=>d.plan.s26).map(d=>d.name).join(", ")} (2026–27 Departmental Plan). The Canadian Coast Guard moved from Fisheries and Oceans Canada to National Defence on Sept 2, 2025; it is no longer in Fisheries and Oceans Canada's FY 2026–27 amount and is not yet in National Defence's forecast, so this total leaves it out until National Defence is updated.</div>`:""}
     ${fedTiming()}
     ${fedCycle()}
     <div class="note"><b>Targets met</b> counts indicators the department rated "met" out of those rated "met" or "not met". Indicators not yet measurable or due in a later year are left out of the percentage. <b>Variances explained</b> counts programs whose spending differed from budget by at least 10% and $1M, and how many of those carry the department’s explanation in the open data; a department may still explain them in the report itself. Finance Canada and Employment and Social Development Canada include large statutory transfers (for example, payments to provinces, Old Age Security and Employment Insurance), which dominate the totals.</div>
@@ -2032,7 +2034,7 @@ function fedDept(id,tab0){
   const ftep=h&&h[3]?h[4]/h[3]*100:null;
   const cards=`<div class="dsh-kh">FY 2026–27 · current fiscal year (April 1, 2026 – March 31, 2027)<span>Each fiscal year has its own section below.</span></div>
    <div class="dsh-kpis k5">${[
-    ["Budgeted spending · FY 2026–27",fB(d.plan.y26),fPill("neu",d.plan.f26?fN(d.plan.f26)+" budgeted staff (FTEs)":"Budget"),"Forecast in the 2025–26 Departmental Plan · does not include Budget 2026 (Nov 5, 2026) proposals",""],
+    ["Budgeted spending · FY 2026–27",fB(d.plan.y26),fPill("neu",d.plan.f26?fN(d.plan.f26)+" budgeted staff (FTEs)":"Budget"),(d.plan.s26?"Planned in the "+d.plan.s26:"Forecast in the 2025–26 Departmental Plan")+" · does not include Budget 2026 (Nov 5, 2026) proposals",""],
     ["Budgeted spending · FY 2025–26",fB(d.plan.y25),fPill("neu","Results not yet published"),"2025–26 Departmental Plan",""],
     ["Actual spending · FY 2024–25",h?fB(h[2]):"Not reported",h?sp.pill:fPill("neu","Not in open data"),h?"Budget "+fB(h[1]):"The FY 2024–25 results are not in the open data",h?fGauge(h[2]/h[1]*100,sp.cls==="up"?"off":"ok","Spending vs budget"):""],
     ["Staff (FTEs) · FY 2024–25",h?fN(h[4]):"—",h?fPill(h[4]>h[3]?"watch":"ok",(h[4]>h[3]?"Above":"Within")+" budget "+vsP((h[4]-h[3])/h[3]*100)):"",h?"Budget "+fN(h[3]):"",h&&ftep?fGauge(ftep,h[4]>h[3]?"watch":"ok","Staff vs budget"):""],
@@ -2071,13 +2073,14 @@ function fedDept(id,tab0){
    ov:`<p class="vslede">${fEsc(d.ov)}</p>${d.ai?`<div class="why"><b>AI and digital.</b> ${fEsc(d.ai)}</div>`:""}
      <div class="src">Source: ${rep("2025","Goals","2025–26 Departmental Plan")} · ${fA(FSC_SRC.ai)}</div>`,
    y26:`<p class="fynote">${FYR(2026)}.</p><div class="dsh-kpis k3">${[
-       ["Budgeted spending",fB(d.plan.y26),fPill("neu",d.plan.y25?vsP((d.plan.y26-d.plan.y25)/d.plan.y25*100)+" vs FY 2025–26":"Budget"),"Forecast in the 2025–26 Departmental Plan",""],
-       ["Budgeted staff (FTEs)",fN(d.plan.f26),fPill("neu",d.plan.f25?vsP((d.plan.f26-d.plan.f25)/d.plan.f25*100)+" vs FY 2025–26":"Budget"),"Full-time equivalents",""],
+       ["Budgeted spending",fB(d.plan.y26),fPill("neu",d.plan.cmp26?d.plan.cmp26:d.plan.y25?vsP((d.plan.y26-d.plan.y25)/d.plan.y25*100)+" vs FY 2025–26 budget":"Budget"),d.plan.s26?"Planned in the "+d.plan.s26:"Forecast in the 2025–26 Departmental Plan",""],
+       ["Budgeted staff (FTEs)",fN(d.plan.f26),fPill("neu",d.plan.cmp26?"Not comparable with FY 2025–26":d.plan.f25?vsP((d.plan.f26-d.plan.f25)/d.plan.f25*100)+" vs FY 2025–26":"Budget"),"Full-time equivalents",""],
        ["Goals set",String(d.n26),fPill("neu","FY 2025–26: "+d.n25),"Performance indicators the department set for FY 2026–27",""]].map(fCard).join("")}</div>
-     ${crpTbl([["FY 2026–27 budgeted",c=>fB(c[2])],["Change from FY 2025–26",c=>c[1]?vsP((c[2]-c[1])/c[1]*100):"—"]],"FY 2026–27 · budgeted spending by core responsibility")}
-     <p class="fynote">Results will be published in the 2026–27 Departmental Results Report in fall 2027. The amounts above are the forecast published in the 2025–26 Departmental Plan; the spending tables from the 2026–27 Departmental Plan are not yet in the open data. They do not include the proposals in Budget 2026, tabled Nov 5, 2026; see the Budget 2026 section.</p>
+     ${crpTbl([["FY 2026–27 budgeted",c=>fB(c[2])],["Change from FY 2025–26",c=>d.crpNote&&d.crpNote[c[0]]?`<span class="fcrn">${fEsc(d.crpNote[c[0]])}</span>`:c[1]?vsP((c[2]-c[1])/c[1]*100):"—"]],"FY 2026–27 · budgeted spending by core responsibility")}
+     ${d.plan.y27&&d.plan.s26?`<div class="sctwrap"><table class="sct"><caption>Planned spending and staff, as published in the ${d.plan.s26}</caption><thead><tr><th scope="col">Fiscal year</th><th scope="col">Planned spending</th><th scope="col">Planned staff (FTEs)</th></tr></thead><tbody>${[["FY 2026–27",d.plan.y26,d.plan.f26],["FY 2027–28",d.plan.y27,d.plan.f27],["FY 2028–29",d.plan.y28,d.plan.f28]].map(r=>`<tr><th scope="row">${r[0]}</th><td>${fB(r[1])}</td><td>${fN(r[2])}</td></tr>`).join("")}</tbody></table></div>`:""}
+     <p class="fynote">Results will be published in the 2026–27 Departmental Results Report in fall 2027. ${d.plan.s26?`The amounts above are from the ${d.plan.s26}. ${d.chg?fEsc(d.chg):""}`:"The amounts above are the forecast published in the 2025–26 Departmental Plan; the spending tables from the 2026–27 Departmental Plan are not yet in the open data."} They do not include the proposals in Budget 2026, tabled Nov 5, 2026; see the Budget 2026 section.</p>
      <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${rep("2026","Goals","2026–27 Departmental Plan")}</div>`,
-   y25:`<p class="fynote">${FYR(2025)}.</p><div class="dsh-kpis k3">${[
+   y25:`<p class="fynote">${FYR(2025)}.</p>${d.plan.y25fc?`<div class="why"><b>Updated forecast.</b> The ${fEsc(d.plan.s26)} forecasts FY 2025–26 spending of ${fB(d.plan.y25fc)} and ${fN(d.plan.f25fc)} staff (FTEs), compared with the ${fB(d.plan.y25)} and ${fN(d.plan.f25)} planned at the start of the year. A forecast is an estimate based on spending to date, not an actual result.</div>`:""}<div class="dsh-kpis k3">${[
        ["Budgeted spending",fB(d.plan.y25),fPill("neu","Results not yet published"),"2025–26 Departmental Plan",""],
        ["Budgeted staff (FTEs)",fN(d.plan.f25),fPill("neu","Budget"),"Full-time equivalents",""],
        ["Goals set",String(d.n25),fPill("neu","FY 2024–25: "+d.i24.length),"Performance indicators the department set for FY 2025–26",""]].map(fCard).join("")}</div>
