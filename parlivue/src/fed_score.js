@@ -136,20 +136,23 @@ const VOTE_N={"1":"Vote 1 · Operating","5":"Vote 5 · Capital","10":"Vote 10 ·
 /* colours used in the money tables: black = budget and totals, yellow = money added during the year, red = spent over the budget, green = approved but not spent */
 const fCol=(v,c)=>`<td class="${c||""}">${fSg(v)}</td>`;
 /* a line-item table: Vote | Description | Amount, with a total row */
-function paItems(rows,tot,cap,suf){ const S=r=>Object.values(r[1]).reduce((t,v)=>t+v,0), sum=(rows||[]).reduce((t,r)=>t+S(r),0), ok=rows&&rows.length&&Math.abs(sum-tot)<1000; /* Table 5 totals are in thousands */
-    const vl=r=>Object.keys(r[1]).map(k=>k==="S"?"Statutory":k+(suf||"")).join(", ");
-  return `<div class="sctwrap"><table class="sct fitems"><caption>${cap}</caption><thead><tr><th scope="col">Vote</th><th scope="col">Description</th><th scope="col">Amount</th></tr></thead><tbody>${ok?rows.map(r=>`<tr><td class="fvote">${vl(r)}</td><td>${fEsc(r[0])}</td>${fCol(S(r),S(r)>0?"cau":"")}</tr>`).join(""):`<tr><td colspan="3" class="muted">The line-by-line detail for this department has not been added yet.</td></tr>`}
-   <tr class="tot"><th scope="row" colspan="2">Total</th>${fCol(tot,"cau")}</tr>
+function paItems(rows,tot,cap,suf){ const S=r=>Object.values(r[1]).reduce((t,v)=>t+v,0), sum=(rows||[]).reduce((t,r)=>t+S(r),0), ok=rows&&rows.length&&Math.abs(sum-tot)<5000; /* Table 5 totals are rounded to thousands */
+    const vl=r=>Object.keys(r[1]).map(k=>k==="S"?"Statutory":k+(suf&&/^\d+$/.test(k)?suf:"")).join(", ");
+  return `<div class="sctwrap"><table class="sct fitems"><caption>${cap}</caption><thead><tr><th scope="col">Vote</th><th scope="col">Description</th><th scope="col">Amount</th></tr></thead><tbody>${ok?rows.map(r=>`<tr><td class="fvote">${vl(r)}</td><td>${fEsc(r[0])}</td>${fCol(S(r),S(r)>0?"cau":"")}</tr>`).join(""):Math.abs(tot)<5000?`<tr><td colspan="3" class="muted">None this year.</td></tr>`:`<tr><td colspan="3" class="muted">The line-by-line detail for this department has not been added yet.</td></tr>`}
+   <tr class="tot"><th scope="row" colspan="2">Total</th>${fCol(ok?sum:Math.abs(tot)<5000?0:tot,"cau")}</tr>
 </tbody></table></div>`; }
-function paBlock(d,h){ const a=d.pa24; if(!a||!FSC.pa24) return null; const X=PA24_DETAIL[d.id]||{}, diff=h&&Math.abs(a.used-h[2])/a.used>0.005, over=a.used-a.main;
-  const src=`<div class="src">Source: ${fA(FSC.pa24.src)} (Volume II, pp. 41–47)</div>`, srcPA=X.srcPA?`<div class="src">Source: ${fA(X.srcPA)}</div>`:src;
+function paBlock(d,h){ if(!d.pa24||!FSC.pa24) return null; const X=PA24_DETAIL[d.id]||(typeof PA24_DATA!=="undefined"&&PA24_DATA[d.id])||{};
+  /* Table 5 totals are rounded to thousands; where the line items add up, show their exact sum so the summary and the sections match to the dollar */
+  const a={...d.pa24}; ["supp","adj","prev"].forEach(k=>{ const L=X[k]; if(!L) return; const sm=L.reduce((t,r)=>t+Object.values(r[1]).reduce((u,v)=>u+v,0),0); if(Math.abs(sm-a[k])<5000) a[k]=sm; else if(!L.length&&Math.abs(a[k])<5000) a[k]=0; });
+  const diff=h&&Math.abs(a.used-h[2])/a.used>0.005, over=a.used-a.main;
+  const src=`<div class="src">Source: ${fA(FSC.pa24.src)} (Volume II, pp. 41–47)</div>`, srcPA=X.srcPA?`<div class="src">Source: ${fA(X.srcPA)}${X.srcPA2?" · "+fA(X.srcPA2):""}</div>`:src;
   const bd=(l,c)=>`<span class="fbadge sm ${c}">${l}</span>`;
   const R=[[bd("A","bk")+"Budget",a.main,""],[bd("B","by")+"Additional funding",a.supp,"cau"],[bd("C","by")+"Changes and transfers",a.adj,"cau"],[bd("D","by")+"Carry over",a.prev,"cau"],[bd("E","bk")+"Total approved by Parliament",a.auth,"","tot"],[bd("","fsp")+"Less: spent during the year",-a.used,""],[bd("","fsp")+"Approved but not spent (lapsed)",a.lapsed,"dn","tot"],[bd("","fsp")+"Carried to later years",a.next,"dn"]];
   const moneyTbl=`<div class="sctwrap"><table class="sct fmoney"><thead><tr><th scope="col">Item</th><th scope="col">Amount</th></tr></thead><tbody>${R.map(r=>`<tr${r[3]?' class="tot"':""}><th scope="row">${r[0]}</th>${fCol(r[1],r[2])}</tr>`).join("")}
      <tr class="tot fover"><th scope="row">${bd("","fsp")}Spent compared with the budget</th><td class="${over>0?"up":"dn"}">${over>0?"+":"−"}${fB(Math.abs(over))} <small>${vsP(over/a.main*100)}</small></td></tr></tbody></table></div>`;
   const fund=fRoll("$","bs","Financial Summary","Where the funding came from and what was spent",fB(a.used)+" spent",over>0?"up":"dn",moneyTbl+src);
   const NOTE="";
-  const supp=fRoll("B","by","Additional funding","Supplementary Estimates approved during the year","+"+fB(a.supp),"cau",paItems(X.supp,a.supp,"B · Additional funding (Supplementary Estimates), FY 2024–25","b")+NOTE+(X.srcSupp?`<div class="src">Sources: ${fA(X.srcSupp)} · ${fA(X.srcPA)}</div>`:src));
+  const supp=fRoll("B","by","Additional funding","Supplementary Estimates approved during the year","+"+fB(a.supp),"cau",paItems(X.supp,a.supp,"B · Additional funding (Supplementary Estimates), FY 2024–25","b")+NOTE+(X.srcSupp?`<div class="src">Sources: ${fA(X.srcSupp)} · ${fA(X.srcPA)}</div>`:srcPA));
   const adj=fRoll("C","by","Changes and transfers","Carry-forwards, pay changes and transfers",(a.adj<0?"−":"+")+fB(Math.abs(a.adj)),"cau",paItems(X.adj,a.adj,"C · Changes and transfers, FY 2024–25")+NOTE+srcPA);
   const prev=fRoll("D","by","Carry over","Approved in earlier years, still available","+"+fB(a.prev),"cau",paItems(X.prev,a.prev,"D · Carry over from previous years, FY 2024–25")+srcPA);
   const tot=fRoll("E","bk","Totals","Approved, spent and left over",fB(a.auth)+" approved","",moneyTbl+src);
