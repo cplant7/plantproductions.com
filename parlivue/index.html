@@ -2156,7 +2156,7 @@ function fedDept(id,tab0){
   const why=big.length?(()=>{const sum=(L,k)=>L.reduce((t,p)=>t+p[k],0), rest=pr.filter(p=>!big.includes(p)), TP=sum(pr,"p"), TA=sum(pr,"a"), vc=(v,b)=>b?vplan("exp",v/b*100):"";
     const row=(n,P,A,x,cls)=>`<tr${cls?` class="${cls}"`:""}><th scope="row">${n}</th><td>${fB(P)}</td><td>${fB(A)}</td><td class="vcell ${vc(A-P,P)}">${vsSgn(A-P,fB)}${P?` <small>${vsP((A-P)/P*100)}</small>`:""}</td><td>${x}</td></tr>`;
     return `<div class="sctwrap"><table class="sct fexp"><caption>Biggest differences · in the department's own words</caption><thead><tr><th scope="col">Program</th><th scope="col">Budget</th><th scope="col">Spent</th><th scope="col">Difference</th><th scope="col">The department's reason</th></tr></thead><tbody>${big.map(p=>row(fEsc(p.n),p.p,p.a,p.x?fEsc(p.x):'<span class="muted">No reason given in the open data. See the 2024–25 Departmental Results Report under Sources.</span>')).join("")}
-      ${row("All other programs <small class=\"fcr\">"+rest.length+" programs; see “All programs” below</small>",sum(rest,"p"),sum(rest,"a"),"")}
+      ${row("All other programs <small class=\"fcr\">"+rest.length+" programs; see section 1</small>",sum(rest,"p"),sum(rest,"a"),"")}
       ${row("Total, all "+pr.length+" programs",TP,TA,"","tot")}</tbody></table></div>`;})():"";
   /* goals: one line per indicator, grouped by program area, with the department's own rating */
   const ST={"met":["Met","g-d"],"not met":["Not met","g-b"],"to be achieved":["Due later","g-x"],"not available":["Not reported","g-n"],"":["No rating","g-n"]};
@@ -2204,8 +2204,8 @@ function fedDept(id,tab0){
        <div class="src">Sources: ${fA(["Senate of Canada, Debates, Oct 8, 2026","https://sencanada.ca/en/content/sen/chamber/451/debates/092db_2026-10-08-e"])} · ${fA(["Treasury Board Secretariat: Reporting cycle","https://www.canada.ca/en/treasury-board-secretariat/services/planned-government-spending/expenditure-management-system/reporting-cycle.html"])} · ${fA(["Treasury Board Secretariat, Question Period Note: Public Accounts of Canada 2025","https://search.open.canada.ca/qpnotes/record/tbs-sct%2CTBS-2025-QP-12-00008"])}</div></div>
      <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${rep("2025","Goals","2025–26 Departmental Plan")}</div>`,
    y24:(()=>{const pa=paBlock(d,h);
-     const bud=h?vRoll("1 · Budget at the start of the year","",budTbl+`<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):`<p class="note">The FY 2024–25 spending for this organization is not in the open data. See its 2024–25 Departmental Results Report under Sources.</p>`;
-     const spent=h?vRoll("5 · Spent compared with the budget","",`${why}${unexpl}${vRoll("All programs","Budget, spent and difference for each program, with totals",progTbl)}<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):"";
+     const bud=h?vRoll("1 · Budget at the start of the year","",progTbl+`<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):`<p class="note">The FY 2024–25 spending for this organization is not in the open data. See its 2024–25 Departmental Results Report under Sources.</p>`;
+     const spent=h?vRoll("5 · Spent compared with the budget","",`${why}${unexpl}<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):"";
      return `<p class="fynote">Click a section to open it.</p>`+(pa?pa.cards+pa.fund:"")+bud+(pa?pa.supp+pa.adj+pa.prev:"")+spent+
      vRoll("Goals and results",d.i24.length?d.i24.length+" goals · "+d.c24["met"]+" met, "+d.c24["not met"]+" not met":"Not in the open data",goalsHtml);})(),
    b26:typeof fedBudgetPane==="function"?fedBudgetPane(d):"",
