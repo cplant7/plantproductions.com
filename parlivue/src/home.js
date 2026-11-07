@@ -23,9 +23,9 @@ function renderHome(){
     oncab:T("dark",`<b>${ON_MIN.length}</b><span>Ontario ministers</span>`,"ontario"),
     onmin:T("light",`<b>${ON_OUT.filter(o=>o.id!=="cab"&&o.id!=="iga").length}</b><span>Ontario ministries</span>`,"ontario"),
     who:T("accent",`<em>Who sits where</em>`,"commons"),
-    run:T("dark",`<em>Who runs what</em>`,"onwheel"),
+    run:T("dark",`<em>Who runs what</em>`,"fedscore"),
     vic:T("dark",`<b>9</b><span>Victoria council seats</span>`,"victoria"),
-    bc:T("light",`<b>BC</b><span>Cabinet and ministries</span>`,"bc"),
+    bc:T("light",`<b>BC</b><span>Legislature</span>`,"bcleg"),
     mis:T("light",`<b>12</b><span>Mississauga council seats</span>`,"mississauga"),
     sos:T("dark",`<b>${secretaries.length}</b><span>Secretaries of State</span>`,"commons"),
     q:T("accent",`<em>Who answers to whom</em>`,"commons")
@@ -52,7 +52,7 @@ function renderHome(){
       <div class="hlinks"><button data-go="news">Latest news</button></div></article>
     </div>
     <article class="hcard"><div class="kicker">Provinces</div><h2>Provincial legislatures</h2><p>Each province's elected members, its Premier and Cabinet, and the ministries they run.</p>
-      <div class="hlinks"><button data-go="ableg">Alberta</button><button data-go="ontario">Ontario</button><button data-go="onwheel">Ontario Cabinet wheel</button><button data-go="bcleg">British Columbia</button><button data-go="skleg">Saskatchewan</button><button data-go="mbleg">Manitoba</button><button data-go="nbleg">New Brunswick</button><button data-go="nlleg">Newfoundland and Labrador</button><button data-go="nsleg">Nova Scotia</button><button data-go="ntleg">Northwest Territories</button><button data-go="nuleg">Nunavut</button><button data-go="peleg">Prince Edward Island</button><button data-go="ykleg">Yukon</button></div>
+      <div class="hlinks"><button data-go="ableg">Alberta</button><button data-go="ontario">Ontario</button><button data-go="bcleg">British Columbia</button><button data-go="skleg">Saskatchewan</button><button data-go="mbleg">Manitoba</button><button data-go="nbleg">New Brunswick</button><button data-go="nlleg">Newfoundland and Labrador</button><button data-go="nsleg">Nova Scotia</button><button data-go="ntleg">Northwest Territories</button><button data-go="nuleg">Nunavut</button><button data-go="peleg">Prince Edward Island</button><button data-go="ykleg">Yukon</button></div>
       <div class="kicker" style="margin-top:14px">Cities</div>
       <div class="hlinks"><button data-go="victoria">City of Victoria</button><button data-go="mississauga">City of Mississauga</button></div></article>
     <article class="hcard hmaps"><div class="kicker">Where the ridings are</div><h2>Riding maps</h2><p>Official maps of the electoral districts each member represents. Each opens on the elections agency's site.</p>

@@ -404,7 +404,7 @@ const CH_META={fedbudget:["Snapshot · Nov 5 2026","Government of Canada · Budg
   mbleg:["Snapshot · Nov 5 2026","Legislative Assembly of Manitoba · 43rd Legislature","All 57 seats in Winnipeg, with every MLA, the Cabinet and every department."],
   skleg:["Snapshot · Nov 5 2026","Legislative Assembly of Saskatchewan · 30th Legislature","All 61 seats in Regina, with every MLA, the Cabinet and every ministry."],
   ontario:["Snapshot · Nov 5 2026","Legislative Assembly of Ontario · 44th Parliament","All 124 seats at Queen's Park, with every MPP, riding and party."]};
-function show(id,{focusKey}={}){ if(id==="federal"){ id="fedscore"; focusKey=undefined; } /* the federal Cabinet wheel was removed; old links open Departments */ { const fs=document.getElementById("fed-switch"); if(fs&&id!=="federal") fs.hidden=true; }
+function show(id,{focusKey}={}){ { const RM_W={federal:"fedscore",bc:"bcleg",onwheel:"ontario"}; if(RM_W[id]){ id=RM_W[id]; focusKey=undefined; } } /* the federal, BC and Ontario Cabinet wheels were removed; old links open the matching page */ { const fs=document.getElementById("fed-switch"); if(fs&&id!=="federal") fs.hidden=true; }
   const homeE=document.getElementById("landing"); if(homeE) homeE.hidden=id!=="home";
   if(id==="home"){ tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab==="home"?"true":"false")); Object.values(chEls).forEach(el=>el.hidden=true);
     wheelHome(); wheelEls.forEach(el=>el.hidden=true); bannerEl.hidden=true; newsEl.hidden=true; commonsEl.hidden=true; const wf0=document.getElementById("wheelfoot"); if(wf0) wf0.hidden=true; renderHome();
