@@ -144,8 +144,8 @@ function paBlock(d,h){ const a=d.pa24; if(!a||!FSC.pa24) return null; const X=PA
   const R=[["A · Budget",a.main,""],["B · Additional funding",a.supp,"cau"],["C · Changes and transfers",a.adj,"cau"],["D · Carry over",a.prev,"cau"],["Total approved by Parliament",a.auth,"","tot"],["Less: spent during the year",-a.used,""],["Approved but not spent (lapsed)",a.lapsed,"dn","tot"],["Carried to later years",a.next,"dn"]];
   const moneyTbl=`<div class="sctwrap"><table class="sct fmoney"><thead><tr><th scope="col">Item</th><th scope="col">Amount</th></tr></thead><tbody>${R.map(r=>`<tr${r[3]?' class="tot"':""}><th scope="row">${r[0]}</th>${fCol(r[1],r[2])}</tr>`).join("")}
      <tr class="tot fover"><th scope="row">Spent compared with the budget</th><td class="${over>0?"up":"dn"}">${over>0?"+":"−"}${fB(Math.abs(over))} <small>${vsP(over/a.main*100)}</small></td></tr></tbody></table></div>`;
-  const fund=vRoll("Where the money came from","FY 2024–25 · "+fB(a.main)+" budget · "+fB(a.used)+" spent · "+(over>0?fB(over)+" over budget":"within budget"),moneyTbl+src);
-  const NOTE=`<div class="note">Vote 1 is operating, 5 is capital, 10 is grants and contributions; statutory amounts are set by other laws. Lines are rounded; totals are exact.</div>`;
+  const fund=vRoll("Financial Summary","",moneyTbl+src);
+  const NOTE="";
   const supp=vRoll("B · Additional funding","",paItems(X.supp,a.supp,"B · Additional funding (Supplementary Estimates), FY 2024–25","b")+NOTE+(X.srcSupp?`<div class="src">Sources: ${fA(X.srcSupp)} · ${fA(X.srcPA)}</div>`:src));
   const adj=vRoll("C · Changes and transfers","",paItems(X.adj,a.adj,"C · Changes and transfers, FY 2024–25")+NOTE+srcPA);
   const prev=vRoll("D · Carry over","",paItems(X.prev,a.prev,"D · Carry over from previous years, FY 2024–25")+srcPA);
@@ -228,7 +228,7 @@ function fedDept(id,tab0){
   /* biggest differences, totalled: the six largest, all other programs, and the total, which equals the department's overall difference */
   const budTbl=`<div class="sctwrap"><table class="sct"><caption>FY 2024–25 · budget at the start of the year, by program</caption><thead><tr><th scope="col">Program</th><th scope="col">Budget</th></tr></thead><tbody>${pr.map(p=>`<tr><th scope="row">${fEsc(p.n)}<small class="fcr">${fEsc(p.cr)}</small></th><td>${fB(p.p)}</td></tr>`).join("")}<tr class="tot"><th scope="row">Total, all ${pr.length} programs</th><td>${fB(pr.reduce((t,p)=>t+p.p,0))}</td></tr></tbody></table></div>`;
   const why=big.length?(()=>{const sum=(L,k)=>L.reduce((t,p)=>t+p[k],0), rest=pr.filter(p=>!big.includes(p)), TP=sum(pr,"p"), TA=sum(pr,"a"), vc=(v,b)=>b?vplan("exp",v/b*100):"";
-    const row=(n,P,A,x,cls)=>`<tr${cls?` class="${cls}"`:""}><th scope="row">${n}</th><td class="fwhy2">${x}</td><td>${fB(P)}</td><td>${fB(A)}</td><td class="vcell ${vc(A-P,P)}">${vsSgn(A-P,fB)}${P?` <small>${vsP((A-P)/P*100)}</small>`:""}</td></tr>`;
+    const row=(n,P,A,x,cls)=>`<tr${cls?` class="${cls}"`:""}><th scope="row">${n}</th><td class="fwhy2">${x}</td><td>${fB(P)}</td><td class="vcell ${vc(A-P,P)}">${fB(A)}</td><td class="vcell ${vc(A-P,P)}">${vsSgn(A-P,fB)}${P?` <small>${vsP((A-P)/P*100)}</small>`:""}</td></tr>`;
     return `<div class="sctwrap"><table class="sct fexp"><caption>Biggest differences · in the department's own words</caption><thead><tr><th scope="col">Program</th><th scope="col">The department's reason</th><th scope="col">Budget</th><th scope="col">Spent</th><th scope="col">Difference</th></tr></thead><tbody>${big.map(p=>row(fEsc(p.n),p.p,p.a,p.x?fEsc(p.x):'<span class="muted">No reason given in the open data. See the 2024–25 Departmental Results Report under Sources.</span>')).join("")}
       ${row("All other programs <small class=\"fcr\">"+rest.length+" programs; see section A</small>",sum(rest,"p"),sum(rest,"a"),"")}
       ${row("Total, all "+pr.length+" programs",TP,TA,"","tot")}</tbody></table></div>`;})():"";
@@ -280,7 +280,7 @@ function fedDept(id,tab0){
    y24:(()=>{const pa=paBlock(d,h);
      const bud=h?vRoll("A · Budget","",progTbl+`<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):`<p class="note">The FY 2024–25 spending for this organization is not in the open data. See its 2024–25 Departmental Results Report under Sources.</p>`;
      const spent=h?vRoll("Program totals","",`${why}${unexpl}<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):"";
-     return `<p class="fynote">Click a section to open it.</p>`+(pa?pa.cards+pa.fund:"")+bud+(pa?pa.supp+pa.adj+pa.prev+pa.tot:"")+
+     return `<p class="fynote">Click a section to open it.</p>`+(pa?pa.cards:"")+`<h4 class="fsh fgrp">Financials</h4>`+(pa?pa.fund:"")+bud+(pa?pa.supp+pa.adj+pa.prev+pa.tot:"")+`<h4 class="fsh fgrp">Goals</h4>`+
      vRoll("Goals and results",d.i24.length?d.i24.length+" goals · "+d.c24["met"]+" met, "+d.c24["not met"]+" not met":"Not in the open data",goalsHtml)+spent;})(),
    b26:typeof fedBudgetPane==="function"?fedBudgetPane(d):"",
    hist:hist+`<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`,
