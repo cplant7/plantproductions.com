@@ -593,6 +593,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .fitems tr.fsub th,.fitems tr.fsub td{font-weight:400;color:var(--muted)}
 .fmoney td{text-align:right;white-space:nowrap}.fmkey{margin:2px 0}.dkey i.blk{background:var(--ink)}
 .fitems td.cau{font-weight:600}
+.fgrpt tr.fgh th{text-align:left!important;background:var(--faint);font:700 15px var(--f-body,inherit);padding-top:10px}.fgrpt th.fgp{padding-left:22px;font-weight:500}.fgrpt tr.fgs th,.fgrpt tr.fgs td{font-weight:700;border-top:1px solid var(--rule)}
 .fsh.fgrp{font-size:22px;margin:18px 0 2px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
 .sct.fexp td:not(.fwhy2){text-align:right;white-space:nowrap}.sct.fexp th[scope=col]{text-align:right}.sct.fexp th[scope=col]:nth-child(-n+2){text-align:left}
 .dgauge.neu .gf{stroke:var(--ink)}.dgauge.watch .gf{stroke:var(--yel)}
@@ -2154,7 +2155,12 @@ function fedDept(id,tab0){
   /* programs */
   const pr=d.progs.filter(p=>p.p||p.a).map(p=>({...p,v:p.a-p.p,pc:p.p?(p.a-p.p)/p.p*100:null}));
   const big=[...pr].sort((a,b)=>Math.abs(b.v)-Math.abs(a.v)).slice(0,6).filter(p=>Math.abs(p.v)>0);
-  const progTbl=`<div class="sctwrap"><table class="sct"><caption>FY 2024–25 · start-of-year budget and spending, by program</caption><thead><tr><th scope="col">Program</th><th scope="col">Budget</th><th scope="col">Spent</th><th scope="col">Difference</th></tr></thead><tbody>${pr.map(p=>`<tr><th scope="row">${fEsc(p.n)}<small class="fcr">${fEsc(p.cr)}</small></th><td>${fB(p.p)}</td><td>${fB(p.a)}</td><td class="vcell ${p.pc!=null?vplan("exp",p.pc):""}">${vsSgn(p.v,fB)}${p.pc!=null?` <small>${vsP(p.pc)}</small>`:""}</td></tr>`).join("")}${(()=>{const P=pr.reduce((t,p)=>t+p.p,0),A=pr.reduce((t,p)=>t+p.a,0),pc=P?(A-P)/P*100:null;return `<tr class="tot"><th scope="row">Total, all ${pr.length} programs</th><td>${fB(P)}</td><td>${fB(A)}</td><td class="vcell ${pc!=null?vplan("exp",pc):""}">${vsSgn(A-P,fB)}${pc!=null?` <small>${vsP(pc)}</small>`:""}</td></tr>`;})()}</tbody></table></div>`;
+  /* A · Budget: programs grouped under the department's core responsibilities, with a subtotal for each and a grand total */
+  const progTbl=(()=>{const vc=(A,P)=>P?vplan("exp",(A-P)/P*100):"", cells=(P,A)=>`<td>${fB(P)}</td><td class="vcell ${vc(A,P)}">${fB(A)}</td><td class="vcell ${vc(A,P)}">${vsSgn(A-P,fB)}${P?` <small>${vsP((A-P)/P*100)}</small>`:""}</td>`, sum=(L,k)=>L.reduce((t,p)=>t+p[k],0);
+    const groups=[...new Set(pr.map(p=>p.cr||"Other"))];
+    return `<div class="sctwrap"><table class="sct fgrpt"><caption>FY 2024–25 · start-of-year budget and spending, grouped by core responsibility</caption><thead><tr><th scope="col">Program</th><th scope="col">Budget</th><th scope="col">Spent</th><th scope="col">Difference</th></tr></thead><tbody>${groups.map(g=>{const G=pr.filter(p=>(p.cr||"Other")===g);
+      return `<tr class="fgh"><th scope="rowgroup" colspan="4">${fEsc(g)}</th></tr>${G.map(p=>`<tr><th scope="row" class="fgp">${fEsc(p.n)}</th>${cells(p.p,p.a)}</tr>`).join("")}<tr class="fgs"><th scope="row">Subtotal, ${fEsc(g)}</th>${cells(sum(G,"p"),sum(G,"a"))}</tr>`;}).join("")}
+      <tr class="tot"><th scope="row">Total, all ${pr.length} programs</th>${cells(sum(pr,"p"),sum(pr,"a"))}</tr></tbody></table></div>`;})();
   /* links the program totals (start-of-year budget) to Parliament's total approval in the Public Accounts */
   /* biggest differences, totalled: the six largest, all other programs, and the total, which equals the department's overall difference */
   const budTbl=`<div class="sctwrap"><table class="sct"><caption>FY 2024–25 · budget at the start of the year, by program</caption><thead><tr><th scope="col">Program</th><th scope="col">Budget</th></tr></thead><tbody>${pr.map(p=>`<tr><th scope="row">${fEsc(p.n)}<small class="fcr">${fEsc(p.cr)}</small></th><td>${fB(p.p)}</td></tr>`).join("")}<tr class="tot"><th scope="row">Total, all ${pr.length} programs</th><td>${fB(pr.reduce((t,p)=>t+p.p,0))}</td></tr></tbody></table></div>`;
