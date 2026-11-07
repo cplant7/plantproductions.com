@@ -90,60 +90,67 @@ const paCell=a=>a?`<td class="vcell ${a.used<=a.auth?"dn":"up"}">${fPf(a.used/a.
 const PA24_DETAIL={
  12:{srcSupp:["Treasury Board Secretariat: Supplementary Estimates (B), 2024–25, Department of Fisheries and Oceans","https://www.canada.ca/en/treasury-board-secretariat/services/planned-government-spending/supplementary-estimates/supplementary-estimates-b-2024-25.html"],
   srcPA:["Public Accounts of Canada 2025, Volume II, Section 12: Fisheries, Oceans and the Canadian Coast Guard, Ministry summary","https://www.tpsgc-pwgsc.gc.ca/recgen/cpc-pac/2025/vol2/pogcc-foccg/spm-ms-eng.html"],
-  supp:[["10b","Great Bear Sea Project Finance for Permanence",200000000],
-   ["1b, 5b, 10b","Repair and maintain small craft harbours (Budget 2024)",112844197],
-   ["1b, 10b","Continue implementing the right to fish in pursuit of a moderate livelihood",66326486],
-   ["10b","Advance reconciliation on Indigenous rights and fisheries issues",60053221],
-   ["1b, 5b","Recapitalize the Canadian Coast Guard's small vessel fleet",29022821],
-   ["1b, 5b","Operational requirements of the future Canadian Coast Guard fleet (Budget 2024)",28114798],
-   ["1b","Increased marine fuel costs",20000000],
-   ["1b, 5b, 10b","Implement the fish stocks provisions in the Fisheries Act (Budget 2024)",5321024],
-   ["10b","Strengthen environmental protections for the Trans Mountain Expansion Project",2851620],
-   ["1b","Reinvestment of royalties from intellectual property",2733586],
-   ["1b","Reinvestment of revenue from polluters or the Ship-source Oil Pollution Fund",1273607],
-   ["1b","Canadian Shellfish Sanitation Program (Budget 2024)",965777],
-   ["1b, 5b","Canada's Extended Continental Shelf Program",927979],
-   ["1b","Support Indigenous Advisory and Monitoring Committees (Budget 2024)",387575],
-   ["1b","Engage Inuit organizations on traditional and country food options (Budget 2024)",318747],
-   ["Statutory","Contributions to employee benefit plans",6381831]],
-  adj:[["5","Capital Budget Carry Forward (Treasury Board Vote 35): unspent capital money carried in from FY 2023–24",178490340],
-   ["1","Operating Budget Carry Forward (Treasury Board Vote 25): unspent operating money carried in from FY 2023–24",50021773],
-   ["1, 5","Compensation Adjustments (Treasury Board Vote 15): pay changes from collective bargaining",34788986],
-   ["Statutory","Contributions to employee benefit plans: adjustment",25095961],
-   ["1","Paylist Requirements (Treasury Board Vote 30): for example parental benefits and severance pay",12760577],
-   ["Statutory","Spending of proceeds from the sale of surplus Crown assets",2699527],
-   ["1","From National Defence: Interdepartmental Maritime Command, Control and Communications program",2085790],
-   ["1","From Treasury Board Secretariat: reducing greenhouse gas emissions in federal operations",404995],
-   ["Statutory","Refunds of amounts credited to revenues in previous years",31724],
-   ["1","Government-wide Initiatives (Treasury Board Vote 10)",29390],
-   ["Statutory","Losses on foreign exchange",18631],
-   ["Statutory","Minister's salary and motor car allowance",466],
-   ["1, 5","Polar Icebreaker project: $14,327,629 moved from capital (Vote 5) to operating (Vote 1); no change in the total",0],
-   ["1","To RCMP: law enforcement record checks",-41300],
-   ["5","To Environment and Climate Change Canada: Canada Centre for Inland Waters",-1091600],
-   ["10","To Atlantic Canada Opportunities Agency: Keir's Shore Landing project",-2750000],
-   ["1","To Agriculture and Agri-Food Canada and Environment and Climate Change Canada: Federal Contaminated Sites Action Plan",-5000000]],
-  prev:[["Statutory","Proceeds from the sale of surplus Crown assets, received in earlier years and not yet spent",2037058]]}
+  /* [description, {vote: dollars}]; votes: "1" operating, "5" capital, "10" grants and contributions, "S" statutory */
+  supp:[["Great Bear Sea Project Finance for Permanence",{"10":200000000}],
+   ["Repair and maintain small craft harbours (Budget 2024)",{"1":30920776,"5":79723421,"10":2200000}],
+   ["Continue implementing the right to fish in pursuit of a moderate livelihood",{"1":381628,"10":65944858}],
+   ["Advance reconciliation on Indigenous rights and fisheries issues",{"10":60053221}],
+   ["Recapitalize the Canadian Coast Guard's small vessel fleet",{"1":653977,"5":28368844}],
+   ["Operational requirements of the future Canadian Coast Guard fleet (Budget 2024)",{"1":27207557,"5":907241}],
+   ["Increased marine fuel costs",{"1":20000000}],
+   ["Implement the fish stocks provisions in the Fisheries Act (Budget 2024)",{"1":4705751,"5":63199,"10":552074}],
+   ["Strengthen environmental protections for the Trans Mountain Expansion Project",{"10":2851620}],
+   ["Reinvestment of royalties from intellectual property",{"1":2733586}],
+   ["Reinvestment of revenue from polluters or the Ship-source Oil Pollution Fund",{"1":1273607}],
+   ["Canadian Shellfish Sanitation Program (Budget 2024)",{"1":965777}],
+   ["Canada's Extended Continental Shelf Program",{"1":920608,"5":7371}],
+   ["Support Indigenous Advisory and Monitoring Committees (Budget 2024)",{"1":387575}],
+   ["Engage Inuit organizations on traditional and country food options (Budget 2024)",{"1":318747}],
+   ["Contributions to employee benefit plans",{"S":6381831}]],
+  adj:[["Capital Budget Carry Forward (Treasury Board Vote 35): unspent capital money carried in from FY 2023–24",{"5":178490340}],
+   ["Operating Budget Carry Forward (Treasury Board Vote 25): unspent operating money carried in from FY 2023–24",{"1":50021773}],
+   ["Compensation Adjustments (Treasury Board Vote 15): pay changes from collective bargaining",{"1":34674151,"5":114835}],
+   ["Contributions to employee benefit plans: adjustment",{"S":25095961}],
+   ["Paylist Requirements (Treasury Board Vote 30): for example parental benefits and severance pay",{"1":12760577}],
+   ["Spending of proceeds from the sale of surplus Crown assets",{"S":2699527}],
+   ["From National Defence: Interdepartmental Maritime Command, Control and Communications program",{"1":2085790}],
+   ["From Treasury Board Secretariat: reducing greenhouse gas emissions in federal operations",{"1":404995}],
+   ["Refunds of amounts credited to revenues in previous years",{"S":31724}],
+   ["Government-wide Initiatives (Treasury Board Vote 10)",{"1":29390}],
+   ["Losses on foreign exchange",{"S":18631}],
+   ["Minister's salary and motor car allowance",{"S":466}],
+   ["Polar Icebreaker project: moved from capital (Vote 5) to operating (Vote 1); no change in the total",{"1":14327629,"5":-14327629}],
+   ["To RCMP: law enforcement record checks",{"1":-41300}],
+   ["To Environment and Climate Change Canada: Canada Centre for Inland Waters",{"5":-1091600}],
+   ["To Atlantic Canada Opportunities Agency: Keir's Shore Landing project",{"10":-2750000}],
+   ["To Agriculture and Agri-Food Canada and Environment and Climate Change Canada: Federal Contaminated Sites Action Plan",{"1":-5000000}]],
+  prev:[["Proceeds from the sale of surplus Crown assets, received in earlier years and not yet spent",{"S":2037058}]]}
 };
-const fSg=v=>v<0?"−"+fB(-v):fB(v);
-/* a line-item table: Vote | Description | Amount, with a total row that must equal the Public Accounts total */
-function paItems(rows,tot,cap){ const sum=(rows||[]).reduce((t,r)=>t+r[2],0), ok=rows&&rows.length&&Math.abs(sum-tot)<1000; /* Table 5 totals are in thousands */
-  return `<div class="sctwrap"><table class="sct fitems"><caption>${cap}</caption><thead><tr><th scope="col">Vote</th><th scope="col">Description</th><th scope="col">Amount</th></tr></thead><tbody>${ok?rows.map(r=>`<tr><td class="fvote">${fEsc(r[0])}</td><td>${fEsc(r[1])}</td><td>${fSg(r[2])}</td></tr>`).join(""):`<tr><td colspan="3" class="muted">The line-by-line detail for this department has not been added yet.</td></tr>`}
-   <tr class="tot"><th scope="row" colspan="2">Total</th><td>${fSg(tot)}</td></tr></tbody></table></div>`; }
-function paBlock(d,h){ const a=d.pa24; if(!a||!FSC.pa24) return null; const X=PA24_DETAIL[d.id]||{}, pc=a.used/a.auth*100, diff=h&&Math.abs(a.used-h[2])/a.used>0.005, over=a.used-a.main;
+/* amounts under $50,000 are shown in dollars so they don't read as $0.0M */
+const fSm=v=>v!==0&&Math.abs(v)<5e4?"$"+Math.round(v).toLocaleString("en-CA"):fB(v);
+const fSg=v=>v<0?"−"+fSm(-v):fSm(v);
+const VOTE_N={"1":"Vote 1 · Operating","5":"Vote 5 · Capital","10":"Vote 10 · Grants and contributions","S":"Statutory · set by other laws"};
+/* colours used in the money tables: black = budget and totals, yellow = money added during the year, red = spent over the budget, green = approved but not spent */
+const fCol=(v,c)=>`<td class="${c||""}">${fSg(v)}</td>`;
+/* a line-item table: Vote | Description | Amount, a total row, and the same total split by vote so it can be checked against the Public Accounts */
+function paItems(rows,tot,cap,suf){ const S=r=>Object.values(r[1]).reduce((t,v)=>t+v,0), sum=(rows||[]).reduce((t,r)=>t+S(r),0), ok=rows&&rows.length&&Math.abs(sum-tot)<1000; /* Table 5 totals are in thousands */
+  const byV={}; (ok?rows:[]).forEach(r=>Object.entries(r[1]).forEach(([k,v])=>byV[k]=(byV[k]||0)+v));
+  const vl=r=>Object.keys(r[1]).map(k=>k==="S"?"Statutory":k+(suf||"")).join(", ");
+  return `<div class="sctwrap"><table class="sct fitems"><caption>${cap}</caption><thead><tr><th scope="col">Vote</th><th scope="col">Description</th><th scope="col">Amount</th></tr></thead><tbody>${ok?rows.map(r=>`<tr><td class="fvote">${vl(r)}</td><td>${fEsc(r[0])}</td>${fCol(S(r),S(r)>0?"cau":"")}</tr>`).join(""):`<tr><td colspan="3" class="muted">The line-by-line detail for this department has not been added yet.</td></tr>`}
+   <tr class="tot"><th scope="row" colspan="2">Total</th>${fCol(tot,"cau")}</tr>
+   ${ok?`<tr class="fbyv"><th scope="row" colspan="3">By vote · same as the Public Accounts</th></tr>${["1","5","10","S"].filter(k=>byV[k]!=null).map(k=>`<tr class="fsub"><th scope="row" colspan="2">${k==="S"?VOTE_N.S:VOTE_N[k].replace("Vote "+k,"Vote "+k+(suf||""))}</th><td>${fSg(byV[k])}</td></tr>`).join("")}`:""}</tbody></table></div>`; }
+function paBlock(d,h){ const a=d.pa24; if(!a||!FSC.pa24) return null; const X=PA24_DETAIL[d.id]||{}, diff=h&&Math.abs(a.used-h[2])/a.used>0.005, over=a.used-a.main;
   const src=`<div class="src">Source: ${fA(FSC.pa24.src)} (Volume II, pp. 41–47)</div>`, srcPA=X.srcPA?`<div class="src">Source: ${fA(X.srcPA)}</div>`:src;
-  const ROUND=`<div class="note">Amounts are rounded to $0.1M, so a column can be $0.1M off its total. The totals are exact.</div>`;
-  const R=[["Budget at the start of the year (Main Estimates)",a.main],["Additional funding (Supplementary Estimates)",a.supp],["Changes and transfers",a.adj],["Remaining from previous years",a.prev],["Total approved by Parliament",a.auth,"tot"],["Less: spent during the year",-a.used],["Approved but not spent (lapsed)",a.lapsed,"tot"],["Carry-over to later years",a.next]];
-  const fund=vRoll("Where the money came from","FY 2024–25 · all the money Parliament approved, and what happened to it",`<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Item</th><th scope="col">Amount</th></tr></thead><tbody>${R.map(r=>`<tr${r[2]?' class="tot"':""}><th scope="row">${r[0]}</th><td>${fSg(r[1])}</td></tr>`).join("")}</tbody></table></div>
-   <div class="note">Each line is explained in the numbered sections below. The colours on this page compare spending with the budget at the start of the year. “Lapsed” means approved but not spent by March 31.${a.rows.length>1?" Figures combine the Public Accounts rows for "+fEsc(a.rows.join(" and "))+".":""}${diff?` The Public Accounts say ${fB(a.used)} was spent; the Departmental Results Report data says ${fB(h[2])}. Both are shown as published.`:""}${h?"":" This department's FY 2024–25 results are not in the Departmental Results Report data, but it is in the Public Accounts."}</div>${src}`);
-  const supp=vRoll("2 · Additional funding","Supplementary Estimates · "+fB(a.supp)+" · money asked for and approved during the year",paItems(X.supp,a.supp,"Additional funding (Supplementary Estimates), FY 2024–25")+`<div class="note">Votes: 1 is operating, 5 is capital, 10 is grants and contributions; “b” means it was approved in Supplementary Estimates (B). Statutory items are set by other laws and do not need a vote.</div>${ROUND}${X.srcSupp?`<div class="src">Source: ${fA(X.srcSupp)}</div>`:src}`);
-  const adj=vRoll("3 · Changes and transfers",fB(a.adj)+" · carry-forwards, pay changes and transfers with other departments",paItems(X.adj,a.adj,"Changes and transfers, FY 2024–25")+`<div class="note">Treasury Board Votes 25 and 35 bring in money that was approved in FY 2023–24 but not spent then. Amounts below zero were transferred out.</div>${ROUND}${srcPA}`);
-  const prev=vRoll("4 · Remaining from previous years",fB(a.prev)+" · approved in earlier years and still available",paItems(X.prev,a.prev,"Remaining from previous years, FY 2024–25")+srcPA);
-  const T=[["1 · Budget at the start of the year",a.main],["2 · Additional funding",a.supp],["3 · Changes and transfers",a.adj],["4 · Remaining from previous years",a.prev],["Total approved by Parliament",a.auth,"tot"],["Less: spent during the year",-a.used],["Approved but not spent (lapsed)",a.lapsed,"tot"],["Carry-over to later years",a.next]];
-  const tot=vRoll("5 · Total approved by Parliament",fB(a.auth)+" approved · "+fB(a.used)+" spent · "+(over>0?fB(over)+" over the start-of-year budget":"within the start-of-year budget"),`<div class="sctwrap"><table class="sct"><caption>Sections 1 to 4 added together, FY 2024–25</caption><thead><tr><th scope="col">Item</th><th scope="col">Amount</th></tr></thead><tbody>${T.map(r=>`<tr${r[2]?' class="tot"':""}><th scope="row">${r[0]}</th><td>${fSg(r[1])}</td></tr>`).join("")}
-     <tr class="fover"><th scope="row">Spent compared with the start-of-year budget</th><td class="vcell ${over>0?"up":"dn"}">${over>0?"+":"−"}${fB(Math.abs(over))} <small>${vsP(over/a.main*100)}</small></td></tr></tbody></table></div>
-   <div class="note">The first eight lines match “Where the money came from”. The last line compares spending (${fB(a.used)}) with the budget at the start of the year (${fB(a.main)}).</div>${src}`);
-  return {fund,supp,adj,prev,tot}; }
+  const R=[["1 · Budget at the start of the year (Main Estimates)",a.main,""],["2 · Additional funding (Supplementary Estimates)",a.supp,"cau"],["3 · Changes and transfers",a.adj,"cau"],["4 · Remaining from previous years",a.prev,"cau"],["Total approved by Parliament",a.auth,"","tot"],["Less: spent during the year",-a.used,""],["Approved but not spent (lapsed)",a.lapsed,"dn","tot"],["Carry-over to later years",a.next,"dn"]];
+  const fund=vRoll("Where the money came from","FY 2024–25 · "+fB(a.main)+" budget · "+fB(a.used)+" spent · "+(over>0?fB(over)+" over budget":"within budget"),`<div class="sctwrap"><table class="sct fmoney"><thead><tr><th scope="col">Item</th><th scope="col">Amount</th></tr></thead><tbody>${R.map(r=>`<tr${r[3]?' class="tot"':""}><th scope="row">${r[0]}</th>${fCol(r[1],r[2])}</tr>`).join("")}
+     <tr class="tot fover"><th scope="row">Spent compared with the budget at the start of the year</th><td class="${over>0?"up":"dn"}">${over>0?"+":"−"}${fB(Math.abs(over))} <small>${vsP(over/a.main*100)}</small></td></tr></tbody></table></div>
+   <div class="dkey fmkey"><span><i class="blk"></i>Black: budget and totals</span><span><i class="watch"></i>Yellow: added during the year</span><span><i class="off"></i>Red: spent over the budget</span><span><i class="ok"></i>Green: approved but not spent</span></div>
+   <div class="note">Lines 1 to 4 are explained in the numbered sections below. The last line compares spending (${fB(a.used)}) with the budget at the start of the year (${fB(a.main)}). “Lapsed” means approved but not spent by March 31.${a.rows.length>1?" Figures combine the Public Accounts rows for "+fEsc(a.rows.join(" and "))+".":""}${diff?` The Public Accounts say ${fB(a.used)} was spent; the Departmental Results Report data says ${fB(h[2])}. Both are shown as published.`:""}${h?"":" This department's FY 2024–25 results are not in the Departmental Results Report data, but it is in the Public Accounts."}</div>${src}`);
+  const VN_T=`A vote is a line of spending that Parliament approves: Vote 1 is operating, Vote 5 is capital, Vote 10 is grants and contributions. Statutory amounts are set by other laws and are not voted each year. The “by vote” lines match the department's Public Accounts Ministry summary, so each item can be traced to it.`, ROUND_T="Each line is rounded, so lines can add up to $0.1M more or less than the total. The totals are exact.";
+  const supp=vRoll("2 · Additional funding","Supplementary Estimates (B) · "+fB(a.supp)+" · money asked for and approved during the year",paItems(X.supp,a.supp,"2 · Additional funding (Supplementary Estimates), FY 2024–25","b")+`<div class="note">${VN_T} ${ROUND_T}</div>`+(X.srcSupp?`<div class="src">Sources: ${fA(X.srcSupp)} · ${fA(X.srcPA)}</div>`:src));
+  const adj=vRoll("3 · Changes and transfers",fB(a.adj)+" · carry-forwards, pay changes and transfers with other departments",paItems(X.adj,a.adj,"3 · Changes and transfers, FY 2024–25")+`<div class="note">Treasury Board Votes 25 and 35 bring in money that was approved in FY 2023–24 but not spent then. Amounts below zero were transferred out. ${VN_T} ${ROUND_T}</div>${srcPA}`);
+  const prev=vRoll("4 · Remaining from previous years",fB(a.prev)+" · approved in earlier years and still available",paItems(X.prev,a.prev,"4 · Remaining from previous years, FY 2024–25")+srcPA);
+  return {fund,supp,adj,prev}; }
 function fedCycle(){
   const R=[
    ["Federal budget","Fall (since Budget 2025)","The government's economic priorities, projections and proposed new measures. It does not itself authorise spending.","Budget 2026 page"],
@@ -257,9 +264,8 @@ function fedDept(id,tab0){
        <div class="src">Sources: ${fA(["Senate of Canada, Debates, Oct 8, 2026","https://sencanada.ca/en/content/sen/chamber/451/debates/092db_2026-10-08-e"])} · ${fA(["Treasury Board Secretariat: Reporting cycle","https://www.canada.ca/en/treasury-board-secretariat/services/planned-government-spending/expenditure-management-system/reporting-cycle.html"])} · ${fA(["Treasury Board Secretariat, Question Period Note: Public Accounts of Canada 2025","https://search.open.canada.ca/qpnotes/record/tbs-sct%2CTBS-2025-QP-12-00008"])}</div></div>
      <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${rep("2025","Goals","2025–26 Departmental Plan")}</div>`,
    y24:(()=>{const pa=paBlock(d,h);
-     const bud=h?vRoll("1 · Budget",(pa?"Start-of-year budget "+fB(d.pa24.main)+" · ":"")+"budget and spending for each program, with totals",progTbl+`<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):"";
-     return `<p class="fynote">Click a section to open it. Sections 1 to 5 follow the order of “Where the money came from”.</p>`+(pa?pa.fund:"")+bud+(pa?pa.supp+pa.adj+pa.prev+pa.tot:"")+
-     (h?vRoll("Biggest differences, by program",(sp?sp.pill.replace(/<[^>]+>/g,"")+" · ":"")+"the department's own reasons",`${why}${unexpl}<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):`<p class="note">The FY 2024–25 spending for this organization is not in the open data. See its 2024–25 Departmental Results Report under Sources.</p>`)+
+     const bud=h?vRoll("1 · Budget at the start of the year",fB(h[1])+" budget · "+fB(h[2])+" spent · "+sp.pill.replace(/<[^>]+>/g,"")+" · by program, with the department's reasons",`${why}${unexpl}${vRoll("All programs","Budget and spending for each program, with totals",progTbl)}<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):`<p class="note">The FY 2024–25 spending for this organization is not in the open data. See its 2024–25 Departmental Results Report under Sources.</p>`;
+     return `<p class="fynote">Click a section to open it. The numbered sections follow the numbered lines in “Where the money came from”.</p>`+(pa?pa.fund:"")+bud+(pa?pa.supp+pa.adj+pa.prev:"")+
      vRoll("Goals and results",d.i24.length?d.i24.length+" goals · "+d.c24["met"]+" met, "+d.c24["not met"]+" not met":"Not in the open data",goalsHtml);})(),
    b26:typeof fedBudgetPane==="function"?fedBudgetPane(d):"",
    hist:hist+`<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`,
