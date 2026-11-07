@@ -212,7 +212,8 @@ function vscElectionHTML(){ return `<section class="nsec elec"><div class="kicke
       <div class="note">Council decides as a body. The new Council takes office on Nov 5, 2026.</div>
       ${vsSrc(["elec26","buzz","elec22","amal"])}</section>`; }
 /* collapsible section */
-const vRoll=(title,sub,body,open)=>`<details class="roll" open><summary><span class="rollh"><span class="rollt">${title}</span>${sub?`<span class="rolls">${sub}</span>`:""}</span><span class="rolltog"><span class="t-show">Show</span><span class="t-hide">Hide</span><span class="rollc" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6l4 4 4-4"/></svg></span></span></summary><div class="rollb">${body}</div></details>`;
+/* collapsed on page open on every page (the 4th argument is kept for older calls but no longer opens it) */
+const vRoll=(title,sub,body,open)=>`<details class="roll"><summary><span class="rollh"><span class="rollt">${title}</span>${sub?`<span class="rolls">${sub}</span>`:""}</span><span class="rolltog"><span class="t-show">Show</span><span class="t-hide">Hide</span><span class="rollc" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6l4 4 4-4"/></svg></span></span></summary><div class="rollb">${body}</div></details>`;
 
 function renderVicScore(){
   const el=document.getElementById("vicscore"); if(!el||el.dataset.done) return; el.dataset.done="1";
