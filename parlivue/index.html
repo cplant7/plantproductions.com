@@ -593,6 +593,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .fitems tr.fsub th,.fitems tr.fsub td{font-weight:400;color:var(--muted)}
 .fmoney td{text-align:right;white-space:nowrap}.fmkey{margin:2px 0}.dkey i.blk{background:var(--ink)}
 .fitems td.cau{font-weight:600}
+.sct.fexp td:not(.fwhy2){text-align:right;white-space:nowrap}.sct.fexp th[scope=col]{text-align:right}.sct.fexp th[scope=col]:nth-child(-n+2){text-align:left}
+.dgauge.neu .gf{stroke:var(--ink)}.dgauge.watch .gf{stroke:var(--yel)}
 #fedscore .why .src{margin-top:8px!important}
 .fbridge tr.fsub th{padding-left:28px;font-weight:400;color:var(--muted)}.fbridge tr.fsub td{color:var(--muted)}
 .fedhow .steps li{max-width:none}
@@ -950,7 +952,7 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
 .mi-big{margin:0;font:700 26px var(--f-body);font-variant-numeric:tabular-nums}
 .mi-act{display:flex;flex-wrap:wrap;gap:8px}
 .minidx>.chipbtn{justify-self:start}
-.sct.fexp td:last-child{min-width:320px;font-size:13.5px;color:var(--muted)}
+.sct.fexp td.fwhy2{min-width:320px;font-size:13.5px;color:var(--muted)}
 .fsh{margin:6px 0 0;font:700 17px var(--f-body)}
 .fback{justify-self:start}
 #fedscore,#fedbudget{display:grid;gap:16px}
@@ -2069,22 +2071,24 @@ function paItems(rows,tot,cap,suf){ const S=r=>Object.values(r[1]).reduce((t,v)=
 </tbody></table></div>`; }
 function paBlock(d,h){ const a=d.pa24; if(!a||!FSC.pa24) return null; const X=PA24_DETAIL[d.id]||{}, diff=h&&Math.abs(a.used-h[2])/a.used>0.005, over=a.used-a.main;
   const src=`<div class="src">Source: ${fA(FSC.pa24.src)} (Volume II, pp. 41–47)</div>`, srcPA=X.srcPA?`<div class="src">Source: ${fA(X.srcPA)}</div>`:src;
-  const R=[["1 · Budget at the start of the year (Main Estimates)",a.main,""],["2 · Additional funding (Supplementary Estimates)",a.supp,"cau"],["3 · Changes and transfers",a.adj,"cau"],["4 · Remaining from previous years",a.prev,"cau"],["Total approved by Parliament",a.auth,"","tot"],["Less: spent during the year",-a.used,""],["Approved but not spent (lapsed)",a.lapsed,"dn","tot"],["Carry-over to later years",a.next,"dn"]];
-  const fund=vRoll("Where the money came from","FY 2024–25 · "+fB(a.main)+" budget · "+fB(a.used)+" spent · "+(over>0?fB(over)+" over budget":"within budget"),`<div class="sctwrap"><table class="sct fmoney"><thead><tr><th scope="col">Item</th><th scope="col">Amount</th></tr></thead><tbody>${R.map(r=>`<tr${r[3]?' class="tot"':""}><th scope="row">${r[0]}</th>${fCol(r[1],r[2])}</tr>`).join("")}
-     <tr class="tot fover"><th scope="row">5 · Spent compared with the budget at the start of the year</th><td class="${over>0?"up":"dn"}">${over>0?"+":"−"}${fB(Math.abs(over))} <small>${vsP(over/a.main*100)}</small></td></tr></tbody></table></div>
-   ${src}`);
+  const R=[["A · Budget",a.main,""],["B · Additional funding",a.supp,"cau"],["C · Changes and transfers",a.adj,"cau"],["D · Carry over",a.prev,"cau"],["Total approved by Parliament",a.auth,"","tot"],["Less: spent during the year",-a.used,""],["Approved but not spent (lapsed)",a.lapsed,"dn","tot"],["Carried to later years",a.next,"dn"]];
+  const moneyTbl=`<div class="sctwrap"><table class="sct fmoney"><thead><tr><th scope="col">Item</th><th scope="col">Amount</th></tr></thead><tbody>${R.map(r=>`<tr${r[3]?' class="tot"':""}><th scope="row">${r[0]}</th>${fCol(r[1],r[2])}</tr>`).join("")}
+     <tr class="tot fover"><th scope="row">Spent compared with the budget</th><td class="${over>0?"up":"dn"}">${over>0?"+":"−"}${fB(Math.abs(over))} <small>${vsP(over/a.main*100)}</small></td></tr></tbody></table></div>`;
+  const fund=vRoll("Where the money came from","FY 2024–25 · "+fB(a.main)+" budget · "+fB(a.used)+" spent · "+(over>0?fB(over)+" over budget":"within budget"),moneyTbl+src);
   const NOTE=`<div class="note">Vote 1 is operating, 5 is capital, 10 is grants and contributions; statutory amounts are set by other laws. Lines are rounded; totals are exact.</div>`;
-  const supp=vRoll("2 · Additional funding","",paItems(X.supp,a.supp,"2 · Additional funding (Supplementary Estimates), FY 2024–25","b")+NOTE+(X.srcSupp?`<div class="src">Sources: ${fA(X.srcSupp)} · ${fA(X.srcPA)}</div>`:src));
-  const adj=vRoll("3 · Changes and transfers","",paItems(X.adj,a.adj,"3 · Changes and transfers, FY 2024–25")+NOTE+srcPA);
-  const prev=vRoll("4 · Remaining from previous years","",paItems(X.prev,a.prev,"4 · Remaining from previous years, FY 2024–25")+srcPA);
+  const supp=vRoll("B · Additional funding","",paItems(X.supp,a.supp,"B · Additional funding (Supplementary Estimates), FY 2024–25","b")+NOTE+(X.srcSupp?`<div class="src">Sources: ${fA(X.srcSupp)} · ${fA(X.srcPA)}</div>`:src));
+  const adj=vRoll("C · Changes and transfers","",paItems(X.adj,a.adj,"C · Changes and transfers, FY 2024–25")+NOTE+srcPA);
+  const prev=vRoll("D · Carry over","",paItems(X.prev,a.prev,"D · Carry over from previous years, FY 2024–25")+srcPA);
+  const tot=vRoll("E · Totals","",moneyTbl+src);
   const add=a.supp+a.adj+a.prev, opc=over/a.main*100;
+  /* summary graphs: few words, gauges show each amount against the budget */
   const cards=`<div class="dsh-kpis k5">${[
-    ["1 · Budget at the start of the year",fB(a.main),fPill("neu","Main Estimates, tabled Feb 29, 2024"),"Set before the year began on April 1, 2024",""],
-    ["2–4 · Added during the year",(add<0?"−":"+")+fB(Math.abs(add)),fPill("watch","+"+fPf(add/a.main*100)+"% on the budget"),"Additional funding "+fB(a.supp)+", changes and transfers "+fB(a.adj)+", previous years "+fB(a.prev),""],
-    ["Total approved by Parliament",fB(a.auth),fPill("neu",fB(a.main)+" + "+fB(add)),"The most the department could spend",""],
-    ["Spent",fB(a.used),fPill(over>0?"off":"ok",fPf(a.used/a.main*100)+"% of the budget"),fPf(a.used/a.auth*100)+"% of the total approved",fGauge(a.used/a.main*100,over>0?"off":"ok","Spent vs budget")],
-    [over>0?"5 · Over budget":"5 · Under budget",(over>0?"+":"−")+fB(Math.abs(over)),fPill(over>0?"off":"ok",vsP(opc)),"Spent minus the budget at the start of the year",""]].map(fCard).join("")}</div>`;
-  return {cards,fund,supp,adj,prev}; }
+    ["A · Budget",fB(a.main),fPill("neu","Main Estimates"),"",fGauge(100,"neu","Budget")],
+    ["B–D · Added",(add<0?"−":"+")+fB(Math.abs(add)),fPill("watch","+"+fPf(add/a.main*100)+"%"),"",fGauge(add/a.main*100,"watch","Added vs budget")],
+    ["E · Total approved",fB(a.auth),fPill("neu",fPf(a.auth/a.main*100)+"% of budget"),"",fGauge(a.auth/a.main*100,"neu","Approved vs budget")],
+    ["Spent",fB(a.used),fPill(over>0?"off":"ok",fPf(a.used/a.main*100)+"% of budget"),"",fGauge(a.used/a.main*100,over>0?"off":"ok","Spent vs budget")],
+    [over>0?"Over budget":"Under budget",(over>0?"+":"−")+fB(Math.abs(over)),fPill(over>0?"off":"ok",vsP(opc)),"",fGauge(Math.abs(opc),over>0?"off":"ok","Over budget")]].map(fCard).join("")}</div>`;
+  return {cards,fund,supp,adj,prev,tot}; }
 function fedCycle(){
   const R=[
    ["Federal budget","Fall (since Budget 2025)","The government's economic priorities, projections and proposed new measures. It does not itself authorise spending.","Budget 2026 page"],
@@ -2154,9 +2158,9 @@ function fedDept(id,tab0){
   /* biggest differences, totalled: the six largest, all other programs, and the total, which equals the department's overall difference */
   const budTbl=`<div class="sctwrap"><table class="sct"><caption>FY 2024–25 · budget at the start of the year, by program</caption><thead><tr><th scope="col">Program</th><th scope="col">Budget</th></tr></thead><tbody>${pr.map(p=>`<tr><th scope="row">${fEsc(p.n)}<small class="fcr">${fEsc(p.cr)}</small></th><td>${fB(p.p)}</td></tr>`).join("")}<tr class="tot"><th scope="row">Total, all ${pr.length} programs</th><td>${fB(pr.reduce((t,p)=>t+p.p,0))}</td></tr></tbody></table></div>`;
   const why=big.length?(()=>{const sum=(L,k)=>L.reduce((t,p)=>t+p[k],0), rest=pr.filter(p=>!big.includes(p)), TP=sum(pr,"p"), TA=sum(pr,"a"), vc=(v,b)=>b?vplan("exp",v/b*100):"";
-    const row=(n,P,A,x,cls)=>`<tr${cls?` class="${cls}"`:""}><th scope="row">${n}</th><td>${fB(P)}</td><td>${fB(A)}</td><td class="vcell ${vc(A-P,P)}">${vsSgn(A-P,fB)}${P?` <small>${vsP((A-P)/P*100)}</small>`:""}</td><td>${x}</td></tr>`;
-    return `<div class="sctwrap"><table class="sct fexp"><caption>Biggest differences · in the department's own words</caption><thead><tr><th scope="col">Program</th><th scope="col">Budget</th><th scope="col">Spent</th><th scope="col">Difference</th><th scope="col">The department's reason</th></tr></thead><tbody>${big.map(p=>row(fEsc(p.n),p.p,p.a,p.x?fEsc(p.x):'<span class="muted">No reason given in the open data. See the 2024–25 Departmental Results Report under Sources.</span>')).join("")}
-      ${row("All other programs <small class=\"fcr\">"+rest.length+" programs; see section 1</small>",sum(rest,"p"),sum(rest,"a"),"")}
+    const row=(n,P,A,x,cls)=>`<tr${cls?` class="${cls}"`:""}><th scope="row">${n}</th><td class="fwhy2">${x}</td><td>${fB(P)}</td><td>${fB(A)}</td><td class="vcell ${vc(A-P,P)}">${vsSgn(A-P,fB)}${P?` <small>${vsP((A-P)/P*100)}</small>`:""}</td></tr>`;
+    return `<div class="sctwrap"><table class="sct fexp"><caption>Biggest differences · in the department's own words</caption><thead><tr><th scope="col">Program</th><th scope="col">The department's reason</th><th scope="col">Budget</th><th scope="col">Spent</th><th scope="col">Difference</th></tr></thead><tbody>${big.map(p=>row(fEsc(p.n),p.p,p.a,p.x?fEsc(p.x):'<span class="muted">No reason given in the open data. See the 2024–25 Departmental Results Report under Sources.</span>')).join("")}
+      ${row("All other programs <small class=\"fcr\">"+rest.length+" programs; see section A</small>",sum(rest,"p"),sum(rest,"a"),"")}
       ${row("Total, all "+pr.length+" programs",TP,TA,"","tot")}</tbody></table></div>`;})():"";
   /* goals: one line per indicator, grouped by program area, with the department's own rating */
   const ST={"met":["Met","g-d"],"not met":["Not met","g-b"],"to be achieved":["Due later","g-x"],"not available":["Not reported","g-n"],"":["No rating","g-n"]};
@@ -2204,10 +2208,10 @@ function fedDept(id,tab0){
        <div class="src">Sources: ${fA(["Senate of Canada, Debates, Oct 8, 2026","https://sencanada.ca/en/content/sen/chamber/451/debates/092db_2026-10-08-e"])} · ${fA(["Treasury Board Secretariat: Reporting cycle","https://www.canada.ca/en/treasury-board-secretariat/services/planned-government-spending/expenditure-management-system/reporting-cycle.html"])} · ${fA(["Treasury Board Secretariat, Question Period Note: Public Accounts of Canada 2025","https://search.open.canada.ca/qpnotes/record/tbs-sct%2CTBS-2025-QP-12-00008"])}</div></div>
      <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${rep("2025","Goals","2025–26 Departmental Plan")}</div>`,
    y24:(()=>{const pa=paBlock(d,h);
-     const bud=h?vRoll("1 · Budget at the start of the year","",progTbl+`<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):`<p class="note">The FY 2024–25 spending for this organization is not in the open data. See its 2024–25 Departmental Results Report under Sources.</p>`;
-     const spent=h?vRoll("5 · Spent compared with the budget","",`${why}${unexpl}<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):"";
-     return `<p class="fynote">Click a section to open it.</p>`+(pa?pa.cards+pa.fund:"")+bud+(pa?pa.supp+pa.adj+pa.prev:"")+spent+
-     vRoll("Goals and results",d.i24.length?d.i24.length+" goals · "+d.c24["met"]+" met, "+d.c24["not met"]+" not met":"Not in the open data",goalsHtml);})(),
+     const bud=h?vRoll("A · Budget","",progTbl+`<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):`<p class="note">The FY 2024–25 spending for this organization is not in the open data. See its 2024–25 Departmental Results Report under Sources.</p>`;
+     const spent=h?vRoll("Program totals","",`${why}${unexpl}<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):"";
+     return `<p class="fynote">Click a section to open it.</p>`+(pa?pa.cards+pa.fund:"")+bud+(pa?pa.supp+pa.adj+pa.prev+pa.tot:"")+
+     vRoll("Goals and results",d.i24.length?d.i24.length+" goals · "+d.c24["met"]+" met, "+d.c24["not met"]+" not met":"Not in the open data",goalsHtml)+spent;})(),
    b26:typeof fedBudgetPane==="function"?fedBudgetPane(d):"",
    hist:hist+`<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`,
    src:`${srcTbl}<div class="note">Spending and goals come from the Treasury Board's open data, where this department is listed as ${fEsc(d.org)}. Some links open a list of reports; pick the named report and year there.</div><div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${fA(FSC_SRC.pipo)}</div>`

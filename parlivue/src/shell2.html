@@ -593,6 +593,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .fitems tr.fsub th,.fitems tr.fsub td{font-weight:400;color:var(--muted)}
 .fmoney td{text-align:right;white-space:nowrap}.fmkey{margin:2px 0}.dkey i.blk{background:var(--ink)}
 .fitems td.cau{font-weight:600}
+.sct.fexp td:not(.fwhy2){text-align:right;white-space:nowrap}.sct.fexp th[scope=col]{text-align:right}.sct.fexp th[scope=col]:nth-child(-n+2){text-align:left}
+.dgauge.neu .gf{stroke:var(--ink)}.dgauge.watch .gf{stroke:var(--yel)}
 #fedscore .why .src{margin-top:8px!important}
 .fbridge tr.fsub th{padding-left:28px;font-weight:400;color:var(--muted)}.fbridge tr.fsub td{color:var(--muted)}
 .fedhow .steps li{max-width:none}
@@ -950,7 +952,7 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
 .mi-big{margin:0;font:700 26px var(--f-body);font-variant-numeric:tabular-nums}
 .mi-act{display:flex;flex-wrap:wrap;gap:8px}
 .minidx>.chipbtn{justify-self:start}
-.sct.fexp td:last-child{min-width:320px;font-size:13.5px;color:var(--muted)}
+.sct.fexp td.fwhy2{min-width:320px;font-size:13.5px;color:var(--muted)}
 .fsh{margin:6px 0 0;font:700 17px var(--f-body)}
 .fback{justify-self:start}
 #fedscore,#fedbudget{display:grid;gap:16px}
