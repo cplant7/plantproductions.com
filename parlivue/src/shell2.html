@@ -593,8 +593,20 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .fitems tr.fsub th,.fitems tr.fsub td{font-weight:400;color:var(--muted)}
 .fmoney td{text-align:right;white-space:nowrap}.fmkey{margin:2px 0}.dkey i.blk{background:var(--ink)}
 .fitems td.cau{font-weight:600}
-.fgrpt tr.fgh th{text-align:left!important;background:var(--faint);font:700 15px var(--f-body,inherit);padding-top:10px}.fgrpt th.fgp{padding-left:22px;font-weight:500}.fgrpt tr.fgs th,.fgrpt tr.fgs td{font-weight:700;border-top:1px solid var(--rule)}
-.fsh.fgrp{font-size:22px;margin:18px 0 2px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
+.fgrp{margin:22px 0 8px;font:600 12.5px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
+.fstack{border:1px solid var(--rule);border-radius:14px;background:var(--surface);overflow:hidden}
+.fstack>.roll.frow{border:0;border-radius:0;border-top:1px solid var(--rule)}.fstack>.roll.frow:first-child{border-top:0}
+.roll.frow>summary{display:grid;justify-content:stretch;grid-template-columns:34px minmax(0,1fr) auto 26px;align-items:center;gap:14px;padding:11px 16px}
+.roll.frow>summary:hover{background:var(--faint)}.roll.frow[open]>summary{background:var(--faint);border-bottom:1px solid var(--rule)}
+.frow .rollb{padding-top:14px}
+.fbadge{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font:700 15px var(--f-mono);color:var(--bg);background:var(--ink)}
+.fbadge.by{background:color-mix(in srgb,var(--yel) 22%,var(--surface));color:color-mix(in srgb,var(--yel) 65%,var(--ink))}
+.fbadge.bs{background:var(--brass)}.fbadge.bg{background:color-mix(in srgb,var(--ok) 18%,var(--surface));color:var(--ok)}.fbadge.bp{background:color-mix(in srgb,var(--check) 15%,var(--surface));color:var(--check)}
+.frt{display:grid;gap:1px;min-width:0}.frt b{font:700 16.5px var(--f-mark);color:var(--ink)}.frt small{font-size:13px;color:var(--muted)}
+.framt{font-weight:700;font-size:17px;font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap;text-align:right}.framt.up{color:var(--check)}.framt.dn{color:var(--ok)}.framt.cau{color:color-mix(in srgb,var(--yel) 70%,var(--ink))}
+.frow .rollc{width:26px;height:26px}.frow .rollc svg{width:13px;height:13px}
+@media (max-width:620px){.roll.frow>summary{grid-template-columns:30px minmax(0,1fr) 22px}.framt{grid-column:2;text-align:left;font-size:14px}.frow .rollc{grid-row:1;grid-column:3}}
+.fgrpt th,.fgrpt td{padding-top:4px!important;padding-bottom:4px!important;font-size:14px}.fgrpt tr.fgh th{text-align:left!important;background:var(--faint);font:700 15px var(--f-body,inherit);padding-top:10px}.fgrpt th.fgp{padding-left:22px;font-weight:500}.fgrpt tr.fgs th,.fgrpt tr.fgs td{font-weight:700;border-top:1px solid var(--rule)}
 .sct.fexp td:not(.fwhy2){text-align:right;white-space:nowrap}.sct.fexp th[scope=col]{text-align:right}.sct.fexp th[scope=col]:nth-child(-n+2){text-align:left}
 .dgauge.neu .gf{stroke:var(--ink)}.dgauge.watch .gf{stroke:var(--yel)}
 #fedscore .why .src{margin-top:8px!important}
