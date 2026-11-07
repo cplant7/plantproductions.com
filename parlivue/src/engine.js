@@ -404,7 +404,7 @@ const CH_META={fedbudget:["Snapshot · Nov 5 2026","Government of Canada · Budg
   mbleg:["Snapshot · Nov 5 2026","Legislative Assembly of Manitoba · 43rd Legislature","All 57 seats in Winnipeg, with every MLA, the Cabinet and every department."],
   skleg:["Snapshot · Nov 5 2026","Legislative Assembly of Saskatchewan · 30th Legislature","All 61 seats in Regina, with every MLA, the Cabinet and every ministry."],
   ontario:["Snapshot · Nov 5 2026","Legislative Assembly of Ontario · 44th Parliament","All 124 seats at Queen's Park, with every MPP, riding and party."]};
-function show(id,{focusKey}={}){ { const fs=document.getElementById("fed-switch"); if(fs&&id!=="federal") fs.hidden=true; }
+function show(id,{focusKey}={}){ if(id==="federal"){ id="fedscore"; focusKey=undefined; } /* the federal Cabinet wheel was removed; old links open Departments */ { const fs=document.getElementById("fed-switch"); if(fs&&id!=="federal") fs.hidden=true; }
   const homeE=document.getElementById("landing"); if(homeE) homeE.hidden=id!=="home";
   if(id==="home"){ tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab==="home"?"true":"false")); Object.values(chEls).forEach(el=>el.hidden=true);
     wheelHome(); wheelEls.forEach(el=>el.hidden=true); bannerEl.hidden=true; newsEl.hidden=true; commonsEl.hidden=true; const wf0=document.getElementById("wheelfoot"); if(wf0) wf0.hidden=true; renderHome();
@@ -425,11 +425,11 @@ function show(id,{focusKey}={}){ { const fs=document.getElementById("fed-switch"
   commonsEl.hidden=true;
   if(id==="news"){ tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab==="news"?"true":"false"));
     wheelHome(); wheelEls.forEach(el=>el.hidden=true); bannerEl.hidden=true; newsEl.hidden=false; renderNews();
-    document.getElementById("tagline").textContent="Federal news centred on Prime Minister Carney, linked to the ministers and departments on the federal wheel.";
+    document.getElementById("tagline").textContent="Federal news centred on Prime Minister Carney and the ministers and departments involved.";
     document.getElementById("stamp").textContent="News · Snapshot Nov 5 2026"; document.getElementById("scope").textContent="Federal";
     try{ if(location.hash!=="#news") history.replaceState(null,"","#news"); }catch(e){} window.scrollTo(0,0); return; }
   wheelHome(); wheelEls.forEach(el=>el.hidden=false); newsEl.hidden=true;
-  if(id!=="onwheel"&&(!DS[id]||id==="ontario")) id="federal";
+  if(id!=="onwheel"&&(!DS[id]||id==="ontario")){ show("home"); return; }
   const wid=id==="onwheel"?"ontario":id;
   if(wid==="ontario") onEnsureLayout();
   tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===id?"true":"false"));
@@ -522,7 +522,7 @@ function renderNews(){
        ${c.out?`<div class="cflow"><span class="cout">Out</span>${c.out}</div>`:""}<div class="cflow"><span class="cin">In</span>${c.in}</div>
        ${c.pending?`<div class="cpend">${c.pending}</div>`:""}<a class="nsrc" href="${c.src[1]}" target="_blank" rel="noopener">${c.src[0]} ↗</a></li>`).join("")}</ol></section>
    </aside>`;
-  newsEl.querySelectorAll("[data-tab][data-key]").forEach(b=>b.onclick=()=>show(b.dataset.tab,{focusKey:b.dataset.key}));
+  newsEl.querySelectorAll("[data-tab][data-key]").forEach(b=>{ if(b.dataset.tab==="federal"){ b.classList.add("static"); b.disabled=true; return; } b.onclick=()=>show(b.dataset.tab,{focusKey:b.dataset.key}); });
 }
 
 /* ---------- start ---------- */

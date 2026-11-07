@@ -274,7 +274,7 @@ function hocProfile(){
        <div class="kv2"><span>2025 election</span>${pchip(s.ge)}<span class="arr">→</span><span>Now</span>${pchip(s.party)}</div>
        ${roles.length?`<h3>Roles</h3><ul class="list">${roles.map(r=>`<li class="item"><span class="nm" style="font-size:14px">${r}</span></li>`).join("")}</ul>`:""}
        ${log.length?`<h3>Changes in this riding</h3><ul class="list">${log.map(x=>`<li class="item"><span class="nm" style="font-size:14px">${x[2]}</span><span class="rl">${fmtDate(x[0])} · ${x[6]}</span></li>`).join("")}</ul>`:""}
-       ${min?`<button class="chipbtn" id="towheel">Open on the federal wheel →</button>`:""}
+       
        ${s.mp?`<div class="role"><div class="kicker">About this role</div><p>Members of Parliament represent one riding each in the House of Commons, where they debate and vote on laws and hold the government to account.</p><dl class="rel"><dt>Elected by</dt><dd>Voters of ${s.riding}</dd></dl></div>`:""}
        ${srcA(HOC_SRC)}${srcA(PLAN_SRC)}<button class="linkbtn" id="hback" style="font-size:13px">← How the government is run</button>`;
   }
