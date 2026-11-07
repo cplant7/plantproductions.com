@@ -166,6 +166,29 @@ function paBlock(d,h){ if(!d.pa24||!FSC.pa24) return null; const X=PA24_DETAIL[d
     ["Spent",fB(a.used),fPill(over>0?"off":"ok",(over>0?"Over budget +":"Under budget −")+fB(Math.abs(over))),"",fGauge(a.used/a.main*100,over>0?"off":"ok","Spent vs budget")],
     [over>0?"Over budget":"Under budget",(over>0?"+":"−")+fB(Math.abs(over)),fPill(over>0?"off":"ok","vs. "+fB(a.main)+" budget"),"",fGauge(Math.abs(opc),over>0?"off":"ok","Over budget")]].map(fCard).join("")}</div>`;
   return {cards,fund,supp,adj,prev,tot}; }
+/* FY 2026–27: estimates to date, same layout as FY 2024–25 (no spending yet) */
+const EST26_SRC={me:["Treasury Board: 2026–27 Main Estimates, organization summary (CSV)","https://www.canada.ca/content/dam/tbs-sct/documents/planned-government-spending/main-estimates/2026-27/organization-summary.csv"],sa:["Treasury Board: Supplementary Estimates (A), 2026–27, organization summary (CSV)","https://www.canada.ca/content/dam/tbs-sct/documents/planned-government-spending/supplementary-estimates/organization-summary-a-2026-27.csv"]};
+function estItems(rows,cap,none){ const sum=(rows||[]).reduce((t,r)=>t+r[2],0), vl=v=>v==="S"?"Statutory":v;
+  return `<div class="sctwrap"><table class="sct fitems"><caption>${cap}</caption><thead><tr><th scope="col">Vote</th><th scope="col">Description</th><th scope="col">Amount</th></tr></thead><tbody>${rows&&rows.length?rows.map(r=>`<tr><td class="fvote">${vl(r[0])}</td><td>${fEsc(r[1])}</td>${fCol(r[2],r[2]>0&&none!=="A"?"cau":"")}</tr>`).join(""):`<tr><td colspan="3" class="muted">${none||"None so far this year."}</td></tr>`}
+   <tr class="tot"><th scope="row" colspan="2">Total</th>${fCol(sum,none==="A"?"":"cau")}</tr></tbody></table></div>`; }
+function est26Block(d){ const X=typeof EST26!=="undefined"&&EST26[d.id]; if(!X) return null;
+  const S=k=>(X[k]||[]).reduce((t,r)=>t+r[2],0), a=S("A"), b=S("B"), c=S("C"), tot=a+b+c, add=b+c;
+  const bd=(l,cl)=>`<span class="fbadge sm ${cl}">${l}</span>`, sM=`<div class="src">Source: ${fA(EST26_SRC.me)}</div>`, sA=`<div class="src">Source: ${fA(EST26_SRC.sa)}</div>`;
+  const R=[[bd("A","bk")+"Budget (Main Estimates)",a,""],[bd("B","by")+"Additional funding (Supplementary Estimates (A))",b,"cau"],[bd("C","by")+"Changes and transfers",c,"cau"],[bd("E","bk")+"Total approved so far",tot,"","tot"]];
+  const moneyTbl=`<div class="sctwrap"><table class="sct fmoney"><thead><tr><th scope="col">Item</th><th scope="col">Amount</th></tr></thead><tbody>${R.map(r=>`<tr${r[3]?' class="tot"':""}><th scope="row">${r[0]}</th>${fCol(r[1],r[2])}</tr>`).join("")}
+     <tr><th scope="row">${bd("","fsp")}Spent during the year</th><td class="muted" style="text-align:right">Known after the year ends</td></tr></tbody></table></div><p class="note">Supplementary Estimates (B) for FY 2026–27 have not been tabled yet. Spending is reported in the Public Accounts after the year ends on Mar 31, 2027.</p>`;
+  const sg=v=>v===0?fB(0):(v<0?"−":"+")+fB(Math.abs(v));
+  return {
+   cards:`<div class="dsh-kpis k4">${[
+    ["A · Budget",fB(a),fPill("neu","Main Estimates"),"",fGauge(100,"neu","Budget")],
+    ["B–C · Added",sg(add),fPill("watch","Supplementary Estimates (A)"),"",fGauge(Math.abs(add)/a*100,"watch","Added vs budget")],
+    ["E · Total approved so far",fB(tot),fPill("neu",fB(a)+" "+(add<0?"−":"+")+" "+fB(Math.abs(add))),"",fGauge(tot/a*100,"neu","Approved vs budget")],
+    ["Spent","—",fPill("watch","Not known yet"),"",""]].map(fCard).join("")}</div>`,
+   fund:fRoll("$","bs","Financial Summary","Where the funding comes from so far",fB(tot)+" approved","",moneyTbl+sM.replace("</div>"," · "+fA(EST26_SRC.sa)+"</div>")),
+   bud:fRoll("A","bk","Budget","Main Estimates, by vote",fB(a),"",estItems(X.A,"A · Budget (Main Estimates), FY 2026–27","A")+sM),
+   supp:fRoll("B","by","Additional funding","Supplementary Estimates (A), May 2026",sg(b),"cau",estItems(X.B,"B · Additional funding (Supplementary Estimates (A)), FY 2026–27")+sA),
+   adj:fRoll("C","by","Changes and transfers","Transfers with other departments in Supplementary Estimates (A)",sg(c),"cau",estItems(X.C,"C · Changes and transfers, FY 2026–27")+sA),
+   tot:fRoll("E","bk","Totals","Approved so far this year",fB(tot)+" approved","",moneyTbl+sM.replace("</div>"," · "+fA(EST26_SRC.sa)+"</div>"))}; }
 function fedCycle(){
   const R=[
    ["Federal budget","Fall (since Budget 2025)","The government's economic priorities, projections and proposed new measures. It does not itself authorise spending.","Budget 2026 page"],
@@ -272,14 +295,14 @@ function fedDept(id,tab0){
   const intro=`<p class="pagelede">${fEsc(d.ov)}</p>${d.ai||d.ai26?`<div class="why aibox"><b>AI and digital.</b> ${fEsc(d.ai)}${d.ai26&&d.ai26.length?`<ul class="aiu">${d.ai26.map(x=>`<li>${fEsc(x[0])} <span class="muted">(${fEsc(x[1])}${x[2]?", p. "+x[2]:""})</span></li>`).join("")}</ul>`:`<span class="muted"> Budget 2026 (Nov 5, 2026) names no AI measure for this department.</span>`}<div class="src">Source: ${rep("2025","Goals","2025–26 Departmental Plan")} · ${fA(FSC_SRC.ai)}${typeof B26_SRC!=="undefined"?" · "+fA(B26_SRC):""}</div></div>`:""}`;
   const panes={
 
-   y26:`<p class="fynote">${FYR(2026)}.</p>${d.tabNotes&&d.tabNotes.y26?`<div class="why"><b>${fEsc(d.tabNotes.y26[0])}.</b> ${fEsc(d.tabNotes.y26[1])}</div>`:""}<div class="dsh-kpis k3">${[
+   y26:(()=>{const e=est26Block(d); return `<p class="fynote">${FYR(2026)}. Click a section to open it.</p>`+(e?e.cards+`<h4 class="fgrp">Financials</h4><div class="fstack">`+e.fund+e.bud+e.supp+e.adj+e.tot+`</div><h4 class="fgrp">Plan</h4>`:"")+`${d.tabNotes&&d.tabNotes.y26?`<div class="why"><b>${fEsc(d.tabNotes.y26[0])}.</b> ${fEsc(d.tabNotes.y26[1])}</div>`:""}<div class="dsh-kpis k3">${[
        ["Budget",fB(d.plan.y26),fPill("neu",d.plan.cmp26?d.plan.cmp26:d.plan.y25?vsP((d.plan.y26-d.plan.y25)/d.plan.y25*100)+" vs FY 2025–26 budget":"Budget"),d.plan.s26?"From the "+d.plan.s26:"Estimate in the 2025–26 Departmental Plan",""],
        ["Staff planned",fN(d.plan.f26),fPill("neu",d.plan.cmp26?"Not comparable with FY 2025–26":d.plan.f25?vsP((d.plan.f26-d.plan.f25)/d.plan.f25*100)+" vs FY 2025–26":"Budget"),"Counted as full-time staff",""],
        ["Goals set",String(d.n26),fPill("neu","FY 2025–26: "+d.n25),"Goals the department set for FY 2026–27"+(d.dri26?` · the ${fEsc(d.plan.s26||"2026–27 Departmental Plan")} also lists ${d.dri26} department-wide goals (departmental result indicators)`:""),""]].map(fCard).join("")}</div>
      ${crpTbl([["FY 2026–27 budget",c=>fB(c[2])],["Change from FY 2025–26",c=>d.crpNote&&d.crpNote[c[0]]?`<span class="fcrn">${fEsc(d.crpNote[c[0]])}</span>`:c[1]?vsP((c[2]-c[1])/c[1]*100):"—"]],"FY 2026–27 · budget by main area of work")}
      ${d.plan.y27&&d.plan.s26?`<div class="sctwrap"><table class="sct"><caption>Money and staff planned for the next three years, from the ${d.plan.s26}</caption><thead><tr><th scope="col">Fiscal year</th><th scope="col">Money planned</th><th scope="col">Staff planned</th></tr></thead><tbody>${[["FY 2026–27",d.plan.y26,d.plan.f26],["FY 2027–28",d.plan.y27,d.plan.f27],["FY 2028–29",d.plan.y28,d.plan.f28]].map(r=>`<tr><th scope="row">${r[0]}</th><td>${fB(r[1])}</td><td>${fN(r[2])}</td></tr>`).join("")}</tbody></table></div>`:""}
      <p class="fynote">This year's results come out in fall 2027, in the 2026–27 Departmental Results Report. ${d.plan.s26?`The amounts above are from the ${d.plan.s26}. ${d.chg?fEsc(d.chg):""}`:"The amounts above are the estimate in the 2025–26 Departmental Plan. The 2026–27 plan's spending tables are not in the open data yet."} They do not include the changes in Budget 2026 (Nov 5, 2026). See the Budget 2026 section.</p>
-     <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${rep("2026","Goals","2026–27 Departmental Plan")}</div>`,
+     <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${rep("2026","Goals","2026–27 Departmental Plan")}</div>`;})(),
    y25:`<p class="fynote">${FYR(2025)}.</p>${d.tabNotes&&d.tabNotes.y25?`<div class="why"><b>${fEsc(d.tabNotes.y25[0])}.</b> ${fEsc(d.tabNotes.y25[1])}</div>`:""}${d.plan.y25fc?`<div class="why"><b>Newer estimate.</b> The ${fEsc(d.plan.s26)} expects FY 2025–26 spending of ${fB(d.plan.y25fc)} and ${fN(d.plan.f25fc)} full-time staff. The plan at the start of the year was ${fB(d.plan.y25)} and ${fN(d.plan.f25)} staff. This is an estimate, not a final result.</div>`:""}<div class="dsh-kpis k3">${[
        ["Budget",fB(d.plan.y25),fPill("neu","Results not out yet"),"From the 2025–26 Departmental Plan",""],
        ["Staff planned",fN(d.plan.f25),fPill("neu","Plan"),"Counted as full-time staff",""],
