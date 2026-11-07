@@ -593,6 +593,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .fitems tr.fsub th,.fitems tr.fsub td{font-weight:400;color:var(--muted)}
 .fmoney td{text-align:right;white-space:nowrap}.fmkey{margin:2px 0}.dkey i.blk{background:var(--ink)}
 .fitems td.cau{font-weight:600}
+.why.aibox{font-size:13px;line-height:1.45;padding:7px 11px;margin-top:6px;color:var(--muted)}.why.aibox b{color:var(--ink)}.why.aibox .aiu{margin:3px 0 0;padding-left:18px}.why.aibox .aiu li{margin:0}.why.aibox .muted{font-size:12px!important;display:inline!important;margin:0!important}.why.aibox .src{font-size:11.5px;margin-top:4px!important}
 .fgrp{margin:22px 0 8px;font:600 12.5px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
 .fstack{border:1px solid var(--rule);border-radius:14px;background:var(--surface);overflow:hidden}
 .fstack>.roll.frow{border:0;border-radius:0;border-top:1px solid var(--rule)}.fstack>.roll.frow:first-child{border-top:0}
@@ -2208,7 +2209,7 @@ function fedDept(id,tab0){
   const sel=tabs.some(t=>t[0]===tab0)?tab0:"y26";
   const rep=(y,cat,lab)=>{const s=fRep(d,y,cat);return s&&s.u?`<a href="${s.u}" target="_blank" rel="noopener">${fEsc(s.txt)}</a>`:lab;};
   const crpTbl=(cols,cap)=>d.crp.length?`<div class="sctwrap"><table class="sct"><caption>${cap}</caption><thead><tr><th scope="col">Main area of work<small class="fth">core responsibility</small></th>${cols.map(c=>`<th scope="col">${c[0]}</th>`).join("")}</tr></thead><tbody>${d.crp.map(c=>`<tr><th scope="row">${fEsc(c[0])}</th>${cols.map(k=>`<td>${k[1](c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`:"";
-  const intro=`<p class="pagelede">${fEsc(d.ov)}</p>${d.ai||d.ai26?`<div class="why"><b>AI and digital.</b> ${fEsc(d.ai)}${d.ai26&&d.ai26.length?`<ul class="aiu">${d.ai26.map(x=>`<li>${fEsc(x[0])} <span class="muted">(${fEsc(x[1])}${x[2]?", p. "+x[2]:""})</span></li>`).join("")}</ul>`:`<span class="muted"> Budget 2026 (Nov 5, 2026) names no AI measure for this department.</span>`}<div class="src">Source: ${rep("2025","Goals","2025–26 Departmental Plan")} · ${fA(FSC_SRC.ai)}${typeof B26_SRC!=="undefined"?" · "+fA(B26_SRC):""}</div></div>`:""}`;
+  const intro=`<p class="pagelede">${fEsc(d.ov)}</p>${d.ai||d.ai26?`<div class="why aibox"><b>AI and digital.</b> ${fEsc(d.ai)}${d.ai26&&d.ai26.length?`<ul class="aiu">${d.ai26.map(x=>`<li>${fEsc(x[0])} <span class="muted">(${fEsc(x[1])}${x[2]?", p. "+x[2]:""})</span></li>`).join("")}</ul>`:`<span class="muted"> Budget 2026 (Nov 5, 2026) names no AI measure for this department.</span>`}<div class="src">Source: ${rep("2025","Goals","2025–26 Departmental Plan")} · ${fA(FSC_SRC.ai)}${typeof B26_SRC!=="undefined"?" · "+fA(B26_SRC):""}</div></div>`:""}`;
   const panes={
 
    y26:`<p class="fynote">${FYR(2026)}.</p>${d.tabNotes&&d.tabNotes.y26?`<div class="why"><b>${fEsc(d.tabNotes.y26[0])}.</b> ${fEsc(d.tabNotes.y26[1])}</div>`:""}<div class="dsh-kpis k3">${[
