@@ -5,8 +5,9 @@
 const B26_SRC=["Budget 2026: Masters of our destiny (Department of Finance Canada, tabled Nov 5, 2026)","https://budget.canada.ca"];
 let B26=null, B26_P=null;
 function loadB26(){ if(B26) return Promise.resolve(B26); if(!B26_P) B26_P=fetch("budget2026.json").then(r=>{if(!r.ok) throw new Error(r.status); return r.json();}).then(j=>(B26=j)).catch(e=>{B26_P=null; throw e;}); return B26_P; }
-/* $ formatting for budget tables: billions with one decimal, millions as whole numbers (as published) */
-const bB=n=>n==null?"—":(n<0?"−":"")+"$"+Math.abs(n).toLocaleString("en-CA",{minimumFractionDigits:1,maximumFractionDigits:1})+"B";
+/* $ formatting for budget tables: all in millions */
+/* published in billions; shown in millions like every federal amount on ParliVue ($448.5B → $448,500M) */
+const bB=n=>n==null?"—":(n<0?"−":"")+"$"+Math.round(Math.abs(n)*1000).toLocaleString("en-CA")+"M";
 const bM=n=>n==null?"—":(n<0?"−":"")+"$"+Math.abs(n).toLocaleString("en-CA",{maximumFractionDigits:0})+"M";
 const bP=n=>n==null?"—":(n<0?"−":"")+Math.abs(n).toFixed(1)+"%";
 const bPg=(p,p2)=>`<span class="b26pg">p.&nbsp;${p}${p2&&p2!==p?"–"+p2:""}</span>`;

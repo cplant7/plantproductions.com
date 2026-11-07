@@ -587,6 +587,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .dsh-head .pagelede{margin:0;max-width:none}
 .fedhow .dkey{padding:0 14px 14px}
 #fedscore .note{font-size:13px;line-height:1.45}
+.fitems td,.fitems th{text-align:left}.fitems td:last-child,.fitems th:last-child{text-align:right;white-space:nowrap}.fitems .fvote{white-space:nowrap;color:var(--muted);font-family:var(--f-mono);font-size:13px}
+.sct tr.fover th{font-weight:700}
 #fedscore .why .src{margin-top:8px!important}
 .fbridge tr.fsub th{padding-left:28px;font-weight:400;color:var(--muted)}.fbridge tr.fsub td{color:var(--muted)}
 .fedhow .steps li{max-width:none}
@@ -1933,8 +1935,8 @@ function fedSwitch(cur){
   const b=(id,t,sub)=>`<button class="vsw ${cur===id?"on":""}" data-go="${id}" ${cur===id?'aria-current="page"':""}><span class="vswk">Government of Canada</span><b>${t}</b><span class="vsws">${sub}</span></button>`;
   return `<nav class="vswitch v3" aria-label="Government of Canada pages">${b("fedscore","Departments","31 departments and agencies: budgets, spending and results")}${b("fedbudget","Budget 2026","Tabled Nov 5, 2026: fiscal outlook, new measures and departments named")}${b("federal","Cabinet wheel","Prime Minister, ministers and the deputy heads of each department")}</nav>`;
 }
-/* department pages show every amount in millions so they compare directly ($4,685.2M next to $537.5M); the 31-department overview keeps billions */
-let F_M=false;
+/* every federal amount is shown in millions so amounts compare directly ($4,685.2M next to $537.5M) */
+let F_M=true;
 const fB=n=>n==null?"—":F_M?"$"+(n/1e6).toLocaleString("en-CA",{minimumFractionDigits:1,maximumFractionDigits:1})+"M":Math.abs(n)>=1e9?"$"+(n/1e9).toLocaleString("en-CA",{minimumFractionDigits:2,maximumFractionDigits:2})+"B":"$"+(n/1e6).toLocaleString("en-CA",{minimumFractionDigits:1,maximumFractionDigits:1})+"M";
 const fN=n=>n==null?"—":Math.round(n).toLocaleString("en-CA");
 const fPf=x=>{const t=x.toFixed(1);return t.endsWith(".0")?t.slice(0,-2):t;};
@@ -2006,27 +2008,66 @@ function fedTiming(){
 }
 /* Public Accounts (audited): spending vs Parliament's total approval */
 const paCell=a=>a?`<td class="vcell ${a.used<=a.auth?"dn":"up"}">${fPf(a.used/a.auth*100)}% <small>${fB(a.lapsed)} unspent</small></td>`:`<td><span class="muted">—</span></td>`;
-function paBlock(d,h){ const a=d.pa24; if(!a||!FSC.pa24) return ""; const within=a.used<=a.auth, pc=a.used/a.auth*100, diff=h&&Math.abs(a.used-h[2])/a.used>0.005;
-  const R=[["Budget at the start of the year (Main Estimates)",a.main],["Added during the year (Supplementary Estimates)",a.supp],["Other changes and transfers",a.adj],["Remaining from previous years",a.prev],["Total approved by Parliament",a.auth,"tot"],["Spent during the year",a.used],["Approved but not spent (lapsed)",a.lapsed],["Approved, carried to later years",a.next]];
-  const src=`<div class="src">Source: ${fA(FSC.pa24.src)} (Volume II, pp. 41–47)</div>`;
-  const fund=vRoll("Where the money came from","FY 2024–25 · all the money Parliament approved, and what happened to it",`<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Item</th><th scope="col">Amount</th></tr></thead><tbody>${R.map(r=>`<tr${r[2]?' class="tot"':""}><th scope="row">${r[0]}</th><td>${r[1]<0?"−"+fB(-r[1]):fB(r[1])}</td></tr>`).join("")}</tbody></table></div>
-   <div class="note">The colours on this page compare spending with the budget at the start of the year. Parliament can approve more money during the year; this table shows all of it. “Lapsed” means approved but not spent by March 31.${a.rows.length>1?" Figures combine the Public Accounts rows for "+fEsc(a.rows.join(" and "))+".":""}${diff?` The Public Accounts say ${fB(a.used)} was spent; the Departmental Results Report data used elsewhere on this page says ${fB(h[2])}. Both are shown as published.`:""}${h?"":" This department's FY 2024–25 results are not in the Departmental Results Report data, but it is in the Public Accounts."}</div>${src}`);
-  /* numbered cards in the same order as "Where the money came from"; each amount matches that table */
-  const add=a.supp+a.adj+a.prev, over=a.used-a.main, opc=over/a.main*100, left=a.auth-a.used, sg=v=>(v<0?"−":"+")+fB(Math.abs(v)), P=(d.progs||[]).reduce((t,p)=>t+(p.p||0),0);
-  const run=x=>fPill("neu","Running total "+fB(x));
-  const kp=vRoll("From the budget to what was spent","FY 2024–25 · "+(over>0?"spent "+fB(over)+" ("+fPf(opc)+"%) over the start-of-year budget":"spent "+fB(-over)+" under the start-of-year budget")+" · audited Public Accounts, tabled Nov 7, 2025",`
-   <div class="dsh-kpis k4">${[
-    ["1 · Budget at the start of the year",fB(a.main),fPill("neu","Main Estimates"),Math.abs(P-a.main)<1e6?"Same as the total of “Every program”":"“Every program” totals "+fB(P),""],
-    ["2 · Added during the year",sg(a.supp),run(a.main+a.supp),"Supplementary Estimates: more money the department asked for, and Parliament approved, during the year",""],
-    ["3 · Other changes and transfers",sg(a.adj),run(a.main+a.supp+a.adj),"Adjustments, warrants and transfers during the year",""],
-    ["4 · Remaining from previous years",sg(a.prev),run(a.auth),"Approved in earlier years, not spent then, and available this year",""]].map(fCard).join("")}</div>
-   <div class="dsh-kpis k4">${[
-    ["5 · Total approved by Parliament",fB(a.auth),fPill("neu",fB(a.main)+" budget + "+fB(add)+" added"),"Cards 1 to 4 added together. The budget at the start of the year was "+fB(a.main)+".",""],
-    ["6 · Spent",fB(a.used),fPill(over>0?"off":"ok",(over>0?"Over budget ":"Within budget ")+sg(over)),fPf(a.used/a.main*100)+"% of the start-of-year budget",fGauge(a.used/a.main*100,over>0?"off":"ok","Spent vs start-of-year budget")],
-    ["7 · Over the start-of-year budget",over>0?sg(over):fB(0),fPill(over>0?"off":"ok",vsP(opc)),over>0?"Spent ("+fB(a.used)+") minus the start-of-year budget ("+fB(a.main)+"). Paid for with money added during the year.":"Spending stayed within the start-of-year budget.",""],
-    ["8 · Approved but not spent",fB(left),fPill("neu",fB(a.lapsed)+" lapsed + "+fB(a.next)+" later"),over>0?"Of the "+fB(add)+" added during the year, "+fB(over)+" went to spending over the budget; "+fB(left)+" was not used.":"Total approved minus spent.",""]].map(fCard).join("")}</div>
-   <div class="note">Even with the extra money approved during the year, the department spent ${over>0?fB(over)+" more than":"less than"} its start-of-year budget. Amounts are rounded, so totals can differ by $0.1M.</div>${src}`);
-  return [fund,kp]; }
+/* FY 2024–25 line items behind the Public Accounts totals, by department id. Amounts in dollars, as published.
+   supp: Supplementary Estimates (B), 2024–25 (Treasury Board Secretariat), voted items and the statutory item.
+   adj and prev: Public Accounts of Canada 2025, Volume II, Ministry summary (Table 1). Each list adds up exactly to the department's total. */
+const PA24_DETAIL={
+ 12:{srcSupp:["Treasury Board Secretariat: Supplementary Estimates (B), 2024–25, Department of Fisheries and Oceans","https://www.canada.ca/en/treasury-board-secretariat/services/planned-government-spending/supplementary-estimates/supplementary-estimates-b-2024-25.html"],
+  srcPA:["Public Accounts of Canada 2025, Volume II, Section 12: Fisheries, Oceans and the Canadian Coast Guard, Ministry summary","https://www.tpsgc-pwgsc.gc.ca/recgen/cpc-pac/2025/vol2/pogcc-foccg/spm-ms-eng.html"],
+  supp:[["10b","Great Bear Sea Project Finance for Permanence",200000000],
+   ["1b, 5b, 10b","Repair and maintain small craft harbours (Budget 2024)",112844197],
+   ["1b, 10b","Continue implementing the right to fish in pursuit of a moderate livelihood",66326486],
+   ["10b","Advance reconciliation on Indigenous rights and fisheries issues",60053221],
+   ["1b, 5b","Recapitalize the Canadian Coast Guard's small vessel fleet",29022821],
+   ["1b, 5b","Operational requirements of the future Canadian Coast Guard fleet (Budget 2024)",28114798],
+   ["1b","Increased marine fuel costs",20000000],
+   ["1b, 5b, 10b","Implement the fish stocks provisions in the Fisheries Act (Budget 2024)",5321024],
+   ["10b","Strengthen environmental protections for the Trans Mountain Expansion Project",2851620],
+   ["1b","Reinvestment of royalties from intellectual property",2733586],
+   ["1b","Reinvestment of revenue from polluters or the Ship-source Oil Pollution Fund",1273607],
+   ["1b","Canadian Shellfish Sanitation Program (Budget 2024)",965777],
+   ["1b, 5b","Canada's Extended Continental Shelf Program",927979],
+   ["1b","Support Indigenous Advisory and Monitoring Committees (Budget 2024)",387575],
+   ["1b","Engage Inuit organizations on traditional and country food options (Budget 2024)",318747],
+   ["Statutory","Contributions to employee benefit plans",6381831]],
+  adj:[["5","Capital Budget Carry Forward (Treasury Board Vote 35): unspent capital money carried in from FY 2023–24",178490340],
+   ["1","Operating Budget Carry Forward (Treasury Board Vote 25): unspent operating money carried in from FY 2023–24",50021773],
+   ["1, 5","Compensation Adjustments (Treasury Board Vote 15): pay changes from collective bargaining",34788986],
+   ["Statutory","Contributions to employee benefit plans: adjustment",25095961],
+   ["1","Paylist Requirements (Treasury Board Vote 30): for example parental benefits and severance pay",12760577],
+   ["Statutory","Spending of proceeds from the sale of surplus Crown assets",2699527],
+   ["1","From National Defence: Interdepartmental Maritime Command, Control and Communications program",2085790],
+   ["1","From Treasury Board Secretariat: reducing greenhouse gas emissions in federal operations",404995],
+   ["Statutory","Refunds of amounts credited to revenues in previous years",31724],
+   ["1","Government-wide Initiatives (Treasury Board Vote 10)",29390],
+   ["Statutory","Losses on foreign exchange",18631],
+   ["Statutory","Minister's salary and motor car allowance",466],
+   ["1, 5","Polar Icebreaker project: $14,327,629 moved from capital (Vote 5) to operating (Vote 1); no change in the total",0],
+   ["1","To RCMP: law enforcement record checks",-41300],
+   ["5","To Environment and Climate Change Canada: Canada Centre for Inland Waters",-1091600],
+   ["10","To Atlantic Canada Opportunities Agency: Keir's Shore Landing project",-2750000],
+   ["1","To Agriculture and Agri-Food Canada and Environment and Climate Change Canada: Federal Contaminated Sites Action Plan",-5000000]],
+  prev:[["Statutory","Proceeds from the sale of surplus Crown assets, received in earlier years and not yet spent",2037058]]}
+};
+const fSg=v=>v<0?"−"+fB(-v):fB(v);
+/* a line-item table: Vote | Description | Amount, with a total row that must equal the Public Accounts total */
+function paItems(rows,tot,cap){ const sum=(rows||[]).reduce((t,r)=>t+r[2],0), ok=rows&&rows.length&&Math.abs(sum-tot)<1000; /* Table 5 totals are in thousands */
+  return `<div class="sctwrap"><table class="sct fitems"><caption>${cap}</caption><thead><tr><th scope="col">Vote</th><th scope="col">Description</th><th scope="col">Amount</th></tr></thead><tbody>${ok?rows.map(r=>`<tr><td class="fvote">${fEsc(r[0])}</td><td>${fEsc(r[1])}</td><td>${fSg(r[2])}</td></tr>`).join(""):`<tr><td colspan="3" class="muted">The line-by-line detail for this department has not been added yet.</td></tr>`}
+   <tr class="tot"><th scope="row" colspan="2">Total</th><td>${fSg(tot)}</td></tr></tbody></table></div>`; }
+function paBlock(d,h){ const a=d.pa24; if(!a||!FSC.pa24) return null; const X=PA24_DETAIL[d.id]||{}, pc=a.used/a.auth*100, diff=h&&Math.abs(a.used-h[2])/a.used>0.005, over=a.used-a.main;
+  const src=`<div class="src">Source: ${fA(FSC.pa24.src)} (Volume II, pp. 41–47)</div>`, srcPA=X.srcPA?`<div class="src">Source: ${fA(X.srcPA)}</div>`:src;
+  const ROUND=`<div class="note">Amounts are rounded to $0.1M, so a column can be $0.1M off its total. The totals are exact.</div>`;
+  const R=[["Budget at the start of the year (Main Estimates)",a.main],["Additional funding (Supplementary Estimates)",a.supp],["Changes and transfers",a.adj],["Remaining from previous years",a.prev],["Total approved by Parliament",a.auth,"tot"],["Less: spent during the year",-a.used],["Approved but not spent (lapsed)",a.lapsed,"tot"],["Carry-over to later years",a.next]];
+  const fund=vRoll("Where the money came from","FY 2024–25 · all the money Parliament approved, and what happened to it",`<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Item</th><th scope="col">Amount</th></tr></thead><tbody>${R.map(r=>`<tr${r[2]?' class="tot"':""}><th scope="row">${r[0]}</th><td>${fSg(r[1])}</td></tr>`).join("")}</tbody></table></div>
+   <div class="note">Each line is explained in the numbered sections below. The colours on this page compare spending with the budget at the start of the year. “Lapsed” means approved but not spent by March 31.${a.rows.length>1?" Figures combine the Public Accounts rows for "+fEsc(a.rows.join(" and "))+".":""}${diff?` The Public Accounts say ${fB(a.used)} was spent; the Departmental Results Report data says ${fB(h[2])}. Both are shown as published.`:""}${h?"":" This department's FY 2024–25 results are not in the Departmental Results Report data, but it is in the Public Accounts."}</div>${src}`);
+  const supp=vRoll("2 · Additional funding","Supplementary Estimates · "+fB(a.supp)+" · money asked for and approved during the year",paItems(X.supp,a.supp,"Additional funding (Supplementary Estimates), FY 2024–25")+`<div class="note">Votes: 1 is operating, 5 is capital, 10 is grants and contributions; “b” means it was approved in Supplementary Estimates (B). Statutory items are set by other laws and do not need a vote.</div>${ROUND}${X.srcSupp?`<div class="src">Source: ${fA(X.srcSupp)}</div>`:src}`);
+  const adj=vRoll("3 · Changes and transfers",fB(a.adj)+" · carry-forwards, pay changes and transfers with other departments",paItems(X.adj,a.adj,"Changes and transfers, FY 2024–25")+`<div class="note">Treasury Board Votes 25 and 35 bring in money that was approved in FY 2023–24 but not spent then. Amounts below zero were transferred out.</div>${ROUND}${srcPA}`);
+  const prev=vRoll("4 · Remaining from previous years",fB(a.prev)+" · approved in earlier years and still available",paItems(X.prev,a.prev,"Remaining from previous years, FY 2024–25")+srcPA);
+  const T=[["1 · Budget at the start of the year",a.main],["2 · Additional funding",a.supp],["3 · Changes and transfers",a.adj],["4 · Remaining from previous years",a.prev],["Total approved by Parliament",a.auth,"tot"],["Less: spent during the year",-a.used],["Approved but not spent (lapsed)",a.lapsed,"tot"],["Carry-over to later years",a.next]];
+  const tot=vRoll("5 · Total approved by Parliament",fB(a.auth)+" approved · "+fB(a.used)+" spent · "+(over>0?fB(over)+" over the start-of-year budget":"within the start-of-year budget"),`<div class="sctwrap"><table class="sct"><caption>Sections 1 to 4 added together, FY 2024–25</caption><thead><tr><th scope="col">Item</th><th scope="col">Amount</th></tr></thead><tbody>${T.map(r=>`<tr${r[2]?' class="tot"':""}><th scope="row">${r[0]}</th><td>${fSg(r[1])}</td></tr>`).join("")}
+     <tr class="fover"><th scope="row">Spent compared with the start-of-year budget</th><td class="vcell ${over>0?"up":"dn"}">${over>0?"+":"−"}${fB(Math.abs(over))} <small>${vsP(over/a.main*100)}</small></td></tr></tbody></table></div>
+   <div class="note">The first eight lines match “Where the money came from”. The last line compares spending (${fB(a.used)}) with the budget at the start of the year (${fB(a.main)}).</div>${src}`);
+  return {fund,supp,adj,prev,tot}; }
 function fedCycle(){
   const R=[
    ["Federal budget","Fall (since Budget 2025)","The government's economic priorities, projections and proposed new measures. It does not itself authorise spending.","Budget 2026 page"],
@@ -2042,7 +2083,7 @@ function fedCycle(){
     <div class="note">The fiscal year runs April 1 to March 31. Parliament approves spending through appropriation acts based on the Estimates; budgets and economic updates set out plans and projections but do not authorise spending.</div>
     <div class="src">Source: ${fA(["Treasury Board of Canada Secretariat: Reporting cycle (updated Aug 24, 2026)","https://www.canada.ca/en/treasury-board-secretariat/services/planned-government-spending/expenditure-management-system/reporting-cycle.html"])}</div>`,false);
 }
-function fedOverview(){ F_M=false;
+function fedOverview(){
   const el=document.getElementById("fedscore"), D=FSC.depts;
   const have=D.filter(d=>fLast(d)), P=have.reduce((s,d)=>s+fLast(d)[1],0), A=have.reduce((s,d)=>s+fLast(d)[2],0);
   const over=have.filter(d=>fLast(d)[2]>fLast(d)[1]*1.0005).length;
@@ -2076,7 +2117,7 @@ function fedOverview(){ F_M=false;
     <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${fA(FSC_SRC.pipo)} · open data updated Oct 4, 2026</div>`;
   el.querySelectorAll(".fdgo").forEach(b=>b.onclick=()=>{fedDept(+b.dataset.id); window.scrollTo(0,el.offsetTop-10);});
 }
-function fedDept(id,tab0){ F_M=true;
+function fedDept(id,tab0){
   const el=document.getElementById("fedscore"), d=FSC.depts.find(x=>x.id===id), h=fLast(d), t=fTgt(d.c24);
   const sp=h?fSpend(h[1],h[2]):null;
   const ftep=h&&h[3]?h[4]/h[3]*100:null;
@@ -2091,7 +2132,7 @@ function fedDept(id,tab0){ F_M=true;
   /* programs */
   const pr=d.progs.filter(p=>p.p||p.a).map(p=>({...p,v:p.a-p.p,pc:p.p?(p.a-p.p)/p.p*100:null}));
   const big=[...pr].sort((a,b)=>Math.abs(b.v)-Math.abs(a.v)).slice(0,6).filter(p=>Math.abs(p.v)>0);
-  const progTbl=`<div class="sctwrap"><table class="sct"><caption>FY 2024–25 · budget vs. spent, every program</caption><thead><tr><th scope="col">Program</th><th scope="col">Budget</th><th scope="col">Spent</th><th scope="col">Difference</th></tr></thead><tbody>${pr.map(p=>`<tr><th scope="row">${fEsc(p.n)}<small class="fcr">${fEsc(p.cr)}</small></th><td>${fB(p.p)}</td><td>${fB(p.a)}</td><td class="vcell ${p.pc!=null?vplan("exp",p.pc):""}">${vsSgn(p.v,fB)}${p.pc!=null?` <small>${vsP(p.pc)}</small>`:""}</td></tr>`).join("")}${(()=>{const P=pr.reduce((t,p)=>t+p.p,0),A=pr.reduce((t,p)=>t+p.a,0),pc=P?(A-P)/P*100:null;return `<tr class="tot"><th scope="row">Total, all ${pr.length} programs</th><td>${fB(P)}</td><td>${fB(A)}</td><td class="vcell ${pc!=null?vplan("exp",pc):""}">${vsSgn(A-P,fB)}${pc!=null?` <small>${vsP(pc)}</small>`:""}</td></tr>`;})()}</tbody></table></div>`;
+  const progTbl=`<div class="sctwrap"><table class="sct"><caption>FY 2024–25 · start-of-year budget and spending, by program</caption><thead><tr><th scope="col">Program</th><th scope="col">Budget</th><th scope="col">Spent</th><th scope="col">Difference</th></tr></thead><tbody>${pr.map(p=>`<tr><th scope="row">${fEsc(p.n)}<small class="fcr">${fEsc(p.cr)}</small></th><td>${fB(p.p)}</td><td>${fB(p.a)}</td><td class="vcell ${p.pc!=null?vplan("exp",p.pc):""}">${vsSgn(p.v,fB)}${p.pc!=null?` <small>${vsP(p.pc)}</small>`:""}</td></tr>`).join("")}${(()=>{const P=pr.reduce((t,p)=>t+p.p,0),A=pr.reduce((t,p)=>t+p.a,0),pc=P?(A-P)/P*100:null;return `<tr class="tot"><th scope="row">Total, all ${pr.length} programs</th><td>${fB(P)}</td><td>${fB(A)}</td><td class="vcell ${pc!=null?vplan("exp",pc):""}">${vsSgn(A-P,fB)}${pc!=null?` <small>${vsP(pc)}</small>`:""}</td></tr>`;})()}</tbody></table></div>`;
   /* links the program totals (start-of-year budget) to Parliament's total approval in the Public Accounts */
   const why=big.length?`<div class="sctwrap"><table class="sct fexp"><caption>Biggest differences · in the department's own words</caption><thead><tr><th scope="col">Program</th><th scope="col">Difference</th><th scope="col">The department's reason</th></tr></thead><tbody>${big.map(p=>`<tr><th scope="row">${fEsc(p.n)}</th><td class="vcell ${p.pc!=null?vplan("exp",p.pc):""}">${vsSgn(p.v,fB)}</td><td>${p.x?fEsc(p.x):'<span class="muted">No reason given in the open data. See the 2024–25 Departmental Results Report under Sources.</span>'}</td></tr>`).join("")}</tbody></table></div>`:"";
   /* goals: one line per indicator, grouped by program area, with the department's own rating */
@@ -2139,8 +2180,11 @@ function fedDept(id,tab0){ F_M=true;
      <div class="why"><b>When will FY 2025–26 results be out?</b> The law (the <i>Financial Administration Act</i>) says the government's audited books, the Public Accounts of Canada, must be presented to Parliament by <b>Dec 31</b> after each year ends. For FY 2025–26, that is <b>Dec 31, 2026</b>. Treasury Board aims for Oct 15 each year, but as of Nov 5, 2026 they had not been presented. In the Senate on Oct 8, 2026, the Government Representative said they would come no later than Dec 31 and gave no earlier date. Last year's (FY 2024–25) came on Nov 7, 2025; the year before (FY 2023–24) on Dec 17, 2024. Each department's results report comes in the fall, after the Public Accounts.
        <div class="src">Sources: ${fA(["Senate of Canada, Debates, Oct 8, 2026","https://sencanada.ca/en/content/sen/chamber/451/debates/092db_2026-10-08-e"])} · ${fA(["Treasury Board Secretariat: Reporting cycle","https://www.canada.ca/en/treasury-board-secretariat/services/planned-government-spending/expenditure-management-system/reporting-cycle.html"])} · ${fA(["Treasury Board Secretariat, Question Period Note: Public Accounts of Canada 2025","https://search.open.canada.ca/qpnotes/record/tbs-sct%2CTBS-2025-QP-12-00008"])}</div></div>
      <div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${rep("2025","Goals","2025–26 Departmental Plan")}</div>`,
-   y24:`<p class="fynote">Click a section to open it.</p>`+(()=>{const pa=paBlock(d,h)||["",""];return pa[0];})()+(h?vRoll("Budget vs. spent, by program",(sp?sp.pill.replace(/<[^>]+>/g,"")+" · ":"")+"the biggest differences and the department's reasons",`${why}${vRoll("Every program","Budget vs. spent for each program, with totals",progTbl)}${unexpl}<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):`<p class="note">The FY 2024–25 spending for this organization is not in the open data. See its 2024–25 Departmental Results Report under Sources.</p>`)+(()=>{const pa=paBlock(d,h)||["",""];return pa[1];})()+
-     vRoll("Goals and results",d.i24.length?d.i24.length+" goals · "+d.c24["met"]+" met, "+d.c24["not met"]+" not met":"Not in the open data",goalsHtml),
+   y24:(()=>{const pa=paBlock(d,h);
+     const bud=h?vRoll("1 · Budget",(pa?"Start-of-year budget "+fB(d.pa24.main)+" · ":"")+"budget and spending for each program, with totals",progTbl+`<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):"";
+     return `<p class="fynote">Click a section to open it. Sections 1 to 5 follow the order of “Where the money came from”.</p>`+(pa?pa.fund:"")+bud+(pa?pa.supp+pa.adj+pa.prev+pa.tot:"")+
+     (h?vRoll("Biggest differences, by program",(sp?sp.pill.replace(/<[^>]+>/g,"")+" · ":"")+"the department's own reasons",`${why}${unexpl}<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):`<p class="note">The FY 2024–25 spending for this organization is not in the open data. See its 2024–25 Departmental Results Report under Sources.</p>`)+
+     vRoll("Goals and results",d.i24.length?d.i24.length+" goals · "+d.c24["met"]+" met, "+d.c24["not met"]+" not met":"Not in the open data",goalsHtml);})(),
    b26:typeof fedBudgetPane==="function"?fedBudgetPane(d):"",
    hist:hist+`<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`,
    src:`${srcTbl}<div class="note">Spending and goals come from the Treasury Board's open data, where this department is listed as ${fEsc(d.org)}. Some links open a list of reports; pick the named report and year there.</div><div class="src">Source: ${fA(FSC_SRC.rbpo)} · ${fA(FSC_SRC.pipo)}</div>`
@@ -2162,8 +2206,9 @@ function fedDept(id,tab0){ F_M=true;
 const B26_SRC=["Budget 2026: Masters of our destiny (Department of Finance Canada, tabled Nov 5, 2026)","https://budget.canada.ca"];
 let B26=null, B26_P=null;
 function loadB26(){ if(B26) return Promise.resolve(B26); if(!B26_P) B26_P=fetch("budget2026.json").then(r=>{if(!r.ok) throw new Error(r.status); return r.json();}).then(j=>(B26=j)).catch(e=>{B26_P=null; throw e;}); return B26_P; }
-/* $ formatting for budget tables: billions with one decimal, millions as whole numbers (as published) */
-const bB=n=>n==null?"—":(n<0?"−":"")+"$"+Math.abs(n).toLocaleString("en-CA",{minimumFractionDigits:1,maximumFractionDigits:1})+"B";
+/* $ formatting for budget tables: all in millions */
+/* published in billions; shown in millions like every federal amount on ParliVue ($448.5B → $448,500M) */
+const bB=n=>n==null?"—":(n<0?"−":"")+"$"+Math.round(Math.abs(n)*1000).toLocaleString("en-CA")+"M";
 const bM=n=>n==null?"—":(n<0?"−":"")+"$"+Math.abs(n).toLocaleString("en-CA",{maximumFractionDigits:0})+"M";
 const bP=n=>n==null?"—":(n<0?"−":"")+Math.abs(n).toFixed(1)+"%";
 const bPg=(p,p2)=>`<span class="b26pg">p.&nbsp;${p}${p2&&p2!==p?"–"+p2:""}</span>`;
