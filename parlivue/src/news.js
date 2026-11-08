@@ -39,7 +39,8 @@ const NEWS=[
 ];
 /* Coming up: scheduled releases that will update the scorecards */
 const COMING=[
- ["Nov 18, 2026","B.C. election results expected to be certified; new Cabinet to follow"],
+ ["Nov 18, 2026","B.C. election results expected to be certified"],
+ ["Nov 20, 2026","New B.C. Cabinet expected"],
  ["Dec 7, 2026","Six federal by-elections"],
  ["By Dec 31, 2026","Public Accounts of Canada for FY 2025–26 (audited federal results)"],
  ["Spring 2027","Federal Main Estimates and 2027–28 Departmental Plans; B.C. and Ontario budgets"],
