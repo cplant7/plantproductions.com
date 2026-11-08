@@ -1673,12 +1673,13 @@ const cGoals=(cards,trk,j,ylab)=>`<div class="sctwrap"><table class="sct cgoals"
 const cWire=el=>el.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{el._pick(b.dataset.pick);el.scrollIntoView({behavior:"smooth",block:"start"});});
 
 /* "How to read" for the city scorecards, matching the federal page; the year type is highlighted first */
-const cityHow=(city,yr)=>`<details class="flowdd fedhow"><summary><span><h2>How to read this page</h2><span class="ddhint">Click to see how plans, budgets and results fit together</span></span><span class="ddarrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6l4 4 4-4"/></svg></span></summary>
+const cityHow=(city,yr,extra)=>`<details class="flowdd fedhow"><summary><span><h2>How to read this page</h2><span class="ddhint">Click to see how plans, budgets and results fit together</span></span><span class="ddarrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6l4 4 4-4"/></svg></span></summary>
   <ol class="steps">
    <li class="yrhl"><b>Calendar years, not fiscal years.</b> The ${city}'s financial year is the calendar year: 2025 means January 1 to December 31, 2025. The federal government uses fiscal years instead (FY 2024–25 is April 1, 2024 to March 31, 2025), so city and federal years do not line up.</li>
    <li><b>Financials and goals.</b> Before each year starts, Council adopts a budget and sets goals. After the year ends, the City publishes audited results${yr}.</li>
    <li><b>Financials.</b> The <b>plan</b> is the adopted budget. The <b>actual</b> is the audited result. The <b>variance</b> is the difference. All amounts are in millions of dollars ($M): $1,273.5M is $1.27 billion.</li>
    <li><b>Goals.</b> Each year's Goals section shows that year's result for each area. The Report card section has the evidence and sources for each.</li>
+   ${(extra||[]).map(x=>`<li>${x}</li>`).join("")}
   </ol>
   <div class="fhowkey"><b>Colours</b>
    <div class="dkey"><span><i class="ok"></i>Good: on or better than plan</span><span><i class="watch"></i>Caution: behind plan</span><span><i class="off"></i>Over budget</span><span class="muted">Gauge: actual as % of plan</span></div></div>
@@ -1704,7 +1705,7 @@ function renderVicScore(){
          <div class="rcb"><p class="rcplan"><span>Strategic Plan</span>${c.plan}</p>${VSC_TRACK[c.area]?`<div class="rctrack">${["2024","2025","Now"].map((y,j)=>`<div><span>${y}</span>${VSC_TRACK[c.area][j]}</div>`).join("")}</div>`:""}
          ${c.ev.length?`<ul>${c.ev.map(e=>`<li>${e}</li>`).join("")}</ul>`:""}
          <p class="rccav">${c.cav}</p>${vsSrc(c.src)}</div></article>`).join("")}</div>
-       <div class="note"><b>About the status labels.</b> Each label compares the 2023–2026 Strategic Plan with what the City reports in its Annual Reports and Financial Plans. The Strategic Plan sets few numeric targets, so labels reflect reported progress. "Not reported" means the documents used here don't cover that area.</div></section>`,
+       </section>`,
 
    y26:`     <p class="vsp">Council adopted the 2026–2030 Financial Plan on May 7, 2026. The Financial Plan lists each department's core services; the "Mandate" column reflects that. Click a section to open it.</p>
      ${cGrp("Financials",[
@@ -1798,8 +1799,7 @@ function renderVicScore(){
   el.innerHTML=`<header class="dsh-head"><div><div class="kicker">City of Victoria · Department dashboard</div><h2 class="nh">Council Scorecard 2024–2026</h2>
      <p class="pagelede">Plans, budgets and results from the City's audited statements, with progress on the 2023–2026 Strategic Plan.</p></div>
      </header>
-    ${cityHow("City of Victoria"," in its Annual Report the following year")}
-    <div class="dtiming"><b>About timing.</b> The City’s financial year runs January to December. Actual results are published once a year, in the audited Annual Report released the following year. Until then, figures for the current year are budgets, not results. This page uses documents available on Nov 1, 2026: audited results for 2024 and 2025 and the adopted 2026 budget.</div>
+    ${cityHow("City of Victoria"," in its Annual Report the following year",["<b>Timing.</b> Until the Annual Report is out, figures for the current year are budgets, not results. This page uses documents available on Nov 1, 2026: audited results for 2024 and 2025 and the adopted 2026 budget.","<b>Status labels.</b> Each label compares the 2023–2026 Strategic Plan with what the City reports in its Annual Reports and Financial Plans. The Strategic Plan sets few numeric targets, so labels reflect reported progress. \"Not reported\" means the documents used here don't cover that area."])}
     <div class="dsh-kh">2026 · current year budget<span>Actual results for each year are in its own section below.</span></div>
     ${kp26}
     <div class="dsh">
