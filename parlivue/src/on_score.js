@@ -30,6 +30,30 @@ const onTbl=(cap,head,rows,tot)=>`<div class="sctwrap"><table class="sct fitems"
 const onGn=m=>m.goals&&m.goals.m?m.goals.m.length:0;
 const onGl=m=>m.goals&&m.goals.m?m.goals.m.filter(x=>x[2]&&!/not available|new measure/i.test(x[2])).length:0;
 
+function onYearPanel(){
+  const fes=["2026 Ontario Economic Outlook and Fiscal Review (Oct 29, 2026)","https://budget.ontario.ca/2026/fallstatement/index.html"];
+  const body=pvYear([
+   ["Key events, FY 2025–26",[
+    ["Health","Ministry of Health: budget "+M_(80386.1)+"; Treasury Board orders added "+M_(5280.7)+" and reduced "+M_(1970.7)+"; spent "+M_(83430.1)+".","Across the whole government (including hospitals and agencies), health expense was "+M_(97497)+" against a budget of "+M_(90630)+"."],
+    ["Wildfires","Ministry of Natural Resources, Public Protection program (forest fire management and emergency response): budget "+M_(192.7)+", spent "+M_(307.4)+". FY 2024–25: budget "+M_(174.8)+", spent "+M_(204.9)+". FY 2026–27 budget: "+M_(208.3)+".","Spending has been above budget in each of the last two years."],
+    ["Emergency management","Emergency Preparedness and Response, Emergency Management Ontario: operating budget "+M_(63.1)+", spent "+M_(270.9)+"; Treasury Board orders added "+M_(243.0)+". FY 2026–27 budget: "+M_(66.8)+".",""],
+    ["Contingency Fund","Treasury Board Secretariat's budget was reduced by "+M_(3757.6)+" as the Contingency Fund was allocated to ministries by Treasury Board orders.","The Contingency Fund is spending authority, not an expense: the cost is recorded in the ministry that spent it."],
+    ["Artificial intelligence and technology","The 2026–27 Estimates show an \"Artificial Intelligence, Data, Archives and Privacy\" program (Public and Business Service Delivery and Procurement): "+M_(37.6)+" operating and "+M_(2.5)+" capital, compared with "+M_(39.2)+" and "+M_(2.6)+" for FY 2025–26 (restated).","Funding is about the same as last year. Ontario's two main IT programs spent "+M_(851.8)+" of "+M_(861.2)+" approved in FY 2025–26."]]],
+   ["What went well",[
+    ["Deficit below budget","FY 2025–26 deficit "+M_(13006)+", against a budget of "+M_(14610)+".","Revenue was "+M_(223330)+", "+M_(4706)+" above budget."],
+    ["Within budget","19 of 35 ministries and offices spent within their start-of-year budget; 31 of 35 stayed within total approved funding.",""],
+    ["Interest costs","Interest and debt servicing: budget "+M_(16198)+", actual "+M_(15451)+".",""]]],
+   ["Areas to improve",[
+    ["Expense above budget","Total expense "+M_(236336)+", against a budget of "+M_(231234)+" (+"+M_(5102)+"), mostly Health (+"+M_(6867)+").",""],
+    ["Above total approved","4 spent more than their total approved funding: Attorney General; Children, Community and Social Services; Northern Economic Development and Growth; and the Office of the Chief Electoral Officer.",""],
+    ["Wildfire and emergency budgets","Public Protection and Emergency Management Ontario budgets were well below actual spending.",""],
+    ["Reporting on goals","Only 13 of 119 key performance indicators in the 2025–26 Published Plans show a status (achieved or in progress); 10 ministries and offices publish no indicator table.","This makes it hard to tell whether most targets were met."],
+    ["Net debt","Rose from "+M_(427050)+" to "+M_(454993)+".",""]]],
+   ["Since the year ended",[
+    ["Fall Economic Statement, Oct 29, 2026","FY 2026–27 deficit forecast "+M_(16900)+", up from "+M_(13800)+" in the 2026 Budget. A balanced budget is now planned for FY 2029–30.","The government cites U.S. tariffs as a main reason for the change."]]]
+  ],[fA(ONS_SRC.pa26),fA(ONS_SRC.pa25),fA(ONS_SRC.est27),fA(ONS_SRC.cfs26),fA(ONS_SRC.ppar),fA(fes)].join(" · "));
+  return `<h4 class="fgrp">What happened in the year</h4><div class="fstack">${fRoll("i","bs","What happened in FY 2025–26","Key events, what went well, areas to improve, and updates since",M_(5280.7)+" added to Health","cau",body)}</div>`;
+}
 function renderOnScorePage(){
   const el=document.getElementById("ch-onscore"); if(!el) return;
   if(el.dataset.built) return; el.dataset.built="1";
@@ -61,6 +85,7 @@ function onOverview(){
     <tr class="tot"><th scope="row">Total</th><td>${fB(b26)}</td><td>${fB(t26)}</td><td>${fB(a26)}</td><td class="vcell ${sp.cls}">${vsSgn(a26-b26,fB)} <small>${vsP(sp.pc)}</small></td><td>${gN}</td><td>${fB(e27)}</td></tr></tbody></table></div>
    <div class="note">The FY 2025–26 budget total includes Ontario's Contingency Fund (about $4.9 billion, held by Treasury Board Secretariat). Money drawn from it shows up as additional funding (B) in other ministries, so the total "spent vs budget" is lower than the sum of individual overruns. These are ministry totals, not the Province's consolidated expense of $236.3 billion, which adds hospitals, school boards, colleges and agencies. The four legislative offices have no FY 2026–27 figure in Volume 1 of the Estimates. Goals are the key performance indicators in each ministry's 2025–26 Published Plan; ministries left blank did not publish indicators with targets in table form.</div>
    <div class="src">Sources: ${fA(ONS_SRC.pa26)} · ${fA(ONS_SRC.pa25)} · ${fA(ONS_SRC.est27)} · ${fA(ONS_SRC.ppar)}</div>
+   ${onYearPanel()}
    <h4 class="fgrp">Government-wide plans</h4><div class="fstack">
     ${fRoll("$","bs","2026 Budget fiscal plan","Revenue, expense and deficit, FY 2024–25 to FY 2028–29",onSg(fis.bal[2]*1e9)+" FY 2026–27","up",`<div class="sctwrap"><table class="sct fitems"><caption>Province of Ontario fiscal plan ($M)</caption><thead><tr><th scope="col">Item</th>${fis.cols.map(c=>`<th scope="col">${c}</th>`).join("")}</tr></thead><tbody>${[["Total revenue","rev"],["Program expense","prog"],["Interest on debt","int"],["Total expense","exp"],["Reserve","res"],["Surplus / (deficit)","bal"]].map(r=>`<tr><td>${r[0]}</td>${fis[r[1]].map(v=>`<td>${r[1]==="bal"?onSg(v*1e9):F(v)}</td>`).join("")}</tr>`).join("")}</tbody></table></div><p class="note">Whole-government figures, including hospitals, school boards, colleges and agencies. The budget shows these in billions with one decimal, so the $M figures here are rounded to the nearest $100M. The 2026 Budget was tabled March 26, 2026.</p><div class="src">Source: ${fA(ONS_SRC.b26)}</div>`)}
     ${fRoll("$","bs","FY 2025–26 results vs budget","Consolidated statement of operations, whole government",onSg(dA)+" deficit",dA<dB?"up":"dn",`<div class="sctwrap"><table class="sct fitems"><caption>Province of Ontario, FY 2025–26 ($M)</caption><thead><tr><th scope="col">Item</th><th scope="col">Budget</th><th scope="col">Actual</th><th scope="col">Difference</th></tr></thead><tbody>

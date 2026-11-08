@@ -34,6 +34,35 @@ const BC_HOW=`<details class="flowdd fedhow"><summary><span><h2>How to read this
   <div class="fhowkey"><b>Colours</b><div class="dkey"><span><i class="ok"></i>Good: on or under budget, goal met</span><span><i class="watch"></i>Caution</span><span><i class="off"></i>Over budget, goal not met</span><span class="muted">Gauge: spent as % of budget</span></div></div>
 </details>`;
 
+/* "What happened in the year" panel (shared with the Ontario scorecard). secs: [[heading,[[title,figures,explanation],...]],...] */
+const pvYear=(secs,src)=>secs.map(([h,L])=>`<h5 class="fyh">${h}</h5><ul class="steps fyl">${L.map(([t,n,x])=>`<li><b>${t}.</b> ${n}${x?`<br><small class="muted">${x}</small>`:""}</li>`).join("")}</ul>`).join("")+`<div class="src">Sources: ${src}</div>`;
+const M_=v=>fB(v*1e6);
+function bcYearPanel(){
+  const qr=["Province of B.C.: 2026/27 First Quarterly Report (Sept 14, 2026)","https://www2.gov.bc.ca/assets/gov/british-columbians-our-governments/government-finances/quarterly-reports/2026-27_first_quarterly_report.pdf"];
+  const body=pvYear([
+   ["Key events, FY 2025–26",[
+    ["Wildfires","Ministry of Forests, Fire Management: budget "+M_(238.0)+", spent "+M_(645.1)+". FY 2024–25: budget "+M_(232.7)+", spent "+M_(769.4)+". FY 2026–27 budget: "+M_(235.7)+".","The difference was approved during each year. The First Quarterly Report (Sept 2026) already forecasts total fire management spending of "+M_(850)+" for FY 2026–27."],
+    ["Disaster response and recovery","Emergency Management and Climate Readiness, Emergency and Disaster Management Act: budget "+M_(30.0)+", spent "+M_(241.0)+" ("+M_(305.7)+" in FY 2024–25). FY 2026–27 budget: "+M_(30.0)+".",""],
+    ["Health","Ministry of Health, Health Programs: budget "+M_(34762.5)+", spent "+M_(36053.8)+" (+"+M_(1291.3)+").",""],
+    ["Treaties and agreements","Indigenous Relations and Reconciliation, Treaty and Other Agreements Funding: budget "+M_(105.2)+", spent "+M_(265.3)+".",""],
+    ["Technology and data","Citizens' Services: Office of the Chief Information Officer "+M_(2.4)+" budget, "+M_(21.5)+" spent; BC Data Service "+M_(30.1)+" / "+M_(46.1)+"; Connectivity "+M_(24.2)+" / "+M_(51.7)+".","Together about "+M_(62.6)+" above budget, small next to the items above."],
+    ["Government reorganization",M_(478.8)+" of executive and support services moved into Citizens' Services from 23 ministries.","A transfer between ministries, not new spending: it shows as an increase in Citizens' Services and a decrease in the other ministries."],
+    ["Contingencies",M_(3417.6)+" of spending authority added to ministries through the Contingencies (All Ministries) and New Programs vote.","The vote is spending authority, not an expense: the cost is recorded in the ministry that spent it. The fiscal plan set aside "+M_(4000)+" for contingencies in FY 2025–26, so ministries can be over their own budgets while government as a whole stays within plan."]]],
+   ["What went well",[
+    ["Within budget","7 of 27 ministries and offices spent within their start-of-year budget: Legislative Assembly, Office of the Premier, Infrastructure, Labour, Social Development and Poverty Reduction, Tourism, Arts, Culture and Sport, and Transportation and Transit.","26 of 27 stayed within their total approved funding. The exception is Management of Public Funds and Debt (interest costs)."],
+    ["Goals met","73 of 117 measurable goals met (62%). Public Safety and Solicitor General met 14 of 14; Attorney General met 8 of 8.",""],
+    ["Staff","37,130 full-time equivalent staff, against a plan of 38,900.",""]]],
+   ["Areas to improve",[
+    ["Spending above budget","20 of 27 ministries and offices spent more than their start-of-year budget; 17 by more than 5%.",""],
+    ["Wildfire and disaster budgets","Fire Management and Emergency and Disaster Management Act budgets were well below actual spending in both FY 2024–25 and FY 2025–26, and the FY 2026–27 budgets are about the same.",""],
+    ["Goals not met","44 goals not met. Health met 3 of 8; Housing and Municipal Affairs 3 of 9; Children and Family Development 1 of 4; Post–Secondary Education and Future Skills 1 of 4.","28 more results were not yet available when the reports were published."],
+    ["Debt and interest","Cost of borrowing: budget "+M_(2762.1)+", spent "+M_(2858.3)+". Total provincial debt is forecast to rise from "+M_(154059)+" (FY 2025–26) to "+M_(234559)+" (FY 2028–29).","Budget 2026 fiscal plan."]]],
+   ["Since the year ended",[
+    ["First Quarterly Report, Sept 14, 2026","FY 2026–27 deficit forecast "+M_(13759)+", up "+M_(450)+" from Budget 2026 ("+M_(13309)+"). Expenses up "+M_(1239)+", mainly fire management and refundable tax credits; revenue up "+M_(789)+".","The report lists new U.S. tariffs, including softwood lumber duties, among the main risks to the forecast."],
+    ["Provincial election, Oct 24, 2026","A new government was elected. Ministries and FY 2026–27 plans may change once the new cabinet is in place.",""]]]
+  ],[fA(BC_SRC.pa26),fA(BC_SRC.pa25),fA(BC_SRC.est27),fA(BC_SRC.bfp26),fA(qr),`<a href="https://www.bcbudget.gov.bc.ca/Annual_Reports/2025_2026/" target="_blank" rel="noopener">2025/26 Annual Service Plan Reports</a>`].join(" · "));
+  return `<h4 class="fgrp">What happened in the year</h4><div class="fstack">${fRoll("i","bs","What happened in FY 2025–26","Key events, what went well, areas to improve, and updates since",M_(3417.6)+" added during the year","cau",body)}</div>`;
+}
 function renderBcScorePage(){
   const el=document.getElementById("ch-bcscore"); if(!el) return;
   if(el.dataset.built) return; el.dataset.built="1";
@@ -63,6 +92,7 @@ function bcOverview(){
     <tr class="tot"><th scope="row">Total</th><td>${fB(b26)}</td><td>${fB(t26)}</td><td>${fB(a26)}</td><td class="vcell ${sp.cls}">${vsSgn(a26-b26,fB)} <small>${vsP(sp.pc)}</small></td><td>${fPf(gp)}% <small>${G.met} of ${G.met+G.not}</small></td><td>${fB(e27)}</td></tr></tbody></table></div>
    <div class="note">These totals cover ministry spending from the Consolidated Revenue Fund. "Other Appropriations" (central contingencies and capital funding held for all ministries) is left out, so they do not equal the Province's total expense of $94.7 billion in FY 2025–26. Goals: Infrastructure and Mining and Critical Minerals had no performance measures for FY 2025–26 because they were newly created. The Legislative Assembly, Officers of the Legislature and debt interest do not publish service plans.</div>
    <div class="src">Sources: ${fA(BC_SRC.pa26)} · ${fA(BC_SRC.pa25)} · ${fA(BC_SRC.est27)} · <a href="https://www.bcbudget.gov.bc.ca/Annual_Reports/2025_2026/" target="_blank" rel="noopener">2025/26 Annual Service Plan Reports</a></div>
+   ${bcYearPanel()}
    <h4 class="fgrp">Government-wide plans</h4><div class="fstack">
     ${fRoll("$","bs","Budget 2026 fiscal plan","Revenue, expense, deficit, debt and staff, FY 2025–26 to FY 2028–29",bcSg(BCS_META.fiscal.rows[2][1][1]*1e6)+" deficit FY 2026–27","up",`<div class="sctwrap"><table class="sct fitems"><caption>Province of B.C. fiscal plan ($M)</caption><thead><tr><th scope="col">Item</th>${BCS_META.fiscal.cols.map(c=>`<th scope="col">${c}</th>`).join("")}</tr></thead><tbody>${BCS_META.fiscal.rows.map(r=>`<tr><td>${r[0]}</td>${r[1].map(v=>`<td>${/FTE/.test(r[0])?fN(v):fB(v*1e6)}</td>`).join("")}</tr>`).join("")}</tbody></table></div><p class="note">These are whole-government figures, including health authorities, school districts, universities and Crown corporations. Staff are full-time equivalents in ministries and special offices; the FY 2025–26 figure is the forecast adjusted for job action. Budget 2026 was tabled Feb 17, 2026.</p><div class="src">Source: ${fA(BC_SRC.bfp26)}, Table 1.1 and Table A13</div>`)}
     ${fRoll(BC_GOAL,"bg","Government priorities","Budget 2024 Strategic Plan, guiding FY 2024–25",BCS_META.strat24.length-1+" priorities","",`<ul class="steps">${BCS_META.strat24.map(x=>`<li>${fEsc(x)}</li>`).join("")}</ul><p class="note">Each ministry's service plan sets goals and measures under these priorities.</p><div class="src">Source: ${fA(BC_SRC.strat24)}</div>`)}
