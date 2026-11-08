@@ -215,6 +215,25 @@ function vscElectionHTML(){ return `<section class="nsec elec"><div class="kicke
 /* collapsed on page open on every page (the 4th argument is kept for older calls but no longer opens it) */
 const vRoll=(title,sub,body,open)=>`<details class="roll"><summary><span class="rollh"><span class="rollt">${title}</span>${sub?`<span class="rolls">${sub}</span>`:""}</span><span class="rolltog"><span class="t-show">Show</span><span class="t-hide">Hide</span><span class="rollc" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6l4 4 4-4"/></svg></span></span></summary><div class="rollb">${body}</div></details>`;
 
+/* City scorecards use the federal layout for readability: Financials and Goals groups, lettered rows with the key amount showing, sources inside each section */
+const C_GOAL=`<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="7.5"/><circle cx="10" cy="10" r="4"/><circle cx="10" cy="10" r="1" fill="currentColor"/></svg>`;
+const cGrp=(t,rows)=>`<h4 class="fgrp">${t}</h4><div class="fstack">${rows.join("")}</div>`;
+const cAmt=v=>(v>0?"+":v<0?"−":"")+vsM1(Math.abs(v));
+const cGoals=(cards,trk,j,ylab)=>`<div class="sctwrap"><table class="sct cgoals"><thead><tr><th scope="col">Area</th><th scope="col">${ylab}</th><th scope="col">Status now</th></tr></thead><tbody>${cards.map(c=>`<tr><th scope="row">${c.area}</th><td>${(trk(c)||[])[j]||"Not reported"}</td><td>${vgrade(c.g)}</td></tr>`).join("")}</tbody></table></div><p class="note">The evidence for each area is in the <button class="linkbtn" data-pick="card">Report card</button> section.</p>`;
+const cWire=el=>el.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{el._pick(b.dataset.pick);el.scrollIntoView({behavior:"smooth",block:"start"});});
+
+/* "How to read" for the city scorecards, matching the federal page; the year type is highlighted first */
+const cityHow=(city,yr)=>`<details class="flowdd fedhow"><summary><span><h2>How to read this page</h2><span class="ddhint">Click to see how plans, budgets and results fit together</span></span><span class="ddarrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6l4 4 4-4"/></svg></span></summary>
+  <ol class="steps">
+   <li class="yrhl"><b>Calendar years, not fiscal years.</b> The ${city}'s financial year is the calendar year: 2025 means January 1 to December 31, 2025. The federal government uses fiscal years instead (FY 2024–25 is April 1, 2024 to March 31, 2025), so city and federal years do not line up.</li>
+   <li><b>Financials and goals.</b> Before each year starts, Council adopts a budget and sets goals. After the year ends, the City publishes audited results${yr}.</li>
+   <li><b>Financials.</b> The <b>plan</b> is the adopted budget. The <b>actual</b> is the audited result. The <b>variance</b> is the difference. All amounts are in millions of dollars ($M): $1,273.5M is $1.27 billion.</li>
+   <li><b>Goals.</b> Each year's Goals section shows that year's result for each area. The Report card section has the evidence and sources for each.</li>
+  </ol>
+  <div class="fhowkey"><b>Colours</b>
+   <div class="dkey"><span><i class="ok"></i>Good: on or better than plan</span><span><i class="watch"></i>Caution: behind plan</span><span><i class="off"></i>Over budget</span><span class="muted">Gauge: actual as % of plan</span></div></div>
+</details>`;
+
 function renderVicScore(){
   const el=document.getElementById("vicscore"); if(!el||el.dataset.done) return; el.dataset.done="1";
   const T=VSC_TOT, d26=VSC_DEPT26, tot26=394060040;
@@ -237,38 +256,41 @@ function renderVicScore(){
          <p class="rccav">${c.cav}</p>${vsSrc(c.src)}</div></article>`).join("")}</div>
        <div class="note"><b>About the status labels.</b> Each label compares the 2023–2026 Strategic Plan with what the City reports in its Annual Reports and Financial Plans. The Strategic Plan sets few numeric targets, so labels reflect reported progress. "Not reported" means the documents used here don't cover that area.</div></section>`,
 
-   y26:`     <p class="vsp">Council adopted the 2026–2030 Financial Plan on May 7, 2026. The Financial Plan lists each department's core services; the "Mandate" column reflects that.</p>
-     ${vRoll("Operating budget by department","20 lines · $394.1M",
+   y26:`     <p class="vsp">Council adopted the 2026–2030 Financial Plan on May 7, 2026. The Financial Plan lists each department's core services; the "Mandate" column reflects that. Click a section to open it.</p>
+     ${cGrp("Financials",[
+      fRoll("A","bk","Operating budget","By department, with heads and mandates",vsM1(tot26),"",
       `<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Department</th><th scope="col">Head</th><th scope="col">2026 budget</th><th scope="col">Share</th><th scope="col">Mandate</th></tr></thead><tbody>
       ${d26.map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]||"—"}</td><td>${vsM(r[2])}</td><td>${(r[2]/tot26*100).toFixed(1)}%</td><td class="muted">${r[3]}</td></tr>`).join("")}
-      <tr class="tot"><th scope="row">Total operating</th><td></td><td>${vsM(tot26)}</td><td>100%</td><td></td></tr></tbody></table></div>${vsSrc(["fp26","budget","fp25"])}`,true)}
-     ${vRoll("Capital budget 2026","By category and largest projects · $160.1M",
+      <tr class="tot"><th scope="row">Total operating</th><td></td><td>${vsM(tot26)}</td><td>100%</td><td></td></tr></tbody></table></div>${vsSrc(["fp26","budget","fp25"])}`),
+      fRoll("B","bk","Capital budget","By category and largest projects",vsM1(VSC_CAPYRS[0][1]),"",
       `<div class="two">
       <div class="sctwrap"><table class="sct"><caption>By category</caption><tbody>${VSC_CAP26.map(r=>`<tr><th scope="row">${r[0]}</th><td>${vsM(r[1])}</td></tr>`).join("")}<tr class="tot"><th scope="row">Total</th><td>$160.08M</td></tr></tbody></table></div>
-      <div class="sctwrap"><table class="sct"><caption>Largest projects</caption><tbody>${VSC_PROJ26.map(r=>`<tr><th scope="row">${r[0]}</th><td>${vsM(r[1])}</td></tr>`).join("")}</tbody></table></div></div>${vsSrc(["fp26"])}`,false)}
-     ${vRoll("Overage not in the operating budget: what to watch","2024 and 2025 actuals; 2026 not yet reported",vscOverage(),true)}
-     ${vRoll("Capital plan 2026–2030","Five-year totals",
+      <div class="sctwrap"><table class="sct"><caption>Largest projects</caption><tbody>${VSC_PROJ26.map(r=>`<tr><th scope="row">${r[0]}</th><td>${vsM(r[1])}</td></tr>`).join("")}</tbody></table></div></div>${vsSrc(["fp26"])}`),
+      fRoll("C","bk","Capital plan 2026–2030","Five-year totals",vsM1(VSC_CAPYRS.reduce((t,r)=>t+r[1],0))+" over 5 years","",
       `<div class="sctwrap"><table class="sct"><thead><tr>${VSC_CAPYRS.map(r=>`<th scope="col">${r[0]}</th>`).join("")}</tr></thead><tbody><tr>${VSC_CAPYRS.map(r=>`<td>${vsM1(r[1])}</td>`).join("")}</tr></tbody></table></div>
-      <div class="note">For comparison, capital assets acquired were $64.2M in 2025 (2025 Annual Report).</div>${vsSrc(["fp26"])}`,false)}`,
+      <div class="note">For comparison, capital assets acquired were $64.2M in 2025 (2025 Annual Report).</div>${vsSrc(["fp26"])}`),
+      fRoll("D","by","Overage not in the operating budget","What to watch: 2024 and 2025 actuals; 2026 not yet reported",vsM1(T.amort.a25+T.capmaint.a25)+" in 2025","up",vscOverage())])}
+     ${cGrp("Goals",[fRoll(C_GOAL,"bg","Goals and results","Where each Strategic Plan area stands now",VSC_CARD.filter(c=>c.g==="D").length+" target met","",cGoals(VSC_CARD,c=>VSC_TRACK[c.area],2,"Latest")+vsSrc(["ar25","fp26"]))])}`,
 
-   y25:`%%KPI25%%
-     ${vRoll("Plan vs actual: headline","Revenue, expenses, surplus and capital",vscHeadline(25),true)}
-     ${vRoll("Overage not in the operating budget","Tracked 2024 → 2025 → 2026",vscOverage(),true)}
-     ${vRoll("Expenses by function","Variance and what explains it",vscFnTable(25,"2025 · plan vs actual"),true)}
-     ${vRoll("Revenue by source","Plan vs actual",
+   y25:`%%KPI25%%<p class="fynote">Click a section to open it.</p>
+     ${cGrp("Financials",[
+      fRoll("$","bs","Financial Summary","Revenue, expenses, surplus and capital: plan against actual",vsM1(T.exp.a25)+" spent","up",vscHeadline(25)+vsSrc(["ar25","tax25"])),
+      fRoll("A","bk","Revenue","By source: plan against actual",vsM1(T.rev.a25),"",
       `<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Source</th><th scope="col">Plan</th><th scope="col">Actual</th><th scope="col">Variance</th></tr></thead><tbody>
-      ${VSC_REV25.map(r=>`<tr><th scope="row">${r[0]}</th><td>${vsM(r[1])}</td><td>${vsM(r[2])}</td><td class="${vplan("rev",vsPct(r[2],r[1]))}">${vsSgn(r[2]-r[1],vsM)}</td></tr>`).join("")}</tbody></table></div>`,false)}
-     ${vRoll("Planned and completed projects","Capital plan $164.3M · acquired $64.2M",
-      `<p class="vsp">The 2025 capital plan was $164.3M and capital assets acquired were $64.2M. Projects the City reports as completed in 2025 include Blanshard Street South, 5.1 km of cycling network, 17 crosswalks, 14 public fast chargers and fleet EVs. The City reports Crystal Pool planning and design continuing in 2026.</p>`,false)}
-     ${vRoll("What the overage is","Amortization and capital maintenance",vscWhy(25),false)}
-     ${vsSrc(["ar25","tax25"])}`,
+      ${VSC_REV25.map(r=>`<tr><th scope="row">${r[0]}</th><td>${vsM(r[1])}</td><td>${vsM(r[2])}</td><td class="${vplan("rev",vsPct(r[2],r[1]))}">${vsSgn(r[2]-r[1],vsM)}</td></tr>`).join("")}</tbody></table></div>${vsSrc(["ar25"])}`),
+      fRoll("B","bk","Expenses","By function, and what explains the difference",cAmt(T.exp.a25-T.exp.b25)+" over","up",vscFnTable(25,"2025 · plan vs actual")+vsSrc(["ar25"])),
+      fRoll("C","by","Overage not in the operating budget","Amortization and capital maintenance",vsM1(T.amort.a25+T.capmaint.a25),"up",vscWhy(25)+vscOverage()),
+      fRoll("D","by","Capital","Planned and completed projects",vsM1(T.cap.a25)+" of "+vsM1(T.cap.b25),"cau",
+      `<p class="vsp">The 2025 capital plan was $164.3M and capital assets acquired were $64.2M. Projects the City reports as completed in 2025 include Blanshard Street South, 5.1 km of cycling network, 17 crosswalks, 14 public fast chargers and fleet EVs. The City reports Crystal Pool planning and design continuing in 2026.</p>${vsSrc(["ar25"])}`)])}
+     ${cGrp("Goals",[fRoll(C_GOAL,"bg","Goals and results","2025 results for each Strategic Plan area",VSC_CARD.length+" areas","",cGoals(VSC_CARD,c=>VSC_TRACK[c.area],1,"2025 result")+vsSrc(["ar25"]))])}`,
 
-   y24:`%%KPI24%%
-     ${vRoll("Plan vs actual: headline","Revenue, expenses, surplus and capital",vscHeadline(24),true)}
-     ${vRoll("Overage not in the operating budget","Tracked 2024 → 2025 → 2026",vscOverage(),false)}
-     ${vRoll("Expenses by function","Variance and what explains it",vscFnTable(24,"2024 · plan vs actual, as first reported"),true)}
-     ${vRoll("Reported results, 2024","And where each stands now",
-      `<div class="sctwrap"><table class="sct st3"><thead><tr><th scope="col">Area</th><th scope="col">2024 result</th><th scope="col">2024</th><th scope="col">Latest available</th><th scope="col">Now</th></tr></thead><tbody>
+   y24:`%%KPI24%%<p class="fynote">Click a section to open it.</p>
+     ${cGrp("Financials",[
+      fRoll("$","bs","Financial Summary","Revenue, expenses, surplus and capital: plan against actual",vsM1(T.exp.a24)+" spent","up",vscHeadline(24)+vsSrc(["ar24","tc24"])),
+      fRoll("A","bk","Expenses","By function, and what explains the difference",cAmt(T.exp.a24-T.exp.b24)+" over","up",vscFnTable(24,"2024 · plan vs actual, as first reported")+vsSrc(["ar24"])),
+      fRoll("B","by","Overage not in the operating budget","Amortization and capital maintenance",vsM1(T.amort.a24+T.capmaint.a24),"up",vscWhy(24)+vscOverage()),
+      fRoll("C","by","Capital","Planned against acquired",vsM1(T.cap.a24)+" of "+vsM1(T.cap.b24),"cau",`<p class="vsp">The 2024 capital plan was ${vsM1(T.cap.b24)} and capital assets acquired were ${vsM1(T.cap.a24)} (${capPct(24)}%). Big projects often take several years, so spending lags the plan.</p>${vsSrc(["ar24"])}`)])}
+     ${cGrp("Goals",[fRoll(C_GOAL,"bg","Goals and results","2024 results, and where each stands now","7 areas","",`<div class="sctwrap"><table class="sct st3"><thead><tr><th scope="col">Area</th><th scope="col">2024 result</th><th scope="col">2024</th><th scope="col">Latest available</th><th scope="col">Now</th></tr></thead><tbody>
       <tr><th scope="row">Housing</th><td>1,477 net-new homes vs a provincial target of 659; $4.58M from the Housing Reserve Fund toward 387 affordable and supportive units</td><td>${vgrade("D")}</td><td>882 net-new homes Oct 2024–Oct 2025; the City reports beating its target again. <span class="muted">(2025 Annual Report)</span></td><td>${vgrade("D")}</td></tr>
       <tr><th scope="row">Transportation</th><td>6 km of AAA bike network, 11 new and 17 upgraded crosswalks, 9.7 km paved</td><td>${vgrade("T")}</td><td>5.1 km more AAA network, 17 crosswalks, nearly 9 km paved; Blanshard Street South finished June 2025. <span class="muted">(2025 Annual Report)</span></td><td>${vgrade("T")}</td></tr>
       <tr><th scope="row">Fire</th><td>12,199 calls, 3,703 inspections, 10 firefighters hired (largest intake in 15+ years)</td><td>${vgrade("T")}</td><td>11,767 incidents in 2025. Ongoing service; no target set. <span class="muted">(2025 Annual Report)</span></td><td>${vgrade("T")}</td></tr>
@@ -276,9 +298,7 @@ function renderVicScore(){
       <tr><th scope="row">Crystal Pool</th><td>Accessibility upgrades to the existing pool; replacement identified as a future priority</td><td>${vgrade("T")}</td><td>Borrowing approved Feb 8, 2025. Planning and design continue in 2026, with $12.0M in the 2026 capital budget. <span class="muted">(2025 Annual Report, 2026 Financial Plan)</span></td><td>${vgrade("T")}</td></tr>
       <tr><th scope="row">Official Community Plan</th><td>In public engagement</td><td>${vgrade("T")}</td><td>Completed: Victoria 2050 adopted Oct 2, 2025. <span class="muted">(City of Victoria)</span></td><td>${vgrade("D")}</td></tr>
       <tr><th scope="row">Capital program</th><td>$77.2M acquired vs $153.2M planned</td><td>${vgrade("B")}</td><td>2025: $64.2M acquired vs $164.3M planned (39%). <span class="muted">(2025 Annual Report)</span></td><td>${vgrade("B")}</td></tr>
-      </tbody></table></div><div class="note"><b>Latest available</b> comes from the 2025 Annual Report and the 2026 Financial Plan. The City has not yet published a 2026 progress report, so nothing after those documents is shown.</div>`,false)}
-     ${vRoll("What the overage is","Amortization and capital maintenance",vscWhy(24),false)}
-     ${vsSrc(["ar24","tc24"])}`,
+      </tbody></table></div><div class="note"><b>Latest available</b> comes from the 2025 Annual Report and the 2026 Financial Plan. The City has not yet published a 2026 progress report, so nothing after those documents is shown.</div>`+vsSrc(["ar24","ar25"]))])}`,
 
    yoy:`${vRoll("High-level actuals, 2023–2025","Audited",
       `<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Measure</th><th scope="col">2023</th><th scope="col">2024</th><th scope="col">2025</th><th scope="col">2024 vs 2023</th><th scope="col">2025 vs 2024</th></tr></thead><tbody>
@@ -294,7 +314,7 @@ function renderVicScore(){
   };
 
 
-  const tabs=[["card","Report card","Strategic Plan progress"],["y26","2026 plan","Budget by department"],["y25","2025 results","Plan vs actual"],["y24","2024 results","Plan vs actual"],["yoy","Year over year","2023–2025 actuals"],["check","Data validation","Sources checked"]];
+  const tabs=[["card","Report card","Strategic Plan progress"],["y26","2026 plan","Jan–Dec 2026 · budget by department"],["y25","2025 results","Jan–Dec 2025 · plan vs actual"],["y24","2024 results","Jan–Dec 2024 · plan vs actual"],["yoy","Year over year","2023–2025 calendar years"],["check","Data validation","Sources checked"]];
   const met=VSC_CARD.filter(c=>c.g==="D").length;
   const vpill=(cls,txt)=>`<span class="dpill ${cls}">${txt}</span>`;
   const pf=x=>{const t=x.toFixed(1);return t.endsWith(".0")?t.slice(0,-2):t;};
@@ -304,7 +324,7 @@ function renderVicScore(){
   const vspark=(k,good)=>{const v=[24,25].map(y=>vsPct(T[k]["a"+y],T[k]["b"+y])),mx=Math.max(...v.map(Math.abs),1),Y=x=>14-x/mx*11,X=[6,84];
     const c=v.map(x=>(x>0)===good?"ok":"bad");
     return `<span class="dvar"><svg viewBox="0 0 90 28" aria-hidden="true"><line x1="0" x2="90" y1="14" y2="14" class="z"/><polyline points="${X.map((x,i)=>x+","+Y(v[i]).toFixed(1)).join(" ")}"/>${X.map((x,i)=>`<circle cx="${x}" cy="${Y(v[i]).toFixed(1)}" r="3" class="${c[i]}"/>`).join("")}</svg><span class="dk-y">Variance ’24 ${vsP(v[0])} · ’25 ${vsP(v[1])}</span></span>`;};
-  const vsPlan=(k,y,good)=>{const a=T[k]["a"+y],b=T[k]["b"+y],pc=vsPct(a,b),up=pc>0;return vpill((up===good)?"ok":(k==="exp"?"off":"watch"),(k==="exp"&&up?"Over budget ":(up?"Above":"Below")+" plan ")+vsP(pc));};
+  const vsPlan=(k,y,good)=>{const a=T[k]["a"+y],b=T[k]["b"+y],pc=vsPct(a,b),up=pc>0;return vpill((up===good)?"ok":(k==="exp"?"off":"watch"),(k==="exp"&&up?"Over budget ":(up?"Above":"Below")+" plan ")+vsSgn(a-b,vsM1));};
   const gp=(k,good,lab,y=25)=>{const pc=T[k]["a"+y]/T[k]["b"+y]*100;return gauge(pc,((pc>100)===good)?"ok":(k==="exp"?"off":"watch"),lab);};
   const card=(k)=>`<div class="dkpi"><span class="dk-l">${k[0]}</span><b class="dk-v">${k[1]}</b><span class="dk-p">${k[2]}</span><span class="dk-s">${k[3]}</span>${k[4]||""}</div>`;
   /* Actual vs plan for one audited year */
@@ -328,7 +348,7 @@ function renderVicScore(){
   el.innerHTML=`<header class="dsh-head"><div><div class="kicker">City of Victoria · Department dashboard</div><h2 class="nh">Council Scorecard 2024–2026</h2>
      <p class="pagelede">Plans, budgets and results from the City's audited statements, with progress on the 2023–2026 Strategic Plan.</p></div>
      </header>
-    <div class="dkey"><span><i class="ok"></i>Good: on or better than plan</span><span><i class="watch"></i>Caution: behind plan</span><span><i class="off"></i>Over budget</span><span class="muted">Gauge: actual as % of plan</span></div>
+    ${cityHow("City of Victoria"," in its Annual Report the following year")}
     <div class="dtiming"><b>About timing.</b> The City’s financial year runs January to December. Actual results are published once a year, in the audited Annual Report released the following year. Until then, figures for the current year are budgets, not results. This page uses documents available on Nov 1, 2026: audited results for 2024 and 2025 and the adopted 2026 budget.</div>
     <div class="dsh-kh">2026 · current year budget<span>Actual results for each year are in its own section below.</span></div>
     ${kp26}
@@ -337,6 +357,6 @@ function renderVicScore(){
     <div class="dsh-main">${tabs.map((t,i)=>`<div role="tabpanel" id="vsp-${t[0]}" aria-labelledby="vst-${t[0]}" class="vspane" ${i?"hidden":""}><h3 class="dsh-ph">${t[1]}<small>${t[2]}</small></h3>${panes[t[0]]}</div>`).join("")}</div></div>`;
   const bs=[...el.querySelectorAll(".dsh-rail button")];
   const pick=b=>{ bs.forEach(x=>{const on=x===b; x.setAttribute("aria-selected",on); x.tabIndex=on?0:-1; document.getElementById("vsp-"+x.dataset.k).hidden=!on;}); };
-  el._pick=k=>pick(bs.find(b=>b.dataset.k===k));
+  el._pick=k=>pick(bs.find(b=>b.dataset.k===k)); cWire(el);
     bs.forEach((b,i)=>{ b.onclick=()=>pick(b); b.onkeydown=e=>{ const d=(e.key==="ArrowDown"||e.key==="ArrowRight")?1:(e.key==="ArrowUp"||e.key==="ArrowLeft")?-1:0; if(d){ const n=bs[(i+d+bs.length)%bs.length]; pick(n); n.focus(); e.preventDefault(); } }; });
 }

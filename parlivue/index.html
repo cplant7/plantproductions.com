@@ -596,6 +596,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .fitems td.cau{font-weight:600}
 .why.aibox{font-size:13px;line-height:1.45;padding:7px 11px;margin-top:6px;color:var(--muted)}.why.aibox b{color:var(--ink)}.why.aibox .aiu{margin:3px 0 0;padding-left:18px}.why.aibox .aiu li{margin:0}.why.aibox .muted{font-size:12px!important;display:inline!important;margin:0!important}.why.aibox .src{font-size:11.5px;margin-top:4px!important}
 .fmil{color:var(--ink);font-weight:600}
+.cgoals td,.cgoals th{text-align:left!important}.cgoals td:last-child{text-align:right!important}
 .fgrp{margin:26px 0 10px;font:800 22px var(--f-mark);letter-spacing:.005em;color:var(--ink)}
 .fstack{border:1px solid var(--rule);border-radius:14px;background:var(--surface);overflow:hidden}
 .fstack>.roll.frow{border:0;border-radius:0;border-top:1px solid var(--rule)}.fstack>.roll.frow:first-child{border-top:0}
@@ -616,7 +617,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .dgauge.neu .gf{stroke:var(--ink)}.dgauge.watch .gf{stroke:var(--yel)}
 #fedscore .why .src{margin-top:8px!important}
 .fbridge tr.fsub th{padding-left:28px;font-weight:400;color:var(--muted)}.fbridge tr.fsub td{color:var(--muted)}
-.fedhow .steps li{max-width:none}
+.fedhow .steps li{max-width:none}.fedhow .steps li.yrhl{background:#fff4c2;border-left:4px solid #d4a400;padding:8px 12px;border-radius:6px}
 .dsh-asof{font:500 12.5px var(--f-mono);color:var(--muted);border:1px solid var(--rule);border-radius:999px;padding:5px 11px;max-width:100%}
 .dsh-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border:1px solid var(--rule);border-radius:14px;background:var(--surface);overflow:hidden}
 @media (max-width:1280px){.dsh-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
@@ -1659,6 +1660,25 @@ function vscElectionHTML(){ return `<section class="nsec elec"><div class="kicke
 /* collapsed on page open on every page (the 4th argument is kept for older calls but no longer opens it) */
 const vRoll=(title,sub,body,open)=>`<details class="roll"><summary><span class="rollh"><span class="rollt">${title}</span>${sub?`<span class="rolls">${sub}</span>`:""}</span><span class="rolltog"><span class="t-show">Show</span><span class="t-hide">Hide</span><span class="rollc" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6l4 4 4-4"/></svg></span></span></summary><div class="rollb">${body}</div></details>`;
 
+/* City scorecards use the federal layout for readability: Financials and Goals groups, lettered rows with the key amount showing, sources inside each section */
+const C_GOAL=`<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="7.5"/><circle cx="10" cy="10" r="4"/><circle cx="10" cy="10" r="1" fill="currentColor"/></svg>`;
+const cGrp=(t,rows)=>`<h4 class="fgrp">${t}</h4><div class="fstack">${rows.join("")}</div>`;
+const cAmt=v=>(v>0?"+":v<0?"−":"")+vsM1(Math.abs(v));
+const cGoals=(cards,trk,j,ylab)=>`<div class="sctwrap"><table class="sct cgoals"><thead><tr><th scope="col">Area</th><th scope="col">${ylab}</th><th scope="col">Status now</th></tr></thead><tbody>${cards.map(c=>`<tr><th scope="row">${c.area}</th><td>${(trk(c)||[])[j]||"Not reported"}</td><td>${vgrade(c.g)}</td></tr>`).join("")}</tbody></table></div><p class="note">The evidence for each area is in the <button class="linkbtn" data-pick="card">Report card</button> section.</p>`;
+const cWire=el=>el.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{el._pick(b.dataset.pick);el.scrollIntoView({behavior:"smooth",block:"start"});});
+
+/* "How to read" for the city scorecards, matching the federal page; the year type is highlighted first */
+const cityHow=(city,yr)=>`<details class="flowdd fedhow"><summary><span><h2>How to read this page</h2><span class="ddhint">Click to see how plans, budgets and results fit together</span></span><span class="ddarrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6l4 4 4-4"/></svg></span></summary>
+  <ol class="steps">
+   <li class="yrhl"><b>Calendar years, not fiscal years.</b> The ${city}'s financial year is the calendar year: 2025 means January 1 to December 31, 2025. The federal government uses fiscal years instead (FY 2024–25 is April 1, 2024 to March 31, 2025), so city and federal years do not line up.</li>
+   <li><b>Financials and goals.</b> Before each year starts, Council adopts a budget and sets goals. After the year ends, the City publishes audited results${yr}.</li>
+   <li><b>Financials.</b> The <b>plan</b> is the adopted budget. The <b>actual</b> is the audited result. The <b>variance</b> is the difference. All amounts are in millions of dollars ($M): $1,273.5M is $1.27 billion.</li>
+   <li><b>Goals.</b> Each year's Goals section shows that year's result for each area. The Report card section has the evidence and sources for each.</li>
+  </ol>
+  <div class="fhowkey"><b>Colours</b>
+   <div class="dkey"><span><i class="ok"></i>Good: on or better than plan</span><span><i class="watch"></i>Caution: behind plan</span><span><i class="off"></i>Over budget</span><span class="muted">Gauge: actual as % of plan</span></div></div>
+</details>`;
+
 function renderVicScore(){
   const el=document.getElementById("vicscore"); if(!el||el.dataset.done) return; el.dataset.done="1";
   const T=VSC_TOT, d26=VSC_DEPT26, tot26=394060040;
@@ -1681,38 +1701,41 @@ function renderVicScore(){
          <p class="rccav">${c.cav}</p>${vsSrc(c.src)}</div></article>`).join("")}</div>
        <div class="note"><b>About the status labels.</b> Each label compares the 2023–2026 Strategic Plan with what the City reports in its Annual Reports and Financial Plans. The Strategic Plan sets few numeric targets, so labels reflect reported progress. "Not reported" means the documents used here don't cover that area.</div></section>`,
 
-   y26:`     <p class="vsp">Council adopted the 2026–2030 Financial Plan on May 7, 2026. The Financial Plan lists each department's core services; the "Mandate" column reflects that.</p>
-     ${vRoll("Operating budget by department","20 lines · $394.1M",
+   y26:`     <p class="vsp">Council adopted the 2026–2030 Financial Plan on May 7, 2026. The Financial Plan lists each department's core services; the "Mandate" column reflects that. Click a section to open it.</p>
+     ${cGrp("Financials",[
+      fRoll("A","bk","Operating budget","By department, with heads and mandates",vsM1(tot26),"",
       `<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Department</th><th scope="col">Head</th><th scope="col">2026 budget</th><th scope="col">Share</th><th scope="col">Mandate</th></tr></thead><tbody>
       ${d26.map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]||"—"}</td><td>${vsM(r[2])}</td><td>${(r[2]/tot26*100).toFixed(1)}%</td><td class="muted">${r[3]}</td></tr>`).join("")}
-      <tr class="tot"><th scope="row">Total operating</th><td></td><td>${vsM(tot26)}</td><td>100%</td><td></td></tr></tbody></table></div>${vsSrc(["fp26","budget","fp25"])}`,true)}
-     ${vRoll("Capital budget 2026","By category and largest projects · $160.1M",
+      <tr class="tot"><th scope="row">Total operating</th><td></td><td>${vsM(tot26)}</td><td>100%</td><td></td></tr></tbody></table></div>${vsSrc(["fp26","budget","fp25"])}`),
+      fRoll("B","bk","Capital budget","By category and largest projects",vsM1(VSC_CAPYRS[0][1]),"",
       `<div class="two">
       <div class="sctwrap"><table class="sct"><caption>By category</caption><tbody>${VSC_CAP26.map(r=>`<tr><th scope="row">${r[0]}</th><td>${vsM(r[1])}</td></tr>`).join("")}<tr class="tot"><th scope="row">Total</th><td>$160.08M</td></tr></tbody></table></div>
-      <div class="sctwrap"><table class="sct"><caption>Largest projects</caption><tbody>${VSC_PROJ26.map(r=>`<tr><th scope="row">${r[0]}</th><td>${vsM(r[1])}</td></tr>`).join("")}</tbody></table></div></div>${vsSrc(["fp26"])}`,false)}
-     ${vRoll("Overage not in the operating budget: what to watch","2024 and 2025 actuals; 2026 not yet reported",vscOverage(),true)}
-     ${vRoll("Capital plan 2026–2030","Five-year totals",
+      <div class="sctwrap"><table class="sct"><caption>Largest projects</caption><tbody>${VSC_PROJ26.map(r=>`<tr><th scope="row">${r[0]}</th><td>${vsM(r[1])}</td></tr>`).join("")}</tbody></table></div></div>${vsSrc(["fp26"])}`),
+      fRoll("C","bk","Capital plan 2026–2030","Five-year totals",vsM1(VSC_CAPYRS.reduce((t,r)=>t+r[1],0))+" over 5 years","",
       `<div class="sctwrap"><table class="sct"><thead><tr>${VSC_CAPYRS.map(r=>`<th scope="col">${r[0]}</th>`).join("")}</tr></thead><tbody><tr>${VSC_CAPYRS.map(r=>`<td>${vsM1(r[1])}</td>`).join("")}</tr></tbody></table></div>
-      <div class="note">For comparison, capital assets acquired were $64.2M in 2025 (2025 Annual Report).</div>${vsSrc(["fp26"])}`,false)}`,
+      <div class="note">For comparison, capital assets acquired were $64.2M in 2025 (2025 Annual Report).</div>${vsSrc(["fp26"])}`),
+      fRoll("D","by","Overage not in the operating budget","What to watch: 2024 and 2025 actuals; 2026 not yet reported",vsM1(T.amort.a25+T.capmaint.a25)+" in 2025","up",vscOverage())])}
+     ${cGrp("Goals",[fRoll(C_GOAL,"bg","Goals and results","Where each Strategic Plan area stands now",VSC_CARD.filter(c=>c.g==="D").length+" target met","",cGoals(VSC_CARD,c=>VSC_TRACK[c.area],2,"Latest")+vsSrc(["ar25","fp26"]))])}`,
 
-   y25:`%%KPI25%%
-     ${vRoll("Plan vs actual: headline","Revenue, expenses, surplus and capital",vscHeadline(25),true)}
-     ${vRoll("Overage not in the operating budget","Tracked 2024 → 2025 → 2026",vscOverage(),true)}
-     ${vRoll("Expenses by function","Variance and what explains it",vscFnTable(25,"2025 · plan vs actual"),true)}
-     ${vRoll("Revenue by source","Plan vs actual",
+   y25:`%%KPI25%%<p class="fynote">Click a section to open it.</p>
+     ${cGrp("Financials",[
+      fRoll("$","bs","Financial Summary","Revenue, expenses, surplus and capital: plan against actual",vsM1(T.exp.a25)+" spent","up",vscHeadline(25)+vsSrc(["ar25","tax25"])),
+      fRoll("A","bk","Revenue","By source: plan against actual",vsM1(T.rev.a25),"",
       `<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Source</th><th scope="col">Plan</th><th scope="col">Actual</th><th scope="col">Variance</th></tr></thead><tbody>
-      ${VSC_REV25.map(r=>`<tr><th scope="row">${r[0]}</th><td>${vsM(r[1])}</td><td>${vsM(r[2])}</td><td class="${vplan("rev",vsPct(r[2],r[1]))}">${vsSgn(r[2]-r[1],vsM)}</td></tr>`).join("")}</tbody></table></div>`,false)}
-     ${vRoll("Planned and completed projects","Capital plan $164.3M · acquired $64.2M",
-      `<p class="vsp">The 2025 capital plan was $164.3M and capital assets acquired were $64.2M. Projects the City reports as completed in 2025 include Blanshard Street South, 5.1 km of cycling network, 17 crosswalks, 14 public fast chargers and fleet EVs. The City reports Crystal Pool planning and design continuing in 2026.</p>`,false)}
-     ${vRoll("What the overage is","Amortization and capital maintenance",vscWhy(25),false)}
-     ${vsSrc(["ar25","tax25"])}`,
+      ${VSC_REV25.map(r=>`<tr><th scope="row">${r[0]}</th><td>${vsM(r[1])}</td><td>${vsM(r[2])}</td><td class="${vplan("rev",vsPct(r[2],r[1]))}">${vsSgn(r[2]-r[1],vsM)}</td></tr>`).join("")}</tbody></table></div>${vsSrc(["ar25"])}`),
+      fRoll("B","bk","Expenses","By function, and what explains the difference",cAmt(T.exp.a25-T.exp.b25)+" over","up",vscFnTable(25,"2025 · plan vs actual")+vsSrc(["ar25"])),
+      fRoll("C","by","Overage not in the operating budget","Amortization and capital maintenance",vsM1(T.amort.a25+T.capmaint.a25),"up",vscWhy(25)+vscOverage()),
+      fRoll("D","by","Capital","Planned and completed projects",vsM1(T.cap.a25)+" of "+vsM1(T.cap.b25),"cau",
+      `<p class="vsp">The 2025 capital plan was $164.3M and capital assets acquired were $64.2M. Projects the City reports as completed in 2025 include Blanshard Street South, 5.1 km of cycling network, 17 crosswalks, 14 public fast chargers and fleet EVs. The City reports Crystal Pool planning and design continuing in 2026.</p>${vsSrc(["ar25"])}`)])}
+     ${cGrp("Goals",[fRoll(C_GOAL,"bg","Goals and results","2025 results for each Strategic Plan area",VSC_CARD.length+" areas","",cGoals(VSC_CARD,c=>VSC_TRACK[c.area],1,"2025 result")+vsSrc(["ar25"]))])}`,
 
-   y24:`%%KPI24%%
-     ${vRoll("Plan vs actual: headline","Revenue, expenses, surplus and capital",vscHeadline(24),true)}
-     ${vRoll("Overage not in the operating budget","Tracked 2024 → 2025 → 2026",vscOverage(),false)}
-     ${vRoll("Expenses by function","Variance and what explains it",vscFnTable(24,"2024 · plan vs actual, as first reported"),true)}
-     ${vRoll("Reported results, 2024","And where each stands now",
-      `<div class="sctwrap"><table class="sct st3"><thead><tr><th scope="col">Area</th><th scope="col">2024 result</th><th scope="col">2024</th><th scope="col">Latest available</th><th scope="col">Now</th></tr></thead><tbody>
+   y24:`%%KPI24%%<p class="fynote">Click a section to open it.</p>
+     ${cGrp("Financials",[
+      fRoll("$","bs","Financial Summary","Revenue, expenses, surplus and capital: plan against actual",vsM1(T.exp.a24)+" spent","up",vscHeadline(24)+vsSrc(["ar24","tc24"])),
+      fRoll("A","bk","Expenses","By function, and what explains the difference",cAmt(T.exp.a24-T.exp.b24)+" over","up",vscFnTable(24,"2024 · plan vs actual, as first reported")+vsSrc(["ar24"])),
+      fRoll("B","by","Overage not in the operating budget","Amortization and capital maintenance",vsM1(T.amort.a24+T.capmaint.a24),"up",vscWhy(24)+vscOverage()),
+      fRoll("C","by","Capital","Planned against acquired",vsM1(T.cap.a24)+" of "+vsM1(T.cap.b24),"cau",`<p class="vsp">The 2024 capital plan was ${vsM1(T.cap.b24)} and capital assets acquired were ${vsM1(T.cap.a24)} (${capPct(24)}%). Big projects often take several years, so spending lags the plan.</p>${vsSrc(["ar24"])}`)])}
+     ${cGrp("Goals",[fRoll(C_GOAL,"bg","Goals and results","2024 results, and where each stands now","7 areas","",`<div class="sctwrap"><table class="sct st3"><thead><tr><th scope="col">Area</th><th scope="col">2024 result</th><th scope="col">2024</th><th scope="col">Latest available</th><th scope="col">Now</th></tr></thead><tbody>
       <tr><th scope="row">Housing</th><td>1,477 net-new homes vs a provincial target of 659; $4.58M from the Housing Reserve Fund toward 387 affordable and supportive units</td><td>${vgrade("D")}</td><td>882 net-new homes Oct 2024–Oct 2025; the City reports beating its target again. <span class="muted">(2025 Annual Report)</span></td><td>${vgrade("D")}</td></tr>
       <tr><th scope="row">Transportation</th><td>6 km of AAA bike network, 11 new and 17 upgraded crosswalks, 9.7 km paved</td><td>${vgrade("T")}</td><td>5.1 km more AAA network, 17 crosswalks, nearly 9 km paved; Blanshard Street South finished June 2025. <span class="muted">(2025 Annual Report)</span></td><td>${vgrade("T")}</td></tr>
       <tr><th scope="row">Fire</th><td>12,199 calls, 3,703 inspections, 10 firefighters hired (largest intake in 15+ years)</td><td>${vgrade("T")}</td><td>11,767 incidents in 2025. Ongoing service; no target set. <span class="muted">(2025 Annual Report)</span></td><td>${vgrade("T")}</td></tr>
@@ -1720,9 +1743,7 @@ function renderVicScore(){
       <tr><th scope="row">Crystal Pool</th><td>Accessibility upgrades to the existing pool; replacement identified as a future priority</td><td>${vgrade("T")}</td><td>Borrowing approved Feb 8, 2025. Planning and design continue in 2026, with $12.0M in the 2026 capital budget. <span class="muted">(2025 Annual Report, 2026 Financial Plan)</span></td><td>${vgrade("T")}</td></tr>
       <tr><th scope="row">Official Community Plan</th><td>In public engagement</td><td>${vgrade("T")}</td><td>Completed: Victoria 2050 adopted Oct 2, 2025. <span class="muted">(City of Victoria)</span></td><td>${vgrade("D")}</td></tr>
       <tr><th scope="row">Capital program</th><td>$77.2M acquired vs $153.2M planned</td><td>${vgrade("B")}</td><td>2025: $64.2M acquired vs $164.3M planned (39%). <span class="muted">(2025 Annual Report)</span></td><td>${vgrade("B")}</td></tr>
-      </tbody></table></div><div class="note"><b>Latest available</b> comes from the 2025 Annual Report and the 2026 Financial Plan. The City has not yet published a 2026 progress report, so nothing after those documents is shown.</div>`,false)}
-     ${vRoll("What the overage is","Amortization and capital maintenance",vscWhy(24),false)}
-     ${vsSrc(["ar24","tc24"])}`,
+      </tbody></table></div><div class="note"><b>Latest available</b> comes from the 2025 Annual Report and the 2026 Financial Plan. The City has not yet published a 2026 progress report, so nothing after those documents is shown.</div>`+vsSrc(["ar24","ar25"]))])}`,
 
    yoy:`${vRoll("High-level actuals, 2023–2025","Audited",
       `<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Measure</th><th scope="col">2023</th><th scope="col">2024</th><th scope="col">2025</th><th scope="col">2024 vs 2023</th><th scope="col">2025 vs 2024</th></tr></thead><tbody>
@@ -1738,7 +1759,7 @@ function renderVicScore(){
   };
 
 
-  const tabs=[["card","Report card","Strategic Plan progress"],["y26","2026 plan","Budget by department"],["y25","2025 results","Plan vs actual"],["y24","2024 results","Plan vs actual"],["yoy","Year over year","2023–2025 actuals"],["check","Data validation","Sources checked"]];
+  const tabs=[["card","Report card","Strategic Plan progress"],["y26","2026 plan","Jan–Dec 2026 · budget by department"],["y25","2025 results","Jan–Dec 2025 · plan vs actual"],["y24","2024 results","Jan–Dec 2024 · plan vs actual"],["yoy","Year over year","2023–2025 calendar years"],["check","Data validation","Sources checked"]];
   const met=VSC_CARD.filter(c=>c.g==="D").length;
   const vpill=(cls,txt)=>`<span class="dpill ${cls}">${txt}</span>`;
   const pf=x=>{const t=x.toFixed(1);return t.endsWith(".0")?t.slice(0,-2):t;};
@@ -1748,7 +1769,7 @@ function renderVicScore(){
   const vspark=(k,good)=>{const v=[24,25].map(y=>vsPct(T[k]["a"+y],T[k]["b"+y])),mx=Math.max(...v.map(Math.abs),1),Y=x=>14-x/mx*11,X=[6,84];
     const c=v.map(x=>(x>0)===good?"ok":"bad");
     return `<span class="dvar"><svg viewBox="0 0 90 28" aria-hidden="true"><line x1="0" x2="90" y1="14" y2="14" class="z"/><polyline points="${X.map((x,i)=>x+","+Y(v[i]).toFixed(1)).join(" ")}"/>${X.map((x,i)=>`<circle cx="${x}" cy="${Y(v[i]).toFixed(1)}" r="3" class="${c[i]}"/>`).join("")}</svg><span class="dk-y">Variance ’24 ${vsP(v[0])} · ’25 ${vsP(v[1])}</span></span>`;};
-  const vsPlan=(k,y,good)=>{const a=T[k]["a"+y],b=T[k]["b"+y],pc=vsPct(a,b),up=pc>0;return vpill((up===good)?"ok":(k==="exp"?"off":"watch"),(k==="exp"&&up?"Over budget ":(up?"Above":"Below")+" plan ")+vsP(pc));};
+  const vsPlan=(k,y,good)=>{const a=T[k]["a"+y],b=T[k]["b"+y],pc=vsPct(a,b),up=pc>0;return vpill((up===good)?"ok":(k==="exp"?"off":"watch"),(k==="exp"&&up?"Over budget ":(up?"Above":"Below")+" plan ")+vsSgn(a-b,vsM1));};
   const gp=(k,good,lab,y=25)=>{const pc=T[k]["a"+y]/T[k]["b"+y]*100;return gauge(pc,((pc>100)===good)?"ok":(k==="exp"?"off":"watch"),lab);};
   const card=(k)=>`<div class="dkpi"><span class="dk-l">${k[0]}</span><b class="dk-v">${k[1]}</b><span class="dk-p">${k[2]}</span><span class="dk-s">${k[3]}</span>${k[4]||""}</div>`;
   /* Actual vs plan for one audited year */
@@ -1772,7 +1793,7 @@ function renderVicScore(){
   el.innerHTML=`<header class="dsh-head"><div><div class="kicker">City of Victoria · Department dashboard</div><h2 class="nh">Council Scorecard 2024–2026</h2>
      <p class="pagelede">Plans, budgets and results from the City's audited statements, with progress on the 2023–2026 Strategic Plan.</p></div>
      </header>
-    <div class="dkey"><span><i class="ok"></i>Good: on or better than plan</span><span><i class="watch"></i>Caution: behind plan</span><span><i class="off"></i>Over budget</span><span class="muted">Gauge: actual as % of plan</span></div>
+    ${cityHow("City of Victoria"," in its Annual Report the following year")}
     <div class="dtiming"><b>About timing.</b> The City’s financial year runs January to December. Actual results are published once a year, in the audited Annual Report released the following year. Until then, figures for the current year are budgets, not results. This page uses documents available on Nov 1, 2026: audited results for 2024 and 2025 and the adopted 2026 budget.</div>
     <div class="dsh-kh">2026 · current year budget<span>Actual results for each year are in its own section below.</span></div>
     ${kp26}
@@ -1781,7 +1802,7 @@ function renderVicScore(){
     <div class="dsh-main">${tabs.map((t,i)=>`<div role="tabpanel" id="vsp-${t[0]}" aria-labelledby="vst-${t[0]}" class="vspane" ${i?"hidden":""}><h3 class="dsh-ph">${t[1]}<small>${t[2]}</small></h3>${panes[t[0]]}</div>`).join("")}</div></div>`;
   const bs=[...el.querySelectorAll(".dsh-rail button")];
   const pick=b=>{ bs.forEach(x=>{const on=x===b; x.setAttribute("aria-selected",on); x.tabIndex=on?0:-1; document.getElementById("vsp-"+x.dataset.k).hidden=!on;}); };
-  el._pick=k=>pick(bs.find(b=>b.dataset.k===k));
+  el._pick=k=>pick(bs.find(b=>b.dataset.k===k)); cWire(el);
     bs.forEach((b,i)=>{ b.onclick=()=>pick(b); b.onkeydown=e=>{ const d=(e.key==="ArrowDown"||e.key==="ArrowRight")?1:(e.key==="ArrowUp"||e.key==="ArrowLeft")?-1:0; if(d){ const n=bs[(i+d+bs.length)%bs.length]; pick(n); n.focus(); e.preventDefault(); } }; });
 }
 
@@ -1866,7 +1887,7 @@ function renderMisScore(){
   const pf=x=>{const t=x.toFixed(1);return t.endsWith(".0")?t.slice(0,-2):t;};
   const vpill=(c,t)=>`<span class="dpill ${c}">${t}</span>`;
   const gauge=(pct,cls,lab)=>{const r=34,L=Math.PI*r,f=Math.min(pct,100)/100;return `<span class="dgauge ${cls}" role="img" aria-label="${lab}: ${pf(pct)}%"><svg viewBox="0 0 84 46"><path d="M8 42a34 34 0 0 1 68 0" class="gt"/><path d="M8 42a34 34 0 0 1 68 0" class="gf" stroke-dasharray="${(f*L).toFixed(1)} ${L.toFixed(1)}"/>${pct>100?`<path d="M8 42a34 34 0 0 1 68 0" class="go" stroke-dasharray="0 ${(L*0.985).toFixed(1)} ${(L*0.015).toFixed(1)}"/>`:""}</svg><b>${pf(pct)}%</b></span>`;};
-  const plan=(k,y,good)=>{const pc=vsPct(T[k]["a"+y],T[k]["b"+y]),up=pc>0;return vpill(up===good?"ok":(k==="exp"?"off":"watch"),(k==="exp"&&up?"Over budget ":(up?"Above":"Below")+" plan ")+vsP(pc));};
+  const plan=(k,y,good)=>{const pc=vsPct(T[k]["a"+y],T[k]["b"+y]),up=pc>0;return vpill(up===good?"ok":(k==="exp"?"off":"watch"),(k==="exp"&&up?"Over budget ":(up?"Above":"Below")+" plan ")+vsSgn(T[k]["a"+y]-T[k]["b"+y],vsM1));};
   const gp=(k,good,lab,y)=>{const pc=T[k]["a"+y]/T[k]["b"+y]*100;return gauge(pc,((pc>100)===good)?"ok":(k==="exp"?"off":"watch"),lab);};
   const card=k=>`<div class="dkpi"><span class="dk-l">${k[0]}</span><b class="dk-v">${k[1]}</b><span class="dk-p">${k[2]}</span><span class="dk-s">${k[3]}</span>${k[4]||""}</div>`;
   const levy=y=>{const L=MSC_LEVY[y];return [`Tax-funded services · 20${y}`,(L.v<0?"−":"+")+vsM1(Math.abs(L.v)),vpill(L.v<0?"off":"ok",L.v<0?"Deficit":"Surplus"),L.v<0?L.fix:"Budget-basis result for services paid by the tax levy",""];};
@@ -1897,20 +1918,25 @@ function renderMisScore(){
       <div class="gkey">${counts.map(([g,n])=>`${vgrade(g)}<span>${n}</span>`).join("")}</div>
       <div class="rclist">${MSC_CARD.map(c=>`<article class="rc2"><header><h4 class="rcname">${c.area}</h4>${vgrade(c.g)}</header><div class="rcb"><p class="rcplan"><span>Goal</span>${c.plan}</p><div class="rctrack">${["2024","2025","Now"].map((y,j)=>`<div><span>${y}</span>${c.tr[j]}</div>`).join("")}</div><ul>${c.ev.map(e=>`<li>${e}</li>`).join("")}</ul><p class="rccav">${c.cav}</p>${src(c.src)}</div></article>`).join("")}</div>
       <div class="note"><b>About the status labels.</b> The City aligns its plans to five pillars (move, belong, connect, prosper, green) and reports results by corporate priority. Few goals carry numeric targets, so labels reflect reported progress. "Not reported" means the documents used here don't measure progress against the goal.</div></section>`,
-   y26:`<p class="vsp">Council adopted the 2026 Budget on January 28, 2026. The City's own forecast shows larger levy increases ahead: 15.12% in 2027, 9.07% in 2028 and 6.86% in 2029.</p>
-     ${vRoll("Operating budget by service area","13 service areas · $789.4M net tax levy",`<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Service area</th><th scope="col">2026 net budget</th><th scope="col">Share</th></tr></thead><tbody><tr><th scope="row">Fire & Emergency Services</th><td>$182.8M</td><td>23.2%</td></tr><tr><th scope="row">Transit</th><td>$130.3M</td><td>16.5%</td></tr><tr><th scope="row">Roads</th><td>$110.7M</td><td>14.0%</td></tr><tr><th scope="row">Corporate Transactions</th><td>$82.6M</td><td>10.5%</td></tr><tr><th scope="row">General Government</th><td>$65.5M</td><td>8.3%</td></tr><tr><th scope="row">Parks, Forestry & Environment</th><td>$45.0M</td><td>5.7%</td></tr><tr><th scope="row">Information Technology</th><td>$41.2M</td><td>5.2%</td></tr><tr><th scope="row">Recreation & Culture</th><td>$34.0M</td><td>4.3%</td></tr><tr><th scope="row">Mississauga Library</th><td>$32.1M</td><td>4.1%</td></tr><tr><th scope="row">Facilities & Property Management</th><td>$24.7M</td><td>3.1%</td></tr><tr><th scope="row">Planning & Building</th><td>$18.3M</td><td>2.3%</td></tr><tr><th scope="row">Regulatory Services</th><td>$16.6M</td><td>2.1%</td></tr><tr><th scope="row">Mayor & Members of Council</th><td>$5.6M</td><td>0.7%</td></tr><tr class="tot"><th scope="row">Total net operating budget</th><td>$789.4M</td><td>100%</td></tr></tbody></table></div><div class="note">Net budget is the cost paid by the property tax levy, after fees and other revenue; the gross operating budget is $1,405.6M. The Stormwater Program ($51.8M) is funded by a separate charge and is not included.</div>${src(["b26"])}`,true)}
-     ${vRoll("Tax levy forecast","City share, as published with the 2026 Budget",`<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Year</th><th scope="col">Levy increase</th><th scope="col">Residential bill impact</th></tr></thead><tbody><tr><th scope="row">2026 (adopted)</th><td>4.39%</td><td>1.61%</td></tr><tr><th scope="row">2027 (forecast)</th><td class="up">15.12%</td><td>5.55%</td></tr><tr><th scope="row">2028 (forecast)</th><td>9.07%</td><td>3.33%</td></tr><tr><th scope="row">2029 (forecast)</th><td>6.86%</td><td>2.52%</td></tr></tbody></table></div>${src(["b26"])}`,true)}`,
-   y25:`${yearCards(25)}${levyBox(25)}
-     ${vRoll("Plan vs actual: headline","Audited statements, accrual basis",head(25),true)}
-     ${vRoll("Expenses by function","Plan vs actual",fnTable(25,"2025 · plan vs actual"),true)}
-     ${vRoll("Expenses by type","Where the overspend sits",pv(MSC_OBJ25,"exp","2025 · Note 21","Type")+`<div class="note">Salaries, wages and benefits were $39.3M over budget and contracted services $50.9M over. Recoveries from third parties also came in $48.5M above budget; the statements do not link the two.</div>`,true)}
-     ${vRoll("Revenue by source","Plan vs actual",pv(MSC_REV25,"rev","2025","Source"),false)}
-     ${src(["c25","hl25"])}`,
-   y24:`${yearCards(24)}${levyBox(24)}
-     ${vRoll("Plan vs actual: headline","Audited statements, accrual basis",head(24),true)}
-     ${vRoll("Expenses by function","Plan vs actual",fnTable(24,"2024 · plan vs actual"),true)}
-     <div class="note">The 2024 surplus of $831.0M includes $584.2M of contributed and assumed tangible capital assets, recorded as revenue but not received as cash.</div>
-     ${src(["c24","fs24"])}`,
+   y26:`<p class="vsp">Council adopted the 2026 Budget on January 28, 2026. The City's own forecast shows larger levy increases ahead: 15.12% in 2027, 9.07% in 2028 and 6.86% in 2029. Click a section to open it.</p>
+     ${cGrp("Financials",[
+      fRoll("A","bk","Operating budget","By service area, net tax levy","$789.4M","",`<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Service area</th><th scope="col">2026 net budget</th><th scope="col">Share</th></tr></thead><tbody><tr><th scope="row">Fire & Emergency Services</th><td>$182.8M</td><td>23.2%</td></tr><tr><th scope="row">Transit</th><td>$130.3M</td><td>16.5%</td></tr><tr><th scope="row">Roads</th><td>$110.7M</td><td>14.0%</td></tr><tr><th scope="row">Corporate Transactions</th><td>$82.6M</td><td>10.5%</td></tr><tr><th scope="row">General Government</th><td>$65.5M</td><td>8.3%</td></tr><tr><th scope="row">Parks, Forestry & Environment</th><td>$45.0M</td><td>5.7%</td></tr><tr><th scope="row">Information Technology</th><td>$41.2M</td><td>5.2%</td></tr><tr><th scope="row">Recreation & Culture</th><td>$34.0M</td><td>4.3%</td></tr><tr><th scope="row">Mississauga Library</th><td>$32.1M</td><td>4.1%</td></tr><tr><th scope="row">Facilities & Property Management</th><td>$24.7M</td><td>3.1%</td></tr><tr><th scope="row">Planning & Building</th><td>$18.3M</td><td>2.3%</td></tr><tr><th scope="row">Regulatory Services</th><td>$16.6M</td><td>2.1%</td></tr><tr><th scope="row">Mayor & Members of Council</th><td>$5.6M</td><td>0.7%</td></tr><tr class="tot"><th scope="row">Total net operating budget</th><td>$789.4M</td><td>100%</td></tr></tbody></table></div><div class="note">Net budget is the cost paid by the property tax levy, after fees and other revenue; the gross operating budget is $1,405.6M. The Stormwater Program ($51.8M) is funded by a separate charge and is not included.</div>${src(["b26"])}`),
+      fRoll("B","by","Tax levy forecast","City share, as published with the 2026 Budget","+4.39% in 2026","cau",`<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Year</th><th scope="col">Levy increase</th><th scope="col">Residential bill impact</th></tr></thead><tbody><tr><th scope="row">2026 (adopted)</th><td>4.39%</td><td>1.61%</td></tr><tr><th scope="row">2027 (forecast)</th><td class="up">15.12%</td><td>5.55%</td></tr><tr><th scope="row">2028 (forecast)</th><td>9.07%</td><td>3.33%</td></tr><tr><th scope="row">2029 (forecast)</th><td>6.86%</td><td>2.52%</td></tr></tbody></table></div>${src(["b26"])}`)])}
+     ${cGrp("Goals",[fRoll(C_GOAL,"bg","Goals and results","Where each area stands now",MSC_CARD.length+" areas","",cGoals(MSC_CARD,c=>c.tr,2,"Latest")+src(["fs24","hl25","b26"]))])}`,
+   y25:`${yearCards(25)}${levyBox(25)}<p class="fynote">Click a section to open it.</p>
+     ${cGrp("Financials",[
+      fRoll("$","bs","Financial Summary","Audited statements, plan against actual",vsM1(T.exp.a25)+" spent","up",head(25)+src(["c25","hl25"])),
+      fRoll("A","bk","Revenue","By source: plan against actual",vsM1(T.rev.a25),"",pv(MSC_REV25,"rev","2025","Source")+src(["c25"])),
+      fRoll("B","bk","Expenses by function","Plan against actual",vsSgn(T.exp.a25-T.exp.b25,vsM1)+" over","up",fnTable(25,"2025 · plan vs actual")+src(["c25"])),
+      fRoll("C","by","Expenses by type","Where the overspend sits",vsSgn(T.exp.a25-T.exp.b25,vsM1)+" over","up",pv(MSC_OBJ25,"exp","2025 · Note 21","Type")+`<div class="note">Salaries, wages and benefits were $39.3M over budget and contracted services $50.9M over. Recoveries from third parties also came in $48.5M above budget; the statements do not link the two.</div>`+src(["c25"])),
+      fRoll("D","bk","Capital","Assets acquired against the approved capital budget",vsM1(T.capa.a25)+" acquired","",`<p class="vsp">Capital assets acquired were ${vsM1(T.capa.a25)} against an approved capital budget of ${vsM1(T.capb.b25)}. The approved budget funds projects that run over several years, so no percentage is shown.</p>`+src(["c25"]))])}
+     ${cGrp("Goals",[fRoll(C_GOAL,"bg","Goals and results","2025 results for each area",MSC_CARD.length+" areas","",cGoals(MSC_CARD,c=>c.tr,1,"2025 result")+src(["fs24","hl25"]))])}`,
+   y24:`${yearCards(24)}${levyBox(24)}<p class="fynote">Click a section to open it.</p>
+     ${cGrp("Financials",[
+      fRoll("$","bs","Financial Summary","Audited statements, plan against actual",vsM1(T.exp.a24)+" spent","up",head(24)+`<div class="note">The 2024 surplus of $831.0M includes $584.2M of contributed and assumed tangible capital assets, recorded as revenue but not received as cash.</div>`+src(["c24","fs24"])),
+      fRoll("A","bk","Expenses by function","Plan against actual",vsSgn(T.exp.a24-T.exp.b24,vsM1)+" over","up",fnTable(24,"2024 · plan vs actual")+src(["c24"])),
+      fRoll("B","bk","Capital","Assets acquired against the approved capital budget",vsM1(T.capa.a24)+" acquired","",`<p class="vsp">Capital assets acquired were ${vsM1(T.capa.a24)} against an approved capital budget of ${vsM1(T.capb.b24)}. This includes assets transferred to the City; the approved budget funds multi-year projects, so no percentage is shown.</p>`+src(["c24"]))])}
+     ${cGrp("Goals",[fRoll(C_GOAL,"bg","Goals and results","2024 results for each area",MSC_CARD.length+" areas","",cGoals(MSC_CARD,c=>c.tr,0,"2024 result")+src(["fs24","hl25"]))])}`,
    yoy:`${vRoll("High-level actuals, 2023–2025","Audited",`<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Measure</th><th scope="col">2023</th><th scope="col">2024</th><th scope="col">2025</th><th scope="col">2024 vs 2023</th><th scope="col">2025 vs 2024</th></tr></thead><tbody>
       ${[["Revenue","rev"],["Expenses","exp"],["Annual surplus","sur"],["Cash","cash"],["Long-term debt","debt"],["Accumulated surplus","acc"]].map(([l,k])=>{const t=T[k],gd=k==="exp"||k==="debt"?1:-1,c1=vsPct(t.a24,t.a23),c2=vsPct(t.a25,t.a24);return `<tr><th scope="row">${l}</th><td>${vsM(t.a23)}</td><td>${vsM(t.a24)}</td><td>${vsM(t.a25)}</td><td class="${vcls(gd*c1)}">${vsP(c1)}</td><td class="${vcls(gd*c2)}">${vsP(c2)}</td></tr>`}).join("")}</tbody></table></div>
       <div class="note">Green: change is good for the City's finances (more revenue, surplus, cash; less spending or debt). Red: the reverse. Revenue and surplus swing in 2024 because of $584.2M in transferred assets.</div>`,true)}
@@ -1919,11 +1945,11 @@ function renderMisScore(){
    check:`<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Item</th><th scope="col">Status</th><th scope="col">What the City documents show</th></tr></thead><tbody>
       ${MSC_CHECK.map(r=>`<tr><th scope="row">${r[0]}</th><td style="text-align:left"><span class="vd v-${r[1].toLowerCase().replace(/[^a-z]/g,"")}">${r[1]}</span></td><td style="text-align:left">${r[2]}</td></tr>`).join("")}</tbody></table></div>${src(["c25","c24","hl25","b26","tgt"])}`
   };
-  const tabs=[["card","Report card","Goals and progress"],["y26","2026 plan","Budget and forecast"],["y25","2025 results","Plan vs actual"],["y24","2024 results","Plan vs actual"],["yoy","Year over year","2023–2025 actuals"],["check","Data validation","Sources checked"]];
+  const tabs=[["card","Report card","Goals and progress"],["y26","2026 plan","Jan–Dec 2026 · budget and forecast"],["y25","2025 results","Jan–Dec 2025 · plan vs actual"],["y24","2024 results","Jan–Dec 2024 · plan vs actual"],["yoy","Year over year","2023–2025 calendar years"],["check","Data validation","Sources checked"]];
   el.innerHTML=`<header class="dsh-head"><div><div class="kicker">City of Mississauga · Department dashboard</div><h2 class="nh">Council Scorecard 2024–2026</h2>
      <p class="pagelede">Plans, budgets and results from the City's audited statements and financial reports.</p></div>
      </header>
-    <div class="dkey"><span><i class="ok"></i>Good: on or better than plan</span><span><i class="watch"></i>Caution: behind plan</span><span><i class="off"></i>Over budget</span><span class="muted">Gauge: actual as % of plan</span></div>
+    ${cityHow("City of Mississauga"," the following spring")}
     <div class="dtiming"><b>About timing.</b> The City's financial year runs January to December. Audited results are published once a year, the following spring. Until then, current-year figures are budgets, not results. This page uses documents available on Nov 1, 2026: audited results for 2024 and 2025 and the adopted 2026 budget.</div>
     <div class="dsh-kh">2026 · current year budget<span>Actual results for each year are in its own section below.</span></div>
     ${kp26}
@@ -1932,7 +1958,7 @@ function renderMisScore(){
     <div class="dsh-main">${tabs.map((t,i)=>`<div role="tabpanel" id="msp-${t[0]}" aria-labelledby="mst-${t[0]}" class="vspane" ${i?"hidden":""}><h3 class="dsh-ph">${t[1]}<small>${t[2]}</small></h3>${panes[t[0]]}</div>`).join("")}</div></div>`;
   const bs=[...el.querySelectorAll(".dsh-rail button")];
   const pick=b=>bs.forEach(x=>{const on=x===b; x.setAttribute("aria-selected",on); x.tabIndex=on?0:-1; document.getElementById("msp-"+x.dataset.k).hidden=!on;});
-  el._pick=k=>pick(bs.find(b=>b.dataset.k===k));
+  el._pick=k=>pick(bs.find(b=>b.dataset.k===k)); cWire(el);
   bs.forEach((b,i)=>{ b.onclick=()=>pick(b); b.onkeydown=e=>{ const d=(e.key==="ArrowDown"||e.key==="ArrowRight")?1:(e.key==="ArrowUp"||e.key==="ArrowLeft")?-1:0; if(d){ const n=bs[(i+d+bs.length)%bs.length]; pick(n); n.focus(); e.preventDefault(); } }; });
 }
 function vscYoYM(p,c,yl){const b=MSC_EXP[p],a=MSC_EXP[c],tb=b.reduce((s,x)=>s+x,0),ta=a.reduce((s,x)=>s+x,0);
@@ -2688,10 +2714,10 @@ function fedHead(sub,intro){
 /* "How to read this page": same show/hide style as the City of Victoria page ("How power flows in Victoria"); collapsed on page open */
 const FED_HOW=`<details class="flowdd fedhow"><summary><span><h2>How to read this page</h2><span class="ddhint">Click to see how plans, budgets and results fit together</span></span><span class="ddarrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6l4 4 4-4"/></svg></span></summary>
   <ol class="steps">
+   <li class="yrhl"><b>Fiscal years, not calendar years.</b> The federal government's year runs April 1 to March 31 and is written with “FY”: FY 2024–25 means April 1, 2024 to March 31, 2025. Dates without “FY” are calendar dates, such as Nov 5, 2024. Budget 2026 is named for the day it was presented, Nov 5, 2026. In Government of Canada quotes, a range such as 2027-28 is a fiscal year. City scorecards use calendar years (January to December).</li>
    <li><b>Financials and goals.</b> Before each year starts, a department sets a budget (the funding it needs) and goals (what it plans to do). After the year ends, it reports what it spent and what it achieved.</li>
    <li><b>Financials.</b> The <b>budget</b> is set before the year starts. The <b>actuals</b> are what was really spent, audited in the Public Accounts. The <b>variance</b> is the difference. Funding approved but not spent by March 31 is <b>lapsed</b>. All amounts are in millions of dollars ($M): $4,685.2M is $4.69 billion.</li>
    <li><b>Goals.</b> After the year ends, the department compares its results with its goals, showing what was done and what was not.</li>
-   <li><b>Two kinds of dates.</b> Fiscal years start with “FY”: FY 2024–25 means April 1, 2024 to March 31, 2025. Dates without “FY” are calendar dates, such as Nov 5, 2024. Budget 2026 is named for the day it was presented, Nov 5, 2026. In Government of Canada quotes, a range such as 2027-28 is a fiscal year.</li>
   </ol>
   <div class="fhowkey"><b>Colours</b>
    <div class="dkey"><span><i class="blk"></i>Budget and totals</span><span><i class="watch"></i>Funding added; 50–74% of goals met</span><span><i class="off"></i>Over budget; under 50% of goals met</span><span><i class="ok"></i>Within budget or unspent; 75%+ of goals met</span><span class="muted">Gauge: spent as a % of budget</span></div></div>
