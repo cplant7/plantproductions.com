@@ -2851,28 +2851,23 @@ const onGn=m=>m.goals&&m.goals.m?m.goals.m.length:0;
 const onGl=m=>m.goals&&m.goals.m?m.goals.m.filter(x=>x[2]&&!/not available|new measure/i.test(x[2])).length:0;
 
 function onYearPanel(){
-  const fes=["2026 Ontario Economic Outlook and Fiscal Review (Oct 29, 2026)","https://budget.ontario.ca/2026/fallstatement/index.html"];
   const body=pvYear([
-   ["Key events, FY 2025–26",[
-    ["Health","Health was the main story. The Ministry of Health received billions more during the year, and health costs across government ended well above budget.",""],
-    ["Wildfires","Forest fires again cost more than budgeted, as in the year before.",""],
-    ["Emergencies","Emergency Management Ontario spent about four times its starting budget, with the extra approved during the year.",""],
-    ["Contingency Fund","Unplanned costs were paid through the Contingency Fund, an amount in the budget that Treasury Board hands out to ministries during the year. It is spending authority, not an expense.",""],
-    ["Artificial intelligence","For FY 2026–27, Ontario names artificial intelligence in a program for the first time (Artificial Intelligence, Data, Archives and Privacy). Funding is about the same as last year: the change is in the name, not the amount.",""]]],
+   ["Key events",[
+    ["Health","Health spent billions more than budgeted, the largest overage.",""],
+    ["Wildfires","Forest fires again cost more than budgeted.",""],
+    ["Emergencies","Emergency management cost about four times its starting budget.",""],
+    ["Artificial intelligence","For FY 2026–27, a program names artificial intelligence for the first time, with about the same funding as last year.",""]]],
    ["What went well",[
     ["Deficit","The deficit came in lower than budgeted, because revenue was stronger than expected.",""],
-    ["Within budget","More than half of ministries and offices stayed within their starting budgets, and almost all stayed within their approved funding.",""],
+    ["Within budget","More than half of ministries and offices stayed within their starting budgets.",""],
     ["Interest","Interest costs on the debt were lower than planned.",""]]],
    ["Areas to improve",[
-    ["Expense above budget","Total expense "+M_(236336)+", against a budget of "+M_(231234)+" (+"+M_(5102)+"), mostly Health (+"+M_(6867)+").",""],
-    ["Above total approved","4 spent more than their total approved funding: Attorney General; Children, Community and Social Services; Northern Economic Development and Growth; and the Office of the Chief Electoral Officer.",""],
-    ["Wildfire and emergency budgets","Public Protection and Emergency Management Ontario budgets were well below actual spending.",""],
-    ["Reporting on goals","Only 13 of 119 key performance indicators in the 2025–26 Published Plans show a status (achieved or in progress); 10 ministries and offices publish no indicator table.","This makes it hard to tell whether most targets were met."],
-    ["Net debt","Rose from "+M_(427050)+" to "+M_(454993)+".",""]]],
-   ["Since the year ended",[
-    ["Fall Economic Statement, Oct 29, 2026","FY 2026–27 deficit forecast "+M_(16900)+", up from "+M_(13800)+" in the 2026 Budget. A balanced budget is now planned for FY 2029–30.","The government cites U.S. tariffs as a main reason for the change."]]]
-  ],[fA(ONS_SRC.pa26),fA(ONS_SRC.pa25),fA(ONS_SRC.est27),fA(ONS_SRC.cfs26),fA(ONS_SRC.ppar),fA(fes)].join(" · "));
-  return `<h4 class="fgrp">What happened in the year</h4><div class="fstack">${fRoll("i","bs","What happened in FY 2025–26","Key events, what went well, areas to improve, and updates since",M_(5280.7)+" added to Health","cau",body)}</div>`;
+    ["Spending over budget","16 of 35 ministries and offices spent more than their starting budget, and four spent more than their total approved funding.",""],
+    ["Wildfire and emergency budgets","Budgets are set below what these cost, and the FY 2026–27 budgets are about the same.",""],
+    ["Reporting on goals","Most ministries do not report whether their targets were met, so results are hard to judge.",""],
+    ["Debt","Net debt rose by about $28 billion, to $455 billion.",""]]]
+  ],[fA(ONS_SRC.pa26),fA(ONS_SRC.est27),fA(ONS_SRC.cfs26),fA(ONS_SRC.ppar)].join(" · "));
+  return `<h4 class="fgrp">What happened in the year</h4><div class="fstack">${fRoll("i","bs","What happened in FY 2025–26","Highlights: key events, what went well, areas to improve","16 of 35 over budget","up",body)}</div>`;
 }
 function renderOnScorePage(){
   const el=document.getElementById("ch-onscore"); if(!el) return;
