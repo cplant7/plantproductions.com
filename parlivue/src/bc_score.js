@@ -41,20 +41,21 @@ function bcYearPanel(){
   const body=pvYear([
    ["Key events",[
     ["Wildfires","Wildfires again cost close to three times what was budgeted.",""],
-    ["Emergencies","Emergencies cost far more than the amount set aside for them.",""],
-    ["Health","Health spent more than budgeted, the largest overage in dollars.",""],
+    ["Emergencies","Emergencies cost more than the amount set aside for them.",""],
+    ["Health","Health spent more than budgeted, the largest amount over budget in dollars.",""],
+    ["Debt","Debt is forecast to rise from $154 billion to $235 billion over the next three years.",""],
     ["Provincial election, Oct 24, 2026","A new government was elected. Ministries and FY 2026–27 plans may change.",""]]],
-   ["What went well",[
+   ["Met or beat the plan",[
     ["Within budget","Seven ministries and offices stayed within their starting budgets.",""],
     ["Goals","About six in ten goals with results were met.",""],
     ["Staff","Staff numbers stayed below plan.",""]]],
-   ["Areas to improve",[
+   ["Did not meet the plan",[
     ["Spending over budget","Most ministries (20 of 27) spent more than their starting budget.",""],
-    ["Wildfire and emergency budgets","Budgets are set far below what these cost each year, and the FY 2026–27 budgets are about the same.",""],
+    ["Wildfire and emergency budgets","Actual costs were higher than the budgets in each of the last two years. The FY 2026–27 budgets are about the same.",""],
     ["Goals not met","Four in ten goals were not met, including most in Health and in Housing and Municipal Affairs.",""],
-    ["Debt","Debt is forecast to rise from $154 billion to $235 billion over three years, and interest costs came in above budget.",""]]]
+    ["Interest","Interest costs on the debt came in above budget.",""]]]
   ],[fA(BC_SRC.pa26),fA(BC_SRC.est27),fA(BC_SRC.bfp26),`<a href="https://www.bcbudget.gov.bc.ca/Annual_Reports/2025_2026/" target="_blank" rel="noopener">2025/26 Annual Service Plan Reports</a>`].join(" · "));
-  return `<h4 class="fgrp">What happened in the year</h4><div class="fstack">${fRoll("i","bs","What happened in FY 2025–26","Highlights: key events, what went well, areas to improve","20 of 27 over budget","up",body)}</div>`;
+  return `<h4 class="fgrp">What happened in the year</h4><div class="fstack">${fRoll("i","bs","What happened in FY 2025–26","Highlights: key events and results against plan","20 of 27 over budget","up",body)}</div>`;
 }
 function renderBcScorePage(){
   const el=document.getElementById("ch-bcscore"); if(!el) return;

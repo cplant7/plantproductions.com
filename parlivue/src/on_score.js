@@ -33,21 +33,21 @@ const onGl=m=>m.goals&&m.goals.m?m.goals.m.filter(x=>x[2]&&!/not available|new m
 function onYearPanel(){
   const body=pvYear([
    ["Key events",[
-    ["Health","Health spent billions more than budgeted, the largest overage.",""],
+    ["Health","Health spent billions more than budgeted, the largest amount over budget.",""],
     ["Wildfires","Forest fires again cost more than budgeted.",""],
     ["Emergencies","Emergency management cost about four times its starting budget.",""],
-    ["Artificial intelligence","For FY 2026–27, a program names artificial intelligence for the first time, with about the same funding as last year.",""]]],
-   ["What went well",[
+    ["Artificial intelligence","For FY 2026–27, a program names artificial intelligence for the first time, with about the same funding as last year.",""],
+    ["Debt","Net debt rose by about $28 billion, to $455 billion.",""],
+    ["Reporting on goals","Most ministries do not report whether their targets were met.",""]]],
+   ["Met or beat the plan",[
     ["Deficit","The deficit came in lower than budgeted, because revenue was stronger than expected.",""],
     ["Within budget","More than half of ministries and offices stayed within their starting budgets.",""],
     ["Interest","Interest costs on the debt were lower than planned.",""]]],
-   ["Areas to improve",[
+   ["Did not meet the plan",[
     ["Spending over budget","16 of 35 ministries and offices spent more than their starting budget, and four spent more than their total approved funding.",""],
-    ["Wildfire and emergency budgets","Budgets are set below what these cost, and the FY 2026–27 budgets are about the same.",""],
-    ["Reporting on goals","Most ministries do not report whether their targets were met, so results are hard to judge.",""],
-    ["Debt","Net debt rose by about $28 billion, to $455 billion.",""]]]
+    ["Wildfire and emergency budgets","Actual costs were higher than the budgets. The FY 2026–27 budgets are about the same.",""]]]
   ],[fA(ONS_SRC.pa26),fA(ONS_SRC.est27),fA(ONS_SRC.cfs26),fA(ONS_SRC.ppar)].join(" · "));
-  return `<h4 class="fgrp">What happened in the year</h4><div class="fstack">${fRoll("i","bs","What happened in FY 2025–26","Highlights: key events, what went well, areas to improve","16 of 35 over budget","up",body)}</div>`;
+  return `<h4 class="fgrp">What happened in the year</h4><div class="fstack">${fRoll("i","bs","What happened in FY 2025–26","Highlights: key events and results against plan","16 of 35 over budget","up",body)}</div>`;
 }
 function renderOnScorePage(){
   const el=document.getElementById("ch-onscore"); if(!el) return;
