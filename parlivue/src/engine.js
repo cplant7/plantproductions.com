@@ -425,7 +425,7 @@ function show(id,{focusKey}={}){ { const RM_W={federal:"fedscore",bc:"bcleg",onw
   commonsEl.hidden=true;
   if(id==="news"){ tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab==="news"?"true":"false"));
     wheelHome(); wheelEls.forEach(el=>el.hidden=true); bannerEl.hidden=true; newsEl.hidden=false; renderNews();
-    document.getElementById("tagline").textContent="Federal news centred on Prime Minister Carney and the ministers and departments involved.";
+    document.getElementById("tagline").textContent="Site updates and key events: what changed on ParliVue, and the budgets, public accounts and elections behind it.";
     document.getElementById("stamp").textContent="News · Snapshot Nov 5 2026"; document.getElementById("scope").textContent="Federal";
     try{ if(location.hash!=="#news") history.replaceState(null,"","#news"); }catch(e){} window.scrollTo(0,0); return; }
   wheelHome(); wheelEls.forEach(el=>el.hidden=false); newsEl.hidden=true;
@@ -500,29 +500,27 @@ function entLabel([tab,key]){ const d=DS[tab]; if(key==="hub") return d.hub.name
 function entParty([tab,key]){ const d=DS[tab]; if(key.startsWith("o_")) return null; const n=d.inner.find(x=>x.id===key); if(key!=="hub"&&(!n||!["fed_min","bc_min","vic_council","mis_council"].includes(n.role))) return null; return d.party; }
 const chip=e=>{ const p=entParty(e); return `<button class="echip" data-tab="${e[0]}" data-key="${e[1]}">${p?`<i style="background:${PARTY[p].color}"></i>`:'<i class="sq"></i>'}${entLabel(e)}</button>`; };
 function renderNews(){
-  const people=[]; const seen=new Set();
-  NEWS.forEach(n=>{ n.ents.forEach(e=>{ const p=entParty(e); const k=e.join(":"); if(p&&!seen.has(k)){seen.add(k);people.push({e,name:entLabel(e),party:p});} }); (n.people||[]).forEach(([nm,p])=>{ if(!seen.has(nm)){seen.add(nm);people.push({name:nm,party:p});} }); });
-  const unnamed=DS.federal.outer.flatMap(o=>o.heads).filter(h=>h.status==="U").length;
-  const mins=people.filter(p=>p.e&&p.e[1]!=="hub").length, carneyN=NEWS.filter(n=>n.ents.some(e=>e[0]==="federal"&&e[1]==="hub")).length;
-  const last=CHANGES[0].date, days=Math.round((new Date("2026-11-01")-new Date(last))/864e5);
+  const lab={fedscore:"Federal departments",fedbudget:"Federal Budget 2026",bcscore:"B.C. ministries",onscore:"Ontario ministries",vicscore:"City of Victoria",misscore:"City of Mississauga"};
   newsEl.innerHTML=`
-   <section class="nsec"><h2 class="nh">Prime Minister Carney and the federal government</h2>
-    <ol class="nlist">${NEWS.map(n=>`<li class="nitem"><div class="nmeta"><span class="lvl lvl-federal">${n.tag||n.level}</span><time datetime="${n.date}">${fmtDate(n.date)}</time></div>
+   <section class="nsec"><h2 class="nh">Site updates</h2><p class="src" style="margin-top:0">What changed on ParliVue, newest first.</p>
+    <ol class="nlist">${SITE_UPDATES.map(([d,go,txt])=>`<li class="nitem"><div class="nmeta"><span class="lvl lvl-federal">Data</span><time datetime="${d}">${fmtDate(d)}</time></div>
+      <p>${txt}</p><div class="chips"><button class="echip" data-go="${go}"><i class="sq"></i>${lab[go]||go} →</button></div></li>`).join("")}</ol>
+    <h2 class="nh" style="margin-top:18px">Key events</h2><p class="src" style="margin-top:0">Budgets, public accounts, elections and Cabinet changes that affect the scorecards.</p>
+    <ol class="nlist">${NEWS.map(n=>`<li class="nitem"><div class="nmeta"><span class="lvl lvl-federal">${n.tag}</span><time datetime="${n.date}">${fmtDate(n.date)}</time></div>
       <h3>${n.title}</h3><p>${n.text}</p>
-      <div class="chips">${n.ents.map(chip).join("")}${(n.people||[]).map(([nm,p])=>`<span class="echip static"><i style="background:${PARTY[p].color}"></i>${nm}</span>`).join("")}</div>
+      <div class="chips">${n.ents.map(chip).join("")}${(n.people||[]).map(([nm,p])=>`<span class="echip static"><i style="background:${PARTY[p].color}"></i>${nm}</span>`).join("")}${n.go?`<button class="echip" data-go="${n.go}"><i class="sq"></i>${lab[n.go]} →</button>`:""}</div>
       <a class="nsrc" href="${n.src[1]}" target="_blank" rel="noopener">${n.src[0]} ↗</a></li>`).join("")}</ol></section>
    <aside class="nside">
-    <section class="nsec"><h2 class="nh">Who's in the news</h2>
-     <div class="faces">${people.map(p=>`<${p.e?"button":"span"} class="face" ${p.e?`data-tab="${p.e[0]}" data-key="${p.e[1]}"`:""}><span class="ava sm" style="--pc:${PARTY[p.party].color}">${initials(p.name)}</span><span>${p.name}</span></${p.e?"button":"span"}>`).join("")}</div>
-     <div class="src">Outline colour shows the person's party. Grey means no party label.</div></section>
+    <section class="nsec"><h2 class="nh">Coming up</h2>
+     <ol class="clist">${COMING.map(([d,t])=>`<li class="citem"><div class="nmeta"><span class="lvl lvl-federal">${d}</span></div><div>${t}</div></li>`).join("")}</ol></section>
     <section class="nsec"><h2 class="nh">Federal leadership changes</h2>
-     <div class="kpis"><div class="stat"><b>${carneyN}</b><span>Stories involving the Prime Minister</span></div><div class="stat"><b>${mins}</b><span>Ministers in the news</span></div><div class="stat"><b>${days}</b><span>Days since last senior change</span></div><div class="stat"><b>${DS.federal.inner.filter(n=>n.role==="fed_min").length}</b><span>Ministers in Cabinet</span></div></div>
      <ol class="clist">${CHANGES.map(c=>`<li class="citem"><div class="nmeta"><span class="lvl lvl-${levelTab[c.level]}">${c.level}</span><time datetime="${c.date}">${fmtDate(c.date)}</time></div>
        <button class="cseat" data-tab="${c.ent[0]}" data-key="${c.ent[1]}">${c.seat}</button>
        ${c.out?`<div class="cflow"><span class="cout">Out</span>${c.out}</div>`:""}<div class="cflow"><span class="cin">In</span>${c.in}</div>
        ${c.pending?`<div class="cpend">${c.pending}</div>`:""}<a class="nsrc" href="${c.src[1]}" target="_blank" rel="noopener">${c.src[0]} ↗</a></li>`).join("")}</ol></section>
    </aside>`;
   newsEl.querySelectorAll("[data-tab][data-key]").forEach(b=>{ if(b.dataset.tab==="federal"){ b.classList.add("static"); b.disabled=true; return; } b.onclick=()=>show(b.dataset.tab,{focusKey:b.dataset.key}); });
+  newsEl.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{show(b.dataset.go); window.scrollTo(0,0);});
 }
 
 /* ---------- start ---------- */

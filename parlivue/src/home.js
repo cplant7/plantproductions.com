@@ -48,8 +48,8 @@ function renderHome(){
     <div class="hstack">
     <article class="hcard"><div class="kicker">Federal · Parliament of Canada</div><h2>House of Commons of Canada</h2><p>All 343 seats as the chamber sits, the Prime Minister's Cabinet, and the departments each minister is responsible for.</p>
       <div class="hlinks"><button data-go="commons">House of Commons</button><button data-go="senate">Senate of Canada</button></div></article>
-    <article class="hcard"><div class="kicker">Federal news</div><h2>Prime Minister Carney</h2><p>The latest federal announcements, votes and visits, linked to the ministers and departments involved.</p>
-      <div class="hlinks"><button data-go="news">Latest news</button></div></article>
+    <article class="hcard"><div class="kicker">What's new</div><h2>Updates</h2><p>What changed on ParliVue, and the budgets, public accounts and elections that affect the scorecards.</p>
+      <div class="hlinks"><button data-go="news">Site updates and key events</button></div></article>
     </div>
     <article class="hcard"><div class="kicker">Provinces</div><h2>Provincial legislatures</h2><p>Each province's elected members, its Premier and Cabinet, and the ministries they run.</p>
       <div class="hlinks"><button data-go="ableg">Alberta</button><button data-go="ontario">Ontario</button><button data-go="bcleg">British Columbia</button><button data-go="skleg">Saskatchewan</button><button data-go="mbleg">Manitoba</button><button data-go="nbleg">New Brunswick</button><button data-go="nlleg">Newfoundland and Labrador</button><button data-go="nsleg">Nova Scotia</button><button data-go="ntleg">Northwest Territories</button><button data-go="nuleg">Nunavut</button><button data-go="peleg">Prince Edward Island</button><button data-go="ykleg">Yukon</button></div>

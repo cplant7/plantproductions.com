@@ -24,36 +24,37 @@ const BC_TRANSITION={
 const NOT_RUNNING_SRC=["Wikipedia: 2026 BC general election","https://en.wikipedia.org/wiki/2026_British_Columbia_general_election"];
 
 // News items: summaries are written here in plain words; follow the source link for the full story.
+/* Key events: only those that change a scorecard (budgets, Public Accounts, elections, Cabinet changes). Newest first. */
 const NEWS=[
- {date:"2026-11-01",tag:"Parliament",title:"Six federal by-elections called for December 7",text:"The Prime Minister announced by-elections on December 7, 2026 in Brantford—Brant South, Laurier—Sainte-Marie, Rosemont—La Petite-Patrie, Saint-Hyacinthe—Bagot—Acton, Scarborough North and Yorkton—Melville.",
+ {date:"2026-11-05",tag:"Budget",title:"Federal Budget 2026 tabled",text:"The federal budget sets out fiscal projections and new measures by department. It is not yet in the FY 2026–27 department figures; see the Budget 2026 page.",
+  ents:[["federal","hub"]],go:"fedbudget",src:["Government of Canada: Budget 2026","https://budget.canada.ca"]},
+ {date:"2026-11-01",tag:"Election",title:"Six federal by-elections called for December 7",text:"By-elections will be held on December 7, 2026. Results may change seat counts in the House of Commons.",
   ents:[["federal","hub"]],src:["PMO, Nov 1 2026","https://www.pm.gc.ca/en/news/news-releases/2026/11/01/prime-minister-carney-announces-elections"]},
- {date:"2026-10-31",tag:"Trade",title:"Carney says Canada won't rush a U.S. trade deal",text:"Speaking during the Canada–EU summit in Montréal, the Prime Minister said Canada would not sign a U.S. trade agreement that isn't in its interest: \"if there's not something that's in Canada's interest, we're not going to do it just for the sake of it.\" He also pointed to the economic partnership with the United Arab Emirates, \"negotiated in 47 days.\"",
-  ents:[["federal","hub"]],src:["Bloomberg via The Spokesman-Review, Oct 31 2026","https://www.spokesman.com/stories/2026/oct/31/carney-says-no-hurry-on-trade-deal-if-us-wont-offe/"]},
- {date:"2026-10-30",tag:"Trade",title:"Canada and the EU launch an Alliance for the Future",text:"At the Canada–EU summit in Montréal, Prime Minister Carney, Commission President von der Leyen and Council President Costa launched an economic and security alliance. They concluded talks on digital trade and competition agreements and agreed on critical minerals investment, border security and defence cooperation. Carney expects to conclude associate-membership talks in June; the joint declaration does not use that term.",
-  ents:[["federal","hub"],["federal","anand"],["federal","sidhu"],["federal","o_gac"]],src:["AP via ABC News, Oct 30 2026","https://abcnews.com/International/wireStory/prime-minister-carney-expects-conclude-talks-june-making-137703585"]},
- {date:"2026-10-29",tag:"Security",title:"First national security strategy in over 20 years",text:"The Plan for a Stronger Canada sets five priorities: economic security, foreign policy, rebuilding the Canadian Armed Forces, public safety and modern intelligence. It includes $10.9 billion over five years to upgrade digital systems at National Defence, the Armed Forces and the Communications Security Establishment.",
-  ents:[["federal","hub"],["federal","mcguinty"],["federal","anandasangaree"],["federal","o_dnd"],["federal","o_ps"]],src:["PMO, Oct 29 2026","https://www.pm.gc.ca/en/news/news-releases/2026/10/29/prime-minister-carney-launches-plan-stronger-canada-strengthen"]},
- {date:"2026-10-29",tag:"Economy",title:"Up to $1.6 billion for Cohere",text:"The federal government plans to invest up to $1.6 billion in Toronto-founded AI company Cohere, alongside private investors. AI Minister Evan Solomon is named in the announcement.",
-  ents:[["federal","hub"],["federal","solomon"],["federal","o_ised"]],src:["PMO speech, Oct 29 2026","https://www.pm.gc.ca/en/news/speeches/2026/10/29/prime-minister-carney-announces-landmark-investment-cohere-scale-secure"]},
- {date:"2026-10-28",tag:"Parliament",title:"Conservatives seek to call Carney before Finance committee",text:"A Conservative opposition-day motion asked the House to call the Prime Minister to testify before the Standing Committee on Finance on deficits, debt interest and taxes. The Liberals hold a majority, so the motion was not expected to pass. The House also debated Bill C-34, the Safe Social Media Act.",
-  ents:[["federal","hub"],["federal","champagne"]],src:["The Hub, Oct 28 2026","https://thehub.ca/2026/10/28/parliament-today-vote-on-conservative-push-to-put-carney-before-the-finance-committee/"]},
- {date:"2026-10-28",tag:"Diplomacy",title:"Carney to attend Commonwealth summit, Nov 2–4",text:"The Prime Minister will attend the Commonwealth Heads of Government Meeting in St. John's, Antigua and Barbuda, focused on trade, investment, climate cooperation and collective security.",
-  ents:[["federal","hub"],["federal","anand"]],src:["PMO, Oct 28 2026","https://www.pm.gc.ca/en/news/news-releases/2026/10/28/prime-minister-carney-attend-commonwealth-heads-government-meeting"]},
- {date:"2026-10-26",tag:"Indigenous",title:"First Nations leaders meet First Ministers",text:"The first meeting of its kind in two decades discussed a possible First Nations Sovereign Wealth Fund, economic opportunities from major projects, and reforming or replacing the Indian Act. Funding for emergency preparedness, policing and workforce programs was announced.",
-  ents:[["federal","hub"],["federal","alty"],["federal","gullmasty"],["federal","anandasangaree"],["federal","o_isc"]],src:["PMO, Oct 26 2026","https://www.pm.gc.ca/en/news/news-releases/2026/10/26/prime-minister-carney-convenes-first-nations-leadership-and-first"]},
- {date:"2026-10-26",tag:"Diplomacy",title:"Crown Prince of Abu Dhabi visits Ottawa",text:"Sheikh Khaled bin Mohamed bin Zayed Al Nahyan visited Oct 26–27. The leaders planned to widen cooperation with the United Arab Emirates into defence, energy, critical minerals and artificial intelligence, building on recent trade and investment agreements.",
-  ents:[["federal","hub"],["federal","sidhu"]],src:["PMO, Oct 25 2026","https://www.pm.gc.ca/en/news/news-releases/2026/10/25/prime-minister-carney-welcome-crown-prince-abu-dhabi-strengthen"]},
- {date:"2026-10-21",tag:"Trade",title:"$8.7 billion Canada–Ontario plan against tariffs",text:"Prime Minister Carney and Premier Ford launched a joint plan for steel, autos and critical minerals. It creates a Joint Steel Action Fund ($3.55 billion federal, $1.67 billion Ontario), $2.5 billion for auto production lines, and matched funding of up to $1 billion for Ring of Fire roads.",
-  ents:[["federal","hub"],["federal","joly"],["federal","hodgson"]],people:[["Doug Ford","onpc"]],src:["PMO, Oct 21 2026","https://www.pm.gc.ca/en/news/news-releases/2026/10/21/prime-minister-carney-and-premier-ford-launch-new-action-plan-protect"]},
- {date:"2026-10-20",tag:"Unity",title:"Alberta votes to stay in Canada",text:"In a non-binding vote on Oct 19, unofficial results showed about 75% of Albertans chose to remain a province rather than start a process toward separation. Carney called it a great result for Canada. He had campaigned at a unity rally in Calgary the week before.",
-  ents:[["federal","hub"]],src:["NPR via WUNC, Oct 20 2026","https://www.wunc.org/2026-10-20/alberta-voters-reject-a-move-toward-independence-in-referendum-backing-canadian-unity"]},
- {date:"2026-10-11",tag:"Diplomacy",title:"Carney speaks with President Trump",text:"The Prime Minister's Office published a readout of a call between the Prime Minister and the U.S. President.",
-  ents:[["federal","hub"],["federal","leblanc"]],src:["PMO readout, Oct 11 2026","https://www.pm.gc.ca/en/news/readouts/2026/10/11/prime-minister-carney-speaks-president-united-states-donald-j-trump"]},
- {date:"2026-10-08",tag:"Parliament",title:"Major projects bill C-39 clears first vote",text:"A key bill in the government's economic agenda passed second reading 296 to 26. Conservatives voted with the Liberals to send it to a special committee for study.",
-  ents:[["federal","hub"],["federal","mackinnon"]],src:["CTV News, Oct 8 2026","https://www.ctvnews.ca/politics/article/major-government-economic-legislation-c-39-clears-first-vote/"]},
- {date:"2026-10-08",tag:"Housing",title:"$2 billion to retrofit one million homes",text:"A new National Heat Pump Rebate offers eligible households up to $10,000. A separate stream aims to retrofit 280,000 apartment units through CMHC and the Canada Infrastructure Bank.",
-  ents:[["federal","hub"],["federal","robertson"],["federal","dabrusin"]],src:["PMO, Oct 8 2026","https://www.pm.gc.ca/en/news/news-releases/2026/10/08/prime-minister-carney-announces-landmark-investment-retrofit-one"]}
+ {date:"2026-10-24",tag:"Election",title:"B.C. election: BC Conservatives win a majority (preliminary)",text:"Lorne Doerkson is premier-designate and can be sworn in once results are certified, expected Nov 18. New ministries and FY 2026–27 plans may follow.",
+  ents:[],people:[["Lorne Doerkson","con"],["David Eby","ndp"]],go:"bcscore",src:BC_TRANSITION.srcs[0]},
+ {date:"2026-03-26",tag:"Budget",title:"Ontario 2026 Budget tabled",text:"Ontario's fiscal plan for FY 2026–27 to FY 2028–29: a $13.8 billion deficit planned for FY 2026–27.",
+  ents:[],go:"onscore",src:["2026 Ontario Budget","https://budget.ontario.ca/2026/brief.html"]},
+ {date:"2026-02-17",tag:"Budget",title:"B.C. Budget 2026 tabled",text:"B.C.'s fiscal plan and Estimates for FY 2026–27, with service plans for each ministry.",
+  ents:[],go:"bcscore",src:["B.C. Budget 2026","https://www.bcbudget.gov.bc.ca/2026/"]}
 ];
+/* Coming up: scheduled releases that will update the scorecards */
+const COMING=[
+ ["Nov 18, 2026","B.C. election results expected to be certified; new Cabinet to follow"],
+ ["Dec 7, 2026","Six federal by-elections"],
+ ["By Dec 31, 2026","Public Accounts of Canada for FY 2025–26 (audited federal results)"],
+ ["Spring 2027","Federal Main Estimates and 2027–28 Departmental Plans; B.C. and Ontario budgets"],
+ ["Summer–fall 2027","B.C. and Ontario Public Accounts for FY 2026–27"]
+];
+/* Site updates: data changes on ParliVue. Add a line each time a scorecard's data changes. Newest first. */
+const SITE_UPDATES=[
+ ["2026-11-08","onscore","Ontario Ministries Scorecard added: 35 ministries and offices, FY 2024–25 and FY 2025–26 Public Accounts, FY 2026–27 Estimates by program, key performance indicators from the 2025–26 plans, 2026 Budget fiscal plan."],
+ ["2026-11-08","bcscore","B.C. scorecard completed: FY 2024–25 and FY 2025–26 goals, FY 2026–27 service plan targets, Budget 2026 fiscal plan, and a \"What happened in FY 2025–26\" panel."],
+ ["2026-11-08","vicscore","Victoria and Mississauga scorecards: \"What happened in 2025\" panels added; timing and status-label notes moved into How to read."],
+ ["2026-11-08","fedscore","Federal scorecard: FY 2025–26 Financials (Main and Supplementary Estimates, transfers) for all 31 departments, labelled not audited yet; 2026–27 Departmental Plans added."],
+ ["2026-11-07","fedscore","Federal scorecard: FY 2026–27 Financials for all 31 departments; FY 2024–25 line items from the Public Accounts 2025."],
+ ["2026-11-07","bcscore","B.C. Ministries Scorecard added: 27 ministries and offices."]
+];
+
 
 // Leadership changes (person out → person in)
 const CHANGES=[
