@@ -38,6 +38,24 @@ const MSC_EXP={
 /* Note 21: expenses by object, 2025 budget vs actual */
 const MSC_OBJ25=[["Salaries, wages and employee benefits",706008,745259],["Contracted services",93684,144581],["Materials and supplies",80884,78415],["Rents and financial expenses",99044,93421],["External transfers to others",18620,14755],["Long-term debt interest and fees",9196,9781],["Amortization of tangible capital assets",182004,184894]].map(r=>[r[0],r[1]*1000,r[2]*1000]);
 const MSC_REV25=[["Property taxes",750191,755065],["Payment in lieu of taxes",37787,36035],["Municipal Accommodation Tax",20000,23854],["User charges",308840,301200],["Recoveries from third parties",83569,132097],["Funding transfers from other governments",1875,6845],["Obligatory reserve fund revenue applied",174427,237490],["Investment income",29317,45284],["Penalties and interest on taxes",12610,25512],["Contributed and assumed tangible capital assets",0,33956],["Other",913,42158],["City's share of net income in Enersource",31887,58705]].map(r=>[r[0],r[1]*1000,r[2]*1000]);
+/* "What happened in 2025" panel: same style as the BC and Ontario panels (pvYear in bc_score.js) */
+function misYearPanel(){
+  const el26=["City of Mississauga: 2026 Official Certified Results Summary","https://www.mississauga.ca/wp-content/uploads/sites/12/2026/10/28153013/2026-Official-Certified-Results-Summary-Report.pdf"];
+  const body=pvYear([
+   ["Key events",[
+    ["Housing","Council approved Mayor's Housing Task Force actions, including reducing or eliminating development charges.",""],
+    ["Goreway Drive","The Goreway Drive overpass over the CN Rail line opened.",""],
+    ["Municipal election, Oct 26, 2026","Alvin Tedjo was elected mayor. The new Council's term starts November 15, 2026.",""]]],
+   ["Met or beat the plan",[
+    ["Revenue","Revenue came in above plan, so the year ended with a larger surplus than budgeted.",""],
+    ["Property taxes","Property taxes collected were slightly above plan.",""]]],
+   ["Did not meet the plan",[
+    ["Spending over budget","Expenses were about 7% over budget, mostly contracted services and salaries.",""],
+    ["Tax-funded services","Tax-funded services ended the year with a deficit, covered from the Fiscal Stability Reserve. The City cites winter weather, lower transit ridership, labour costs and lost payments in lieu of taxes.",""],
+    ["Transit","Transit ridership was below forecast.",""]]]
+  ],[fA(MSC_S.c25),fA(MSC_S.hl25),fA(el26)].join(" · "));
+  return cGrp("What happened in 2025",[fRoll("i","bs","What happened in 2025","Highlights: key events and results against plan","7% over budget","up",body)]);
+}
 const MSC_CARD=[
  {area:"Housing",g:"N",plan:"The Province's housing target for Mississauga: 120,000 new units.",
   ev:["4,725 building permits issued in 2024, with a construction value of over $2.6 billion.","4,772 building permits issued in 2025, with a construction value of over $2.2 billion.","Council approved Mayor's Housing Task Force actions in 2025, including reducing or eliminating development charges."],
@@ -115,7 +133,7 @@ function renderMisScore(){
       fRoll("A","bk","Operating budget","By service area, net tax levy","$789.4M","",`<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Service area</th><th scope="col">2026 net budget</th><th scope="col">Share</th></tr></thead><tbody><tr><th scope="row">Fire & Emergency Services</th><td>$182.8M</td><td>23.2%</td></tr><tr><th scope="row">Transit</th><td>$130.3M</td><td>16.5%</td></tr><tr><th scope="row">Roads</th><td>$110.7M</td><td>14.0%</td></tr><tr><th scope="row">Corporate Transactions</th><td>$82.6M</td><td>10.5%</td></tr><tr><th scope="row">General Government</th><td>$65.5M</td><td>8.3%</td></tr><tr><th scope="row">Parks, Forestry & Environment</th><td>$45.0M</td><td>5.7%</td></tr><tr><th scope="row">Information Technology</th><td>$41.2M</td><td>5.2%</td></tr><tr><th scope="row">Recreation & Culture</th><td>$34.0M</td><td>4.3%</td></tr><tr><th scope="row">Mississauga Library</th><td>$32.1M</td><td>4.1%</td></tr><tr><th scope="row">Facilities & Property Management</th><td>$24.7M</td><td>3.1%</td></tr><tr><th scope="row">Planning & Building</th><td>$18.3M</td><td>2.3%</td></tr><tr><th scope="row">Regulatory Services</th><td>$16.6M</td><td>2.1%</td></tr><tr><th scope="row">Mayor & Members of Council</th><td>$5.6M</td><td>0.7%</td></tr><tr class="tot"><th scope="row">Total net operating budget</th><td>$789.4M</td><td>100%</td></tr></tbody></table></div><div class="note">Net budget is the cost paid by the property tax levy, after fees and other revenue; the gross operating budget is $1,405.6M. The Stormwater Program ($51.8M) is funded by a separate charge and is not included.</div>${src(["b26"])}`),
       fRoll("B","by","Tax levy forecast","City share, as published with the 2026 Budget","+4.39% in 2026","cau",`<div class="sctwrap"><table class="sct"><thead><tr><th scope="col">Year</th><th scope="col">Levy increase</th><th scope="col">Residential bill impact</th></tr></thead><tbody><tr><th scope="row">2026 (adopted)</th><td>4.39%</td><td>1.61%</td></tr><tr><th scope="row">2027 (forecast)</th><td class="up">15.12%</td><td>5.55%</td></tr><tr><th scope="row">2028 (forecast)</th><td>9.07%</td><td>3.33%</td></tr><tr><th scope="row">2029 (forecast)</th><td>6.86%</td><td>2.52%</td></tr></tbody></table></div>${src(["b26"])}`)])}
      ${cGrp("Goals",[fRoll(C_GOAL,"bg","Goals and results","Where each area stands now",MSC_CARD.length+" areas","",cGoals(MSC_CARD,c=>c.tr,2,"Latest")+src(["fs24","hl25","b26"]))])}`,
-   y25:`${yearCards(25)}${levyBox(25)}<p class="fynote">Click a section to open it.</p>
+   y25:`${yearCards(25)}${levyBox(25)}${misYearPanel()}<p class="fynote">Click a section to open it.</p>
      ${cGrp("Financials",[
       fRoll("$","bs","Financial Summary","Audited statements, plan against actual",vsM1(T.exp.a25)+" spent","up",head(25)+src(["c25","hl25"])),
       fRoll("A","bk","Revenue","By source: plan against actual",vsM1(T.rev.a25),"",pv(MSC_REV25,"rev","2025","Source")+src(["c25"])),

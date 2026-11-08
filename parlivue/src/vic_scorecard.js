@@ -235,6 +235,24 @@ const cityHow=(city,yr,extra)=>`<details class="flowdd fedhow"><summary><span><h
    <div class="dkey"><span><i class="ok"></i>Good: on or better than plan</span><span><i class="watch"></i>Caution: behind plan</span><span><i class="off"></i>Over budget</span><span class="muted">Gauge: actual as % of plan</span></div></div>
 </details>`;
 
+/* "What happened in 2025" panel: same style as the BC and Ontario panels (pvYear in bc_score.js) */
+function vicYearPanel(){
+  const body=pvYear([
+   ["Key events",[
+    ["Crystal Pool","Voters approved borrowing for a new Crystal Pool in February 2025.",""],
+    ["Victoria 2050","Council adopted a new Official Community Plan, Victoria 2050, in October 2025.",""],
+    ["Community safety","Council endorsed a Community Safety and Wellbeing Plan in July 2025.",""],
+    ["Municipal election, Oct 17, 2026","Mayor Marianne Alto was re-elected, with new faces on Council. On the non-binding amalgamation question, Victoria voted yes and Saanich voted no.",""]]],
+   ["Met or beat the plan",[
+    ["Housing","The City reports beating its provincial housing target for a second year.",""],
+    ["Revenue","Revenue came in above plan, mainly from City services and investment income.",""]]],
+   ["Did not meet the plan",[
+    ["Capital projects","About four in ten dollars of the year's capital plan were spent.",""],
+    ["Overage not in the operating budget","Expenses were above the Financial Plan, mostly amortization and capital maintenance, which the operating budget leaves out.",""],
+    ["Grants","Grants from other governments came in below plan.",""]]]
+  ],[fA(VSC_S.ar25),fA(VSC_S.fp25),fA(VSC_S.ocp),fA(VSC_S.pool),fA(VSC_S.elec26),fA(VSC_S.amal)].join(" · "));
+  return cGrp("What happened in 2025",[fRoll("i","bs","What happened in 2025","Highlights: key events and results against plan","39% of capital plan","up",body)]);
+}
 function renderVicScore(){
   const el=document.getElementById("vicscore"); if(!el||el.dataset.done) return; el.dataset.done="1";
   const T=VSC_TOT, d26=VSC_DEPT26, tot26=394060040;
@@ -273,7 +291,7 @@ function renderVicScore(){
       fRoll("D","by","Overage not in the operating budget","What to watch: 2024 and 2025 actuals; 2026 not yet reported",vsM1(T.amort.a25+T.capmaint.a25)+" in 2025","up",vscOverage())])}
      ${cGrp("Goals",[fRoll(C_GOAL,"bg","Goals and results","Where each Strategic Plan area stands now",VSC_CARD.filter(c=>c.g==="D").length+" target met","",cGoals(VSC_CARD,c=>VSC_TRACK[c.area],2,"Latest")+vsSrc(["ar25","fp26"]))])}`,
 
-   y25:`%%KPI25%%<p class="fynote">Click a section to open it.</p>
+   y25:`%%KPI25%%${vicYearPanel()}<p class="fynote">Click a section to open it.</p>
      ${cGrp("Financials",[
       fRoll("$","bs","Financial Summary","Revenue, expenses, surplus and capital: plan against actual",vsM1(T.exp.a25)+" spent","up",vscHeadline(25)+vsSrc(["ar25","tax25"])),
       fRoll("A","bk","Revenue","By source: plan against actual",vsM1(T.rev.a25),"",
