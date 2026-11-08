@@ -34,15 +34,15 @@ function onYearPanel(){
   const fes=["2026 Ontario Economic Outlook and Fiscal Review (Oct 29, 2026)","https://budget.ontario.ca/2026/fallstatement/index.html"];
   const body=pvYear([
    ["Key events, FY 2025–26",[
-    ["Health","Ministry of Health: budget "+M_(80386.1)+"; Treasury Board orders added "+M_(5280.7)+" and reduced "+M_(1970.7)+"; spent "+M_(83430.1)+".","Across the whole government (including hospitals and agencies), health expense was "+M_(97497)+" against a budget of "+M_(90630)+"."],
-    ["Wildfires","Ministry of Natural Resources, Public Protection program (forest fire management and emergency response): budget "+M_(192.7)+", spent "+M_(307.4)+". FY 2024–25: budget "+M_(174.8)+", spent "+M_(204.9)+". FY 2026–27 budget: "+M_(208.3)+".","Spending has been above budget in each of the last two years."],
-    ["Emergency management","Emergency Preparedness and Response, Emergency Management Ontario: operating budget "+M_(63.1)+", spent "+M_(270.9)+"; Treasury Board orders added "+M_(243.0)+". FY 2026–27 budget: "+M_(66.8)+".",""],
-    ["Contingency Fund","Treasury Board Secretariat's budget was reduced by "+M_(3757.6)+" as the Contingency Fund was allocated to ministries by Treasury Board orders.","The Contingency Fund is spending authority, not an expense: the cost is recorded in the ministry that spent it."],
-    ["Artificial intelligence and technology","The 2026–27 Estimates show an \"Artificial Intelligence, Data, Archives and Privacy\" program (Public and Business Service Delivery and Procurement): "+M_(37.6)+" operating and "+M_(2.5)+" capital, compared with "+M_(39.2)+" and "+M_(2.6)+" for FY 2025–26 (restated).","Funding is about the same as last year. Ontario's two main IT programs spent "+M_(851.8)+" of "+M_(861.2)+" approved in FY 2025–26."]]],
+    ["Health","Health was the main story. The Ministry of Health received billions more during the year, and health costs across government ended well above budget.",""],
+    ["Wildfires","Forest fires again cost more than budgeted, as in the year before.",""],
+    ["Emergencies","Emergency Management Ontario spent about four times its starting budget, with the extra approved during the year.",""],
+    ["Contingency Fund","Unplanned costs were paid through the Contingency Fund, an amount in the budget that Treasury Board hands out to ministries during the year. It is spending authority, not an expense.",""],
+    ["Artificial intelligence","For FY 2026–27, Ontario names artificial intelligence in a program for the first time (Artificial Intelligence, Data, Archives and Privacy). Funding is about the same as last year: the change is in the name, not the amount.",""]]],
    ["What went well",[
-    ["Deficit below budget","FY 2025–26 deficit "+M_(13006)+", against a budget of "+M_(14610)+".","Revenue was "+M_(223330)+", "+M_(4706)+" above budget."],
-    ["Within budget","19 of 35 ministries and offices spent within their start-of-year budget; 31 of 35 stayed within total approved funding.",""],
-    ["Interest costs","Interest and debt servicing: budget "+M_(16198)+", actual "+M_(15451)+".",""]]],
+    ["Deficit","The deficit came in lower than budgeted, because revenue was stronger than expected.",""],
+    ["Within budget","More than half of ministries and offices stayed within their starting budgets, and almost all stayed within their approved funding.",""],
+    ["Interest","Interest costs on the debt were lower than planned.",""]]],
    ["Areas to improve",[
     ["Expense above budget","Total expense "+M_(236336)+", against a budget of "+M_(231234)+" (+"+M_(5102)+"), mostly Health (+"+M_(6867)+").",""],
     ["Above total approved","4 spent more than their total approved funding: Attorney General; Children, Community and Social Services; Northern Economic Development and Growth; and the Office of the Chief Electoral Officer.",""],

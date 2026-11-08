@@ -41,17 +41,17 @@ function bcYearPanel(){
   const qr=["Province of B.C.: 2026/27 First Quarterly Report (Sept 14, 2026)","https://www2.gov.bc.ca/assets/gov/british-columbians-our-governments/government-finances/quarterly-reports/2026-27_first_quarterly_report.pdf"];
   const body=pvYear([
    ["Key events, FY 2025–26",[
-    ["Wildfires","Ministry of Forests, Fire Management: budget "+M_(238.0)+", spent "+M_(645.1)+". FY 2024–25: budget "+M_(232.7)+", spent "+M_(769.4)+". FY 2026–27 budget: "+M_(235.7)+".","The difference was approved during each year. The First Quarterly Report (Sept 2026) already forecasts total fire management spending of "+M_(850)+" for FY 2026–27."],
-    ["Disaster response and recovery","Emergency Management and Climate Readiness, Emergency and Disaster Management Act: budget "+M_(30.0)+", spent "+M_(241.0)+" ("+M_(305.7)+" in FY 2024–25). FY 2026–27 budget: "+M_(30.0)+".",""],
-    ["Health","Ministry of Health, Health Programs: budget "+M_(34762.5)+", spent "+M_(36053.8)+" (+"+M_(1291.3)+").",""],
-    ["Treaties and agreements","Indigenous Relations and Reconciliation, Treaty and Other Agreements Funding: budget "+M_(105.2)+", spent "+M_(265.3)+".",""],
-    ["Technology and data","Citizens' Services: Office of the Chief Information Officer "+M_(2.4)+" budget, "+M_(21.5)+" spent; BC Data Service "+M_(30.1)+" / "+M_(46.1)+"; Connectivity "+M_(24.2)+" / "+M_(51.7)+".","Together about "+M_(62.6)+" above budget, small next to the items above."],
-    ["Government reorganization",M_(478.8)+" of executive and support services moved into Citizens' Services from 23 ministries.","A transfer between ministries, not new spending: it shows as an increase in Citizens' Services and a decrease in the other ministries."],
-    ["Contingencies",M_(3417.6)+" of spending authority added to ministries through the Contingencies (All Ministries) and New Programs vote.","The vote is spending authority, not an expense: the cost is recorded in the ministry that spent it. The fiscal plan set aside "+M_(4000)+" for contingencies in FY 2025–26, so ministries can be over their own budgets while government as a whole stays within plan."]]],
+    ["Wildfires","Wildfires again cost far more than budgeted, close to three times the starting amount, as in the year before. The extra was approved during the year.",""],
+    ["Disasters","Emergency response and recovery cost many times the small amount set aside at the start of the year.",""],
+    ["Health","Demand for health services pushed spending above budget. In dollars, this was the largest single increase.",""],
+    ["Treaties","Payments under treaties and other agreements with First Nations were more than double the budget.",""],
+    ["Technology","Spending on government IT, data and connectivity rose, but it is small compared with the items above.",""],
+    ["Reorganization","Support services from 23 ministries were brought together in Citizens' Services. This moved costs between ministries; it was not new spending.",""],
+    ["Contingencies","Most unplanned costs were covered by the Contingencies vote, an amount set aside in the budget for unexpected costs. It gives ministries authority to spend; it is not an expense itself.",""]]],
    ["What went well",[
-    ["Within budget","7 of 27 ministries and offices spent within their start-of-year budget: Legislative Assembly, Office of the Premier, Infrastructure, Labour, Social Development and Poverty Reduction, Tourism, Arts, Culture and Sport, and Transportation and Transit.","26 of 27 stayed within their total approved funding. The exception is Management of Public Funds and Debt (interest costs)."],
-    ["Goals met","73 of 117 measurable goals met (62%). Public Safety and Solicitor General met 14 of 14; Attorney General met 8 of 8.",""],
-    ["Staff","37,130 full-time equivalent staff, against a plan of 38,900.",""]]],
+    ["Within budget","Seven ministries and offices, including Transportation and Transit and Social Development and Poverty Reduction, stayed within their starting budgets. Nearly all stayed within the total funding approved.",""],
+    ["Goals","About six in ten goals with results were met. Public Safety and Solicitor General and the Attorney General met all of theirs.",""],
+    ["Staff","The public service stayed below its planned staff level.",""]]],
    ["Areas to improve",[
     ["Spending above budget","20 of 27 ministries and offices spent more than their start-of-year budget; 17 by more than 5%.",""],
     ["Wildfire and disaster budgets","Fire Management and Emergency and Disaster Management Act budgets were well below actual spending in both FY 2024–25 and FY 2025–26, and the FY 2026–27 budgets are about the same.",""],
