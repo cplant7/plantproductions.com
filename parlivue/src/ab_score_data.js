@@ -57,3 +57,13 @@ const ABL={
 "MEHA":{"E":[1775525,8847,0,1784372,1751955],"C":[16625,0,-14905,1720,1452],"K":[0,0,70282,70282,70282]},
 "SRTR":{"E":[211573,0,6215,217788,215277],"C":[72330,0,0,72330,49700],"F":[5500,0,-1785,3715,3447]}
 };
+/* AB_GOV: whole government, Government of Alberta Annual Report 2025-26, Fiscal Summary (p.9), MILLIONS: [FY 2025-26 budget, FY 2025-26 actual, FY 2024-25 actual].
+   https://open.alberta.ca/dataset/7714457c-7527-443a-a7db-dd8c1c8ead86/resource/3d001693-e3c4-47ac-824c-604440df2eb0/download/goa-annual-report-2025-2026.pdf
+   Province's explanation: the budgeted $4 billion contingency was fully allocated in the third quarter ($2B health, $1.5B agriculture and wildfire disasters, $0.5B other);
+   revenue beat budget mainly on investment income (+$2.1B), taxes (+$1.0B), resource revenue (+$0.9B) and GBE income (+$0.9B). WTI averaged US$64.94 vs $68.00 budgeted. */
+const AB_GOV={
+ rev:[["Income and other taxes",28837,29806,30356],["Non-renewable resource revenue",17067,17934,21986],["Transfers from Government of Canada",13305,13271,12618],["Investment income",2883,4952,4798],["Net income from government business enterprises",2016,2930,2053],["Premiums, fees and licences",5756,5590,5504],["Other revenue",4273,5267,5149]],
+ revT:[74138,79750,82464],
+ exp:[["Health",30465,31796,29560],["Education",18069,18200,17197],["Social services",9163,8990,8462],["Other (budget included a $4 billion contingency)",19059,15845,16113],["Debt servicing costs",2968,2938,3215],["Pension provisions",-375,-228,-403]],
+ expT:[79349,77541,74144], bal:[-5211,2209,8320], netDebt:[-40654,-33590,null], netDebtPriorB:-34.3, note:"Budget revenue lines add to 74,137; the report prints 74,138 (rounding)."
+};
