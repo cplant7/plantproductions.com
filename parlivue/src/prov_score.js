@@ -46,6 +46,12 @@ function pscAlberta(){
      ["Did not meet the plan",[
       ["Health","Health expense was $31.8 billion, $1.3 billion above budget.","The Province cites population growth, physician compensation, collective bargaining settlements and higher costs for new drugs and technology."],
       ["Spending over budget","8 of 25 ministries spent more than their start-of-year expense vote, led by Assisted Living and Social Services (+$539.3 million) and Primary and Preventative Health Services (+$501.0 million). Two spent more than their total approved expense vote: Primary and Preventative Health Services ($503.6 million over) and Agriculture and Irrigation ($10.5 million over).","The Province cites growth in demand for physician services, drugs and supplemental health benefits, and higher Agriculture Financial Services Corporation statutory program commitments."]]]]},
+    goals:{map:AB_GOALS,notes:AB_GOAL_NOTES,src:n=>AB_GOAL_URL[n]?[n+" Annual Report 2025–26","https://open.alberta.ca/dataset/"+AB_GOAL_URL[n]+"-annual-report-2025-2026.pdf"]:null,
+      sub:"From the ministry's 2025–26 annual report",cap:"Performance measures, FY 2025–26",
+      how:"Each ministry's annual report gives results for the performance measures in its business plan, with targets. This page shows the measures with targets: the previous result, the FY 2025–26 target and the FY 2025–26 result, as printed. Performance indicators without targets are left out.",
+      note:"Copied from the ministry's annual report. Some measures cover a calendar year or lag a year; the year is shown in brackets. For some measures a lower number is better (for example wait times), so ParliVue does not mark targets met or not met. “—” means the report gave no value.",
+      next:"FY 2026–27 targets are in the ministry's 2026–29 business plan. Results come with the 2026–27 annual report (fall 2027). The FY 2025–26 tab shows the latest results.",
+      none:"No performance measures with targets in table form were found in this ministry's 2025–26 annual report."},
     srcs:[SRC.ar,SRC.est,SRC.goa]};
 }
 
@@ -458,7 +464,7 @@ function pscHead(G,sub,intro){
     <li class="yrhl"><b>Fiscal years, not calendar years.</b> ${G.prov}'s year runs April 1 to March 31, the same as the federal government. FY 2025–26 means April 1, 2025 to March 31, 2026. City scorecards use calendar years (January to December).</li>
     <li><b>A · Budget.</b> ${h.A}</li><li><b>B · Additional funding.</b> ${h.B}</li><li><b>C · Changes and transfers.</b> ${h.C}</li>
     <li><b>E · Total approved.</b> ${h.E} <b>Spent:</b> ${h.S} “Over budget” compares spending with the start-of-year budget (A).</li>
-    <li><b>Goals.</b> ${G.prov}'s ${G.unit} publish plans and annual reports with performance measures. They are being added to this page.</li>
+    <li><b>Goals.</b> ${G.goals?G.goals.how:`${G.prov}'s ${G.unit} publish plans and annual reports with performance measures. They are being added to this page.`}</li>
     <li><b>Amounts.</b> All amounts are in millions of dollars ($M). ${h.basis}</li>
    </ol>
    <div class="fhowkey"><b>Colours</b><div class="dkey"><span><i class="ok"></i>On or under budget</span><span><i class="watch"></i>Caution</span><span><i class="off"></i>Over budget</span><span class="muted">Gauge: spent as % of budget</span></div></div></details>`;
@@ -534,6 +540,16 @@ function pscBlock(G,m,Yr){
     fRoll("C","by","Changes and transfers","Moved in, moved out or adjusted",pscSg(c),"cau",`<p class="note">${G.how.C}</p>`+(progC.length?pscTbl("C · By program, "+Yr.lab,["Program","Amount"],progC):"")+src)+
     fRoll("E","bk","Totals","Total approved and spending"+(P.length?" by program":""),fB(tot)+" approved","",progE+src)+`</div>`};
 }
+
+/* Goals: performance measures with targets, from each jurisdiction's annual reports. G.goals={map, how, sub, next, src(name)->[label,url], note} */
+function pscGoals(G,m){
+  const g=G.goals; if(!g) return `<h4 class="fgrp">Goals</h4><p class="note">Performance measures and results from the ${G.unit1}'s annual report are being added to this page.</p>`;
+  const key=Object.keys(g.map).find(k=>PSC_K(k)===PSC_K(m.n)), L=key?g.map[key]:null, src=g.src(key||m.n);
+  const sline=src?`<div class="src">Source: ${fA(src)}</div>`:"";
+  if(!L||!L.length) return `<h4 class="fgrp">Goals</h4><p class="note">${(g.notes&&g.notes[key||m.n])||g.none||"No performance measures with targets were found in this "+G.unit1+"'s annual report."}</p>${sline}`;
+  const body=`<div class="sctwrap"><table class="sct fitems"><caption>${fEsc(g.cap||"Performance measures, FY 2025–26")}</caption><thead><tr><th scope="col">Measure</th><th scope="col">Previous result</th><th scope="col">Target</th><th scope="col">Result</th></tr></thead><tbody>${L.map(x=>`<tr><td>${fEsc(x[0])}</td><td>${fEsc(x[1]||"—")}</td><td>${fEsc(x[2]||"—")}</td><td>${fEsc(x[3]||"—")}</td></tr>`).join("")}</tbody></table></div><p class="note">${g.note}</p>`;
+  return `<h4 class="fgrp">Goals</h4><div class="fstack">`+fRoll(BC_GOAL,"bg","Goals and results",g.sub,L.length+(L.length===1?" measure":" measures"),"",body+sline)+`</div>`;
+}
 function pscMin(id,i){
   const G=pscGet(id), el=document.getElementById(id), L=G.y26||G.y25, m=L.rows[i], k=m.k;
   const m25=G.y26&&G.y25?G.y25.rows.find(r=>r.k===k):null, e=G.y27.rows.find(r=>r.k===k);
@@ -551,11 +567,11 @@ function pscMin(id,i){
        +(e.P2?pscTbl("Total expense by program, FY 2026–27 (voted and non-voted)",["Program",G.y27.prevLab,"FY 2026–27","Change"],e.P2.map(r=>`<tr><td>${fEsc(r[0])}</td>${fCol(r[2],"")}${fCol(r[1],"")}${fCol(r[1]-r[2],"cau")}</tr>`),`<tr class="tot"><th scope="row">Total expense</th>${fCol(e.T2[1],"")}${fCol(e.T2[0],"")}${fCol(e.T2[0]-e.T2[1],"cau")}</tr>`):"")
        +(e.votes?pscTbl("Other figures, FY 2026–27",["Item","Amount",G.y27.prevLab],e.votes.map(v=>`<tr><td>${v[0]}</td>${fCol(v[1],"")}${v[2]==null?"<td>—</td>":fCol(v[2],"")}</tr>`)):"")
        +`<p class="note">${G.y27.note}</p><div class="src">Source: ${fA(G.y27.src)}</div>`)}</div>
-     <h4 class="fgrp">Goals</h4><p class="note">Performance measures from the ${G.unit1}'s plan are being added to this page.</p>`
+     ${G.goals?`<h4 class="fgrp">Goals</h4><p class="note">${G.goals.next}</p>`:`<h4 class="fgrp">Goals</h4><p class="note">Performance measures from the ${G.unit1}'s plan are being added to this page.</p>`}`
     :`<p class="fynote">FY 2026–27: April 1, 2026 – March 31, 2027.</p><p class="note">This ${G.unit1} has no direct match in the 2026–27 Estimates (renamed, merged or reorganized). ${fEsc(G.y27.note)}</p>`;
   const tabs=[["y27","FY 2026–27","Apr 1, 2026 – Mar 31, 2027 · this year"]];
   const panes={y27};
-  if(G.y26){ tabs.push(["y26","FY 2025–26","Apr 1, 2025 – Mar 31, 2026 · final results"]); panes.y26=`<p class="fynote">FY 2025–26: April 1, 2025 – March 31, 2026. Results released in fall 2026. Click a section to open it.</p>${b1.cards}${b1.fin}${m.note?`<p class="note">${fEsc(m.note)}</p>`:""}<h4 class="fgrp">Goals</h4><p class="note">Performance measures and results from the ${G.unit1}'s annual report are being added to this page.</p>`; }
+  if(G.y26){ tabs.push(["y26","FY 2025–26","Apr 1, 2025 – Mar 31, 2026 · final results"]); panes.y26=`<p class="fynote">FY 2025–26: April 1, 2025 – March 31, 2026. Results released in fall 2026. Click a section to open it.</p>${b1.cards}${b1.fin}${m.note?`<p class="note">${fEsc(m.note)}</p>`:""}${pscGoals(G,m)}`; }
   else tabs.push(["y26","FY 2025–26","Apr 1, 2025 – Mar 31, 2026 · not yet published"]), panes.y26=`<p class="note">${fEsc(G.latestNote||"")}</p>`;
   const y25b=G.y26?b0:b1, y25m=G.y26?m25:m;
   tabs.push(["y25","FY 2024–25","Apr 1, 2024 – Mar 31, 2025 · final results"]);
