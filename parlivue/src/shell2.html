@@ -587,7 +587,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .dsh-head>div{flex:1 1 100%;min-width:0}
 .dsh-head .pagelede{margin:0;max-width:none}
 .fedhow .fhowkey{padding:0 14px 14px 34px;display:grid;gap:6px;font-size:14px}.fedhow .dkey{font-size:13px}
-#fedscore .note,#bcscore .note,#onscore .note,#abscore .note,#skscore .note,#mbscore .note,#nbscore .note,#nsscore .note{font-size:13px;line-height:1.45}
+#fedscore .note,#bcscore .note,#onscore .note,#abscore .note,#skscore .note,#mbscore .note,#nbscore .note,#nsscore .note,#nlscore .note{font-size:13px;line-height:1.45}
 .fitems td,.fitems th{text-align:left}.fitems td:last-child,.fitems th:last-child{text-align:right;white-space:nowrap}.fitems .fvote{white-space:nowrap;color:var(--muted);font-family:var(--f-mono);font-size:13px}
 .sct tr.fover th{font-weight:700}
 .fitems tr.fbyv th{text-align:left!important;font:600 12px var(--f-mono)!important;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)!important;padding-top:12px}
@@ -760,7 +760,7 @@ details.rc>summary:focus-visible{outline:2px solid var(--brass);outline-offset:2
 .vswk{font:600 13px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--brass)}
 .vsw b{font:800 18px var(--f-mark)}
 .vsws{font-size:14px;color:var(--muted)}
-#ch-vicscore,#ch-misscore,#ch-fedscore,#ch-bcscore,#ch-onscore,#ch-abscore,#ch-skscore,#ch-mbscore,#ch-nbscore,#ch-nsscore,#ch-fedbudget{display:grid;gap:16px}
+#ch-vicscore,#ch-misscore,#ch-fedscore,#ch-bcscore,#ch-onscore,#ch-abscore,#ch-skscore,#ch-mbscore,#ch-nbscore,#ch-nsscore,#ch-nlscore,#ch-fedbudget{display:grid;gap:16px}
 .vswitch.v3{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (max-width:820px){.vswitch.v3{grid-template-columns:minmax(0,1fr)}}
 .vsec{display:grid;gap:12px;border:1px solid var(--rule);border-radius:12px;background:var(--surface);padding:14px 16px 16px}
@@ -980,7 +980,7 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
 .sct.fexp td.fwhy2{min-width:320px;font-size:13.5px;color:var(--muted)}
 .fsh{margin:6px 0 0;font:700 17px var(--f-body)}
 .fback{justify-self:start}
-#fedscore,#bcscore,#onscore,#abscore,#skscore,#mbscore,#nbscore,#nsscore,#fedbudget{display:grid;gap:16px}
+#fedscore,#bcscore,#onscore,#abscore,#skscore,#mbscore,#nbscore,#nsscore,#nlscore,#fedbudget{display:grid;gap:16px}
 .sct.b26t th[scope=row]{min-width:200px;max-width:280px}
 .sct.b26t td.b26x{text-align:left;min-width:300px;font-size:13.5px;line-height:1.45}
 .sct.b26t td.b26a{text-align:left;white-space:nowrap;font-weight:600}
@@ -1099,6 +1099,7 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
   <div id="ch-mbscore" class="chwrap" hidden></div>
   <div id="ch-nbscore" class="chwrap" hidden></div>
   <div id="ch-nsscore" class="chwrap" hidden></div>
+  <div id="ch-nlscore" class="chwrap" hidden></div>
   <div id="ch-fedbudget" class="chwrap" hidden></div>
 
   <footer id="wheelfoot">
