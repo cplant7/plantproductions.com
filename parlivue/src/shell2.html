@@ -587,7 +587,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .dsh-head>div{flex:1 1 100%;min-width:0}
 .dsh-head .pagelede{margin:0;max-width:none}
 .fedhow .fhowkey{padding:0 14px 14px 34px;display:grid;gap:6px;font-size:14px}.fedhow .dkey{font-size:13px}
-#fedscore .note,#bcscore .note,#onscore .note,#abscore .note,#skscore .note,#mbscore .note,#nbscore .note,#nsscore .note,#nlscore .note,#pescore .note,#ykscore .note,#ntscore .note,#nuscore .note{font-size:13px;line-height:1.45}
+#fedscore .note,#bcscore .note,#onscore .note,#abscore .note,#skscore .note,#mbscore .note,#nbscore .note,#nsscore .note,#nlscore .note,#pescore .note,#ykscore .note,#ntscore .note,#nuscore .note,#qcscore .note{font-size:13px;line-height:1.45}
 .fitems td,.fitems th{text-align:left}.fitems td:last-child,.fitems th:last-child{text-align:right;white-space:nowrap}.fitems .fvote{white-space:nowrap;color:var(--muted);font-family:var(--f-mono);font-size:13px}
 .sct tr.fover th{font-weight:700}
 .fitems tr.fbyv th{text-align:left!important;font:600 12px var(--f-mono)!important;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)!important;padding-top:12px}
@@ -760,7 +760,7 @@ details.rc>summary:focus-visible{outline:2px solid var(--brass);outline-offset:2
 .vswk{font:600 13px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--brass)}
 .vsw b{font:800 18px var(--f-mark)}
 .vsws{font-size:14px;color:var(--muted)}
-#ch-vicscore,#ch-misscore,#ch-fedscore,#ch-bcscore,#ch-onscore,#ch-abscore,#ch-skscore,#ch-mbscore,#ch-nbscore,#ch-nsscore,#ch-nlscore,#ch-pescore,#ch-ykscore,#ch-ntscore,#ch-nuscore,#ch-fedbudget{display:grid;gap:16px}
+#ch-vicscore,#ch-misscore,#ch-fedscore,#ch-bcscore,#ch-onscore,#ch-abscore,#ch-skscore,#ch-mbscore,#ch-nbscore,#ch-nsscore,#ch-nlscore,#ch-pescore,#ch-ykscore,#ch-ntscore,#ch-nuscore,#ch-qcscore,#ch-fedbudget{display:grid;gap:16px}
 .vswitch.v3{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (max-width:820px){.vswitch.v3{grid-template-columns:minmax(0,1fr)}}
 .vsec{display:grid;gap:12px;border:1px solid var(--rule);border-radius:12px;background:var(--surface);padding:14px 16px 16px}
@@ -980,7 +980,7 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
 .sct.fexp td.fwhy2{min-width:320px;font-size:13.5px;color:var(--muted)}
 .fsh{margin:6px 0 0;font:700 17px var(--f-body)}
 .fback{justify-self:start}
-#fedscore,#bcscore,#onscore,#abscore,#skscore,#mbscore,#nbscore,#nsscore,#nlscore,#pescore,#ykscore,#ntscore,#nuscore,#fedbudget{display:grid;gap:16px}
+#fedscore,#bcscore,#onscore,#abscore,#skscore,#mbscore,#nbscore,#nsscore,#nlscore,#pescore,#ykscore,#ntscore,#nuscore,#qcscore,#fedbudget{display:grid;gap:16px}
 .sct.b26t th[scope=row]{min-width:200px;max-width:280px}
 .sct.b26t td.b26x{text-align:left;min-width:300px;font-size:13.5px;line-height:1.45}
 .sct.b26t td.b26a{text-align:left;white-space:nowrap;font-weight:600}
@@ -1029,15 +1029,16 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
         <div class="ddprov"><button role="menuitem" class="ddname" data-tab="bcleg" tabindex="-1">British Columbia</button><div class="ddlinks"><button role="menuitem" id="t-bcleg" data-tab="bcleg">Legislature</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-bcscore" data-tab="bcscore">Scorecard</button></div></div>
         <div class="ddprov"><button role="menuitem" class="ddname" data-tab="mbleg" tabindex="-1">Manitoba</button><div class="ddlinks"><button role="menuitem" id="t-mbleg" data-tab="mbleg">Legislature</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-mbscore" data-tab="mbscore">Scorecard</button></div></div>
         <div class="ddprov"><button role="menuitem" class="ddname" data-tab="nbleg" tabindex="-1">New Brunswick</button><div class="ddlinks"><button role="menuitem" id="t-nbleg" data-tab="nbleg">Legislature</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-nbscore" data-tab="nbscore">Scorecard</button></div></div>
-        <div class="ddprov"><button role="menuitem" class="ddname" data-tab="nlleg" tabindex="-1">Newfoundland and Labrador</button><div class="ddlinks"><button role="menuitem" id="t-nlleg" data-tab="nlleg">House of Assembly</button></div></div>
+        <div class="ddprov"><button role="menuitem" class="ddname" data-tab="nlleg" tabindex="-1">Newfoundland and Labrador</button><div class="ddlinks"><button role="menuitem" id="t-nlleg" data-tab="nlleg">House of Assembly</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-nlscore" data-tab="nlscore">Scorecard</button></div></div>
         <div class="ddprov"><button role="menuitem" class="ddname" data-tab="ntleg" tabindex="-1">Northwest Territories</button><div class="ddlinks"><button role="menuitem" id="t-ntleg" data-tab="ntleg">Legislative Assembly</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-ntscore" data-tab="ntscore">Scorecard</button></div></div>
-        <div class="ddprov"><button role="menuitem" class="ddname" data-tab="nsleg" tabindex="-1">Nova Scotia</button><div class="ddlinks"><button role="menuitem" id="t-nsleg" data-tab="nsleg">House of Assembly</button></div></div>
+        <div class="ddprov"><button role="menuitem" class="ddname" data-tab="nsleg" tabindex="-1">Nova Scotia</button><div class="ddlinks"><button role="menuitem" id="t-nsleg" data-tab="nsleg">House of Assembly</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-nsscore" data-tab="nsscore">Scorecard</button></div></div>
         <div class="ddprov"><button role="menuitem" class="ddname" data-tab="nuleg" tabindex="-1">Nunavut</button><div class="ddlinks"><button role="menuitem" id="t-nuleg" data-tab="nuleg">Legislative Assembly</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-nuscore" data-tab="nuscore">Scorecard</button></div></div>
         <div class="ddprov"><button role="menuitem" class="ddname" data-tab="ontario" tabindex="-1">Ontario</button><div class="ddlinks"><button role="menuitem" id="t-ontario" data-tab="ontario">Legislature</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-onscore" data-tab="onscore">Scorecard</button></div></div>
         <div class="ddprov"><button role="menuitem" class="ddname" data-tab="peleg" tabindex="-1">Prince Edward Island</button><div class="ddlinks"><button role="menuitem" id="t-peleg" data-tab="peleg">Legislature</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-pescore" data-tab="pescore">Scorecard</button></div></div>
+        <div class="ddprov"><button role="menuitem" class="ddname" data-tab="qcscore" tabindex="-1">Québec</button><div class="ddlinks"><button role="menuitem" id="t-qcscore" data-tab="qcscore">Scorecard</button></div></div>
         <div class="ddprov"><button role="menuitem" class="ddname" data-tab="skleg" tabindex="-1">Saskatchewan</button><div class="ddlinks"><button role="menuitem" id="t-skleg" data-tab="skleg">Legislature</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-skscore" data-tab="skscore">Scorecard</button></div></div>
         <div class="ddprov"><button role="menuitem" class="ddname" data-tab="ykleg" tabindex="-1">Yukon</button><div class="ddlinks"><button role="menuitem" id="t-ykleg" data-tab="ykleg">Legislative Assembly</button><span class="sep" aria-hidden="true">·</span><button role="menuitem" id="t-ykscore" data-tab="ykscore">Scorecard</button></div></div>
-        <div class="ddsoon">Quebec is coming after the new Assembly sits.</div>
+        <div class="ddsoon">Québec's National Assembly page is coming after the new Assembly sits.</div>
       </div></div>
     <div class="dd" id="dd-city"><button class="ddbtn" aria-haspopup="true" aria-expanded="false">Cities<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></button>
       <div class="ddmenu" role="menu">
@@ -1104,6 +1105,7 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
   <div id="ch-ykscore" class="chwrap" hidden></div>
   <div id="ch-ntscore" class="chwrap" hidden></div>
   <div id="ch-nuscore" class="chwrap" hidden></div>
+  <div id="ch-qcscore" class="chwrap" hidden></div>
   <div id="ch-fedbudget" class="chwrap" hidden></div>
 
   <footer id="wheelfoot">

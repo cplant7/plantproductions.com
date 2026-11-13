@@ -270,13 +270,42 @@ function pscNU(){
     srcs:[SRC.pa25,SRC.est]};
 }
 
-const PSC={}; const PSC_FN={abscore:pscAlberta,skscore:pscSask,mbscore:pscManitoba,nbscore:pscNB,nsscore:pscNS,nlscore:pscNL,pescore:pscPE,ykscore:pscYK,ntscore:pscNT,nuscore:pscNU};
+function pscQC(){
+  const SRC={v26:["Public Accounts 2025-2026, Volume 2 (Tables 1 and 2)","https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/finances/publications-adm/Comptes-publics/EN/CPTEN_vol2-2025-2026.pdf"],
+    v25:["Public Accounts 2024-2025, Volume 2 (Tables 1 and 2)","https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/finances/publications-adm/Comptes-publics/EN/CPTEN_vol2-2024-2025.pdf"],
+    est:["Expenditure Budget 2026-2027, Vol. 3: Estimates and Expenditures of the Departments and Bodies (Summary of Appropriations)","https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/secretariat-du-conseil-du-tresor/publications-adm/budgets/2026-2027/en/3_estimates_expenditures_departments_and_bodies.pdf"],
+    v1:["Public Accounts 2025-2026, Volume 1: Consolidated Financial Statements","https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/finances/publications-adm/Comptes-publics/EN/CPTEN_vol1-2025-2026.pdf"]};
+  const ALIAS={"conseil du trésor, administration gouvernementale et efficacité de l'état":"conseil du trésor et administration gouvernementale"};
+  const K=n=>{const k=PSC_K(n);return ALIAS[k]||k;};
+  const k3=v=>v*1e3;
+  const prov=n=>/^Conseil du trésor|^Conseil exécutif$|^Finances$|^Immigration, Francisation/.test(n)?"The 2026-2027 Expenditure Budget notes that this portfolio contains one or more provisions allowing transfers of appropriations to other portfolios. ":"";
+  const conv=P=>P.map(([n,v,x])=>({k:K(n),n,T:[k3(v[0]),k3(v[1]),k3(v[2]+v[3]),k3(v[4]),k3(x)],P:[],
+    note:prov(n)+`C combines appropriation transfers (${pscSg(k3(v[2]))}) and adjustments to permanent appropriations (${pscSg(k3(v[3]))}).`,
+    progNote:"Volume 2 also reports each portfolio's authorized and expended appropriations by program, but not the initial budget by program, so this section shows portfolio totals."}));
+  const rows27=QCE27.map(([n,e,c])=>({k:K(n),n,T:[k3(e),k3(c)],P:[]}));
+  return {id:"qcscore",code:"QC",prov:"Québec",pfx:"Gouvernement du Québec",unit:"portfolios",unit1:"portfolio",unitS:"Portfolio",unitP:"Portfolios",
+    lede:`Québec's government is organized into portfolios: each groups a department and the budget-funded bodies under one minister, such as Santé et Services sociaux, Éducation, Enseignement supérieur and Famille. Portfolio names are shown as the Government publishes them, in French.`,
+    lede2:`Each spring the National Assembly approves the appropriations in the Expenditure Budget. After the year ends, Volume 2 of the Public Accounts shows each portfolio's initial appropriation, the changes during the year and the appropriations expended. This page compares them for ${QCP26.length} portfolios.`,
+    how:{A:"The initial appropriation (annual and permanent appropriations at the start of the year).",B:"Supplementary appropriations.",
+      C:"Appropriation transfers between portfolios (they add to zero) plus adjustments to permanent appropriations. Large transfers come from provisions, mainly in Conseil du trésor et Administration gouvernementale, that are moved to other portfolios during the year.",
+      E:"Total authorized appropriation: A + B + C.",S:"Expended appropriations: expenditures and investments charged against appropriations.",
+      basis:"These are general fund appropriation amounts. Debt service is mostly a permanent appropriation in Finances. The Government's consolidated expenditure ($165.9 billion in FY 2025–26) adds special funds, health and social services and education networks, and other bodies. Published portfolio figures are rounded, so some rows differ from the sum of their parts by $1 thousand."},
+    latestNote:"FY 2025–26 is the latest year with portfolio results: Public Accounts 2025-2026, Volume 2.",
+    y26:{lab:"FY 2025–26",src:SRC.v26,rows:conv(QCP26)},
+    y25:{lab:"FY 2024–25",src:SRC.v25,rows:conv(QCP25)},
+    y27:{src:SRC.est,rows:rows27,prevLab:"FY 2025–26 comparative appropriations",note:"Total appropriations from the Summary of Appropriations. The FY 2025–26 comparison is presented by the Government on the 2026-2027 budget structure. Conseil du trésor et Administration gouvernementale became Conseil du trésor, Administration gouvernementale et Efficacité de l'État."},
+    gov:{title:"FY 2025–26 results vs budget",sub:"Consolidated statement of operations, whole government (audited)",src:SRC.v1,mul:1e6,G:QC_GOV,
+      note:"Québec reported an annual operating deficit of $5.5 billion against a budgeted $11.4 billion, which included a $2.0 billion contingency reserve not shown in the expenditure column above. Net debt was $245.9 billion at March 31, 2026 (budget: $255.0 billion)."},
+    srcs:[SRC.v26,SRC.v25,SRC.est,SRC.v1]};
+}
+
+const PSC={}; const PSC_FN={abscore:pscAlberta,skscore:pscSask,mbscore:pscManitoba,nbscore:pscNB,nsscore:pscNS,nlscore:pscNL,pescore:pscPE,ykscore:pscYK,ntscore:pscNT,nuscore:pscNU,qcscore:pscQC};
 const pscGet=id=>PSC[id]||(PSC[id]=PSC_FN[id]());
 const pscSg=v=>v===0?fB(0):(v<0?"−":"+")+fB(Math.abs(v));
 
 function pscHead(G,sub,intro){
   const h=G.how;
-  return `<header class="dsh-head"><div><div class="kicker">${G.pfx} · ${G.unit1==="ministry"?"Ministry":"Department"} dashboard</div><h2 class="nh">${sub||G.prov+" "+(G.unit1==="ministry"?"Ministries":"Departments")+" Scorecard · FY 2024–25 to FY 2026–27"}</h2>
+  return `<header class="dsh-head"><div><div class="kicker">${G.pfx} · ${G.unitS||(G.unit1==="ministry"?"Ministry":"Department")} dashboard</div><h2 class="nh">${sub||G.prov+" "+(G.unitP||(G.unit1==="ministry"?"Ministries":"Departments"))+" Scorecard · FY 2024–25 to FY 2026–27"}</h2>
    ${intro||`<p class="pagelede">${G.lede}</p><p class="pagelede">${G.lede2}</p>`}</div></header>
    <details class="flowdd fedhow"><summary><span><h2>How to read this page</h2><span class="ddhint">Click to see how budgets and spending fit together</span></span><span class="ddarrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6l4 4 4-4"/></svg></span></summary>
    <ol class="steps">
@@ -326,7 +355,7 @@ function pscOverview(id){
     return `<tr><th scope="row"><button class="linkbtn odgo" data-i="${i}">${fEsc(m.n)}</button></th><td>${fB(m.T[0])}</td><td>${fB(m.T[3])}</td><td>${fB(m.T[4])}</td>
      <td class="vcell ${s.cls}">${m.T[0]?vsSgn(m.T[4]-m.T[0],fB)+" <small>"+vsP(s.pc)+"</small>":'<span class="muted">No budget</span>'}</td><td>${e?fB(e.T[0]):'<span class="muted">—</span>'}</td></tr>`;}).join("");
   el.innerHTML=pscHead(G)+`<div class="dsh-kh">FY 2026–27 · current fiscal year (April 1, 2026 – March 31, 2027)<span><b class="fmil">All amounts in millions of dollars ($M).</b> ${G.latestNote||Y+" is the latest year with "+G.unit1+" results: they were released in fall 2026."}</span></div>${kp}
-   <div class="sctwrap"><table class="sct fedtbl"><caption>${R.length} ${G.unit} · select one for its dashboard</caption><thead><tr><th scope="col">${G.unit1==="ministry"?"Ministry":"Department"}</th><th scope="col">Budget<small class="fth">${Y}</small></th><th scope="col">Total approved<small class="fth">${Y}</small></th><th scope="col">Spent<small class="fth">${Y}</small></th><th scope="col">Spent vs budget<small class="fth">${Y}</small></th><th scope="col">Budget<small class="fth">FY 2026–27</small></th></tr></thead><tbody>${rows}
+   <div class="sctwrap"><table class="sct fedtbl"><caption>${R.length} ${G.unit} · select one for its dashboard</caption><thead><tr><th scope="col">${G.unitS||(G.unit1==="ministry"?"Ministry":"Department")}</th><th scope="col">Budget<small class="fth">${Y}</small></th><th scope="col">Total approved<small class="fth">${Y}</small></th><th scope="col">Spent<small class="fth">${Y}</small></th><th scope="col">Spent vs budget<small class="fth">${Y}</small></th><th scope="col">Budget<small class="fth">FY 2026–27</small></th></tr></thead><tbody>${rows}
     <tr class="tot"><th scope="row">Total</th><td>${fB(b)}</td><td>${fB(t)}</td><td>${fB(a)}</td><td class="vcell ${sp.cls}">${vsSgn(a-b,fB)} <small>${vsP(sp.pc)}</small></td><td>${fB(e27)}</td></tr></tbody></table></div>
    <div class="note">${L.totNote?L.totNote+" ":""}${G.how.basis} FY 2026–27 totals use the Estimates' own basis; see each ${G.unit1}'s FY 2026–27 section. A “—” in the FY 2026–27 column means the ${G.unit1} was renamed or reorganized and has no direct match.</div>
    <div class="src">Sources: ${G.srcs.map(fA).join(" · ")}</div>
