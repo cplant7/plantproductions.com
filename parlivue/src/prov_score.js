@@ -211,6 +211,19 @@ function pscNL(){
     y27:{src:SRC.est,rows:rows27,prevLab:"FY 2025–26 Estimates (original)",note:"Net expenditure (current and capital, less related revenue) from the Summary of Current and Capital Account by Department. The FY 2025–26 comparison is the original estimate from the Province's FY 2025–26 report."},
     gov:{title:"FY 2025–26 results vs budget",sub:"Consolidated statement of operations, whole government (audited)",src:SRC.fs,mul:1e3,G:NL_GOV,
       note:"Newfoundland and Labrador reported a deficit of $377.5 million against a budgeted $371.8 million. Net debt was $19.0 billion at March 31, 2026 (budget: $19.4 billion)."},
+    year:{title:"What happened in FY 2025–26",pill:"7 of 22 over budget",cls:"up",src:[SRC.fs,SRC.r26],secs:[
+     ["Key events",[
+      ["Offshore oil","Offshore royalties were $1,710.1 million, against $1,591.4 million budgeted.","The Province cites oil production 9.7 million barrels higher than projected, partly offset by lower oil prices (US$70.35 per barrel, against US$73.00 budgeted) and a higher exchange rate."],
+      ["Tobacco settlement","Miscellaneous revenue was $425.3 million below budget.","The Province attributes this mainly to lower than expected tobacco settlement revenues."],
+      ["Health care","Health and Community Services spent $4,797.0 million, against an original estimate of $4,540.2 million.","Across government, the Province cites healthcare recruitment, retention and service demands, and physician services."]]],
+     ["Met or beat the plan",[
+      ["Revenue","Revenue was $11,091.0 million, $420.8 million above budget. Taxation revenue was $546.8 million above budget.","The Province cites higher corporate income tax from offshore oil and gas corporations and higher personal income tax assessments."],
+      ["Net debt","Net debt was $19.0 billion at March 31, 2026, against $19.4 billion budgeted.",""],
+      ["Within total approved","21 of 22 departments stayed within their total approved funding.",""]]],
+     ["Did not meet the plan",[
+      ["Deficit","The deficit was $377.5 million, against $371.8 million budgeted. Expenses were $11,468.6 million, $426.6 million above budget.",""],
+      ["Debt expense","Debt expense was $46.4 million above budget.","The Province cites higher than expected financing costs."],
+      ["Spending over budget","7 of 22 departments spent more than their original estimate, led by Health and Community Services (+$256.7 million) and Justice and Public Safety (+$184.5 million). Education and Early Childhood Development spent $20.2 million more than its total approved funding.",""]]]]},
     srcs:[SRC.r26,SRC.r25,SRC.est,SRC.fs]};
 }
 
