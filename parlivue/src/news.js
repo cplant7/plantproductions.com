@@ -48,6 +48,8 @@ const COMING=[
 ];
 /* Site updates: data changes on ParliVue. Add a line each time a scorecard's data changes. Newest first. */
 const SITE_UPDATES=[
+ ["2026-11-13","abscore","Alberta, Saskatchewan and Manitoba scorecards: goals added to each ministry and department page — performance measures with targets and FY 2025–26 results from the 2025–26 annual reports (77, 51 and 143 measures)."],
+ ["2026-11-13","skscore","\"What happened in FY 2025–26\" panels added for Saskatchewan, Manitoba, Alberta, Nova Scotia, Newfoundland and Labrador, PEI, Yukon, Québec and New Brunswick, and for Nunavut (FY 2024–25), using each government's own explanations."],
  ["2026-11-13","ntscore","Northwest Territories scorecard: \"What happened in FY 2025–26\" panel added (wildfires, carbon tax offsets, delayed energy projects, results against plan), using the Government's own variance explanations."],
  ["2026-11-13","qcscore","Québec Portfolios Scorecard added: 25 portfolios, FY 2025–26 and FY 2024–25 Public Accounts (Volume 2), the 2026-2027 Expenditure Budget, and FY 2025–26 whole-government results."],
  ["2026-11-13","nuscore","Nunavut Departments Scorecard added: 14 departments, FY 2024–25 Public Accounts (the latest tabled), the FY 2026–27 Main Estimates, and FY 2024–25 whole-government results. FY 2025–26 results to follow when tabled."],

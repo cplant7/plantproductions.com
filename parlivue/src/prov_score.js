@@ -181,6 +181,10 @@ function pscNB(){
       ["Provincial revenue","Revenue from provincial sources was $8.2 billion, $215 million below budget.",""],
       ["Net debt","Net debt was $13,907.6 million at March 31, 2026, against $12,819.4 million budgeted.",""],
       ["Central government","Central government expense was $99 million (9.1%) above budget.","The Province cites the injured workers liability accrual, tax revenue sharing agreements with First Nations and Service New Brunswick costs."]]]]},
+    goals:{map:{},src:n=>["Measuring government progress (Government of New Brunswick)","https://www.gnb.ca/en/gov/government-priorities/measuring-progress.html"],
+      how:"New Brunswick departments report performance measures in their annual reports. The FY 2025–26 reports had not been tabled when this page was built (November 2026; the 2024–25 reports were tabled between December 2025 and January 2026). The Government also tracks province-wide targets on its Measuring progress page.",
+      next:"The Government's province-wide targets are on its Measuring progress page. Department results for FY 2026–27 come with the 2026–27 annual reports.",
+      none:"New Brunswick's FY 2025–26 department annual reports had not been tabled when this page was built (November 2026; the 2024–25 reports were tabled between December 2025 and January 2026). The Government also tracks province-wide targets on its Measuring progress page."},
     srcs:[SRC.v2,SRC.est,SRC.v1]};
 }
 
@@ -484,6 +488,10 @@ function pscQC(){
       ["Federal transfers","Federal transfers were $807 million below budget, including $498 million less in health transfers.",""],
       ["Carbon market","Revenue from greenhouse gas emissions trading was $364 million below the forecast.","The Government cites a lower average price for units sold, linked to uncertainty about the California carbon market."],
       ["Spending over budget","21 of 25 portfolios spent more than their initial appropriations, mostly funded by transfers out of the Conseil du trésor portfolio ($15.3 billion), which holds the contingency fund. No department exceeded its annual appropriations. Special funds' expenditures exceeded the amounts approved by $2,604 million.",""]]]]},
+    goals:{map:{},src:n=>null,
+      how:"Québec departments report results against their strategic plan targets in an annual management report (rapport annuel de gestion). The 2025–26 reports had not been published when this page was built (November 2026).",
+      next:"Results against strategic plan targets come with each department's annual management report.",
+      none:"Québec departments report results against their strategic plan targets in an annual management report (rapport annuel de gestion). The 2025–26 reports had not been published when this page was built (November 2026), so none are shown here."},
     srcs:[SRC.v26,SRC.v25,SRC.est,SRC.v1]};
 }
 
