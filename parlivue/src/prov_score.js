@@ -138,6 +138,12 @@ function pscManitoba(){
       ["Deficit","The deficit was $832 million, against $794 million budgeted. Expenses were $25,915 million, against $25,850 million budgeted.","The Province describes the deficit as in line with Budget 2025."],
       ["Net debt","Net debt was $36.5 billion, $39 million higher than budget.",""],
       ["Spending over budget","15 of 25 departments and service headings spent more than their start-of-year budget. Six spent more than their total approved funding, led by Environment and Climate Change (+$87.1 million) and Public Service Delivery (+$39.6 million).",""]]]]},
+    goals:{map:MB_GOALS,src:n=>{const k=Object.keys(MB_GOAL_CODE).find(x=>PSC_K(x)===PSC_K(n));return k?[k+" Annual Report 2025–26","https://www.gov.mb.ca/asset_library/en/annualreports/2025_2026/annual-report-"+MB_GOAL_CODE[k]+"-25-26.pdf"]:null;},
+      sub:"From the department's 2025–26 annual report",cap:"Performance measures, FY 2025–26",
+      how:"Each department's annual report has a performance measurement table with the previous actuals, a target and the actual result. This page shows those measures, as printed. Some measures report a calendar year or the latest available year; that year is shown in brackets.",
+      note:"Copied from the department's Performance Measures tables. Measures with no target or no result are left out. For some measures a lower number is better (for example wait times or recidivism), so ParliVue does not mark targets met or not met.",
+      next:"FY 2026–27 targets are in the department's 2026–27 Supplement to the Estimates of Expenditure. Results come with the 2026–27 annual report (fall 2027). The FY 2025–26 tab shows the latest results.",
+      none:"No performance measures with targets are shown for this line: either its 2025–26 annual report has none, or it is a service heading (such as Enabling Appropriations or Public Debt) without its own annual report."},
     srcs:[SRC.r26,SRC.r25,SRC.est,SRC.ar,["Manitoba Families Annual Report 2024/25 (p. 60)","https://www.gov.mb.ca/asset_library/en/annualreports/2024_2025/annual-report-fam-24-25.pdf"]]};
 }
 
