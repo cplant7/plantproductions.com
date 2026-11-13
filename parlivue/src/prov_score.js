@@ -33,6 +33,19 @@ function pscAlberta(){
     y27:{src:SRC.est,rows:rows27,prevLab:"FY 2025–26 budget",note:"The budget is the ministry's voted expense, the same basis as the FY 2025–26 results. The FY 2025–26 column is the Estimates' comparable figure, restated to the 2026 ministry structure, so it can differ slightly from the FY 2025–26 budget in that year's section. The table by program shows the ministry's total expense (voted and non-voted, including amortization and its agencies), which is larger."},
     gov:{title:"FY 2025–26 results vs budget",sub:"Fiscal summary, whole government",src:SRC.goa,mul:1e6,G:AB_GOV,
       note:"The budget included a $4 billion contingency (in “Other”), which was fully allocated in the third quarter: $2 billion to health, $1.5 billion for agriculture and wildfire disasters and $0.5 billion to other areas. Revenue was above budget mainly from investment income, taxes, resource revenue and business enterprise income. Oil (WTI) averaged US$64.94 per barrel, against US$68.00 in the budget. Net financial debt was $33.6 billion at March 31, 2026."},
+    year:{title:"What happened in FY 2025–26",pill:"8 of 25 over budget",cls:"up",src:[SRC.goa,SRC.ar],secs:[
+     ["Key events",[
+      ["Contingency","Budget 2025 included a $4 billion contingency, fully allocated during the year: $2 billion to health, $1.5 billion for agriculture and wildfire disasters and $0.5 billion to other areas.",""],
+      ["Disasters","Disaster and emergency expense was $1.4 billion: $0.6 billion in agriculture disaster support and $0.8 billion for wildfire response.","This was $0.5 billion lower than FY 2024–25, which the Province attributes mainly to lower agricultural insurance indemnities."],
+      ["Oil prices","Oil (WTI) averaged US$64.94 per barrel, against US$68.00 budgeted. Resource revenue was still $0.9 billion above budget, at $17.9 billion.","The Province attributes this mainly to a significantly narrower oil price differential, which boosted bitumen royalties."]]],
+     ["Met or beat the plan",[
+      ["Surplus","The surplus was $2.2 billion, against a budgeted deficit of $5.2 billion.",""],
+      ["Revenue","Revenue was $79.8 billion, $5.6 billion above budget, including $2.1 billion more investment income and $1.0 billion more tax revenue.",""],
+      ["Expense","Total expense was $77.5 billion, $1.8 billion under budget.",""],
+      ["Net debt","Net financial debt was $33.6 billion at March 31, 2026, against $40.7 billion budgeted.",""]]],
+     ["Did not meet the plan",[
+      ["Health","Health expense was $31.8 billion, $1.3 billion above budget.","The Province cites population growth, physician compensation, collective bargaining settlements and higher costs for new drugs and technology."],
+      ["Spending over budget","8 of 25 ministries spent more than their start-of-year expense vote, led by Assisted Living and Social Services (+$539.3 million) and Primary and Preventative Health Services (+$501.0 million). Two spent more than their total approved expense vote: Primary and Preventative Health Services ($503.6 million over) and Agriculture and Irrigation ($10.5 million over).","The Province cites growth in demand for physician services, drugs and supplemental health benefits, and higher Agriculture Financial Services Corporation statutory program commitments."]]]]},
     srcs:[SRC.ar,SRC.est,SRC.goa]};
 }
 
