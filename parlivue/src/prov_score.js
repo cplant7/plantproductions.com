@@ -272,6 +272,7 @@ function pscYK(){
     s25:["Yukon Public Accounts 2024–25, Schedule 4: Non-Consolidated Schedule of Expenses by Department","https://open.yukon.ca/information/25581eb9-a0b5-4038-9568-b2588e861fbb/resource/ef895c00-db1a-40f0-933b-fc60b191cd2f/download/fin-2024-25-public-accounts-schedule-4-schedule-expenses-department.pdf"],
     est:["2026–27 Main Estimates","https://yukon.ca/sites/default/files/fin-2026-27-budget-main-estimates.pdf"],
     cf:["Yukon Public Accounts 2025–26: Government of Yukon consolidated financial statements","https://yukon.ca/sites/default/files/fin-2025-26-public-accounts-government-yukon-consolidated-financial-statements.pdf"],
+    fsda:["Yukon Public Accounts 2025–26, Part 1: Financial Statement Discussion and Analysis","https://yukon.ca/sites/default/files/fin-2025-26-public-accounts-financial-statement-discussion-and-analysis.pdf"],
     sw:["Yukon Public Accounts 2025–26, Schedule 11: Schedule of Special Warrants","https://yukon.ca/sites/default/files/fin-2025-26-public-accounts-schedule-11-schedule-special-warrants.pdf"]};
   const add=(a,b)=>a.map((v,i)=>v+b[i]);
   const conv=P=>P.map(([n,om,cap,po,pc])=>({k:PSC_K(n),n,T:add(om,cap),
@@ -293,7 +294,20 @@ function pscYK(){
     y27:{src:SRC.est,rows:rows27,prevLab:"FY 2025–26 Main Estimates",note:"Total appropriations (O&M plus capital) from the Total Appropriations Summary by Department/Corporation. Economic Development and Tourism and Culture were combined into Economic Development, Tourism and Culture for 2026–27. The 2026–27 Estimates show Yukon Housing Corporation's gross appropriation, while the Public Accounts rows above are net of its revenues and recoveries. The FY 2026–27 total includes $100 million for Government Contingencies, which has no row in the table."},
     gov:{title:"FY 2025–26 results vs budget",sub:"Consolidated statement of operations, whole government (audited)",src:SRC.cf,mul:1e3,G:YK_GOV,
       note:"Yukon reported a surplus of $75.1 million against a budgeted $132.7 million. The surplus also includes an $8.4 million recovery of prior years' expenses, which is not one of the rows above. Net debt was $297.9 million at March 31, 2026."},
-    srcs:[SRC.s26,SRC.s25,SRC.est,SRC.cf,SRC.sw]};
+    year:{title:"What happened in FY 2025–26",pill:"7 of 21 over budget",cls:"up",src:[SRC.fsda,SRC.s26],secs:[
+     ["Key events",[
+      ["Victoria Gold","Natural resources expense was $283.9 million, against $143.3 million budgeted. It includes a $116.6 million valuation allowance on the loan receivable related to Victoria Gold Corp.","Revenue includes $45.0 million recognized for the Victoria Gold Corp. surety bond."],
+      ["Community Services","Community Services received $46.0 million in supplementary funding, $34.6 million of it for Protective services. It spent $34.7 million more than its start-of-year budget.",""],
+      ["Borrowing","Borrowings rose $391.8 million. Total debt was $810.6 million at March 31, 2026, 67.6% of the $1.2 billion borrowing limit.","The Government cites borrowing for major infrastructure projects and public facilities."]]],
+     ["Met or beat the plan",[
+      ["Revenue","Revenue was $2,330.3 million, $56.6 million above budget.","The Government cites higher taxes and general revenues, funding agreements and government business enterprise income, offset by lower transfers from the Government of Canada."],
+      ["Within total approved","All 21 departments and corporations stayed within their total approved funding.",""],
+      ["General government","General government expense was $250.8 million, against $329.8 million budgeted.",""]]],
+     ["Did not meet the plan",[
+      ["Surplus","The surplus was $75.1 million, against $132.7 million budgeted. Expenses (net of recoveries of prior years' expenses) were $2,255.2 million, $114.2 million (5.3%) above budget.",""],
+      ["Net debt","Net debt was $297.9 million at March 31, 2026, up $70.7 million from a year earlier.",""],
+      ["Spending over budget","7 of 21 departments and corporations spent more than their start-of-year budget, led by Community Services (+$34.7 million) and Health and Social Services (+$15.1 million).",""]]]]},
+    srcs:[SRC.s26,SRC.s25,SRC.est,SRC.cf,SRC.fsda,SRC.sw]};
 }
 
 function pscNT(){
