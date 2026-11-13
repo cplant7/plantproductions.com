@@ -48,6 +48,10 @@ const COMING=[
 ];
 /* Site updates: data changes on ParliVue. Add a line each time a scorecard's data changes. Newest first. */
 const SITE_UPDATES=[
+ ["2026-11-12","nbscore","New Brunswick Departments Scorecard added: 20 departments, FY 2024–25 Public Accounts and FY 2026–27 Main Estimates, plus FY 2025–26 whole-government results. FY 2025–26 department results to follow when published."],
+ ["2026-11-12","mbscore","Manitoba Departments Scorecard added: 25 departments and service headings, FY 2024–25 and FY 2025–26 results by appropriation, FY 2026–27 Estimates, FY 2025–26 whole-government results."],
+ ["2026-11-12","skscore","Saskatchewan Ministries Scorecard added: 34 ministries and offices, FY 2024–25 and FY 2025–26 Public Accounts by program, FY 2026–27 Estimates, FY 2025–26 whole-government results."],
+ ["2026-11-12","abscore","Alberta Ministries Scorecard added: 25 ministries, FY 2025–26 results from the ministry annual reports, FY 2026–27 Estimates, FY 2025–26 whole-government results."],
  ["2026-11-08","onscore","Ontario Ministries Scorecard added: 35 ministries and offices, FY 2024–25 and FY 2025–26 Public Accounts, FY 2026–27 Estimates by program, key performance indicators from the 2025–26 plans, 2026 Budget fiscal plan."],
  ["2026-11-08","bcscore","B.C. scorecard completed: FY 2024–25 and FY 2025–26 goals, FY 2026–27 service plan targets, Budget 2026 fiscal plan, and a \"What happened in FY 2025–26\" panel."],
  ["2026-11-08","vicscore","Victoria and Mississauga scorecards: \"What happened in 2025\" panels added; timing and status-label notes moved into How to read."],
