@@ -4279,7 +4279,8 @@ function pscSask(){
   const SRC={pa26:["Public Accounts 2025–26, Volume 2: General Revenue Fund Details","https://publications.saskatchewan.ca/#/categories/893"],
     pa25:["Public Accounts 2024–25, Volume 2: General Revenue Fund Details","https://publications.saskatchewan.ca/#/categories/893"],
     v1:["Public Accounts 2025–26, Volume 1: Summary Financial Statements","https://publications.saskatchewan.ca/#/categories/893"],
-    est:["2026–27 Saskatchewan Estimates","https://budget.saskatchewan.ca/f/f35e0zkmpjti2xix134z0h4bhmq9fw/2026-27-Estimates-WEB.pdf"]};
+    est:["2026–27 Saskatchewan Estimates","https://budget.saskatchewan.ca/f/f35e0zkmpjti2xix134z0h4bhmq9fw/2026-27-Estimates-WEB.pdf"],
+    nr:["Saskatchewan Releases Year End Financial Results (June 30, 2026)","https://www.saskatchewan.ca/government/news-and-media/2026/june/30/saskatchewan-releases-year-end-financial-results"]};
   const t5=V=>[V[0],V[2],V[1],V[3],V[8]];
   const conv=D=>D.map(([vote,n,V,CO,S])=>{ if(!CO) return {k:vote,n,T:t5(V),P:S.filter(s=>s[0]!=="NA").map(s=>[s[1],s[2][0],s[2][2],s[2][1]+s[2][3],s[2][4],s[2][9]])};
     const M=V.map((x,i)=>x-CO[i]);
@@ -4301,7 +4302,19 @@ function pscSask(){
     y27:{src:SRC.est,rows:rows27,prevLab:"FY 2025–26 Estimates",note:"The FY 2025–26 column is restated in the 2026–27 Estimates for the current structure, so a few ministries differ from the appropriation in the FY 2025–26 section."},
     gov:{title:"FY 2025–26 results vs budget",sub:"Summary statement of operations, whole government (audited)",src:SRC.v1,mul:1e3,G:SK_GOV,
       note:"Saskatchewan reported a deficit of $947 million against a budgeted surplus of $12 million. The Province's explanation: health expense rose with demand for services, retroactive pay from bargaining and physician compensation; protection of persons and property rose with wildfire response and evacuations; agriculture fell because better crop yields lowered crop insurance payouts. Net debt was $17.2 billion at March 31, 2026."},
-    srcs:[SRC.pa26,SRC.pa25,SRC.est,SRC.v1]};
+    year:{title:"What happened in FY 2025–26",pill:"13 of 34 over budget",cls:"up",src:[SRC.v1,SRC.pa26,SRC.nr],secs:[
+     ["Key events",[
+      ["Wildfires","Protection of persons and property expense was $1,499.4 million, against $1,094.8 million budgeted. Community Safety spent $1,170.4 million, against a start-of-year budget of $798.4 million.","The Province attributes the increase to wildfire response and evacuations."],
+      ["Health care demand","Health expense was $8,671.6 million, against $8,004.9 million budgeted.","The Province cites demand for services, retroactive pay from bargaining and physician compensation."],
+      ["Crop yields","Agriculture expense was $1,241.3 million, against $1,597.6 million budgeted.","The Province attributes this to better crop yields, which lowered crop insurance payouts."]]],
+     ["Met or beat the plan",[
+      ["Revenue","Revenue was $21,133.5 million, above the $21,056.1 million budgeted.",""],
+      ["Within total approved","All 34 ministries and offices stayed within their total approved funding.",""]]],
+     ["Did not meet the plan",[
+      ["Deficit","The deficit was $947.5 million, against a budgeted surplus of $12.2 million. Expenses were $22,081.0 million, against $21,043.9 million budgeted.",""],
+      ["Net debt","Net debt was $17,165 million at March 31, 2026, against $16,815 million budgeted.",""],
+      ["Spending over budget","13 of 34 ministries and offices spent more than their start-of-year budget, led by Community Safety (+$372.0 million) and Health (+$312.6 million). The Saskatchewan Residential Fuel Charge line also spent $194.5 million, with no start-of-year budget.",""]]]]},
+    srcs:[SRC.pa26,SRC.pa25,SRC.est,SRC.v1,SRC.nr]};
 }
 
 /* ---------- Manitoba ---------- */
