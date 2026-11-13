@@ -235,7 +235,7 @@ function pscNL(){
     r25:["Report on the Program Expenditures and Revenues of the Consolidated Revenue Fund, year ended March 31, 2025","https://www.gov.nl.ca/exec/tbs/files/Cash-Statements-2025-with-signed-letter-Final.pdf"],
     est:["Estimates of the Program Expenditure and Revenue of the Consolidated Revenue Fund 2026–27","https://www.gov.nl.ca/budget/2026/wp-content/uploads/sites/10/Estimates-2026.pdf"],
     fs:["Public Accounts: Consolidated Summary Financial Statements, March 31, 2026","https://www.gov.nl.ca/exec/tbs/files/Consolidated-Summary-Financial-Statements-March-31-2026-Web.pdf"]};
-  const conv=P=>P.map(([n,a,t,s,x])=>({k:PSC_K(n),n,T:[a,s,t,a+s+t,x],P:[],progNote:"The report shows each department's spending by program and account; that detail is not yet captured here, so this section shows department totals."}));
+  const conv=(P,PP)=>P.map(([n,a,t,s,x])=>{const pp=PP&&PP[n];return {k:PSC_K(n),n,T:[a,s,t,a+s+t,x],P:pp?pp.map(([pn,o,am,ac])=>[pn,o,0,am-o,am,ac]):[],progNote:pp?"By program (subdivision), net of related revenue, from the department's Statement of Expenditure and Related Revenue. The report gives only the original and amended estimates by program, so B and C are shown together in C. Some names appear twice where a program has both current and capital lines.":"The report shows this department's spending by program and account; that detail is not yet captured here (ParliVue only shows program detail where the program totals add exactly to the department totals), so this section shows department totals."};});
   const o26=Object.fromEntries(NLP26.map(r=>[PSC_K(r[0]),r[1]]));
   const rows27=NLE27.map(([n,e])=>({k:PSC_K(n),n,T:[e,o26[PSC_K(n)]??0],P:[]}));
   return {id:"nlscore",code:"NL",prov:"Newfoundland and Labrador",pfx:"Province of Newfoundland and Labrador",unit:"departments",unit1:"department",
@@ -246,7 +246,7 @@ function pscNL(){
       E:"A + B + C.",S:"Actual net expenditure: current and capital spending less related revenue.",
       basis:"These are Consolidated Revenue Fund amounts on a modified cash basis, net of related revenue, the same basis as the Estimates. The Province's consolidated expense ($11.5 billion in FY 2025–26) is on an accrual basis and adds health authorities, school boards and other organizations."},
     latestNote:"FY 2025–26 is the latest year with department results: the report was tabled September 29, 2026.",
-    y26:{lab:"FY 2025–26",src:SRC.r26,rows:conv(NLP26)},
+    y26:{lab:"FY 2025–26",src:SRC.r26,rows:conv(NLP26,NLPP26)},
     y25:{lab:"FY 2024–25",src:SRC.r25,rows:conv(NLP25),note:"Departments were reorganized after FY 2024–25, so several FY 2024–25 departments have different names and responsibilities."},
     y27:{src:SRC.est,rows:rows27,prevLab:"FY 2025–26 Estimates (original)",note:"Net expenditure (current and capital, less related revenue) from the Summary of Current and Capital Account by Department. The FY 2025–26 comparison is the original estimate from the Province's FY 2025–26 report."},
     gov:{title:"FY 2025–26 results vs budget",sub:"Consolidated statement of operations, whole government (audited)",src:SRC.fs,mul:1e3,G:NL_GOV,
