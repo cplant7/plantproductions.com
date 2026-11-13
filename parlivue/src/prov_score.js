@@ -218,7 +218,32 @@ function pscYK(){
     srcs:[SRC.s26,SRC.s25,SRC.est,SRC.cf,SRC.sw]};
 }
 
-const PSC={}; const PSC_FN={abscore:pscAlberta,skscore:pscSask,mbscore:pscManitoba,nbscore:pscNB,nsscore:pscNS,nlscore:pscNL,pescore:pscPE,ykscore:pscYK};
+function pscNT(){
+  const SRC={s26:["Public Accounts 2025–2026, Section II: Non-consolidated Financial Statements (Schedule 2)","https://www.fin.gov.nt.ca/sites/fin/files/2025-2026_public_accounts_section_ii_-_non-consolidated_financial_statements.pdf"],
+    s25:["Public Accounts 2024–2025, Section II: Non-consolidated Financial Statements (Schedule 2)","https://www.fin.gov.nt.ca/sites/fin/files/resources/2024-2025_public_accounts_section_ii_-_non-consolidated_financial_statements.pdf"],
+    est:["2026–2027 Supplementary Estimates (Operations Expenditures) No. 1: Summary of Appropriations (2026–27 Main Estimates column)","https://www.fin.gov.nt.ca/sites/fin/files/resources/supplementary_estimates_operations_expenditures_no_1_2026-2027.pdf"],
+    tb:["2025–2026 Public Accounts Tables (Section I, consolidated)","https://www.fin.gov.nt.ca/sites/fin/files/2025-2026_public_accounts_tables.xlsx"]};
+  const k3=a=>a.map(v=>v*1e3);
+  const conv=P=>P.map(([n,T,pr,v])=>({k:PSC_K(n),n,T:k3(T),P:pr.map(p=>[p[0],...k3(p.slice(1,6))]),note:v?"The Public Accounts give this explanation of the difference between the total appropriation and spending: "+v:""}));
+  const m26=Object.fromEntries(NTP26.map(r=>[PSC_K(r[0]),r[1][0]*1e3]));
+  const rows27=NTE27.map(([n,e])=>({k:PSC_K(n),n,T:[e,m26[PSC_K(n)]??0],P:[]}));
+  return {id:"ntscore",code:"NT",prov:"Northwest Territories",pfx:"Government of the Northwest Territories",unit:"departments",unit1:"department",
+    lede:`The Northwest Territories' departments deliver the territorial government's programs: health and social services, education, culture and employment, infrastructure, environment and climate change, justice and more. Each is led by a minister.`,
+    lede2:`Before each fiscal year, the Legislative Assembly approves the Main Estimates for operations expenditures. After the year ends, Section II of the Public Accounts (Schedule 2) shows each department's main estimates, supplementary estimates, transfers and spending, by activity, with an explanation of the overall variance. This page compares them for ${NTP26.length} departments.`,
+    how:{A:"The Main Estimates (operations expenditures).",B:"Supplementary Estimates approved during the year.",
+      C:"Transfers between activities and departments, as shown in Schedule 2. They add to zero across government in FY 2025–26.",
+      E:"Total appropriation: A + B + C.",S:"Operating fund expenses (expenses less projects carried out on behalf of third parties).",
+      basis:"These are non-consolidated operating amounts. Capital spending is approved separately in the Capital Estimates and is not included. The territory's consolidated expense ($3.1 billion in FY 2025–26) adds Housing NWT, health and education authorities and other organizations."},
+    latestNote:"FY 2025–26 is the latest year with department results: Public Accounts 2025–2026, Section II.",
+    y26:{lab:"FY 2025–26",src:SRC.s26,rows:conv(NTP26)},
+    y25:{lab:"FY 2024–25",src:SRC.s25,rows:conv(NTP25)},
+    y27:{src:SRC.est,rows:rows27,prevLab:"FY 2025–26 Main Estimates",note:"2026–27 Main Estimates for operations expenditures by department, as listed in Supplementary Estimates (Operations Expenditures) No. 1, 2026–2027 (tabled June 1, 2026)."},
+    gov:{title:"FY 2025–26 results vs budget",sub:"Consolidated statement of operations, whole government (audited)",src:SRC.tb,mul:1e3,G:NT_GOV,
+      note:"The Northwest Territories reported a surplus of $21.2 million against a budgeted $200.5 million. Net debt was $2.0 billion at March 31, 2026 (budget: $1.8 billion)."},
+    srcs:[SRC.s26,SRC.s25,SRC.est,SRC.tb]};
+}
+
+const PSC={}; const PSC_FN={abscore:pscAlberta,skscore:pscSask,mbscore:pscManitoba,nbscore:pscNB,nsscore:pscNS,nlscore:pscNL,pescore:pscPE,ykscore:pscYK,ntscore:pscNT};
 const pscGet=id=>PSC[id]||(PSC[id]=PSC_FN[id]());
 const pscSg=v=>v===0?fB(0):(v<0?"−":"+")+fB(Math.abs(v));
 
