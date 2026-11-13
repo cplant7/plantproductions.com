@@ -232,6 +232,7 @@ function renderChamber(id){
   if(id==="fedscore") return renderFedScorePage();
   if(id==="bcscore") return renderBcScorePage();
   if(id==="onscore") return renderOnScorePage();
+  if(typeof PSC_FN!=="undefined"&&PSC_FN[id]) return renderPscPage(id);
   if(id==="fedbudget") return renderFedBudgetPage();
   if(id==="bcleg") return renderBcLeg();
   if(id==="skleg") return renderSkLeg();
