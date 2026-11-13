@@ -48,6 +48,7 @@ const COMING=[
 ];
 /* Site updates: data changes on ParliVue. Add a line each time a scorecard's data changes. Newest first. */
 const SITE_UPDATES=[
+ ["2026-11-13","pescore","Prince Edward Island Departments Scorecard added: 26 departments and agencies with program detail, FY 2025–26 and FY 2024–25 Public Accounts (Volume II), the FY 2026–27 Operating Estimates, and FY 2025–26 whole-government results."],
  ["2026-11-13","nlscore","Newfoundland and Labrador Departments Scorecard added: 22 departments and accounts, FY 2025–26 and FY 2024–25 results from the Report on the Program Expenditures and Revenues of the Consolidated Revenue Fund, the FY 2026–27 Estimates, and FY 2025–26 whole-government results."],
  ["2026-11-13","nsscore","Nova Scotia Departments Scorecard added: 22 departments and accounts, FY 2025–26 and FY 2024–25 Public Accounts results and the FY 2026–27 Estimates, plus FY 2025–26 whole-government results."],
  ["2026-11-12","nbscore","New Brunswick Departments Scorecard added: 20 departments, FY 2024–25 Public Accounts and FY 2026–27 Main Estimates, plus FY 2025–26 whole-government results. FY 2025–26 department results to follow when published."],

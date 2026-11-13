@@ -162,7 +162,34 @@ function pscNL(){
     srcs:[SRC.r26,SRC.r25,SRC.est,SRC.fs]};
 }
 
-const PSC={}; const PSC_FN={abscore:pscAlberta,skscore:pscSask,mbscore:pscManitoba,nbscore:pscNB,nsscore:pscNS,nlscore:pscNL};
+function pscPE(){
+  const SRC={v26:["Public Accounts 2026, Volume II: Operating Fund Financial Statements and Details of Revenues and Expenditures","https://wdf.princeedwardisland.ca/download/dms?objectId=8659d721-ef93-4ae6-bd04-abcbcd885b04&fileName=2026%20-%20PA%20-%20Volume%20II.pdf"],
+    v25:["Public Accounts 2025, Volume II: Operating Fund Financial Statements and Details of Revenues and Expenditures","https://wdf.princeedwardisland.ca/download/dms?objectId=c5a7999a-c170-4033-80a0-88cf2aa6ba4f&fileName=2025%20-%20PA%20-%20Volume%20II.pdf"],
+    est:["2026 Operating Estimates Book (FY 2026–27)","https://www.princeedwardisland.ca/sites/default/files/9350/2026%20Operating%20Estimates%20Book.pdf"],
+    v1:["Public Accounts 2026, Volume I: Consolidated Financial Statements","https://wdf.princeedwardisland.ca/download/dms?objectId=a004bfb3-02dd-4f2e-8175-1a351960bb12&fileName=2026%20-%20PA%20-%20Volume%20I.pdf"]};
+  const ALIAS={"la commission scolaire de langue française":"french language school board"};
+  const K=n=>{const k=PSC_K(n);return ALIAS[k]||k;};
+  const t5=(x,e)=>[e,0,0,e,x];
+  const conv=P=>P.map(([n,x,e,pr])=>({k:K(n),n,T:t5(x,e),P:pr.map(([pn,px,pe])=>[pn,...t5(px,pe)]),
+    progNote:pr.length?"":"This organization is funded as a single line in the Estimates, so there is no program breakdown."}));
+  const rows27=PEE27.filter(r=>!/^Other Consolidated Agencies/.test(r[0])).map(([n,e,f,a])=>({k:K(n),n,T:[e,a],P:[],votes:[["FY 2025–26 forecast (Operating Estimates Book)",f,null]]}));
+  return {id:"pescore",code:"PE",prov:"Prince Edward Island",pfx:"Province of Prince Edward Island",unit:"departments and agencies",unit1:"department",
+    lede:`Prince Edward Island's departments, and the Crown agencies they fund (such as Health PEI, the Public Schools Branch and Innovation PEI), deliver the Province's programs. Each department is led by a Cabinet minister.`,
+    lede2:`Before each fiscal year, the Legislative Assembly approves the Operating Estimates. After the year ends, Volume II of the Public Accounts lists each department's and agency's expenses next to its estimates, by program. This page compares them for ${PEP26.length} departments and agencies.`,
+    how:{A:"The Operating Estimates for each department or agency, as shown in Volume II of the Public Accounts.",B:"Volume II shows spending next to the estimates only. It does not show funding added during the year, so B is shown as zero.",
+      C:"Volume II does not show transfers between departments, so C is shown as zero.",
+      E:"Same as A.",S:"Actual gross expenses of the Operating Fund (Volume II, unaudited).",
+      basis:"These are Operating Fund amounts (gross expenses). Grants to Crown agencies such as Health PEI are counted once, as spending of the agency's line. Interest on debt and amortization are not included. The Province's consolidated expense ($3.7 billion in FY 2025–26) adds the agencies' own revenue and spending."},
+    latestNote:"FY 2025–26 is the latest year with department results: Public Accounts Volume II for the year ended March 31, 2026.",
+    y26:{lab:"FY 2025–26",src:SRC.v26,rows:conv(PEP26)},
+    y25:{lab:"FY 2024–25",src:SRC.v25,rows:conv(PEP25),note:"The Public Service Commission was called the P.E.I. Public Service Commission in FY 2024–25."},
+    y27:{src:SRC.est,rows:rows27,prevLab:"FY 2025–26 Estimates (restated)",note:"Program expenditure from the Expenditure Summary by Department. Several departments were renamed and reorganized for 2026–27 (for example, Finance became Finance and Affordability), so they have no direct match with FY 2025–26 rows. The FY 2025–26 estimates in the book are restated to the new structure. The book also lists $50.3 million for other consolidated agencies, not shown here."},
+    gov:{title:"FY 2025–26 results vs budget",sub:"Consolidated statement of operations, whole government (audited)",src:SRC.v1,mul:1e3,G:PE_GOV,
+      note:"Prince Edward Island reported a deficit of $355.5 million against a budgeted $183.9 million. Net debt was $3.7 billion at March 31, 2026 (budget: $3.5 billion)."},
+    srcs:[SRC.v26,SRC.v25,SRC.est,SRC.v1]};
+}
+
+const PSC={}; const PSC_FN={abscore:pscAlberta,skscore:pscSask,mbscore:pscManitoba,nbscore:pscNB,nsscore:pscNS,nlscore:pscNL,pescore:pscPE};
 const pscGet=id=>PSC[id]||(PSC[id]=PSC_FN[id]());
 const pscSg=v=>v===0?fB(0):(v<0?"−":"+")+fB(Math.abs(v));
 
