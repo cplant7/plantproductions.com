@@ -243,7 +243,34 @@ function pscNT(){
     srcs:[SRC.s26,SRC.s25,SRC.est,SRC.tb]};
 }
 
-const PSC={}; const PSC_FN={abscore:pscAlberta,skscore:pscSask,mbscore:pscManitoba,nbscore:pscNB,nsscore:pscNS,nlscore:pscNL,pescore:pscPE,ykscore:pscYK,ntscore:pscNT};
+function pscNU(){
+  const SRC={pa25:["2024–25 Public Accounts of Nunavut (Section III, Schedule B.1)","https://www.assembly.nu.ca/sites/default/files/2026-03/TD-002-7%281%29-EN-2024-25_Public_Accounts_of_Nunavut.pdf"],
+    est:["2026–2027 Main Estimates","https://www.gov.nu.ca/sites/default/files/documents/2026-05/Main_Estimates_2026_2027_ENG.pdf"]};
+  const ALIAS={"office of the legislative assembly":"legislative assembly"};
+  const K=n=>{const k=PSC_K(n);return ALIAS[k]||k;};
+  const k3=a=>a.map(v=>v*1e3);
+  const rows25=NUP25.map(([n,om,cap,po])=>({k:K(n),n,T:k3(om),P:po.map(p=>[p[0],...k3(p.slice(1,6))]),
+    progNote:"The Public Accounts break each department's operations and maintenance spending down by type of spending (compensation and benefits, grants and contributions, other), not by program.",
+    votes:[["Operations and maintenance",...k3(om)],["Capital",...k3(cap)]],votesNote:"The summary above uses the operations and maintenance (O&M) appropriation, which matches the Main Estimates. Capital is voted separately and is shown here for reference. Transfers are shown as adjustments."}));
+  const rows27=NUE27.map(([n,e,r,m])=>({k:K(n),n,T:[e*1e3,m*1e3],P:[],votes:[["FY 2025–26 revised estimates",r*1e3,null]]}));
+  const cap=NUP25.reduce((t,r)=>[t[0]+r[2][0],t[1]+r[2][4]],[0,0]);
+  return {id:"nuscore",code:"NU",prov:"Nunavut",pfx:"Government of Nunavut",unit:"departments",unit1:"department",
+    lede:`Nunavut's departments deliver the territorial government's programs: health, education, family services, justice, community and infrastructure services and more. Each is led by a minister. The Nunavut Housing Corporation and Nunavut Arctic College are funded through their own appropriations.`,
+    lede2:`Before each fiscal year, the Legislative Assembly approves the Main Estimates for operations and maintenance (O&M); capital is approved separately. After the year ends, the Public Accounts (Schedule B.1) show each department's original budget, supplementary appropriations, transfers, revised budget and actual spending. This page compares them for ${NUP25.length} departments.`,
+    how:{A:"The original O&M budget (Main Estimates).",B:"Supplementary appropriations approved during the year.",
+      C:"Transfers within a department's appropriation. They add to zero for each department.",
+      E:"Revised budget: A + B + C.",S:"Actual O&M spending under approved appropriations.",
+      basis:"These are O&M appropriation amounts, the same basis as the Main Estimates. Capital appropriations (for FY 2024–25, a $355.8 million original budget and $277.8 million spent) and spending funded by third-party agreements and revolving funds are not included. The territory's consolidated expense ($3.3 billion in FY 2024–25) adds Qulliq Energy Corporation, district education authorities and other organizations."},
+    latestNote:"Nunavut's Public Accounts for FY 2025–26 had not been tabled when this page was built (November 2026); the FY 2024–25 Public Accounts were tabled in the Legislative Assembly in March 2026. The latest department results are for FY 2024–25.",
+    y26:null,
+    y25:{lab:"FY 2024–25",src:SRC.pa25,rows:rows25,totNote:"Totals are O&M only."},
+    y27:{src:SRC.est,rows:rows27,prevLab:"FY 2025–26 Main Estimates",note:"Operations and maintenance from the Summary of Operations and Maintenance Expenditures. In 2024–25 the Government created the Department of Transportation and Infrastructure Nunavut and the Department of Community Services; Community and Government Services and Economic Development and Transportation ceased to exist, so those rows have no FY 2026–27 match."},
+    gov:{title:"FY 2024–25 results vs budget",sub:"Consolidated statement of operations, whole government (audited)",src:SRC.pa25,mul:1e3,G:NU_GOV,yl:"FY 2024–25",pl:"FY 2023–24",
+      note:"Nunavut reported a surplus of $196.9 million for FY 2024–25 against a budgeted $43.4 million. Nunavut reported net financial assets (rather than net debt) of $742.0 million at March 31, 2025. FY 2025–26 results are not yet available."},
+    srcs:[SRC.pa25,SRC.est]};
+}
+
+const PSC={}; const PSC_FN={abscore:pscAlberta,skscore:pscSask,mbscore:pscManitoba,nbscore:pscNB,nsscore:pscNS,nlscore:pscNL,pescore:pscPE,ykscore:pscYK,ntscore:pscNT,nuscore:pscNU};
 const pscGet=id=>PSC[id]||(PSC[id]=PSC_FN[id]());
 const pscSg=v=>v===0?fB(0):(v<0?"−":"+")+fB(Math.abs(v));
 
@@ -271,7 +298,8 @@ function renderPscPage(id){
 }
 function pscGov(G){
   const g=G.gov, D=g.G, m=g.mul, row=(r,cls)=>`<tr${cls?` class="${cls}"`:""}><td>${fEsc(r[0])}</td>${fCol(r[1]*m,"")}${fCol(r[2]*m,"")}${fCol((r[2]-r[1])*m,"")}${fCol(r[3]*m,"")}</tr>`;
-  const head=["Item","Budget FY 2025–26","Actual FY 2025–26","Difference","Actual FY 2024–25"];
+  const gy=g.yl||"FY 2025–26", gp=g.pl||"FY 2024–25";
+  const head=["Item","Budget "+gy,"Actual "+gy,"Difference","Actual "+gp];
   const body=pscTbl(G.prov+", whole government ($M)",head,[
     ...D.rev.map(r=>row(r)),`<tr class="tot"><th scope="row">Total revenue</th>${fCol(D.revT[0]*m,"")}${fCol(D.revT[1]*m,"")}${fCol((D.revT[1]-D.revT[0])*m,"")}${fCol(D.revT[2]*m,"")}</tr>`,
     ...D.exp.map(r=>`<tr><td>Expense: ${fEsc(r[0])}</td>${fCol(r[1]*m,"")}${fCol(r[2]*m,"")}${fCol((r[2]-r[1])*m,r[2]>r[1]?"up":"")}${fCol(r[3]*m,"")}</tr>`),
@@ -292,7 +320,7 @@ function pscOverview(id){
     ["Budget · FY 2026–27",fB(e27),fPill("neu",(e27>=e26?"+":"−")+Math.abs((e27-e26)/e26*100).toFixed(1)+"% vs FY 2025–26"),"2026–27 Estimates, "+G.unit+" total",""],
     ["Spent · "+Y,fB(a),sp.pill,"Budget was "+fB(b)+" · total approved "+fB(t),fGauge(a/b*100,sp.cls==="up"?"off":"ok","Spent vs budget")],
     ["Over budget · "+Y,over+" of "+R.length,fPill(over>R.length/2?"off":"watch",Math.round(over/R.length*100)+"%"),"Spent more than the start-of-year budget · "+overT+" spent more than the total approved",""],
-    [(dA<0?"Deficit":"Surplus")+" · FY 2025–26",fB(Math.abs(dA)),fPill(dA>=dB?"ok":"off",dA>=dB?"Better than budget by "+fB(dA-dB):"Worse than budget by "+fB(dB-dA)),"Budget plan: "+(dB<0?"a "+fB(Math.abs(dB))+" deficit":"a "+fB(dB)+" surplus")+" (whole government)",""]
+    [(dA<0?"Deficit":"Surplus")+" · "+(G.gov.yl||"FY 2025–26"),fB(Math.abs(dA)),fPill(dA>=dB?"ok":"off",dA>=dB?"Better than budget by "+fB(dA-dB):"Worse than budget by "+fB(dB-dA)),"Budget plan: "+(dB<0?"a "+fB(Math.abs(dB))+" deficit":"a "+fB(dB)+" surplus")+" (whole government)",""]
   ].map(fCard).join("")}</div>`;
   const rows=R.map((m,i)=>{const s=fSpend(m.T[0],m.T[4]),e=f27(m.k);
     return `<tr><th scope="row"><button class="linkbtn odgo" data-i="${i}">${fEsc(m.n)}</button></th><td>${fB(m.T[0])}</td><td>${fB(m.T[3])}</td><td>${fB(m.T[4])}</td>

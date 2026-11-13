@@ -48,6 +48,7 @@ const COMING=[
 ];
 /* Site updates: data changes on ParliVue. Add a line each time a scorecard's data changes. Newest first. */
 const SITE_UPDATES=[
+ ["2026-11-13","nuscore","Nunavut Departments Scorecard added: 14 departments, FY 2024–25 Public Accounts (the latest tabled), the FY 2026–27 Main Estimates, and FY 2024–25 whole-government results. FY 2025–26 results to follow when tabled."],
  ["2026-11-13","ntscore","Northwest Territories Departments Scorecard added: 10 departments with activity detail and the Government's variance explanations, FY 2025–26 and FY 2024–25 Public Accounts (Section II), the FY 2026–27 Main Estimates, and FY 2025–26 whole-government results."],
  ["2026-11-13","ykscore","Yukon Departments Scorecard added: 21 departments and votes with program detail (O&M and capital), FY 2025–26 and FY 2024–25 Public Accounts (Schedule 4), the FY 2026–27 Main Estimates, and FY 2025–26 whole-government results."],
  ["2026-11-13","pescore","Prince Edward Island Departments Scorecard added: 26 departments and agencies with program detail, FY 2025–26 and FY 2024–25 Public Accounts (Volume II), the FY 2026–27 Operating Estimates, and FY 2025–26 whole-government results."],
