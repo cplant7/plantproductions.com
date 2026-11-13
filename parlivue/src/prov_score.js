@@ -189,7 +189,36 @@ function pscPE(){
     srcs:[SRC.v26,SRC.v25,SRC.est,SRC.v1]};
 }
 
-const PSC={}; const PSC_FN={abscore:pscAlberta,skscore:pscSask,mbscore:pscManitoba,nbscore:pscNB,nsscore:pscNS,nlscore:pscNL,pescore:pscPE};
+function pscYK(){
+  const SRC={s26:["Yukon Public Accounts 2025–26, Schedule 4: Non-Consolidated Schedule of Expenses by Department","https://yukon.ca/sites/default/files/fin-2025-26-public-accounts-schedule-4-schedule-expenses-department.pdf"],
+    s25:["Yukon Public Accounts 2024–25, Schedule 4: Non-Consolidated Schedule of Expenses by Department","https://open.yukon.ca/information/25581eb9-a0b5-4038-9568-b2588e861fbb/resource/ef895c00-db1a-40f0-933b-fc60b191cd2f/download/fin-2024-25-public-accounts-schedule-4-schedule-expenses-department.pdf"],
+    est:["2026–27 Main Estimates","https://yukon.ca/sites/default/files/fin-2026-27-budget-main-estimates.pdf"],
+    cf:["Yukon Public Accounts 2025–26: Government of Yukon consolidated financial statements","https://yukon.ca/sites/default/files/fin-2025-26-public-accounts-government-yukon-consolidated-financial-statements.pdf"],
+    sw:["Yukon Public Accounts 2025–26, Schedule 11: Schedule of Special Warrants","https://yukon.ca/sites/default/files/fin-2025-26-public-accounts-schedule-11-schedule-special-warrants.pdf"]};
+  const add=(a,b)=>a.map((v,i)=>v+b[i]);
+  const conv=P=>P.map(([n,om,cap,po,pc])=>({k:PSC_K(n),n,T:add(om,cap),
+    P:[...po.map(p=>[p[0],...p.slice(1,6)]),...pc.map(p=>[p[0]+" (capital)",...p.slice(1,6)])],
+    votes:[["Operation and maintenance",om[0],om[1],om[2],om[3],om[4]],cap.some(v=>v)?["Capital",cap[0],cap[1],cap[2],cap[3],cap[4]]:null].filter(Boolean),
+    votesNote:"The summary above adds the operation and maintenance (O&M) and capital votes. Transfers between votes are shown as adjustments."}));
+  const m26=Object.fromEntries(YKP26.map(r=>[PSC_K(r[0]),r[1][0]+r[2][0]]));
+  const rows27=YKE27.map(([n,o,c])=>({k:PSC_K(n),n,T:[(o+c)*1e3,m26[PSC_K(n)]??0],P:[],votes:[["Operation and maintenance",o*1e3,null],["Capital",c*1e3,null]]}));
+  return {id:"ykscore",code:"YT",prov:"Yukon",pfx:"Government of Yukon",unit:"departments and corporations",unit1:"department",
+    lede:`Yukon's departments deliver the territorial government's programs: health and social services, education, highways and public works, community services, justice and more. Each is led by a minister. Some funding goes through territorial corporations such as the Yukon Development Corporation and Yukon Housing Corporation.`,
+    lede2:`Before each fiscal year, the Legislative Assembly approves the Main Estimates, with separate votes for operation and maintenance (O&M) and capital. After the year ends, the Public Accounts (Schedule 4) show each department's main estimate, supplementary estimates, revised estimate and actual spending, by program. This page compares them for ${YKP26.length} departments and votes.`,
+    how:{A:"The Main Estimates: O&M and capital votes added together.",B:"Supplementary Estimates approved during the year (they can also reduce a vote). In FY 2025–26 they include a $31.7 million special warrant issued in August 2025 (Schedule 11).",
+      C:"Transfers between votes. Schedule 4 shows none for FY 2025–26 or FY 2024–25.",
+      E:"Revised Estimates: A + B + C.",S:"Actual spending against the O&M and capital votes.",
+      basis:"These are appropriation amounts, before the Public Accounts convert them to expenses (for example, capital purchases become assets and are expensed through amortization). Yukon Housing Corporation is shown net of rental revenues and recoveries, as in the schedule's totals. The territory's consolidated expense ($2.3 billion in FY 2025–26) adds the hospital corporation, Yukon University and other organizations."},
+    latestNote:"FY 2025–26 is the latest year with department results: the Yukon Public Accounts 2025–26 were released in October 2026.",
+    y26:{lab:"FY 2025–26",src:SRC.s26,rows:conv(YKP26),progNote:"Programs include O&M and capital lines; capital lines are marked."},
+    y25:{lab:"FY 2024–25",src:SRC.s25,rows:conv(YKP25)},
+    y27:{src:SRC.est,rows:rows27,prevLab:"FY 2025–26 Main Estimates",note:"Total appropriations (O&M plus capital) from the Total Appropriations Summary by Department/Corporation. Economic Development and Tourism and Culture were combined into Economic Development, Tourism and Culture for 2026–27. The 2026–27 Estimates show Yukon Housing Corporation's gross appropriation, while the Public Accounts rows above are net of its revenues and recoveries. The FY 2026–27 total includes $100 million for Government Contingencies, which has no row in the table."},
+    gov:{title:"FY 2025–26 results vs budget",sub:"Consolidated statement of operations, whole government (audited)",src:SRC.cf,mul:1e3,G:YK_GOV,
+      note:"Yukon reported a surplus of $75.1 million against a budgeted $132.7 million. The surplus also includes an $8.4 million recovery of prior years' expenses, which is not one of the rows above. Net debt was $297.9 million at March 31, 2026."},
+    srcs:[SRC.s26,SRC.s25,SRC.est,SRC.cf,SRC.sw]};
+}
+
+const PSC={}; const PSC_FN={abscore:pscAlberta,skscore:pscSask,mbscore:pscManitoba,nbscore:pscNB,nsscore:pscNS,nlscore:pscNL,pescore:pscPE,ykscore:pscYK};
 const pscGet=id=>PSC[id]||(PSC[id]=PSC_FN[id]());
 const pscSg=v=>v===0?fB(0):(v<0?"−":"+")+fB(Math.abs(v));
 
