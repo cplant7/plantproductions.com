@@ -48,6 +48,7 @@ const COMING=[
 ];
 /* Site updates: data changes on ParliVue. Add a line each time a scorecard's data changes. Newest first. */
 const SITE_UPDATES=[
+ ["2026-11-13","abscore","Alberta Ministries Scorecard: FY 2024–25 results added for 22 ministries, from the 2024–25 ministry annual reports (Lapse/Encumbrance statements), in that year's ministry structure."],
  ["2026-11-13","abscore","Alberta, Saskatchewan and Manitoba scorecards: goals added to each ministry and department page — performance measures with targets and FY 2025–26 results from the 2025–26 annual reports (77, 51 and 143 measures)."],
  ["2026-11-13","skscore","\"What happened in FY 2025–26\" panels added for Saskatchewan, Manitoba, Alberta, Nova Scotia, Newfoundland and Labrador, PEI, Yukon, Québec and New Brunswick, and for Nunavut (FY 2024–25), using each government's own explanations."],
  ["2026-11-13","ntscore","Northwest Territories scorecard: \"What happened in FY 2025–26\" panel added (wildfires, carbon tax offsets, delayed energy projects, results against plan), using the Government's own variance explanations."],

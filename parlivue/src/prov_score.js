@@ -11,12 +11,18 @@ const PSC_T=a=>a.map(x=>x*1e3);
 function pscAlberta(){
   const SRC={ar:["Ministry annual reports 2025–26 (Lapse/Encumbrance statements)","https://www.alberta.ca/government-and-ministry-annual-reports"],
     est:["2026–27 Government Estimates (Budget 2026)","https://open.alberta.ca/publications/budget-2026"],
+    ar25:["Ministry annual reports 2024–25 (Lapse/Encumbrance statements)","https://www.alberta.ca/government-and-ministry-annual-reports"],
     goa:["Government of Alberta Annual Report 2025–26","https://open.alberta.ca/dataset/7714457c-7527-443a-a7db-dd8c1c8ead86/resource/3d001693-e3c4-47ac-824c-604440df2eb0/download/goa-annual-report-2025-2026.pdf"]};
   const VL={E:"Expense vote",C:"Capital investment vote",F:"Financial transactions vote",K:"Contingency allocations"};
   const rows26=ABS.map(([c,n])=>{const l=ABL[c],E=l.E;
     return {k:c,n,T:PSC_T([E[0],E[1],E[2],E[3],E[4]]),P:[],
       votes:["E","C","F","K"].filter(k=>l[k]).map(k=>[VL[k],...PSC_T(l[k])]),
       note:(l.nosupp?"This ministry's report has one Adjustments column and no separate Supplementary Estimate column, so any supplementary funding is included in C. ":"")+(l.note?l.note:"")};});
+  const Y25N={ENGM:"The ministry's 2024–25 Lapse/Encumbrance statement shows expense-vote spending above the total approved, as printed.",
+    INFR:"Changes and transfers include $410.0 million moved from the capital investment vote to the expense vote, as shown in the ministry's statement.",
+    JETR:"In FY 2024–25 Immigration and Multiculturalism was a separate ministry; its results are not included here."};
+  const rows25=Object.entries(ABL25).map(([n,l])=>({k:l.k,n,T:PSC_T(l.E),P:[],
+      votes:["E","C","F","K"].filter(k=>l[k]).map(k=>[VL[k],...PSC_T(l[k])]),y25note:Y25N[l.k]||""}));
   const rows27=ABS.map(([c,n,v,x])=>{const ct=x.find(r=>r[0]==="=Ministry Total")||x.find(r=>r[0]==="=Consolidated Total");
     return {k:c,n,T:[v.E[2]*1e3,v.E[0]*1e3],P:[],P2:x.filter(r=>r[0][0]!=="=").map(r=>[r[0],r[3]*1e3,r[1]*1e3]),T2:[ct[3]*1e3,ct[1]*1e3],
       votes:[["Expense vote",v.E[2]*1e3,v.E[0]*1e3],v.C?["Capital investment vote",v.C[2]*1e3,v.C[0]*1e3]:null,v.F?["Financial transactions vote",v.F[2]*1e3,v.F[0]*1e3]:null].filter(Boolean)};});
@@ -29,7 +35,11 @@ function pscAlberta(){
       E:"Adjusted voted estimate: A + B + C.",S:"Voted actuals: what the ministry spent from its expense vote. Amortization and other non-cash amounts are not voted, so they are not included.",
       basis:"These are the ministries' voted expense amounts. They are not the Province's consolidated expense of $77.5 billion, which adds health, school and post-secondary bodies, pensions and debt costs."},
     y26:{lab:"FY 2025–26",src:SRC.ar,rows:rows26,progNote:"Alberta's annual reports show the expense vote by program in a table that is not yet captured here, so this section shows the vote totals."},
-    y25:null,
+    y25:{lab:"FY 2024–25",src:SRC.ar25,rows:rows25,progNote:"Alberta's annual reports show the expense vote by program in a table that is not yet captured here, so this section shows the vote totals.",
+      how:{A:"The voted estimate for the year, as approved in the Appropriation Act (Government Estimates, February 2024).",
+        B:"Supplementary Estimates approved by the Legislature during the year.",
+        C:"Adjustments: amounts carried over from the year before, transfers between votes and Treasury Board approvals. The Contingency ($2 billion, voted under Treasury Board and Finance) was handed out to ministries during the year; those allocations are shown separately, by ministry, as Contingency allocations."},
+      note:"FY 2024–25 figures use the ministry structure of that year, from each ministry's 2024–25 annual report. Ministries were reorganized in 2025: the Health ministry and the Seniors, Community and Social Services ministry were split among new ministries, and Immigration and Multiculturalism joined Jobs, Economy and Trade, so some ministries have no FY 2024–25 match."},
     y27:{src:SRC.est,rows:rows27,prevLab:"FY 2025–26 budget",note:"The budget is the ministry's voted expense, the same basis as the FY 2025–26 results. The FY 2025–26 column is the Estimates' comparable figure, restated to the 2026 ministry structure, so it can differ slightly from the FY 2025–26 budget in that year's section. The table by program shows the ministry's total expense (voted and non-voted, including amortization and its agencies), which is larger."},
     gov:{title:"FY 2025–26 results vs budget",sub:"Fiscal summary, whole government",src:SRC.goa,mul:1e6,G:AB_GOV,
       note:"The budget included a $4 billion contingency (in “Other”), which was fully allocated in the third quarter: $2 billion to health, $1.5 billion for agriculture and wildfire disasters and $0.5 billion to other areas. Revenue was above budget mainly from investment income, taxes, resource revenue and business enterprise income. Oil (WTI) averaged US$64.94 per barrel, against US$68.00 in the budget. Net financial debt was $33.6 billion at March 31, 2026."},
@@ -560,6 +570,7 @@ function pscOverview(id){
   el.querySelectorAll(".odgo").forEach(btn=>btn.onclick=()=>{pscMin(id,+btn.dataset.i); window.scrollTo(0,el.offsetTop-10);});
 }
 function pscBlock(G,m,Yr){
+  const H=Yr.how?{...G.how,...Yr.how}:G.how;
   const [a,b,c,tot,sp]=m.T, s=fSpend(a,sp), src=`<div class="src">Source: ${fA(Yr.src)}</div>`, bd=(l,cl)=>`<span class="fbadge sm ${cl}">${l}</span>`;
   const money=`<div class="sctwrap"><table class="sct fmoney"><thead><tr><th scope="col">Item</th><th scope="col">Amount</th></tr></thead><tbody>
     <tr><th scope="row">${bd("A","bk")}Budget</th>${fCol(a,"")}</tr><tr><th scope="row">${bd("B","by")}Additional funding</th>${fCol(b,"cau")}</tr><tr><th scope="row">${bd("C","by")}Changes and transfers</th>${fCol(c,"cau")}</tr>
@@ -579,9 +590,9 @@ function pscBlock(G,m,Yr){
     ["Spent",fB(sp),a?s.pill:fPill("neu","No starting budget"),(sp>tot?"Above total approved by ":"Within total approved · not spent ")+fB(Math.abs(tot-sp)),a?fGauge(sp/a*100,s.cls==="up"?"off":"ok","Spent vs budget"):""]].map(fCard).join("")}</div>`,
    fin:`<h4 class="fgrp">Financials</h4><div class="fstack">`+
     fRoll("$","bs","Financial Summary","Where the funding came from, and what was spent",fB(sp)+" spent",sp>a?"up":"",money+votes+src)+
-    fRoll("A","bk","Budget","Start-of-year budget"+(P.length?", by program":""),fB(a),"",(progA||`<p class="note">${fEsc(pn||"")}</p>`)+`<p class="note">${G.how.A}</p>`+src)+
-    fRoll("B","by","Additional funding","Added during the year",pscSg(b),"cau",`<p class="note">${G.how.B}</p>`+(progB.length?pscTbl("B · By program, "+Yr.lab,["Program","Amount"],progB):"")+src)+
-    fRoll("C","by","Changes and transfers","Moved in, moved out or adjusted",pscSg(c),"cau",`<p class="note">${G.how.C}</p>`+(progC.length?pscTbl("C · By program, "+Yr.lab,["Program","Amount"],progC):"")+src)+
+    fRoll("A","bk","Budget","Start-of-year budget"+(P.length?", by program":""),fB(a),"",(progA||`<p class="note">${fEsc(pn||"")}</p>`)+`<p class="note">${H.A}</p>`+src)+
+    fRoll("B","by","Additional funding","Added during the year",pscSg(b),"cau",`<p class="note">${H.B}</p>`+(progB.length?pscTbl("B · By program, "+Yr.lab,["Program","Amount"],progB):"")+src)+
+    fRoll("C","by","Changes and transfers","Moved in, moved out or adjusted",pscSg(c),"cau",`<p class="note">${H.C}</p>`+(progC.length?pscTbl("C · By program, "+Yr.lab,["Program","Amount"],progC):"")+src)+
     fRoll("E","bk","Totals","Total approved and spending"+(P.length?" by program":""),fB(tot)+" approved","",progE+src)+`</div>`};
 }
 
@@ -620,7 +631,7 @@ function pscMin(id,i){
   else tabs.push(["y26","FY 2025–26","Apr 1, 2025 – Mar 31, 2026 · not yet published"]), panes.y26=`<p class="note">${fEsc(G.latestNote||"")}</p>`;
   const y25b=G.y26?b0:b1, y25m=G.y26?m25:m;
   tabs.push(["y25","FY 2024–25","Apr 1, 2024 – Mar 31, 2025 · final results"]);
-  panes.y25=y25b?`<p class="fynote">FY 2024–25: April 1, 2024 – March 31, 2025. Final results. Click a section to open it.</p>${G.y25.note?`<p class="note">${fEsc(G.y25.note)}</p>`:""}${y25m.y25note?`<p class="note">${fEsc(y25m.y25note)}</p>`:""}${y25m.n!==m.n?`<p class="note">In FY 2024–25 this was the ${fEsc(y25m.n)}.</p>`:""}${y25b.cards}${y25b.fin}`:`<p class="note">${G.y25?"No FY 2024–25 results for this "+G.unit1+" (it did not exist in its current form).":"FY 2024–25 results for "+G.prov+" are not on this page yet."}</p>`;
+  panes.y25=y25b?`<p class="fynote">FY 2024–25: April 1, 2024 – March 31, 2025. Final results. Click a section to open it.</p>${G.y25.note?`<p class="note">${fEsc(G.y25.note)}</p>`:""}${y25m.y25note?`<p class="note">${fEsc(y25m.y25note)}</p>`:""}${y25m.n!==m.n?`<p class="note">In FY 2024–25 this ${G.unit1} was called ${fEsc(y25m.n)}.</p>`:""}${y25b.cards}${y25b.fin}`:`<p class="note">${G.y25?"No FY 2024–25 results for this "+G.unit1+" (it did not exist in its current form).":"FY 2024–25 results for "+G.prov+" are not on this page yet."}</p>`;
   const sel=G.y26?"y26":"y25";
   el.innerHTML=`<button class="chipbtn fback">← All ${L.rows.length} ${G.unit}</button>`+pscHead(G,m.n,`<p class="pagelede">${fEsc(m.n)}: budget and spending for FY 2024–25 to FY 2026–27.</p>`)+cards+`<div class="dsh">
     <nav class="dsh-rail" role="tablist" aria-orientation="vertical" aria-label="Sections"><div class="dsh-rl">Sections</div>${tabs.map(t=>`<button role="tab" id="pst-${t[0]}" aria-controls="psp-${t[0]}" aria-selected="${t[0]===sel}" tabindex="${t[0]===sel?0:-1}" data-k="${t[0]}"><span>${t[1]}</span><small>${t[2]}</small></button>`).join("")}</nav>

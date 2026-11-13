@@ -67,3 +67,36 @@ const AB_GOV={
  exp:[["Health",30465,31796,29560],["Education",18069,18200,17197],["Social services",9163,8990,8462],["Other (budget included a $4 billion contingency)",19059,15845,16113],["Debt servicing costs",2968,2938,3215],["Pension provisions",-375,-228,-403]],
  expT:[79349,77541,74144], bal:[-5211,2209,8320], netDebt:[-40654,-33590,null], netDebtPriorB:-34.3, note:"Budget revenue lines add to 74,137; the report prints 74,138 (rounding)."
 };
+
+/* ABL25: FY 2024-25 Lapse/Encumbrance statements (unaudited) from the 2024-25 ministry annual reports (2024-25 ministry structure), THOUSANDS.
+   Each vote: [voted estimate, supplementary estimate, adjustments, adjusted voted estimate, voted actuals], from the final line after any credit or recovery shortfall.
+   Read Nov 13, 2026: text tables reconstructed by position; EPA, MA, IR, IM, JET (rotated) and Justice expense pages read from page images.
+   Each expense vote checked: estimate + supplementary + adjustments = adjusted estimate, and adjusted - actuals = the printed lapse.
+   k: the FY 2025-26 ministry code where the ministry continued; Health, Seniors Community and Social Services, and Immigration and Multiculturalism have no single successor. */
+const ABL25={
+"Advanced Education":{k:"ADED",E:[2749475,0,1609,2751084,2714511],C:[50,0,200,250,213],F:[1240200,0,0,1240200,905328]},
+"Affordability and Utilities":{k:"AFFU",E:[41286,0,-1984,39302,29378],C:[25,0,0,25,25],F:[96970,0,0,96970,93165],K:[0,0,54484,54484,53210]},
+"Agriculture and Irrigation":{k:"AGRI",E:[779230,0,2464,781694,736713],C:[5189,0,11935,17124,6659],K:[0,0,19444,19444,19444]},
+"Arts, Culture and Status of Women":{k:"ARTS",E:[253197,-10308,-2183,240706,232738]},
+"Children and Family Services":{k:"CFAM",E:[1147670,0,4250,1151920,1151857],C:[2597,0,4192,6789,4293],K:[0,0,10700,10700,10700]},
+"Education":{k:"EDUC",E:[5757668,0,-3251,5754417,5746072],C:[565,0,90,655,463],F:[22179,0,0,22179,15872],K:[0,0,201646,201646,201646]},
+"Energy and Minerals":{k:"ENGM",E:[615438,41651,0,657089,973133],C:[1478,0,527,2005,1661]},
+"Environment and Protected Areas":{k:"ENPA",E:[559211,0,540,559751,401084]},
+"Executive Council":{k:"EXEC",E:[63255,0,-315,62940,56658],C:[25,0,315,340,29]},
+"Forestry and Parks":{k:"FORP",E:[364842,251378,-1398,614822,603038],C:[128145,0,5825,133970,103092],F:[21310,0,0,21310,9213],K:[0,0,455944,455944,455944]},
+"Health":{k:"HLTH24",E:[25250163,26200,-138909,25137454,25018308],C:[29815,0,0,29815,13686],F:[159196,0,0,159196,113084],K:[0,0,970141,970141,970141]},
+"Immigration and Multiculturalism":{k:"IMMU24",E:[41823,809,-2211,40421,40168],C:[25,0,0,25,0]},
+"Indigenous Relations":{k:"INDR",E:[215063,4716,17441,237220,232625]},
+"Infrastructure":{k:"INFR",E:[495444,0,410000,905444,832539],C:[1849050,0,-410000,1439050,898610],F:[19652,0,0,19652,14399]},
+"Jobs, Economy and Trade":{k:"JETR",E:[1763502,91631,-5000,1850133,1811695]},
+"Justice":{k:"JUST",E:[674152,2100,0,676252,671786],C:[14119,0,0,14119,11077]},
+"Mental Health and Addiction":{k:"MEHA",E:[1554712,137502,0,1692214,1652934],C:[5025,0,1000,6025,1267]},
+"Municipal Affairs":{k:"MUNA",E:[1267242,9381,-160,1276463,1252261],C:[550,0,220,770,186],K:[0,0,17059,17059,17026]},
+"Public Safety and Emergency Services":{k:"PSES",E:[1179216,45479,-1050,1223645,1199894],C:[12275,0,3743,16018,10408],F:[51440,0,0,51440,25591],K:[0,0,24122,24122,18622]},
+"Seniors, Community and Social Services":{k:"SCSS24",E:[5738734,0,-2985,5735749,5644212],C:[4072,0,4693,8765,6481],F:[19700,0,0,19700,14114],K:[0,0,209300,209300,208401]},
+"Service Alberta and Red Tape Reduction":{k:"SRTR",E:[211573,0,2329,213902,207511],C:[64447,0,0,64447,40492],F:[5500,0,-1312,4188,3344]},
+"Technology and Innovation":{k:"TECI",E:[865916,0,22225,888141,831393],C:[115649,0,11402,127051,106847],F:[0,15000,0,15000,15000]},
+"Tourism and Sport":{k:"TOUR",E:[135916,0,-1847,134069,133699],C:[25,0,0,25,0]},
+"Transportation and Economic Corridors":{k:"TREC",E:[1910459,0,-405,1910054,1699543],C:[1351142,0,23146,1374288,1375266]},
+"Treasury Board and Finance":{k:"TYBD",E:[199594,0,1733,201327,197443],C:[75,0,167,242,189],K:[2000000,0,-2000000,0,0]}
+};
