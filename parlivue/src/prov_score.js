@@ -95,6 +95,12 @@ function pscSask(){
       ["Deficit","The deficit was $947.5 million, against a budgeted surplus of $12.2 million. Expenses were $22,081.0 million, against $21,043.9 million budgeted.",""],
       ["Net debt","Net debt was $17,165 million at March 31, 2026, against $16,815 million budgeted.",""],
       ["Spending over budget","13 of 34 ministries and offices spent more than their start-of-year budget, led by Community Safety (+$372.0 million) and Health (+$312.6 million). The Saskatchewan Residential Fuel Charge line also spent $194.5 million, with no start-of-year budget.",""]]]]},
+    goals:{map:SK_GOALS,src:n=>SK_GOAL_FMT[n]?[(/^(Innovation Saskatchewan|Tourism Saskatchewan|Water Security Agency|SaskBuilds Corporation|Public Service Commission|Firearms Secretariat)$/.test(n)?n:"Ministry of "+n)+" Annual Report 2025–26","https://publications.saskatchewan.ca/api/v1/products/129306/formats/"+SK_GOAL_FMT[n]+"/download"]:null,
+      sub:"From the 2025–26 annual report",cap:"Performance measures with targets, FY 2025–26",
+      how:"Each ministry's annual report gives results for the performance measures in its business plan. This page shows the measures that state a target: the target and the FY 2025–26 result, as printed, with the previous result where the report gives it.",
+      note:"Taken from the annual report, which reports most measures in sentences rather than tables. Some measures cover a calendar year or longer-term targets (for example 2030). For some measures a lower number is better, so ParliVue does not mark targets met or not met. “—” means the report gave no value.",
+      next:"FY 2026–27 targets are in the 2026–27 business plan. Results come with the 2026–27 annual report (summer 2027). The FY 2025–26 tab shows the latest results.",
+      none:"This annual report gives results without numeric targets, or this office does not publish an annual report with performance measures, so none are shown here."},
     srcs:[SRC.pa26,SRC.pa25,SRC.est,SRC.v1,SRC.nr]};
 }
 
@@ -547,7 +553,8 @@ function pscGoals(G,m){
   const key=Object.keys(g.map).find(k=>PSC_K(k)===PSC_K(m.n)), L=key?g.map[key]:null, src=g.src(key||m.n);
   const sline=src?`<div class="src">Source: ${fA(src)}</div>`:"";
   if(!L||!L.length) return `<h4 class="fgrp">Goals</h4><p class="note">${(g.notes&&g.notes[key||m.n])||g.none||"No performance measures with targets were found in this "+G.unit1+"'s annual report."}</p>${sline}`;
-  const body=`<div class="sctwrap"><table class="sct fitems"><caption>${fEsc(g.cap||"Performance measures, FY 2025–26")}</caption><thead><tr><th scope="col">Measure</th><th scope="col">Previous result</th><th scope="col">Target</th><th scope="col">Result</th></tr></thead><tbody>${L.map(x=>`<tr><td>${fEsc(x[0])}</td><td>${fEsc(x[1]||"—")}</td><td>${fEsc(x[2]||"—")}</td><td>${fEsc(x[3]||"—")}</td></tr>`).join("")}</tbody></table></div><p class="note">${g.note}</p>`;
+  const pv=L.some(x=>x[1]&&x[1]!=="—"), tl='style="text-align:left"';
+  const body=`<div class="sctwrap"><table class="sct fitems"><caption>${fEsc(g.cap||"Performance measures, FY 2025–26")}</caption><thead><tr><th scope="col" style="width:${pv?34:44}%">Measure</th>${pv?`<th scope="col" ${tl}>Previous result</th>`:""}<th scope="col" ${tl}>Target</th><th scope="col" ${tl}>Result</th></tr></thead><tbody>${L.map(x=>`<tr><td>${fEsc(x[0])}</td>${pv?`<td ${tl}>${fEsc(x[1]||"—")}</td>`:""}<td ${tl}>${fEsc(x[2]||"—")}</td><td ${tl}>${fEsc(x[3]||"—")}</td></tr>`).join("")}</tbody></table></div><p class="note">${g.note}</p>`;
   return `<h4 class="fgrp">Goals</h4><div class="fstack">`+fRoll(BC_GOAL,"bg","Goals and results",g.sub,L.length+(L.length===1?" measure":" measures"),"",body+sline)+`</div>`;
 }
 function pscMin(id,i){
