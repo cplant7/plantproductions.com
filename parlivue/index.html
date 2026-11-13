@@ -587,7 +587,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opa
 .dsh-head>div{flex:1 1 100%;min-width:0}
 .dsh-head .pagelede{margin:0;max-width:none}
 .fedhow .fhowkey{padding:0 14px 14px 34px;display:grid;gap:6px;font-size:14px}.fedhow .dkey{font-size:13px}
-#fedscore .note,#bcscore .note,#onscore .note,#abscore .note,#skscore .note,#mbscore .note,#nbscore .note{font-size:13px;line-height:1.45}
+#fedscore .note,#bcscore .note,#onscore .note,#abscore .note,#skscore .note,#mbscore .note,#nbscore .note,#nsscore .note{font-size:13px;line-height:1.45}
 .fitems td,.fitems th{text-align:left}.fitems td:last-child,.fitems th:last-child{text-align:right;white-space:nowrap}.fitems .fvote{white-space:nowrap;color:var(--muted);font-family:var(--f-mono);font-size:13px}
 .sct tr.fover th{font-weight:700}
 .fitems tr.fbyv th{text-align:left!important;font:600 12px var(--f-mono)!important;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)!important;padding-top:12px}
@@ -760,7 +760,7 @@ details.rc>summary:focus-visible{outline:2px solid var(--brass);outline-offset:2
 .vswk{font:600 13px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--brass)}
 .vsw b{font:800 18px var(--f-mark)}
 .vsws{font-size:14px;color:var(--muted)}
-#ch-vicscore,#ch-misscore,#ch-fedscore,#ch-bcscore,#ch-onscore,#ch-abscore,#ch-skscore,#ch-mbscore,#ch-nbscore,#ch-fedbudget{display:grid;gap:16px}
+#ch-vicscore,#ch-misscore,#ch-fedscore,#ch-bcscore,#ch-onscore,#ch-abscore,#ch-skscore,#ch-mbscore,#ch-nbscore,#ch-nsscore,#ch-fedbudget{display:grid;gap:16px}
 .vswitch.v3{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (max-width:820px){.vswitch.v3{grid-template-columns:minmax(0,1fr)}}
 .vsec{display:grid;gap:12px;border:1px solid var(--rule);border-radius:12px;background:var(--surface);padding:14px 16px 16px}
@@ -980,7 +980,7 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
 .sct.fexp td.fwhy2{min-width:320px;font-size:13.5px;color:var(--muted)}
 .fsh{margin:6px 0 0;font:700 17px var(--f-body)}
 .fback{justify-self:start}
-#fedscore,#bcscore,#onscore,#abscore,#skscore,#mbscore,#nbscore,#fedbudget{display:grid;gap:16px}
+#fedscore,#bcscore,#onscore,#abscore,#skscore,#mbscore,#nbscore,#nsscore,#fedbudget{display:grid;gap:16px}
 .sct.b26t th[scope=row]{min-width:200px;max-width:280px}
 .sct.b26t td.b26x{text-align:left;min-width:300px;font-size:13.5px;line-height:1.45}
 .sct.b26t td.b26a{text-align:left;white-space:nowrap;font-weight:600}
@@ -1098,6 +1098,7 @@ div.dkpi{cursor:default} div.dkpi:hover{background:none}
   <div id="ch-skscore" class="chwrap" hidden></div>
   <div id="ch-mbscore" class="chwrap" hidden></div>
   <div id="ch-nbscore" class="chwrap" hidden></div>
+  <div id="ch-nsscore" class="chwrap" hidden></div>
   <div id="ch-fedbudget" class="chwrap" hidden></div>
 
   <footer id="wheelfoot">
@@ -3734,6 +3735,135 @@ const NBP25=[["Agriculture, Aquaculture and Fisheries",[48470.0,1051.0,49521.0,5
    Totals 13,136,685 / 13,646,710 / 14,336,888; total expense after capital and inter-account adjustments 13,101,250 / 13,609,905 / 14,297,910. */
 const NBE27=[["Agriculture, Aquaculture and Fisheries",50485,52535,54313],["Education and Early Childhood Development",2111300,2073065,2230623],["Energy",78444,78444,95385],["Environment and Local Government",187202,186099,229221],["Executive Council Office",12591,12591,12837],["Finance and Treasury Board",32135,32383,32252],["General Government",1456864,1445253,1284315],["Health",4091088,4523566,4801333],["Justice and Public Safety",403213,412351,423096],["Legislative Assembly",38364,36039,45023],["Natural Resources",141468,155998,149280],["New Brunswick Housing Corporation",232958,226196,259986],["Office of the Premier",1734,1734,1824],["Opportunities New Brunswick",71200,54157,63461],["Other Agencies",423699,403731,409108],["Post-Secondary Education, Training and Labour",757732,767968,779620],["Regional Development Corporation",79571,79571,78559],["Service of the Public Debt",740359,740359,860000],["Social Development",1742504,1869564,2012308],["Tourism, Heritage and Culture",84840,87872,92886],["Transportation and Infrastructure",398934,407234,421458]];
 
+/* Nova Scotia departments scorecard data (Nov 13 2026). All amounts in THOUSANDS of dollars unless noted.
+   NSP26 / NSP25: Public Accounts Volume 1 (General Revenue Fund), "Additional Appropriations by Resolution":
+     FY 2025-26: https://notices.novascotia.ca/files/public-accounts/2026/pa-volume-1-financial-statements-2026.pdf (printed pp. 50-51)
+     FY 2024-25: https://notices.novascotia.ca/files/public-accounts/2025/pa-volume-1-financial-statements-2025.pdf (printed pp. 53-54)
+   Row: [name, [original estimate, additional appropriation approved during the year, actual, final additional appropriation required], sub-appropriations|null]
+   Public Service is a group of separate resolutions; its sub-appropriations are kept as programs. Its row totals are the sums of the
+   sub-appropriations, except FY 2025-26 actual, which uses the Departmental Expenses table (525,804; sub-lines add to 525,806 from rounding).
+   NSO26/NSO25: Other Appropriations (debt servicing, refundable tax credits, pension valuation adjustment, contingency).
+   NSK26/NSK25: Statutory Capital (capital purchase requirements, serial retirements).
+   NSE27: Budget 2026-27 Estimates and Supplementary Detail, Departmental Expenses - Summary (p. 1.1):
+     https://www.novascotia.ca/sites/default/files/documents/7-4172/budget-estimates-2026-27-en.pdf
+     Row: [name, 2025-26 estimate, 2025-26 forecast, 2026-27 estimate]
+   NS_GOV: Consolidated Statement of Operations (Statement 2) and Changes in Net Debt (Statement 3), FY 2025-26 Public Accounts Vol 1. THOUSANDS:
+     [adjusted estimate 2026, actual 2026, actual 2025]. */
+const NSP26=[
+ ["Advanced Education",[732171,10448,740391,0]],
+ ["Agriculture",[47946,3000,51544,599]],
+ ["Communities, Culture, Tourism and Heritage",[168120,39750,208351,482]],
+ ["Cyber Security and Digital Solutions",[283921,6439,283420,0]],
+ ["Education and Early Childhood Development",[2225951,5188,2185650,0]],
+ ["Emergency Management",[61060,3024,77865,13781]],
+ ["Energy",[48613,5000,58269,4657]],
+ ["Environment and Climate Change",[80124,0,72732,0]],
+ ["Finance and Treasury Board",[48406,0,81919,33514]],
+ ["Fisheries and Aquaculture",[15095,0,15093,0]],
+ ["Growth and Development",[400214,3050,402951,0]],
+ ["Health and Wellness",[5976833,416078,6361451,0]],
+ ["Justice",[489245,15063,509557,5249]],
+ ["Labour, Skills and Immigration",[246453,0,230188,0]],
+ ["Municipal Affairs",[337882,0,278524,0]],
+ ["Natural Resources",[112138,64927,175963,0]],
+ ["Opportunities and Social Development",[1676809,0,1677049,240]],
+ ["Public Service",[525274,20893,525804,749],[
+  ["Elections Nova Scotia",[4770,1963,6728,0]],
+  ["Executive Council",[17039,0,16090,0]],
+  ["Freedom of Information and Protection of Privacy Review Office",[1327,0,1326,0]],
+  ["Government Contributions to Benefit Plans",[8828,0,9576,749]],
+  ["Human Rights Commission",[3080,0,3064,0]],
+  ["Intergovernmental Affairs",[5498,0,5140,0]],
+  ["Legislative Services",[26157,3999,29746,0]],
+  ["Energy and Regulatory Boards Tribunal",[2334,0,2334,0]],
+  ["Nova Scotia Police Complaints Commissioner",[453,0,453,0]],
+  ["Nova Scotia Securities Commission",[3429,0,3370,0]],
+  ["Office of Addictions and Mental Health",[363793,14931,361545,0]],
+  ["Office of Equity and Anti-Racism",[4321,0,3987,0]],
+  ["Office of Healthcare Professionals Recruitment",[8627,0,8566,0]],
+  ["Office of L'nu Affairs",[5615,0,5563,0]],
+  ["Office of the Auditor General",[6766,0,5916,0]],
+  ["Office of the Ombudsman",[2300,0,2238,0]],
+  ["Public Prosecution Service",[32092,0,31645,0]],
+  ["Public Service Commission",[25699,0,25382,0]],
+  ["Office of Service Efficiency",[3146,0,3137,0]]]],
+ ["Public Works",[840141,2328,882920,40452]],
+ ["Seniors and Long-Term Care",[1462480,83483,1538811,0]],
+ ["Service Nova Scotia",[164805,8904,174974,1265]],
+ ["Restructuring Costs",[551472,171975,1144079,420632]]];
+const NSP26_T=[16495153,859550,17677505,521620];
+const NSO26=[["Debt Servicing Costs",[908509,12880,896942,0]],["Refundable Tax Credits",[147960,15876,165302,1466]],["Pension Valuation Adjustment",[17079,0,-38002,0]],["Contingency",[200000,0,0,0]]];
+const NSO26_T=[1273548,28756,1024242,1466];
+const NSK26=[["Capital Purchase Requirements",[1873288,490024,2048595,0]],["Serial Retirements",[16655,0,14101,0]]];
+const NSK26_T=[1889943,490024,2062696,0];
+
+const NSP25=[
+ ["Advanced Education",[725539,14536,739066,0]],
+ ["Agriculture",[46682,0,57658,10977]],
+ ["Communities, Culture, Tourism and Heritage",[171845,83184,242321,0]],
+ ["Cyber Security and Digital Solutions",[276224,0,246549,0]],
+ ["Education and Early Childhood Development",[1999180,17900,1998073,0]],
+ ["Emergency Management",[30391,18293,48825,141]],
+ ["Energy",[37873,2937,43752,2942]],
+ ["Environment and Climate Change",[73876,7660,76400,0]],
+ ["Finance and Treasury Board",[48790,0,228257,179467]],
+ ["Fisheries and Aquaculture",[15951,0,16286,335]],
+ ["Growth and Development",[370250,16784,416365,29332]],
+ ["Health and Wellness",[5536898,231643,5778476,9935]],
+ ["Justice",[464719,12187,485014,8109]],
+ ["Labour, Skills and Immigration",[241644,4236,242527,0]],
+ ["Municipal Affairs",[396515,0,314508,0]],
+ ["Natural Resources",[103715,4909,112777,4154]],
+ ["Opportunities and Social Development",[1579169,0,1613917,34748]],
+ ["Public Service",[517397,26455,517070,1090],[
+  ["Communications Nova Scotia",[6960,0,6640,0]],
+  ["Elections Nova Scotia",[5412,15950,19776,0]],
+  ["Executive Council",[11371,0,11133,0]],
+  ["Freedom of Information and Protection of Privacy Review Office",[1281,0,1214,0]],
+  ["Government Contributions to Benefit Plans",[9134,0,6798,0]],
+  ["Human Rights Commission",[3044,0,3044,0]],
+  ["Intergovernmental Affairs",[5744,0,5656,0]],
+  ["Legislative Services",[25543,0,26632,1090]],
+  ["Nova Scotia Police Complaints Commissioner",[2230,0,2230,0]],
+  ["Nova Scotia Securities Commission",[444,0,444,0]],
+  ["Nova Scotia Utility and Review Board",[3271,0,3241,0]],
+  ["Office of Addictions and Mental Health",[359619,10505,349874,0]],
+  ["Office of Equity and Anti-Racism",[3968,0,3680,0]],
+  ["Office of Healthcare Professionals Recruitment",[8098,0,6462,0]],
+  ["Office of L'nu Affairs",[4255,0,4140,0]],
+  ["Office of the Auditor General",[6278,0,5738,0]],
+  ["Office of the Ombudsman",[2200,0,2123,0]],
+  ["Public Prosecution Service",[32075,0,31955,0]],
+  ["Public Service Commission",[23833,0,23698,0]],
+  ["Office of Service Efficiency",[2637,0,2592,0]]]],
+ ["Public Works",[716170,34232,790161,39759]],
+ ["Seniors and Long-Term Care",[1362710,68344,1411236,54]],
+ ["Service Nova Scotia",[161138,63105,220613,0]],
+ ["Restructuring Costs",[659765,0,661763,1998]]];
+const NSP25_T=[15536441,606405,16261614,323041];
+const NSO25=[["Debt Servicing Costs",[822863,46447,876312,7002]],["Refundable Tax Credits",[126316,52536,155908,0]],["Pension Valuation Adjustment",[33102,0,-16151,0]]];
+const NSO25_T=[982281,98983,1016069,7002];
+const NSK25=[["Capital Purchase Requirements",[1333994,268713,1941345,338638]],["Serial Retirements",[17422,0,16565,0]]];
+const NSK25_T=[1351416,268713,1957910,338638];
+
+const NSE27=[
+ ["Advanced Education",732171,742619,542339],["Agriculture",47946,50946,48048],["Communities, Culture, Tourism and Heritage",168120,200699,162785],
+ ["Cyber Security and Digital Solutions",283921,288357,322727],["Education and Early Childhood Development",2225951,2201128,2341678],["Emergency Management",61060,62799,60190],
+ ["Energy",48613,53613,45982],["Environment and Climate Change",80124,78716,59877],["Finance and Treasury Board",48406,47687,48173],["Fisheries and Aquaculture",15095,15095,17933],
+ ["Growth and Development",400214,404216,457047],["Health and Wellness",5976833,6337636,6714896],["Justice",489245,504308,536436],["Labour, Skills and Immigration",246453,246849,431995],
+ ["Municipal Affairs",337882,275505,290004],["Natural Resources",112138,177065,131455],["Opportunities and Social Development",1676809,1672654,1784748],["Public Service",525274,536002,579386],
+ ["Public Works",840141,842469,921085],["Seniors and Long-Term Care",1462480,1540847,1573127],["Service Nova Scotia",164805,174693,172758],["Restructuring Costs",551472,651397,527721]];
+const NSE27_T=[16495153,17105300,17770390];
+
+const NS_GOV={
+ rev:[["Tax revenue",8831935,8989167,9302801],["Other provincial revenue",1820410,2010778,2187934],["Net income from government business enterprises",465447,471418,490867],["Investment income",225805,180728,231652],["Federal sources",6218127,6327771,6007425]],
+ revT:[17561724,17979862,18220679],
+ exp:[["Advanced Education",837260,854907,859641],["Agriculture",60333,79465,59658],["Communities, Culture, Tourism and Heritage",172989,211217,244034],["Cyber Security and Digital Solutions",283921,280372,241493],["Education and Early Childhood Development",2689809,2655073,2440009],["Emergency Management",71668,78956,51551],["Energy",48613,58142,43738],["Environment and Climate Change",154133,149185,148313],["Finance and Treasury Board",69706,86311,68683],["Fisheries and Aquaculture",15396,14379,13246],["Growth and Development",485168,481965,503132],["Health and Wellness",6408234,6833966,6359221],["Justice",492629,512508,486485],["Labour, Skills and Immigration",224037,199441,214949],["Municipal Affairs",337882,278524,314508],["Natural Resources",110502,176664,117532],["Opportunities and Social Development",1674544,1673130,1610816],["Public Service",196754,207308,201742],["Public Works",772705,806137,788528],["Seniors and Long-Term Care",1363033,1425571,1295527],["Service Nova Scotia",164887,174187,215028],["Restructuring Costs",551472,1144079,661765],["Pension valuation adjustment",17079,-40265,-16151],["Refundable tax credits",147960,165302,155907],["Net loss on disposal of Crown assets",0,10786,2023],["Debt servicing costs",908509,869591,874513]],
+ expT:[18259223,19386901,17955891],
+ contingency:[200000,0,0],
+ bal:[-897499,-1407039,264788],
+ netDebt:[-23413493,-24096694,-20843600]};
+
 /* Provincial scorecards (Alberta, Saskatchewan, Manitoba, New Brunswick; more to follow).
    One renderer for every province, same layout as the Ontario and B.C. scorecards (Fisheries template):
    overview of all ministries → each ministry's page with FY 2026–27, FY 2025–26 and FY 2024–25 sections,
@@ -3849,7 +3979,32 @@ function pscNB(){
     srcs:[SRC.v2,SRC.est,SRC.v1]};
 }
 
-const PSC={}; const PSC_FN={abscore:pscAlberta,skscore:pscSask,mbscore:pscManitoba,nbscore:pscNB};
+function pscNS(){
+  const SRC={pa26:["Public Accounts 2026, Volume 1: Consolidated Financial Statements (FY 2025–26)","https://notices.novascotia.ca/files/public-accounts/2026/pa-volume-1-financial-statements-2026.pdf"],
+    pa25:["Public Accounts 2025, Volume 1: Consolidated Financial Statements (FY 2024–25)","https://notices.novascotia.ca/files/public-accounts/2025/pa-volume-1-financial-statements-2025.pdf"],
+    est:["Budget 2026–27: Estimates and Supplementary Detail","https://www.novascotia.ca/sites/default/files/documents/7-4172/budget-estimates-2026-27-en.pdf"]};
+  const t5=v=>[v[0]*1e3,v[1]*1e3,0,(v[0]+v[1])*1e3,v[2]*1e3];
+  const fin=(v,yr)=>v[3]?`Spending was above the total approved. The Public Accounts list a final additional appropriation of ${fB(v[3]*1e3)} required for year-end adjustments, which must be submitted to Cabinet (Governor in Council) within 15 days of the Public Accounts being tabled (Finance Act, s. 28(4)).`:"";
+  const conv=P=>P.map(([n,v,sub])=>({k:PSC_K(n),n,T:t5(v),P:sub?sub.map(([sn,sv])=>[sn,...t5(sv)]):[],note:sub?sub.filter(x=>x[1][3]).map(([sn,sv])=>`${sn} spent above its total approved. The Public Accounts list a final additional appropriation of ${fB(sv[3]*1e3)} required for year-end adjustments, which must be submitted to Cabinet (Governor in Council) within 15 days of the Public Accounts being tabled (Finance Act, s. 28(4)).`).join(" "):fin(v),
+    progNote:sub?"":"Nova Scotia's Public Accounts approve and report this "+"department as one appropriation (resolution), so there is no program breakdown here."}));
+  const oth=(O,K,yr)=>"Not in the department totals: "+O.concat(K).map(([n,v])=>`${n} (budget ${fB(v[0]*1e3)}, spent ${v[2]<0?"−"+fB(-v[2]*1e3)+", a recovery":fB(v[2]*1e3)})`).join("; ")+".";
+  const rows27=NSE27.map(([n,a,f,e])=>({k:PSC_K(n),n,T:[e*1e3,a*1e3],P:[],votes:[["FY 2025–26 forecast (February 2026)",f*1e3,null]]}));
+  return {id:"nsscore",code:"NS",prov:"Nova Scotia",pfx:"Province of Nova Scotia",unit:"departments",unit1:"department",
+    lede:`Nova Scotia's departments deliver the Province's programs: health and wellness, education and early childhood development, seniors and long-term care, opportunities and social development, public works and more. Each is led by a Cabinet minister. Smaller offices and agencies are grouped under Public Service.`,
+    lede2:`Before each fiscal year, the House of Assembly approves the Estimates. After the year ends, Volume 1 of the Public Accounts lists each department's original estimate, the additional funding approved during the year and what it spent. This page compares them for ${NSP26.length} departments and accounts.`,
+    how:{A:"The original Estimate approved in the Appropriations Act.",B:"Additional appropriations approved by Cabinet (Governor in Council) during the year, by Order in Council. Amounts spent above the total approved need a final additional appropriation after the year ends; these are noted for each department.",
+      C:"Nova Scotia's Public Accounts do not show transfers between departments, so C is shown as zero.",
+      E:"Budget plus additional appropriations: A + B.",S:"Actual departmental expense (General Revenue Fund).",
+      basis:"These are General Revenue Fund amounts, before consolidation, on the same basis the Legislature approves. The Province's consolidated expense ($19.4 billion in FY 2025–26) adds health authorities, regional centres for education and other organizations. Restructuring Costs is a central provision (contract negotiations, workforce adjustment and government restructuring) rather than a department."},
+    y26:{lab:"FY 2025–26",src:SRC.pa26,rows:conv(NSP26),totNote:oth(NSO26,NSK26)},
+    y25:{lab:"FY 2024–25",src:SRC.pa25,rows:conv(NSP25),note:"The FY 2024–25 original estimates were restated for the departmental restructuring of December 12, 2024 (Order in Council 2024-425). Emergency Management became a department on September 20, 2024."},
+    y27:{src:SRC.est,rows:rows27,prevLab:"FY 2025–26 Estimates",note:"Department totals from the Departmental Expenses Summary (General Revenue Fund). The 2026–27 Estimates also show a February 2026 forecast for FY 2025–26, listed above."},
+    gov:{title:"FY 2025–26 results vs budget",sub:"Consolidated statement of operations, whole government (audited)",src:SRC.pa26,mul:1e3,G:NS_GOV,
+      note:"Nova Scotia reported a deficit of $1.41 billion. The budget plan was a $897.5 million deficit after a $200 million contingency, which is not included in the budget expense column above. Departments are shown here on a consolidated basis, so the amounts differ from the department table. Net debt was $24.1 billion at March 31, 2026 (budget: $23.4 billion)."},
+    srcs:[SRC.pa26,SRC.pa25,SRC.est]};
+}
+
+const PSC={}; const PSC_FN={abscore:pscAlberta,skscore:pscSask,mbscore:pscManitoba,nbscore:pscNB,nsscore:pscNS};
 const pscGet=id=>PSC[id]||(PSC[id]=PSC_FN[id]());
 const pscSg=v=>v===0?fB(0):(v<0?"−":"+")+fB(Math.abs(v));
 
@@ -4022,6 +4177,7 @@ const COMING=[
 ];
 /* Site updates: data changes on ParliVue. Add a line each time a scorecard's data changes. Newest first. */
 const SITE_UPDATES=[
+ ["2026-11-13","nsscore","Nova Scotia Departments Scorecard added: 22 departments and accounts, FY 2025–26 and FY 2024–25 Public Accounts results and the FY 2026–27 Estimates, plus FY 2025–26 whole-government results."],
  ["2026-11-12","nbscore","New Brunswick Departments Scorecard added: 20 departments, FY 2024–25 Public Accounts and FY 2026–27 Main Estimates, plus FY 2025–26 whole-government results. FY 2025–26 department results to follow when published."],
  ["2026-11-12","mbscore","Manitoba Departments Scorecard added: 25 departments and service headings, FY 2024–25 and FY 2025–26 results by appropriation, FY 2026–27 Estimates, FY 2025–26 whole-government results."],
  ["2026-11-12","skscore","Saskatchewan Ministries Scorecard added: 34 ministries and offices, FY 2024–25 and FY 2025–26 Public Accounts by program, FY 2026–27 Estimates, FY 2025–26 whole-government results."],
@@ -4745,7 +4901,7 @@ function renderHome(){
     <article class="hcard hmaps"><div class="kicker">Where the ridings are</div><h2>Riding maps</h2><p>Official maps of the electoral districts each member represents. Each opens on the elections agency's site.</p>
       <div class="hlinks">${HOME_MAPS.map(([k,l])=>`<a href="${RIDING_MAPS[k].src[1]}" target="_blank" rel="noopener" title="${RIDING_MAPS[k].title} · ${RIDING_MAPS[k].sub}">${l} ↗</a>`).join("")}</div></article>
     <article class="hcard"><div class="kicker">Goals and financials</div><h2>Scorecards</h2><p>What each government planned, budgeted and reported, compared year by year.</p>
-      <div class="hlinks"><button data-go="vicscore">City of Victoria</button><button data-go="misscore">City of Mississauga</button><button data-go="fedscore">Federal departments</button><button data-go="fedbudget">Federal Budget 2026</button><button data-go="bcscore">British Columbia ministries</button><button data-go="onscore">Ontario ministries</button><button data-go="abscore">Alberta ministries</button><button data-go="skscore">Saskatchewan ministries</button><button data-go="mbscore">Manitoba departments</button><button data-go="nbscore">New Brunswick departments</button></div></article>
+      <div class="hlinks"><button data-go="vicscore">City of Victoria</button><button data-go="misscore">City of Mississauga</button><button data-go="fedscore">Federal departments</button><button data-go="fedbudget">Federal Budget 2026</button><button data-go="bcscore">British Columbia ministries</button><button data-go="onscore">Ontario ministries</button><button data-go="abscore">Alberta ministries</button><button data-go="skscore">Saskatchewan ministries</button><button data-go="mbscore">Manitoba departments</button><button data-go="nbscore">New Brunswick departments</button><button data-go="nsscore">Nova Scotia departments</button></div></article>
    </section>`;
   homeEl.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.go)));
   homeBuilt=true;
@@ -8714,8 +8870,8 @@ function legend(){
 const tabs=[...document.querySelectorAll(".tabs button[data-tab]")];
 const newsEl=document.getElementById("news"), bannerEl=document.getElementById("banner");
 const wheelEls=[document.querySelector(".toolbar"),document.getElementById("legend"),document.querySelector(".main")];
-const chEls={senate:document.getElementById("ch-senate"),ontario:document.getElementById("ch-ontario"),bcleg:document.getElementById("ch-bcleg"),skleg:document.getElementById("ch-skleg"),mbleg:document.getElementById("ch-mbleg"),nbleg:document.getElementById("ch-nbleg"),peleg:document.getElementById("ch-peleg"),ableg:document.getElementById("ch-ableg"),ykleg:document.getElementById("ch-ykleg"),nlleg:document.getElementById("ch-nlleg"),nsleg:document.getElementById("ch-nsleg"),ntleg:document.getElementById("ch-ntleg"),nuleg:document.getElementById("ch-nuleg"),victoria:document.getElementById("ch-victoria"),vicscore:document.getElementById("ch-vicscore"),misscore:document.getElementById("ch-misscore"),fedscore:document.getElementById("ch-fedscore"),bcscore:document.getElementById("ch-bcscore"),onscore:document.getElementById("ch-onscore"),abscore:document.getElementById("ch-abscore"),skscore:document.getElementById("ch-skscore"),mbscore:document.getElementById("ch-mbscore"),nbscore:document.getElementById("ch-nbscore"),fedbudget:document.getElementById("ch-fedbudget")};
-const CH_META={abscore:["Snapshot · Nov 12 2026","Province of Alberta · Alberta Ministries Scorecard","What Alberta's ministries budgeted and spent: the latest results and the FY 2026–27 budget (fiscal years start April 1)."],skscore:["Snapshot · Nov 12 2026","Province of Saskatchewan · Saskatchewan Ministries Scorecard","What Saskatchewan's ministries budgeted and spent: the latest results and the FY 2026–27 budget (fiscal years start April 1)."],mbscore:["Snapshot · Nov 12 2026","Province of Manitoba · Manitoba Departments Scorecard","What Manitoba's departments budgeted and spent: the latest results and the FY 2026–27 budget (fiscal years start April 1)."],nbscore:["Snapshot · Nov 12 2026","Province of New Brunswick · New Brunswick Departments Scorecard","What New Brunswick's departments budgeted and spent: the latest results and the FY 2026–27 budget (fiscal years start April 1)."],onscore:["Snapshot · Nov 8 2026","Province of Ontario · Ontario Ministries Scorecard","What Ontario's ministries budgeted, spent and set as goals: FY 2024–25 and FY 2025–26 results and the FY 2026–27 budget (fiscal years start April 1)."],bcscore:["Snapshot · Nov 7 2026","Province of British Columbia · BC Ministries Scorecard","What B.C.'s ministries budgeted, spent and set as goals: FY 2024–25 and FY 2025–26 results and the FY 2026–27 budget (fiscal years start April 1)."],fedbudget:["Snapshot · Nov 5 2026","Government of Canada · Budget 2026","The federal budget tabled November 5, 2026: fiscal projections, the cost of new measures by chapter, and the departments it names."],fedscore:["Snapshot · Nov 5 2026","Government of Canada · Federal Departments Scorecard","What 31 departments budgeted and set as goals, and what they reported: 2024 results and the 2025 and 2026 budgets (fiscal years start April 1)."],misscore:["Snapshot · Nov 5 2026","City of Mississauga, ON · Council Scorecard 2024–2026","What the City planned, budgeted and reported: 2024 and 2025 audited results and the 2026 budget."],vicscore:["Snapshot · Nov 5 2026","City of Victoria, BC · Council Scorecard 2024–2026","What the City planned, budgeted and reported, and when: 2024 and 2025 results and the 2026 plan."],
+const chEls={senate:document.getElementById("ch-senate"),ontario:document.getElementById("ch-ontario"),bcleg:document.getElementById("ch-bcleg"),skleg:document.getElementById("ch-skleg"),mbleg:document.getElementById("ch-mbleg"),nbleg:document.getElementById("ch-nbleg"),peleg:document.getElementById("ch-peleg"),ableg:document.getElementById("ch-ableg"),ykleg:document.getElementById("ch-ykleg"),nlleg:document.getElementById("ch-nlleg"),nsleg:document.getElementById("ch-nsleg"),ntleg:document.getElementById("ch-ntleg"),nuleg:document.getElementById("ch-nuleg"),victoria:document.getElementById("ch-victoria"),vicscore:document.getElementById("ch-vicscore"),misscore:document.getElementById("ch-misscore"),fedscore:document.getElementById("ch-fedscore"),bcscore:document.getElementById("ch-bcscore"),onscore:document.getElementById("ch-onscore"),abscore:document.getElementById("ch-abscore"),skscore:document.getElementById("ch-skscore"),mbscore:document.getElementById("ch-mbscore"),nbscore:document.getElementById("ch-nbscore"),nsscore:document.getElementById("ch-nsscore"),fedbudget:document.getElementById("ch-fedbudget")};
+const CH_META={abscore:["Snapshot · Nov 12 2026","Province of Alberta · Alberta Ministries Scorecard","What Alberta's ministries budgeted and spent: the latest results and the FY 2026–27 budget (fiscal years start April 1)."],skscore:["Snapshot · Nov 12 2026","Province of Saskatchewan · Saskatchewan Ministries Scorecard","What Saskatchewan's ministries budgeted and spent: the latest results and the FY 2026–27 budget (fiscal years start April 1)."],mbscore:["Snapshot · Nov 12 2026","Province of Manitoba · Manitoba Departments Scorecard","What Manitoba's departments budgeted and spent: the latest results and the FY 2026–27 budget (fiscal years start April 1)."],nsscore:["Snapshot · Nov 13 2026","Province of Nova Scotia · Nova Scotia Departments Scorecard","What Nova Scotia's departments budgeted and spent: the latest results and the FY 2026–27 budget (fiscal years start April 1)."],nbscore:["Snapshot · Nov 12 2026","Province of New Brunswick · New Brunswick Departments Scorecard","What New Brunswick's departments budgeted and spent: the latest results and the FY 2026–27 budget (fiscal years start April 1)."],onscore:["Snapshot · Nov 8 2026","Province of Ontario · Ontario Ministries Scorecard","What Ontario's ministries budgeted, spent and set as goals: FY 2024–25 and FY 2025–26 results and the FY 2026–27 budget (fiscal years start April 1)."],bcscore:["Snapshot · Nov 7 2026","Province of British Columbia · BC Ministries Scorecard","What B.C.'s ministries budgeted, spent and set as goals: FY 2024–25 and FY 2025–26 results and the FY 2026–27 budget (fiscal years start April 1)."],fedbudget:["Snapshot · Nov 5 2026","Government of Canada · Budget 2026","The federal budget tabled November 5, 2026: fiscal projections, the cost of new measures by chapter, and the departments it names."],fedscore:["Snapshot · Nov 5 2026","Government of Canada · Federal Departments Scorecard","What 31 departments budgeted and set as goals, and what they reported: 2024 results and the 2025 and 2026 budgets (fiscal years start April 1)."],misscore:["Snapshot · Nov 5 2026","City of Mississauga, ON · Council Scorecard 2024–2026","What the City planned, budgeted and reported: 2024 and 2025 audited results and the 2026 budget."],vicscore:["Snapshot · Nov 5 2026","City of Victoria, BC · Council Scorecard 2024–2026","What the City planned, budgeted and reported, and when: 2024 and 2025 results and the 2026 plan."],
   victoria:["Snapshot · Nov 5 2026","City of Victoria, BC · Council 2026–2030","The Mayor and eight councillors elected October 17, 2026, the City Manager, and every department with its 2026 budget."],
   senate:["Snapshot · Nov 5 2026","Parliament of Canada · Senate","All 105 Senate seats by parliamentary group, with every senator, their province and when they retire."],
   bcleg:["Snapshot · Nov 5 2026","Legislative Assembly of British Columbia · In transition","All 93 members-elect from the October 24, 2026 election, with the caretaker Cabinet and every ministry."],
@@ -8826,7 +8982,7 @@ function entLabel([tab,key]){ const d=DS[tab]; if(key==="hub") return d.hub.name
 function entParty([tab,key]){ const d=DS[tab]; if(key.startsWith("o_")) return null; const n=d.inner.find(x=>x.id===key); if(key!=="hub"&&(!n||!["fed_min","bc_min","vic_council","mis_council"].includes(n.role))) return null; return d.party; }
 const chip=e=>{ const p=entParty(e); return `<button class="echip" data-tab="${e[0]}" data-key="${e[1]}">${p?`<i style="background:${PARTY[p].color}"></i>`:'<i class="sq"></i>'}${entLabel(e)}</button>`; };
 function renderNews(){
-  const lab={fedscore:"Federal departments",fedbudget:"Federal Budget 2026",bcscore:"B.C. ministries",onscore:"Ontario ministries",abscore:"Alberta ministries",skscore:"Saskatchewan ministries",mbscore:"Manitoba departments",nbscore:"New Brunswick departments",vicscore:"City of Victoria",misscore:"City of Mississauga"};
+  const lab={fedscore:"Federal departments",fedbudget:"Federal Budget 2026",bcscore:"B.C. ministries",onscore:"Ontario ministries",abscore:"Alberta ministries",skscore:"Saskatchewan ministries",mbscore:"Manitoba departments",nbscore:"New Brunswick departments",nsscore:"Nova Scotia departments",vicscore:"City of Victoria",misscore:"City of Mississauga"};
   newsEl.innerHTML=`
    <section class="nsec"><h2 class="nh">Site updates</h2><p class="src" style="margin-top:0">What changed on ParliVue, newest first.</p>
     <ol class="nlist">${SITE_UPDATES.map(([d,go,txt])=>`<li class="nitem"><div class="nmeta"><span class="lvl lvl-federal">Data</span><time datetime="${d}">${fmtDate(d)}</time></div>
@@ -8854,7 +9010,7 @@ show((location.hash||"").slice(1)||"home");
 
 /* ---------- masthead: page name + date under the wordmark, flag on the right, page description in the page ---------- */
 const HFLAG={home:["CA","Canada"],fedscore:["CA","Canada"],fedbudget:["CA","Canada"],commons:["CA","Canada"],senate:["CA","Canada"],federal:["CA","Canada"],news:["CA","Canada"],
-  ontario:["ON","Ontario"],onwheel:["ON","Ontario"],mississauga:["ON","Ontario"],misscore:["ON","Ontario"],onscore:["ON","Ontario"],abscore:["AB","Alberta"],skscore:["SK","Saskatchewan"],mbscore:["MB","Manitoba"],nbscore:["NB","New Brunswick"],bcleg:["BC","British Columbia"],bcscore:["BC","British Columbia"],bc:["BC","British Columbia"],victoria:["BC","British Columbia"],vicscore:["BC","British Columbia"],
+  ontario:["ON","Ontario"],onwheel:["ON","Ontario"],mississauga:["ON","Ontario"],misscore:["ON","Ontario"],onscore:["ON","Ontario"],abscore:["AB","Alberta"],skscore:["SK","Saskatchewan"],mbscore:["MB","Manitoba"],nbscore:["NB","New Brunswick"],nsscore:["NS","Nova Scotia"],bcleg:["BC","British Columbia"],bcscore:["BC","British Columbia"],bc:["BC","British Columbia"],victoria:["BC","British Columbia"],vicscore:["BC","British Columbia"],
   skleg:["SK","Saskatchewan"],ableg:["AB","Alberta"],ykleg:["YT","Yukon"],nlleg:["NL","Newfoundland and Labrador"],nsleg:["NS","Nova Scotia"],ntleg:["NT","Northwest Territories"],nuleg:["NU","Nunavut"],mbleg:["MB","Manitoba"],nbleg:["NB","New Brunswick"],peleg:["PE","Prince Edward Island"]};
 function syncHead(id){
   const st=document.getElementById("stamp").textContent, sc=document.getElementById("scope").textContent, tg=document.getElementById("tagline").textContent;

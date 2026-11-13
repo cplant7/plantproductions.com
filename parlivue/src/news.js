@@ -48,6 +48,7 @@ const COMING=[
 ];
 /* Site updates: data changes on ParliVue. Add a line each time a scorecard's data changes. Newest first. */
 const SITE_UPDATES=[
+ ["2026-11-13","nsscore","Nova Scotia Departments Scorecard added: 22 departments and accounts, FY 2025–26 and FY 2024–25 Public Accounts results and the FY 2026–27 Estimates, plus FY 2025–26 whole-government results."],
  ["2026-11-12","nbscore","New Brunswick Departments Scorecard added: 20 departments, FY 2024–25 Public Accounts and FY 2026–27 Main Estimates, plus FY 2025–26 whole-government results. FY 2025–26 department results to follow when published."],
  ["2026-11-12","mbscore","Manitoba Departments Scorecard added: 25 departments and service headings, FY 2024–25 and FY 2025–26 results by appropriation, FY 2026–27 Estimates, FY 2025–26 whole-government results."],
  ["2026-11-12","skscore","Saskatchewan Ministries Scorecard added: 34 ministries and offices, FY 2024–25 and FY 2025–26 Public Accounts by program, FY 2026–27 Estimates, FY 2025–26 whole-government results."],

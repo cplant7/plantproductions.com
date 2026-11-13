@@ -113,7 +113,32 @@ function pscNB(){
     srcs:[SRC.v2,SRC.est,SRC.v1]};
 }
 
-const PSC={}; const PSC_FN={abscore:pscAlberta,skscore:pscSask,mbscore:pscManitoba,nbscore:pscNB};
+function pscNS(){
+  const SRC={pa26:["Public Accounts 2026, Volume 1: Consolidated Financial Statements (FY 2025–26)","https://notices.novascotia.ca/files/public-accounts/2026/pa-volume-1-financial-statements-2026.pdf"],
+    pa25:["Public Accounts 2025, Volume 1: Consolidated Financial Statements (FY 2024–25)","https://notices.novascotia.ca/files/public-accounts/2025/pa-volume-1-financial-statements-2025.pdf"],
+    est:["Budget 2026–27: Estimates and Supplementary Detail","https://www.novascotia.ca/sites/default/files/documents/7-4172/budget-estimates-2026-27-en.pdf"]};
+  const t5=v=>[v[0]*1e3,v[1]*1e3,0,(v[0]+v[1])*1e3,v[2]*1e3];
+  const fin=(v,yr)=>v[3]?`Spending was above the total approved. The Public Accounts list a final additional appropriation of ${fB(v[3]*1e3)} required for year-end adjustments, which must be submitted to Cabinet (Governor in Council) within 15 days of the Public Accounts being tabled (Finance Act, s. 28(4)).`:"";
+  const conv=P=>P.map(([n,v,sub])=>({k:PSC_K(n),n,T:t5(v),P:sub?sub.map(([sn,sv])=>[sn,...t5(sv)]):[],note:sub?sub.filter(x=>x[1][3]).map(([sn,sv])=>`${sn} spent above its total approved. The Public Accounts list a final additional appropriation of ${fB(sv[3]*1e3)} required for year-end adjustments, which must be submitted to Cabinet (Governor in Council) within 15 days of the Public Accounts being tabled (Finance Act, s. 28(4)).`).join(" "):fin(v),
+    progNote:sub?"":"Nova Scotia's Public Accounts approve and report this "+"department as one appropriation (resolution), so there is no program breakdown here."}));
+  const oth=(O,K,yr)=>"Not in the department totals: "+O.concat(K).map(([n,v])=>`${n} (budget ${fB(v[0]*1e3)}, spent ${v[2]<0?"−"+fB(-v[2]*1e3)+", a recovery":fB(v[2]*1e3)})`).join("; ")+".";
+  const rows27=NSE27.map(([n,a,f,e])=>({k:PSC_K(n),n,T:[e*1e3,a*1e3],P:[],votes:[["FY 2025–26 forecast (February 2026)",f*1e3,null]]}));
+  return {id:"nsscore",code:"NS",prov:"Nova Scotia",pfx:"Province of Nova Scotia",unit:"departments",unit1:"department",
+    lede:`Nova Scotia's departments deliver the Province's programs: health and wellness, education and early childhood development, seniors and long-term care, opportunities and social development, public works and more. Each is led by a Cabinet minister. Smaller offices and agencies are grouped under Public Service.`,
+    lede2:`Before each fiscal year, the House of Assembly approves the Estimates. After the year ends, Volume 1 of the Public Accounts lists each department's original estimate, the additional funding approved during the year and what it spent. This page compares them for ${NSP26.length} departments and accounts.`,
+    how:{A:"The original Estimate approved in the Appropriations Act.",B:"Additional appropriations approved by Cabinet (Governor in Council) during the year, by Order in Council. Amounts spent above the total approved need a final additional appropriation after the year ends; these are noted for each department.",
+      C:"Nova Scotia's Public Accounts do not show transfers between departments, so C is shown as zero.",
+      E:"Budget plus additional appropriations: A + B.",S:"Actual departmental expense (General Revenue Fund).",
+      basis:"These are General Revenue Fund amounts, before consolidation, on the same basis the Legislature approves. The Province's consolidated expense ($19.4 billion in FY 2025–26) adds health authorities, regional centres for education and other organizations. Restructuring Costs is a central provision (contract negotiations, workforce adjustment and government restructuring) rather than a department."},
+    y26:{lab:"FY 2025–26",src:SRC.pa26,rows:conv(NSP26),totNote:oth(NSO26,NSK26)},
+    y25:{lab:"FY 2024–25",src:SRC.pa25,rows:conv(NSP25),note:"The FY 2024–25 original estimates were restated for the departmental restructuring of December 12, 2024 (Order in Council 2024-425). Emergency Management became a department on September 20, 2024."},
+    y27:{src:SRC.est,rows:rows27,prevLab:"FY 2025–26 Estimates",note:"Department totals from the Departmental Expenses Summary (General Revenue Fund). The 2026–27 Estimates also show a February 2026 forecast for FY 2025–26, listed above."},
+    gov:{title:"FY 2025–26 results vs budget",sub:"Consolidated statement of operations, whole government (audited)",src:SRC.pa26,mul:1e3,G:NS_GOV,
+      note:"Nova Scotia reported a deficit of $1.41 billion. The budget plan was a $897.5 million deficit after a $200 million contingency, which is not included in the budget expense column above. Departments are shown here on a consolidated basis, so the amounts differ from the department table. Net debt was $24.1 billion at March 31, 2026 (budget: $23.4 billion)."},
+    srcs:[SRC.pa26,SRC.pa25,SRC.est]};
+}
+
+const PSC={}; const PSC_FN={abscore:pscAlberta,skscore:pscSask,mbscore:pscManitoba,nbscore:pscNB,nsscore:pscNS};
 const pscGet=id=>PSC[id]||(PSC[id]=PSC_FN[id]());
 const pscSg=v=>v===0?fB(0):(v<0?"−":"+")+fB(Math.abs(v));
 
