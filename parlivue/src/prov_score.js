@@ -240,6 +240,19 @@ function pscNT(){
     y27:{src:SRC.est,rows:rows27,prevLab:"FY 2025–26 Main Estimates",note:"2026–27 Main Estimates for operations expenditures by department, as listed in Supplementary Estimates (Operations Expenditures) No. 1, 2026–2027 (tabled June 1, 2026)."},
     gov:{title:"FY 2025–26 results vs budget",sub:"Consolidated statement of operations, whole government (audited)",src:SRC.tb,mul:1e3,G:NT_GOV,
       note:"The Northwest Territories reported a surplus of $21.2 million against a budgeted $200.5 million. Net debt was $2.0 billion at March 31, 2026 (budget: $1.8 billion)."},
+    year:{title:"What happened in FY 2025–26",pill:"8 of 10 over budget",cls:"up",src:[SRC.s26,SRC.tb],secs:[
+     ["Key events",[
+      ["Wildfires","Environment and Climate Change received $74.2 million in supplementary estimates, $63.7 million of it for Wildlife and Forest Management.","The Government says the fire suppression supplementary appropriation was overestimated by $6.2 million."],
+      ["Carbon tax offsets","Finance spent $48.9 million less than its total approved funding.","The Government attributes this primarily to the removal of Carbon Tax Offsets ($67 million)."],
+      ["Energy projects delayed","Infrastructure's Energy and Strategic Initiatives spent $12.8 million of the $63.6 million approved.","The Government cites capital project delays ($51 million), including the Fort Providence Transmission Line ($37.8 million)."]]],
+     ["Met or beat the plan",[
+      ["Revenue","Revenue was $3,102.2 million, above the $3,020.7 million budgeted.",""],
+      ["Within total approved","8 of 10 departments stayed within their total approved funding.",""],
+      ["Under budget","Industry, Tourism and Investment and Infrastructure spent less than their start-of-year budgets.",""]]],
+     ["Did not meet the plan",[
+      ["Surplus","The surplus was $21.2 million, against $200.5 million budgeted. Expenses were $3,081.0 million, against $2,820.2 million budgeted.",""],
+      ["Net debt","Net debt was $1,956.2 million at March 31, 2026, against $1,767.2 million budgeted.",""],
+      ["Spending over budget","8 of 10 departments spent more than their start-of-year budget. Two spent more than their total approved funding: the Legislative Assembly and Health and Social Services.","For Health and Social Services, the Government cites higher costs for residents receiving hospital and physician care outside the NWT ($4.5 million)."]]]]},
     srcs:[SRC.s26,SRC.s25,SRC.est,SRC.tb]};
 }
 
@@ -359,6 +372,7 @@ function pscOverview(id){
     <tr class="tot"><th scope="row">Total</th><td>${fB(b)}</td><td>${fB(t)}</td><td>${fB(a)}</td><td class="vcell ${sp.cls}">${vsSgn(a-b,fB)} <small>${vsP(sp.pc)}</small></td><td>${fB(e27)}</td></tr></tbody></table></div>
    <div class="note">${L.totNote?L.totNote+" ":""}${G.how.basis} FY 2026–27 totals use the Estimates' own basis; see each ${G.unit1}'s FY 2026–27 section. A “—” in the FY 2026–27 column means the ${G.unit1} was renamed or reorganized and has no direct match.</div>
    <div class="src">Sources: ${G.srcs.map(fA).join(" · ")}</div>
+   ${G.year?`<h4 class="fgrp">What happened in the year</h4><div class="fstack">${fRoll("i","bs",G.year.title,"Highlights: key events and results against plan",G.year.pill||"",G.year.cls||"",pvYear(G.year.secs,G.year.src.map(fA).join(" · ")))}</div>`:""}
    <h4 class="fgrp">Government-wide results</h4><div class="fstack">${pscGov(G)}</div>`;
   el.querySelectorAll(".odgo").forEach(btn=>btn.onclick=()=>{pscMin(id,+btn.dataset.i); window.scrollTo(0,el.offsetTop-10);});
 }
