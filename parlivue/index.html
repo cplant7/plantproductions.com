@@ -4321,11 +4321,11 @@ function pscManitoba(){
       E:"Authorized: A + B + C.",S:"Expended, after recoveries from other bodies.",
       basis:"These are department appropriation amounts. The Province's summary (consolidated) expense of $25.9 billion is larger because it adds health authorities, school divisions, colleges and other reporting entities."},
     y26:{lab:"FY 2025–26",src:SRC.r26,rows:conv(MBP26)},
-    y25:{lab:"FY 2024–25",src:SRC.r25,rows:conv(MBP25),note:"FY 2024–25 includes a one-time Tobacco Settlement expense of $425 million with no appropriation."},
+    y25:{lab:"FY 2024–25",src:SRC.r25,rows:conv(MBP25).map(r=>r.n==="Families"||/^FAMILIES$/i.test(r.n)?{...r,y25note:"Manitoba's report shows $755.7 million spent in Administration and Finance against $5.7 million authorized. The Department's 2024/25 Annual Report attributes $750.1 million of other expenditures in Financial and Administrative Services (authority: $0.2 million) \u201cprimarily\u201d to \u201ca one-time year-end adjustment.\u201d"}:r),note:"FY 2024–25 includes a one-time Tobacco Settlement expense of $425 million with no appropriation."},
     y27:{src:SRC.est,rows:rows27,prevLab:"FY 2025–26 Estimates",note:"Part A (operating) only. The FY 2025–26 column is the comparative shown in the 2026/27 Estimates, restated for the current structure."},
     gov:{title:"FY 2025–26 results vs budget",sub:"Summary budget vs actual by department (consolidated), whole government",src:SRC.ar,mul:1e6,G:MB_GOV,
       note:"Consolidated figures include each department's reporting entities (health authorities, school divisions, colleges), so they are larger than the department amounts above. Emergency expenditures were $272 million against a $50 million budget. Net debt was $36.5 billion."},
-    srcs:[SRC.r26,SRC.r25,SRC.est,SRC.ar]};
+    srcs:[SRC.r26,SRC.r25,SRC.est,SRC.ar,["Manitoba Families Annual Report 2024/25 (p. 60)","https://www.gov.mb.ca/asset_library/en/annualreports/2024_2025/annual-report-fam-24-25.pdf"]]};
 }
 
 /* ---------- New Brunswick ---------- */
@@ -4650,7 +4650,7 @@ function pscMin(id,i){
   else tabs.push(["y26","FY 2025–26","Apr 1, 2025 – Mar 31, 2026 · not yet published"]), panes.y26=`<p class="note">${fEsc(G.latestNote||"")}</p>`;
   const y25b=G.y26?b0:b1, y25m=G.y26?m25:m;
   tabs.push(["y25","FY 2024–25","Apr 1, 2024 – Mar 31, 2025 · final results"]);
-  panes.y25=y25b?`<p class="fynote">FY 2024–25: April 1, 2024 – March 31, 2025. Final results. Click a section to open it.</p>${G.y25.note?`<p class="note">${fEsc(G.y25.note)}</p>`:""}${y25m.n!==m.n?`<p class="note">In FY 2024–25 this was the ${fEsc(y25m.n)}.</p>`:""}${y25b.cards}${y25b.fin}`:`<p class="note">${G.y25?"No FY 2024–25 results for this "+G.unit1+" (it did not exist in its current form).":"FY 2024–25 results for "+G.prov+" are not on this page yet."}</p>`;
+  panes.y25=y25b?`<p class="fynote">FY 2024–25: April 1, 2024 – March 31, 2025. Final results. Click a section to open it.</p>${G.y25.note?`<p class="note">${fEsc(G.y25.note)}</p>`:""}${y25m.y25note?`<p class="note">${fEsc(y25m.y25note)}</p>`:""}${y25m.n!==m.n?`<p class="note">In FY 2024–25 this was the ${fEsc(y25m.n)}.</p>`:""}${y25b.cards}${y25b.fin}`:`<p class="note">${G.y25?"No FY 2024–25 results for this "+G.unit1+" (it did not exist in its current form).":"FY 2024–25 results for "+G.prov+" are not on this page yet."}</p>`;
   const sel=G.y26?"y26":"y25";
   el.innerHTML=`<button class="chipbtn fback">← All ${L.rows.length} ${G.unit}</button>`+pscHead(G,m.n,`<p class="pagelede">${fEsc(m.n)}: budget and spending for FY 2024–25 to FY 2026–27.</p>`)+cards+`<div class="dsh">
     <nav class="dsh-rail" role="tablist" aria-orientation="vertical" aria-label="Sections"><div class="dsh-rl">Sections</div>${tabs.map(t=>`<button role="tab" id="pst-${t[0]}" aria-controls="psp-${t[0]}" aria-selected="${t[0]===sel}" tabindex="${t[0]===sel?0:-1}" data-k="${t[0]}"><span>${t[1]}</span><small>${t[2]}</small></button>`).join("")}</nav>
