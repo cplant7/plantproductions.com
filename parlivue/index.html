@@ -3336,6 +3336,31 @@ function fedCycle(){
     <div class="note">The fiscal year runs April 1 to March 31. Parliament approves spending through appropriation acts based on the Estimates; budgets and economic updates set out plans and projections but do not authorise spending.</div>
     <div class="src">Source: ${fA(["Treasury Board of Canada Secretariat: Reporting cycle (updated Aug 24, 2026)","https://www.canada.ca/en/treasury-board-secretariat/services/planned-government-spending/expenditure-management-system/reporting-cycle.html"])}</div>`,false);
 }
+const FED_AFR26=["Department of Finance: Annual Financial Report of the Government of Canada, Fiscal Year 2025–2026","https://www.canada.ca/en/department-finance/services/publications/annual-financial-report/2026.html"];
+function fedYearPanel(D){
+  if(typeof pvYear!=="function"||typeof PA25_TOT==="undefined") return "";
+  const T=D.map(d=>[d,PA25_TOT[d.id]]).filter(x=>x[1]);
+  const over=T.filter(x=>x[1].used>x[1].main), overT=T.filter(x=>x[1].lapsed<0);
+  const dnd=PA25_TOT[20], lap=T.reduce((t,x)=>t+x[1].lapsed,0), top=[...T].sort((a,b)=>b[1].lapsed-a[1].lapsed).slice(0,2);
+  const G=typeof DRR25!=="undefined"?Object.values(DRR25).flatMap(x=>x.goals):[], gm=G.filter(z=>z.s==="met").length, gn=G.filter(z=>z.s==="not met").length;
+  const bn=v=>"$"+(v/1e9).toFixed(1)+" billion";
+  const body=pvYear([
+   ["Key events",[
+    ["Federal election","A federal election was held on April 28, 2025, early in the fiscal year.",""],
+    ["Consumer carbon price","The federal fuel charge stopped applying on April 1, 2025. Revenue from pollution pricing and the Canada Carbon Rebate payments wound down.",""],
+    ["Defence and the Coast Guard",`National Defence spent ${bn(dnd.used)}, against a starting budget of ${bn(dnd.main)}, after large increases approved during the year. The Canadian Coast Guard moved from Fisheries and Oceans Canada to National Defence on Sept 2, 2025.`,""],
+    ["Budget 2025","The federal budget was tabled on November 4, 2025, partway through the year.",""]]],
+   ["Met or beat the plan",[
+    ["Deficit","The deficit was $39.3 billion. The Government reports this was $27.5 billion lower than projected in the Spring Economic Update 2026, citing lower program spending and stronger revenues.",""],
+    ["Within budget",`${T.length-over.length} of ${T.length} departments spent no more than their starting budget${overT.length?"":", and none spent more than Parliament approved"}.`,""],
+    ["Goals",G.length?`Departments rated ${gm.toLocaleString("en-CA")} of ${(gm+gn).toLocaleString("en-CA")} assessed goals as met.`:"",""]].filter(r=>r[1])],
+   ["Did not meet the plan",[
+    ["Spending over budget",`${over.length} of ${T.length} departments spent more than their starting budget, led by National Defence.`,""],
+    ["Unspent funding",`${bn(lap)} approved for these departments went unspent, including ${top.map(x=>bn(x[1].lapsed)+" at "+fEsc(x[0].name)).join(" and ")}.`,""],
+    ["Goals not met",G.length?`${gn.toLocaleString("en-CA")} goals were rated not met by the departments themselves.`:"",""]].filter(r=>r[1])]
+  ],[fA(PA25_SRC),fA(FED_AFR26)].concat(typeof DRR25_SRC!=="undefined"?[fA(DRR25_SRC)]:[]).join(" · "));
+  return `<h4 class="fgrp">What happened in the year</h4><div class="fstack">${fRoll("i","bs","What happened in FY 2025–26","Highlights: key events and results against plan",over.length+" of "+T.length+" over budget","up",body)}</div>`;
+}
 function fedOverview(){
   const el=document.getElementById("fedscore"), D=FSC.depts;
   const have=D.filter(d=>fLast(d)), P=have.reduce((s,d)=>s+fLast(d)[1],0), A=have.reduce((s,d)=>s+fLast(d)[2],0);
@@ -3360,6 +3385,7 @@ function fedOverview(){
       <td class="vcell ${fRatio(d.tr.bigx,d.tr.big).cls}">${d.tr.big?fRatio(d.tr.bigx,d.tr.big).txt:'<span class="muted">—</span>'}</td>${paCell(d.pa24)}
       ${paCell(typeof PA25_TOT!=="undefined"?PA25_TOT[d.id]:null)}<td>${fB(d.plan.y26)}${d.plan.s26?`<small class="fcr">${fEsc(d.plan.s26)}</small>`:""}</td></tr>`;}).join("");
   el.innerHTML=fedHead()+`<div class="dsh-kh">FY 2026–27 · current fiscal year (April 1, 2026 – March 31, 2027)<span><b class="fmil">All amounts in millions of dollars ($M).</b> FY 2025–26 is the latest audited year (Public Accounts tabled Nov 6, 2026). Results by program and goals are shown for FY 2024–25 until the FY 2025–26 open data is added.</span></div>${kp}
+    ${fedYearPanel(D)}
     <div class="sctwrap"><table class="sct fedtbl"><caption>31 departments · select one for its dashboard</caption><thead><tr><th scope="col">Department</th><th scope="col">Budget<small class="fth">FY 2024–25</small></th><th scope="col">Spent<small class="fth">FY 2024–25</small></th><th scope="col">Difference<small class="fth">FY 2024–25</small></th><th scope="col">Goals met<small class="fth">FY 2024–25</small></th><th scope="col">Reasons given<small class="fth">big differences</small></th><th scope="col">Spent vs. total approved<small class="fth">audited, FY 2024–25</small></th><th scope="col">Spent vs. total approved<small class="fth">audited, FY 2025–26</small></th><th scope="col">Budget<small class="fth">FY 2026–27</small></th></tr></thead><tbody>${rows}
       <tr class="tot"><th scope="row">Total<small class="fcr">FY 2024–25 columns: ${have.length} departments with results in the open data${D.length>have.length?" (excludes "+D.filter(d=>!fLast(d)).map(d=>d.name).join(", ")+")":""} · FY 2025–26 and FY 2026–27 columns: all ${D.length}${D.some(d=>d.plan.s26)?" · FY 2026–27 column: see note below":""}</small></th><td>${fB(P)}</td><td>${fB(A)}</td><td class="vcell ${sp.cls}">${vsSgn(A-P,fB)} <small>${vsP(sp.pc)}</small></td><td>${fPf(tp)}% <small>${fN(C.m)} of ${fN(C.m+C.n)}</small></td><td>${TX.x} of ${TX.b}</td>${paCell(PA)}${paCell(PA25_GOV31)}<td>${fB(p26)}</td></tr></tbody></table></div>
     <div class="note"><ul class="fnotes">
@@ -5131,6 +5157,7 @@ const COMING=[
 ];
 /* Site updates: data changes on ParliVue. Add a line each time a scorecard's data changes. Newest first. */
 const SITE_UPDATES=[
+ ["2026-11-14","fedscore","Federal Departments Scorecard: \"What happened in FY 2025–26\" panel added, from the Public Accounts, the Annual Financial Report and the 2025–26 Departmental Results Reports."],
  ["2026-11-14","fedscore","Federal Departments Scorecard: Supplementary Estimates (B), 2026–27 (tabled Nov 6, 2026) added to the FY 2026–27 Financials for all 31 departments."],
  ["2026-11-14","fedscore","Federal Departments Scorecard: FY 2025–26 results for all 31 departments from the 2025–26 Departmental Results Reports: spending and staff by program, and 1,821 goals with the target, result and the department's own rating (Treasury Board open data, Nov 12, 2026)."],
  ["2026-11-13","fedscore","Federal Departments Scorecard: FY 2025–26 audited spending for all 31 departments from the Public Accounts of Canada 2026 (tabled Nov 6, 2026): budget, additional funding, changes and transfers, carry over, total approved, spent and lapsed, with every line item."],
