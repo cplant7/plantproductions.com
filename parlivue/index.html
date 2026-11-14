@@ -3375,7 +3375,9 @@ function fedOverview(){
     (()=>{const P5=PA25_GOV31;return ["Spent · FY 2025–26",fB(P5.used),fPill("neu",fPf(P5.used/P5.auth*100)+"% of total approved"),fB(P5.auth)+" approved by Parliament, "+fB(P5.lapsed)+" not spent · all "+D.length+" departments, audited Public Accounts (Nov 6, 2026)",fGauge(P5.used/P5.auth*100,"ok","Spent vs approved")];})(),
     ["Actual spending · FY 2024–25",fB(A),sp.pill,"Budget "+fB(P)+" · "+have.length+" departments",fGauge(A/P*100,sp.cls==="up"?"off":"ok","Actual vs budget")],
     ["Departments over budget · FY 2024–25",over+" of "+have.length,fPill(over>have.length/2?"off":"watch",Math.round(over/have.length*100)+"%"),"Spent more than budgeted at the start of the year"+(PA?" · "+(overPA?(over-overPA)+" of these "+over:"all "+over)+" stayed within Parliament's total approval (Public Accounts)":""),""],
-    ["Targets met · FY 2024–25",fN(C.m)+" of "+fN(C.m+C.n),fPill(tp>=75?"ok":tp>=50?"watch":"off",fN(C.n)+" not met"),fN(C.u)+" more not yet measurable",fGauge(tp,tp>=75?"ok":tp>=50?"watch":"off","Targets met")]
+    (()=>{if(typeof DRR25==="undefined")return ["Targets met · FY 2024–25",fN(C.m)+" of "+fN(C.m+C.n),fPill(tp>=75?"ok":tp>=50?"watch":"off",fN(C.n)+" not met"),fN(C.u)+" more not yet measurable",fGauge(tp,tp>=75?"ok":tp>=50?"watch":"off","Targets met")];
+      const K=D.reduce((c,d)=>{((DRR25[d.id]||{}).goals||[]).forEach(g=>{if(g.s==="met")c.m++;else if(g.s==="not met")c.n++;else c.u++;});return c;},{m:0,n:0,u:0}),q=K.m/(K.m+K.n)*100,cl=q>=75?"ok":q>=50?"watch":"off";
+      return ["Targets met · FY 2025–26",fN(K.m)+" of "+fN(K.m+K.n),fPill(cl,fN(K.n)+" not met"),fN(K.u)+" more not yet measurable · 2025–26 Departmental Results Reports (Nov 6, 2026)",fGauge(q,cl,"Targets met")];})()
   ].map(fCard).join("")}</div>`;
   const rows=D.map(d=>{const h=fLast(d),s=h?fSpend(h[1],h[2]):null,t=fTgt(d.c24);
     return `<tr><th scope="row"><button class="linkbtn fdgo" data-id="${d.id}">${d.name}</button></th>
