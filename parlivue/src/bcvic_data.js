@@ -71,7 +71,7 @@ const BC_MOS=[["Brittny Anderson","Local Governments and Rural Communities"],["R
 
 /* ================= CITY OF VICTORIA ================= */
 const VIC_S = {
-  elec:["City of Victoria, Election 2026 preliminary results","https://www.victoria.ca/city-government/news/victoria-election-2026-preliminary-results"],
+  elec:["City of Victoria: 2026 Declaration of Official Election Results (certified Oct 21, 2026)","https://www.victoria.ca/media/file/declaration-official-results-2026-municipal-election"],
   ar:["City of Victoria Annual Report 2025 (leadership as of Dec 31 2025)","https://www.victoria.ca/media/file/annual-report-2025"],
   fp:["2026–2030 Financial Plan (adopted May 7 2026)","https://www.victoria.ca/media/file/2026-2030-financial-plan"],
   budget:["City Budget page","https://www.victoria.ca/city-government/city-budget"],

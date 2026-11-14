@@ -49,6 +49,7 @@ const COMING=[
 ];
 /* Site updates: data changes on ParliVue. Add a line each time a scorecard's data changes. Newest first. */
 const SITE_UPDATES=[
+ ["2026-11-14","vicscore","Victoria: Council pages and scorecard now use the City's Declaration of Official Election Results (certified Oct 21, 2026) instead of the preliminary counts."],
  ["2026-11-14","fedscore","Federal Departments Scorecard: \"What happened in FY 2025–26\" panel added, from the Public Accounts, the Annual Financial Report and the 2025–26 Departmental Results Reports."],
  ["2026-11-14","fedscore","Federal Departments Scorecard: Supplementary Estimates (B), 2026–27 (tabled Nov 6, 2026) added to the FY 2026–27 Financials for all 31 departments."],
  ["2026-11-14","fedscore","Federal Departments Scorecard: FY 2025–26 results for all 31 departments from the 2025–26 Departmental Results Reports: spending and staff by program, and 1,821 goals with the target, result and the department's own rating (Treasury Board open data, Nov 12, 2026)."],

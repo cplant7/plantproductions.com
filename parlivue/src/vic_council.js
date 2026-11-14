@@ -1,7 +1,7 @@
 /* ================= CITY OF VICTORIA: COUNCIL CHAMBER (provincial chamber design) =================
    Mayor in the chair, eight councillors elected at large. Desk positions are illustrative: the City doesn't
    publish a seating plan. Data reuse: VIC_S / VIC_IN / VIC_OUT (bcvic_data.js), VSC_PEOPLE (vic_scorecard.js). */
-const VCC_S={...VIC_S, mla:VIC_S.elec, cab:VIC_S.elec, buzz:["Victoria Buzz, Oct 17 2026 (preliminary counts)","https://victoriabuzz.com/2026/10/marianne-alto-re-elected-victoria-mayor-as-council-results-bring-new-faces/"],
+const VCC_S={...VIC_S, mla:VIC_S.elec, cab:VIC_S.elec, buzz:["City of Victoria: 2026 Declaration of Official Election Results (certified Oct 21, 2026)","https://www.victoria.ca/media/file/declaration-official-results-2026-municipal-election"],
   e22:["2022 Declaration of Official Results","https://www.victoria.ca/media/file/declaration-official-results-2022pdf"],
   amal:["Daily Hive, Oct 27 2026","https://dailyhive.com/vancouver/victoria-saanich-october-2026-amalgamation-plebiscite-election-results"]};
 const VCC_SEATS={"Marianne Alto":[-385,-205],
@@ -16,8 +16,8 @@ CH.victoria.members=[["Marianne Alto","inc"],...VIC_IN.filter(n=>n.role==="vic_c
   .map(([n,g],i)=>({i,name:n,sort:n,group:g,place:"Citywide (at large)",hon:false}));
 CH.victoria.summary=(c,total)=>[
   `<div class="hsub"><span class="majtag">Council of ${total}</span> majority is 5</div>`,
-  `<div class="majbtn static"><span class="kicker">Voter turnout</span><span class="bign">41.4%</span><span class="src">31,281 ballots on Oct 17, 2026 (preliminary). The new term begins Nov 5, 2026.</span></div>
-   <dl class="kv"><dt>Mayor</dt><dd>Marianne Alto · 44.69%</dd><dt>City Manager</dt><dd>Jocelyn Jenkyns</dd><dt>2026 budget</dt><dd>$394.1M operating · $160.1M capital</dd></dl>`];
+  `<div class="majbtn static"><span class="kicker">Voter turnout</span><span class="bign">41.44%</span><span class="src">Oct 17, 2026, official results certified Oct 21. The new term began Nov 5, 2026.</span></div>
+   <dl class="kv"><dt>Mayor</dt><dd>Marianne Alto · 13,505 votes</dd><dt>City Manager</dt><dd>Jocelyn Jenkyns</dd><dt>2026 budget</dt><dd>$394.1M operating · $160.1M capital</dd></dl>`];
 const VCC_OUT=[{id:"cow",abbr:"Council",name:"Council as a whole",heads:[],budget:945240},
   ...VIC_OUT.filter(o=>o.kind!=="advisory")];
 const VCC_MIN=VIC_IN.filter(n=>n.role==="vic_council"||n.role==="councillor").map(n=>({id:n.id,name:n.name,title:n.isNew?"Councillor (new)":"Councillor",links:[]}));
@@ -28,7 +28,7 @@ const VCC_BOARDS=[
 const VCC_LOG=[
   ["2026-10-17","ret","Chris Coleman","Citywide (at large)","inc",null,"Did not seek re-election"],
   ["2026-10-17","def","Susan Kim","Citywide (at large)","inc",null,"Ran for re-election; not elected"],
-  ["2026-10-17","def","Krista Loughton","Citywide (at large)","inc",null,"Ran for re-election; finished 9th, 20 votes behind 8th"],
+  ["2026-10-17","def","Krista Loughton","Citywide (at large)","inc",null,"Ran for re-election; finished 9th, 15 votes behind 8th"],
   ["2026-10-17","new","Jack Sandor","Citywide (at large)",null,"new","Elected to Council for the first time"],
   ["2026-10-17","new","Melissa Cseszko","Citywide (at large)",null,"new","Elected to Council for the first time"],
   ["2026-10-17","new","Wendy Bowkett","Citywide (at large)",null,"new","Elected to Council for the first time"]];
@@ -60,7 +60,7 @@ function vccPanel(key,D){
   if(/^m\d+$/.test(key)) return vccPerson(D.mpps[+key.slice(1)],D,G);
   const mn=D.mins.find(x=>x.id===key); if(mn) return vccPerson(mn.mpp,D,G);
   if(key==="lg") return `<div class="kicker">Who Council answers to</div><h2>Victoria voters</h2><div class="lede">Every eligible voter in the city votes for the Mayor and for up to eight councillors. There are no wards.</div>
-    <div class="statgrid"><div class="stat"><b>41.44%</b><span>Turnout, Oct 17 2026</span></div><div class="stat"><b>31,281</b><span>Ballots cast</span></div><div class="stat"><b>62%</b><span>Yes to amalgamation with Saanich (non-binding)</span></div></div>
+    <div class="statgrid"><div class="stat"><b>41.44%</b><span>Turnout, Oct 17 2026</span></div><div class="stat"><b>30,575</b><span>Votes for mayor</span></div><div class="stat"><b>17,523 yes</b><span>10,890 no · amalgamation with Saanich (non-binding)</span></div></div>
     <div class="note">Saanich voters said no (68%), so amalgamation isn't proceeding on this vote.</div>${srcA(VCC_S.elec)}${srcA(VCC_S.amal)}`;
   if(key==="sec") return `<div class="kicker">Public service · appointed by Council</div><h2>Jocelyn Jenkyns</h2><div class="lede">${ROLE.vic_cm.text}</div>
     <div class="statgrid" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><b>${D.ministries.filter(o=>!["vicpd","gvpl"].includes(o.id)).length}</b><span>Departments</span></div><div class="stat"><b>$1.28M</b><span>City Manager's Office, 2026</span></div></div>
@@ -96,7 +96,7 @@ const VCC_CFG={id:"victoria",pre:"vc",region:"Victoria",capital:"Victoria City H
   aisle:[-470,-300,-150,120],table:[-385,-20],noSides:true,cx:-385,titleX:-385,titleY:-330,bot:225,lineX:[-575,-195],deskW:56,deskH:48,
   confPath:(m,px,py)=>({d:`M${m.px+28},${m.py} C${m.px+120},${m.py} ${px-150},${py} ${px-76},${py}`,lx:-330,ly:-232}),
   noPlan:true,planNote:"Desk positions are illustrative: the City doesn't publish a seating plan. Outlined desks are new members.",
-  foldNote:"Council from the Oct 17, 2026 preliminary results. Departments and budgets from the 2026–2030 Financial Plan and the 2025 Annual Report.",
+  foldNote:"Council from the Oct 17, 2026 official results (certified Oct 21, 2026). Departments and budgets from the 2026–2030 Financial Plan and the 2025 Annual Report.",
   searchPh:"Search a councillor, department or director",memberWord:"Councillor",
   foldLeft:[["The room on the left","is Victoria City Council. Each dot is an elected member. The Mayor sits in the chair; outlined desks are new members."],
     ["The Mayor","chairs Council and is the City's chief executive officer, with one vote like each councillor."],

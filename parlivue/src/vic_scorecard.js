@@ -13,7 +13,7 @@ const VSC_S={
   sp:["2023–2026 Strategic Plan","https://victoria.ca/media/file/strategic-plan-2023-2026"],
   ocp:["OCP Update page","https://engage.victoria.ca/ocpupdate"],
   pool:["Capital Daily, Feb 9 2025","https://capitaldaily.ca/news/taking-the-plunge-victorians-vote-yes-to-a-new-crystal-pool"],
-  elec26:["City of Victoria, 2026 preliminary results","https://www.victoria.ca/city-government/news/victoria-election-2026-preliminary-results"],
+  elec26:["City of Victoria: 2026 Declaration of Official Election Results (certified Oct 21, 2026)","https://www.victoria.ca/media/file/declaration-official-results-2026-municipal-election"],
   buzz:["Victoria Buzz, Oct 17 2026 (preliminary counts)","https://victoriabuzz.com/2026/10/marianne-alto-re-elected-victoria-mayor-as-council-results-bring-new-faces/"],
   elec22:["2022 Declaration of Official Results","https://www.victoria.ca/media/file/declaration-official-results-2022pdf"],
   amal:["Daily Hive, Oct 27 2026","https://dailyhive.com/vancouver/victoria-saanich-october-2026-amalgamation-plebiscite-election-results"],
@@ -80,20 +80,20 @@ const VSC_CARD=[
 ];
 
 const VSC_TRACK={"Housing": ["1,477 homes vs target 659", "882 homes; target met again", "OCP adopted Oct 2025"], "Transportation": ["6 km AAA; 28 crosswalks", "5.1 km AAA; 17 crosswalks", "No 2026 report yet"], "Parks, recreation & gathering spaces": ["438 trees; pool upgrades", "Pool borrowing approved; 476 trees", "Pool design; $12.0M in 2026 budget"], "Community well-being & safety": ["12,199 fire calls", "Safety plan endorsed July 2025", "Rollout continues in 2026"], "Climate & environment": ["34 fleet EVs; 68 chargers", "~92% of new fleet electric", "No 2026 report yet"], "Economic health & downtown": ["Not in documents used", "Clean Team; storefront program", "Amalgamation vote Oct 17, 2026"], "Truth & reconciliation": ["Not reported", "Not reported", "Not reported"], "Arts, culture, music & sport": ["Not reported", "Not reported", "Not reported"], "Delivering the capital program": ["50% of plan", "39% of plan", "$160.1M capital budget"], "Taxes & finances": ["7.93% tax increase", "6.99% tax increase", "7.28% tax increase"]};
-/* Who Victoria elected: 2022 term and Oct 17 2026 result (2026 counts preliminary) */
+/* Who Victoria elected: 2022 term and Oct 17 2026 result (2026 counts from the Declaration of Official Election Results, certified Oct 21, 2026) */
 const VSC_PEOPLE=[
- ["Marianne Alto","Mayor",15090,12627,"Re-elected","44.69% in an 8-way race; Bruce McGuigan 34.30%"],
- ["Stephen Hammond","Councillor",10042,13729,"Re-elected","8th of 8 in 2022, topped the poll in 2026"],
- ["Matt Dell","Councillor",13899,13421,"Re-elected",""],
- ["Jeremy Caradonna","Councillor",14238,13257,"Re-elected","Topped the poll in 2022"],
- ["Marg Gardiner","Councillor",9255,12880,"Re-elected",""],
- ["Dave Thompson","Councillor",12271,12266,"Re-elected","8th, 20 votes ahead of 9th"],
- ["Krista Loughton","Councillor",12683,12246,"Not re-elected","Finished 9th, 20 votes behind 8th"],
+ ["Marianne Alto","Mayor",15090,13505,"Re-elected","8-way race; Bruce McGuigan second with 10,531"],
+ ["Stephen Hammond","Councillor",10042,15092,"Re-elected","8th of 8 in 2022, topped the poll in 2026"],
+ ["Matt Dell","Councillor",13899,14291,"Re-elected",""],
+ ["Jeremy Caradonna","Councillor",14238,14132,"Re-elected","Topped the poll in 2022"],
+ ["Marg Gardiner","Councillor",9255,14208,"Re-elected",""],
+ ["Dave Thompson","Councillor",12271,13103,"Re-elected","8th, 15 votes ahead of 9th"],
+ ["Krista Loughton","Councillor",12683,13088,"Not re-elected","Finished 9th, 15 votes behind 8th"],
  ["Susan Kim","Councillor",14005,null,"Not re-elected","2nd in 2022"],
  ["Chris Coleman","Councillor",10785,null,"Did not run",""],
- ["Jack Sandor","Councillor-elect",null,12951,"New",""],
- ["Melissa Cseszko","Councillor-elect",null,12720,"New",""],
- ["Wendy Bowkett","Councillor-elect",null,12297,"New",""]
+ ["Jack Sandor","Councillor",null,13777,"New",""],
+ ["Melissa Cseszko","Councillor",null,13971,"New",""],
+ ["Wendy Bowkett","Councillor",null,13545,"New",""]
 ];
 
 /* 2026 plan */
@@ -134,7 +134,7 @@ const VSC_CHECK=[
  ["Crystal Pool site and approval date","Corrected","Voters approved borrowing on Feb 8, 2025 to rebuild at the existing location. Planning began March 2025 (2025 Annual Report)."],
  ["2025 housing, community safety, downtown, cycling, fleet and fire figures","Validated","Confirmed in the 2025 Annual Report."],
  ["2026 budget by department","Updated","Replaced with the department totals in the 2026–2030 Financial Plan, including Police, Engineering & Public Works and Fire."],
- ["Current-year team","Updated","Names added from the City's Oct 17, 2026 preliminary election results."],
+ ["Current-year team","Updated","Names and votes from the City's Declaration of Official Election Results (certified Oct 21, 2026); the new term began Nov 5, 2026."],
  ["2026 operating $394.1M, capital $160.1M, tax increase 7.28% (police 5.06 points)","Validated","Confirmed on the City Budget page and in the Financial Plan."],
  ["Capital budget 2026–2030","Validated","Matches the Financial Plan capital summary."],
  ["2024 analysis","Added","Built from the 2024 Annual Report."],
@@ -207,10 +207,10 @@ function vscOverage(){
 }
 /* Election results: shown on the City Council page */
 function vscElectionHTML(){ return `<section class="nsec elec"><div class="kicker">Election · October 17, 2026</div><h2 class="nh">Election results</h2><p class="vsp">Votes by member, 2022 and 2026. Turnout 41.44%.</p>
-      <div class="sctwrap"><table class="sct"><caption>2026 counts are preliminary</caption><thead><tr><th scope="col">Member</th><th scope="col">Role</th><th scope="col">2022 votes</th><th scope="col">2026 votes</th><th scope="col">Result</th><th scope="col">Note</th></tr></thead><tbody>
+      <div class="sctwrap"><table class="sct"><caption>2026 counts from the Declaration of Official Election Results</caption><thead><tr><th scope="col">Member</th><th scope="col">Role</th><th scope="col">2022 votes</th><th scope="col">2026 votes</th><th scope="col">Result</th><th scope="col">Note</th></tr></thead><tbody>
       ${VSC_PEOPLE.map(p=>`<tr><th scope="row">${p[0]}</th><td>${p[1]}</td><td>${p[2]?p[2].toLocaleString("en-CA"):"—"}</td><td>${p[3]?p[3].toLocaleString("en-CA"):"—"}</td><td><span class="res r-${p[4].toLowerCase().replace(/[^a-z]/g,"")}">${p[4]}</span></td><td class="muted">${p[5]}</td></tr>`).join("")}</tbody></table></div>
       <div class="note">Council decides as a body. The new Council takes office on Nov 5, 2026.</div>
-      ${vsSrc(["elec26","buzz","elec22","amal"])}</section>`; }
+      ${vsSrc(["elec26","elec22","amal"])}</section>`; }
 /* collapsible section */
 /* collapsed on page open on every page (the 4th argument is kept for older calls but no longer opens it) */
 const vRoll=(title,sub,body,open)=>`<details class="roll"><summary><span class="rollh"><span class="rollt">${title}</span>${sub?`<span class="rolls">${sub}</span>`:""}</span><span class="rolltog"><span class="t-show">Show</span><span class="t-hide">Hide</span><span class="rollc" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6l4 4 4-4"/></svg></span></span></summary><div class="rollb">${body}</div></details>`;

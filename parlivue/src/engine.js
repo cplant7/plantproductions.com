@@ -294,7 +294,7 @@ function render(key){
         ${roleBox(ds.hub.role)}${srcK("res")}`;
     } else if(ds.id==="victoria"){
       h+=`<div class="statgrid"><div class="stat"><b>8</b><span>Councillors</span></div><div class="stat"><b>${ds.outer.filter(o=>o.kind!=="advisory").length}</b><span>Departments & services</span></div><div class="stat"><b>${money(VIC_TOTAL)}</b><span>2026 operating</span></div></div>
-        <div class="note">Elected Oct 17, 2026 (preliminary results). The new Council's four-year term begins at its inauguration on Nov 5, 2026.</div>
+        <div class="note">Elected Oct 17, 2026 (official results certified Oct 21, 2026). The new Council's four-year term began at its inauguration on Nov 5, 2026.</div>
         <h3>Council</h3><ul class="list">${ds.inner.filter(n=>n.role==="vic_council").map(n=>`<li class="item">${go(n.id,n.name)}<span class="rl">Councillor${n.isNew?'<span class="newtag">NEW</span>':""}</span></li>`).join("")}</ul>
         <button class="scorelink" id="toscore">Council Scorecard 2024–2026 ↓</button>
         ${roleBox(ds.hub.role)}${srcK("elec")}
