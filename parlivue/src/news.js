@@ -26,6 +26,8 @@ const NOT_RUNNING_SRC=["Wikipedia: 2026 BC general election","https://en.wikiped
 // News items: summaries are written here in plain words; follow the source link for the full story.
 /* Key events: only those that change a scorecard (budgets, Public Accounts, elections, Cabinet changes). Newest first. */
 const NEWS=[
+ {date:"2026-11-06",tag:"Public accounts",title:"Public Accounts of Canada 2026 tabled",text:"The audited federal results for FY 2025–26 were tabled with the Supplementary Estimates (B), 2026–27 and the 2025–26 Departmental Results Reports. The Public Accounts report an annual deficit of $39.3 billion: revenues of $526.4 billion, program expenses of $498.5 billion, public debt charges of $53.5 billion and net actuarial losses of $13.6 billion.",
+  ents:[["federal","hub"]],go:"fedscore",src:["Public Accounts of Canada 2026, Volume II, Section 1, Table 1","https://www.tpsgc-pwgsc.gc.ca/recgen/cpc-pac/2026/vol2/s1/ecrc-csre-eng.html"]},
  {date:"2026-11-05",tag:"Budget",title:"Federal Budget 2026 tabled",text:"The federal budget sets out fiscal projections and new measures by department. It is not yet in the FY 2026–27 department figures; see the Budget 2026 page.",
   ents:[["federal","hub"]],go:"fedbudget",src:["Government of Canada: Budget 2026","https://budget.canada.ca"]},
  {date:"2026-11-01",tag:"Election",title:"Six federal by-elections called for December 7",text:"By-elections will be held on December 7, 2026. Results may change seat counts in the House of Commons.",
@@ -42,12 +44,12 @@ const COMING=[
  ["Nov 18, 2026","B.C. election results expected to be certified"],
  ["Nov 20, 2026","New B.C. Cabinet expected"],
  ["Dec 7, 2026","Six federal by-elections"],
- ["By Dec 31, 2026","Public Accounts of Canada for FY 2025–26 (audited federal results)"],
  ["Spring 2027","Federal Main Estimates and 2027–28 Departmental Plans; B.C. and Ontario budgets"],
  ["Summer–fall 2027","B.C. and Ontario Public Accounts for FY 2026–27"]
 ];
 /* Site updates: data changes on ParliVue. Add a line each time a scorecard's data changes. Newest first. */
 const SITE_UPDATES=[
+ ["2026-11-13","fedscore","Federal Departments Scorecard: FY 2025–26 audited spending for all 31 departments from the Public Accounts of Canada 2026 (tabled Nov 6, 2026): budget, additional funding, changes and transfers, carry over, total approved, spent and lapsed, with every line item."],
  ["2026-11-13","abscore","Alberta Ministries Scorecard: FY 2024–25 results added for 22 ministries, from the 2024–25 ministry annual reports (Lapse/Encumbrance statements), in that year's ministry structure."],
  ["2026-11-13","abscore","Alberta, Saskatchewan and Manitoba scorecards: goals added to each ministry and department page — performance measures with targets and FY 2025–26 results from the 2025–26 annual reports (77, 51 and 143 measures)."],
  ["2026-11-13","skscore","\"What happened in FY 2025–26\" panels added for Saskatchewan, Manitoba, Alberta, Nova Scotia, Newfoundland and Labrador, PEI, Yukon, Québec and New Brunswick, and for Nunavut (FY 2024–25), using each government's own explanations."],
