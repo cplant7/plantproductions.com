@@ -338,8 +338,8 @@ function fedDept(id,tab0){
        ["Staff planned",fN(d.plan.f25),fPill("neu","Plan"),"Counted as full-time staff",""],
        ["Goals set",String(d.n25),fPill("neu","FY 2024–25: "+d.i24.length),"Goals the department set for FY 2025–26",""]].map(fCard).join("")}</div>
      ${crpTbl([["FY 2025–26 budget",c=>fB(c[1])]],"FY 2025–26 · budget by main area of work")}
-     <p class="fynote">Spending by program, staff and goal results for FY 2025–26 come from the department's 2025–26 Departmental Results Report (tabled Nov 6, 2026). They will be added here from the Treasury Board's open data.</p>
-     <div class="src">Sources: ${fA(PA25_SRC)} · ${fA(FSC_SRC.rbpo)} · ${rep("2025","Goals","2025–26 Departmental Plan")}</div>`;})(),
+     ${typeof fedY25Results==="function"?fedY25Results(d):""}
+     <div class="src">Sources: ${fA(PA25_SRC)} · ${typeof DRR25_SRC!=="undefined"?fA(DRR25_SRC)+" · ":""}${rep("2025","Goals","2025–26 Departmental Plan")}</div>`;})(),
    y24:(()=>{const pa=paBlock(d,h);
      const bud=h?fRoll("A","bk","Budget","Start-of-year budget by program area",fB(h[1]),"",progTbl+`<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):`<p class="note">The FY 2024–25 spending for this organization is not in the open data. See its 2024–25 Departmental Results Report under Sources.</p>`;
      const spent=h?fRoll(`<svg viewBox="0 0 20 20" fill="currentColor"><rect x="2.5" y="10" width="3.5" height="7.5" rx="1"/><rect x="8.25" y="5" width="3.5" height="12.5" rx="1"/><rect x="14" y="2.5" width="3.5" height="15" rx="1"/></svg>`,"bp","Program totals","Biggest differences, in the department's own words",(h[2]>h[1]?"+":"−")+fB(Math.abs(h[2]-h[1])),h[2]>h[1]?"up":"dn",`${why}${unexpl}<div class="src">Source: ${fA(FSC_SRC.rbpo)}</div>`):"";
