@@ -49,6 +49,7 @@ const COMING=[
 ];
 /* Site updates: data changes on ParliVue. Add a line each time a scorecard's data changes. Newest first. */
 const SITE_UPDATES=[
+ ["2026-11-14","fedscore","Federal Departments Scorecard: Supplementary Estimates (B), 2026–27 (tabled Nov 6, 2026) added to the FY 2026–27 Financials for all 31 departments."],
  ["2026-11-14","fedscore","Federal Departments Scorecard: FY 2025–26 results for all 31 departments from the 2025–26 Departmental Results Reports: spending and staff by program, and 1,821 goals with the target, result and the department's own rating (Treasury Board open data, Nov 12, 2026)."],
  ["2026-11-13","fedscore","Federal Departments Scorecard: FY 2025–26 audited spending for all 31 departments from the Public Accounts of Canada 2026 (tabled Nov 6, 2026): budget, additional funding, changes and transfers, carry over, total approved, spent and lapsed, with every line item."],
  ["2026-11-13","abscore","Alberta Ministries Scorecard: FY 2024–25 results added for 22 ministries, from the 2024–25 ministry annual reports (Lapse/Encumbrance statements), in that year's ministry structure."],
