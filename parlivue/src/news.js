@@ -2,7 +2,7 @@
 const PARTY={
  lib:{name:"Liberal Party of Canada",color:"var(--p-lib)",src:["Wikipedia: 30th Canadian Ministry","https://en.wikipedia.org/wiki/30th_Canadian_Ministry"]},
  ndp:{name:"BC NDP",color:"var(--p-ndp)",src:["Wikipedia: Eby ministry","https://en.wikipedia.org/wiki/Eby_ministry"]},
- con:{name:"Conservative Party of BC",color:"var(--p-con)",src:null},
+ con:{name:"Conservative Party of BC",color:"var(--p-con)",src:["The Canadian Press: List of the new B.C. Conservative cabinet (Nov 20 2026, via InfoNews)","https://infonews.ca/news/7990273/a-list-of-who-is-in-the-new-british-columbia-conservative-cabinet/"]},
  ind:{name:"No party label (municipal)",color:"var(--p-ind)",src:["Capital Daily, Oct 17 2026 results","https://www.capitaldaily.ca/news/greater-victoria-municipal-election-results-2026"]},
  ps:{name:"Non-partisan public servant",color:"var(--rule)",src:null}
 };
@@ -26,13 +26,15 @@ const NOT_RUNNING_SRC=["Wikipedia: 2026 BC general election","https://en.wikiped
 // News items: summaries are written here in plain words; follow the source link for the full story.
 /* Key events: only those that change a scorecard (budgets, Public Accounts, elections, Cabinet changes). Newest first. */
 const NEWS=[
+ {date:"2026-11-20",tag:"Cabinet",title:"B.C.: Premier Lorne Doerkson and Cabinet sworn in",text:"The new Cabinet has 18 ministers, 6 ministers of state and 12 parliamentary secretaries. Ministries went from 23 to 18. Claire Rattée is Deputy Premier and Minister of Social Development; Peter Milobar is Minister of Finance. FY 2026–27 figures on the B.C. scorecard still follow the old ministry structure.",
+  ents:[["bc","hub"],["bc","rattee"],["bc","milobar"]],go:"bc",src:["The Canadian Press via InfoNews, Nov 20 2026","https://infonews.ca/news/7990273/a-list-of-who-is-in-the-new-british-columbia-conservative-cabinet/"]},
  {date:"2026-11-06",tag:"Public accounts",title:"Public Accounts of Canada 2026 tabled",text:"The audited federal results for FY 2025–26 were tabled with the Supplementary Estimates (B), 2026–27 and the 2025–26 Departmental Results Reports. The Public Accounts report an annual deficit of $39.3 billion: revenues of $526.4 billion, program expenses of $498.5 billion, public debt charges of $53.5 billion and net actuarial losses of $13.6 billion.",
   ents:[["federal","hub"]],go:"fedscore",src:["Public Accounts of Canada 2026, Volume II, Section 1, Table 1","https://www.tpsgc-pwgsc.gc.ca/recgen/cpc-pac/2026/vol2/s1/ecrc-csre-eng.html"]},
  {date:"2026-11-05",tag:"Budget",title:"Federal Budget 2026 tabled",text:"The federal budget sets out fiscal projections and new measures by department. It is not yet in the FY 2026–27 department figures; see the Budget 2026 page.",
   ents:[["federal","hub"]],go:"fedbudget",src:["Government of Canada: Budget 2026","https://budget.canada.ca"]},
  {date:"2026-11-01",tag:"Election",title:"Six federal by-elections called for December 7",text:"By-elections will be held on December 7, 2026. Results may change seat counts in the House of Commons.",
   ents:[["federal","hub"]],src:["PMO, Nov 1 2026","https://www.pm.gc.ca/en/news/news-releases/2026/11/01/prime-minister-carney-announces-elections"]},
- {date:"2026-10-24",tag:"Election",title:"B.C. election: BC Conservatives win a majority (preliminary)",text:"Lorne Doerkson is premier-designate and can be sworn in once results are certified, expected Nov 18. New ministries and FY 2026–27 plans may follow.",
+ {date:"2026-10-24",tag:"Election",title:"B.C. election: BC Conservatives win a majority",text:"The final count gave the Conservatives 64 seats, the NDP 27 and the Greens 2. Lorne Doerkson was sworn in as Premier on Nov 20.",
   ents:[],people:[["Lorne Doerkson","con"],["David Eby","ndp"]],go:"bcscore",src:BC_TRANSITION.srcs[0]},
  {date:"2026-03-26",tag:"Budget",title:"Ontario 2026 Budget tabled",text:"Ontario's fiscal plan for FY 2026–27 to FY 2028–29: a $13.8 billion deficit planned for FY 2026–27.",
   ents:[],go:"onscore",src:["2026 Ontario Budget","https://budget.ontario.ca/2026/brief.html"]},
@@ -41,13 +43,13 @@ const NEWS=[
 ];
 /* Coming up: scheduled releases that will update the scorecards */
 const COMING=[
- ["Nov 20, 2026","New B.C. Cabinet expected"],
  ["Dec 7, 2026","Six federal by-elections"],
  ["Spring 2027","Federal Main Estimates and 2027–28 Departmental Plans; B.C. and Ontario budgets"],
  ["Summer–fall 2027","B.C. and Ontario Public Accounts for FY 2026–27"]
 ];
 /* Site updates: data changes on ParliVue. Add a line each time a scorecard's data changes. Newest first. */
 const SITE_UPDATES=[
+ ["2026-11-20","bc","British Columbia: Cabinet wheel and Legislature page now show Premier Lorne Doerkson's Cabinet (sworn in Nov 20, 2026) and the 18 new ministries, with MLAs from the final count. Deputy ministers for renamed or new ministries are not yet announced. Seats stay grouped by party until the Legislature publishes its seating plan."],
  ["2026-11-20","mississauga","Mississauga: Alvin Tedjo is now shown as Mayor and the ward members as Councillors. The 2026 to 2030 term began November 15, 2026."],
  ["2026-11-14","vicscore","Victoria: Council pages and scorecard now use the City's Declaration of Official Election Results (certified Oct 21, 2026) instead of the preliminary counts."],
  ["2026-11-14","fedscore","Federal Departments Scorecard: \"What happened in FY 2025–26\" panel added, from the Public Accounts, the Annual Financial Report and the 2025–26 Departmental Results Reports."],

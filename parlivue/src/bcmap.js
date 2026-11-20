@@ -25,11 +25,11 @@ function bmData(){
   ministries.forEach((o,k)=>{ [o.x,o.y]=grid(BM_MIN,ministries.length,k);
     let sn=o.name.replace(/^Ministry (of|for) (the )?/,""); o.short=sn; });
   const premierOffices=BC_OUT.filter(o=>o.id==="premier"); premierOffices.forEach(o=>{ o.x=BM_MID; o.y=96; o.ms=[]; });
-  return {C,G,mpps,byName,mins,ministries,premierOffices,P,mid,eby:byName["David Eby"],doerk:byName["Lorne Doerkson"],
-    premier:[BM_MID,-40], sec:[BM_MID,190], desig:[BM_MID,-150]};
+  return {C,G,mpps,byName,mins,ministries,premierOffices,P,mid,doerk:byName["Lorne Doerkson"],
+    premier:[BM_MID,-40], sec:[BM_MID,190]};
 }
-function bmKeyForMpp(i){ const D=BM.D, m=D.mpps[i]; const mn=D.mins.find(x=>x.mpp===m); return mn?mn.id:m===D.eby?"premier":m===D.doerk?"designate":"m"+i; }
-function bmMppOf(key){ const D=BM.D; if(!key) return null; if(key==="premier") return D.eby; if(key==="designate") return D.doerk; if(/^m\d+$/.test(key)) return D.mpps[+key.slice(1)]; const mn=D.mins.find(x=>x.id===key); return mn?mn.mpp:null; }
+function bmKeyForMpp(i){ const D=BM.D, m=D.mpps[i]; const mn=D.mins.find(x=>x.mpp===m); return mn?mn.id:m===D.doerk?"premier":"m"+i; }
+function bmMppOf(key){ const D=BM.D; if(!key) return null; if(key==="premier") return D.doerk; if(/^m\d+$/.test(key)) return D.mpps[+key.slice(1)]; const mn=D.mins.find(x=>x.id===key); return mn?mn.mpp:null; }
 
 function bmBuild(){
   const D=BM.D=bmData(); const {G,C,P}=D;
@@ -42,7 +42,7 @@ function bmBuild(){
     const t=g.append("text").attr("x",B.x+22).attr("y",B.y+36).attr("class","pmcardh"); t.append("tspan").text(t1); t.append("tspan").attr("class","pmcardn").text("  ·  "+t2[0]);
     g.append("text").attr("x",B.x+22).attr("y",B.y+56).attr("class","pmcards").text(t2[1]); };
   const gone=D.mins.filter(m=>!m.mpp).length;
-  card(BM_CAB,"Cabinet",[`${D.mins.length} ministers · caretaker`,`Eby's NDP Cabinet until a new one is sworn in. Hollow dots: ${gone} not re-elected.`]);
+  card(BM_CAB,"Cabinet",[`${D.mins.length} ministers`,`Premier Doerkson's Cabinet, sworn in November 20, 2026.`]);
   card(BM_MIN,"Ministries",[String(D.ministries.length),"Each is run day to day by a deputy minister from the public service."]);
   // ---- chamber (grouped by party until a seating plan exists) ----
   const ch=g.append("g").attr("class","pmchamber");
@@ -63,25 +63,24 @@ function bmBuild(){
   ch.append("text").attr("x",sx+34).attr("y",sy+12).attr("class","clbl").text("TO BE ELECTED");
   const oppRows=Math.ceil(ol.length/C.cols);
   const gx=d3.mean([BM_CX-C.rowY(0),BM_CX-C.rowY(rows-1)]), ox=d3.mean([BM_CX+C.rowY(0),BM_CX+C.rowY(oppRows-1)]);
-  ch.append("text").attr("x",gx).attr("y",bot+48).attr("text-anchor","middle").attr("class","clbl side").text("INCOMING GOVERNMENT");
+  ch.append("text").attr("x",gx).attr("y",bot+48).attr("text-anchor","middle").attr("class","clbl side").text("GOVERNMENT");
   ch.append("text").attr("x",gx).attr("y",bot+64).attr("text-anchor","middle").attr("class","clbl").text("SPEAKER'S RIGHT");
   ch.append("text").attr("x",ox).attr("y",bot+48).attr("text-anchor","middle").attr("class","clbl side").text("OPPOSITION");
   ch.append("text").attr("x",ox).attr("y",bot+64).attr("text-anchor","middle").attr("class","clbl").text("SPEAKER'S LEFT");
   { const t=ch.append("text").attr("x",BM_CX).attr("y",top-150).attr("text-anchor","middle").attr("class","pmcardh"); t.append("tspan").text("Legislative Assembly of BC");
-    ch.append("text").attr("x",BM_CX).attr("y",top-128).attr("text-anchor","middle").attr("class","pmcards").text("93 MLAs-elect, 1 per riding · preliminary results"); }
+    ch.append("text").attr("x",BM_CX).attr("y",top-128).attr("text-anchor","middle").attr("class","pmcards").text("93 MLAs, 1 per riding · final count"); }
   ch.append("line").attr("x1",BM_CX-C.rowY(rows-1)-16).attr("x2",BM_CX+C.rowY(oppRows-1)+16).attr("y1",bot+28).attr("y2",bot+28).attr("stroke","var(--brass)").attr("stroke-width",2).attr("stroke-dasharray","4 5");
   // ---- flows ----
   const fl=g.append("g").attr("class","flows");
   const arrow=(d,cls,mk)=>fl.append("path").attr("d",d).attr("class","flow "+cls).attr("marker-end",`url(#bm-ar-${mk||"ink"})`);
   const lbl=(x,y,t,anchor,cls)=>fl.append("text").attr("x",x).attr("y",y).attr("text-anchor",anchor||"middle").attr("class",cls||"flowlbl").text(t);
-  const [px,py]=D.premier, [dx,dy]=D.desig, Dk=D.doerk;
-  arrow(`M${Dk.px},${Dk.py-14} C${Dk.px},${top-150} -172,${top-150} -172,${top-40} L-172,${dy-30} C-172,${dy} ${dx-90},${dy} ${dx-60},${dy}`,"f-conf","accent");
-  lbl(-180,dy-62,"Becomes Premier","end");lbl(-180,dy-48,"once certified","end");
+  const [px,py]=D.premier, Dk=D.doerk;
+  arrow(`M${Dk.px},${Dk.py-14} C${Dk.px},${top-150} -172,${top-150} -172,${top-40} L-172,${py-30} C-172,${py} ${px-110},${py} ${px-80},${py}`,"f-conf","accent");
   arrow(`M${px+72},${py} C${px+110},${py} ${BM_CAB.x-50},${BM_CAB.y+BM_CAB.h-60} ${BM_CAB.x-6},${BM_CAB.y+BM_CAB.h-60}`,"f-app");
   lbl(px+80,py-32,"Chose","start","flowlbl big");lbl(px+80,py-16,"Cabinet","start","flowlbl big");
   arrow(`M${BM_CAB.x+BM_CAB.w/2},${BM_CAB.y+BM_CAB.h+2} L${BM_CAB.x+BM_CAB.w/2},${BM_MIN.y-4}`,"f-app");
   lbl(BM_CAB.x+BM_CAB.w/2+12,BM_MIN.y-10,"Ministers direct ministries","start","flowlbl big");
-  const SL=[{key:"premier",x:px,y:py,m:D.eby},...D.mins.filter(mn=>mn.mpp).map(mn=>({key:mn.id,x:mn.x,y:mn.y,m:mn.mpp}))];
+  const SL=[{key:"premier",x:px,y:py,m:D.doerk},...D.mins.filter(mn=>mn.mpp).map(mn=>({key:mn.id,x:mn.x,y:mn.y,m:mn.mpp}))];
   const seatLinks=g.append("g").selectAll("path").data(SL).join("path").attr("class","seatlink")
     .attr("d",d=>`M${d.x-10},${d.y} C${d.x-240},${d.y} ${d.m.px+220},${d.m.py} ${d.m.px+12},${d.m.py}`);
   const spokes=g.append("g").selectAll("path").data(D.mins).join("path").attr("class","spoke ms").attr("d",m=>`M${px+40},${py} C${px+160},${py} ${m.x-120},${m.y} ${m.x-11},${m.y}`);
@@ -93,16 +92,12 @@ function bmBuild(){
   mg.append("circle").attr("class","pdot").attr("r",BM_RM?11.5:0).attr("fill",x=>G[x.m.group].color);
   mg.filter(x=>x.m.hon).append("circle").attr("r",3.6).attr("fill","#0a0a0a").attr("pointer-events","none");
   mg.filter(x=>x.m.place==="Ladysmith-Oceanside").append("circle").attr("r",15).attr("fill","none").attr("stroke","var(--ink)").attr("stroke-dasharray","3 2.5").attr("stroke-width",1.5).attr("pointer-events","none");
-  // ---- Premier (caretaker), Premier-designate, office, Head of Public Service ----
+  // ---- Premier, office, Head of Public Service ----
   g.append("path").attr("class","spoke").attr("d",`M${px},${py+58} V${D.premierOffices[0].y-12} M${px},${D.premierOffices[0].y+40} V${D.sec[1]-21}`);
   const pr=g.append("g").attr("class","pmn premier").attr("transform",`translate(${px},${py})`).datum({type:"premier",key:"premier"});
-  pr.append("rect").attr("x",-72).attr("y",-28).attr("width",144).attr("height",56).attr("rx",16).attr("class","prbox ndp");
+  pr.append("rect").attr("x",-72).attr("y",-28).attr("width",144).attr("height",56).attr("rx",16).attr("class","prbox con");
   pr.append("text").attr("y",8).attr("text-anchor","middle").attr("class","pminit").text("Premier");
-  g.append("text").attr("x",px).attr("y",py+50).attr("text-anchor","middle").attr("class","pmname").text("David Eby · caretaker");
-  const de=g.append("g").attr("class","pmn premier").attr("transform",`translate(${dx},${dy})`).datum({type:"designate",key:"designate"});
-  de.append("rect").attr("x",-56).attr("y",-22).attr("width",112).attr("height",44).attr("rx",14).attr("class","prbox desig");
-  de.append("text").attr("y",-3).attr("text-anchor","middle").attr("class","seclbl").text("Premier-designate");
-  de.append("text").attr("y",13).attr("text-anchor","middle").attr("class","clbl").text("LORNE DOERKSON");
+  g.append("text").attr("x",px).attr("y",py+50).attr("text-anchor","middle").attr("class","pmname").text("Lorne Doerkson");
   const po=g.append("g").selectAll("g").data(D.premierOffices).join("g").attr("class","pmn office").attr("transform",o=>`translate(${o.x},${o.y})`).datum(o=>({type:"ministry",key:"o_"+o.id,o}));
   po.append("rect").attr("x",-11).attr("y",-11).attr("width",22).attr("height",22).attr("rx",5).attr("class","mbox");
   po.append("text").attr("y",30).attr("text-anchor","middle").attr("class","olbl big").text("Office of the Premier");
@@ -112,10 +107,8 @@ function bmBuild(){
   sc.append("text").attr("y",13).attr("text-anchor","middle").attr("class","clbl").text("CABINET SECRETARY");
   // ---- the Crown and the statutory officers ----
   const LGY=-400; D.lgPt=[px,LGY]; D.offPt=[BM_CX,bot+118];
-  g.append("path").attr("class","flow f-crown").attr("d",`M${px},${LGY+24} L${px},${dy-24}`).attr("marker-end","url(#bm-ar-ink)");
-  g.append("text").attr("x",px+8).attr("y",(LGY+dy)/2+4).attr("class","flowlbl").text("Appoints after Nov 18");
-  g.append("path").attr("class","flow f-crown").attr("d",`M${px},${dy+24} L${px},${py-32}`);
-  g.append("text").attr("x",px-8).attr("y",(dy+py)/2+4).attr("text-anchor","end").attr("class","flowlbl").text("Replaces caretaker");
+  g.append("path").attr("class","flow f-crown").attr("d",`M${px},${LGY+24} L${px},${py-32}`).attr("marker-end","url(#bm-ar-ink)");
+  g.append("text").attr("x",px+8).attr("y",(LGY+py)/2+4).attr("class","flowlbl").text("Swore in, Nov 20, 2026");
   const lg=g.append("g").attr("class","pmn crown").attr("transform",`translate(${px},${LGY})`).datum({type:"lg",key:"lg"});
   lg.append("rect").attr("x",-86).attr("y",-23).attr("width",172).attr("height",46).attr("rx",23).attr("class","crownbox");
   lg.append("text").attr("y",-3).attr("text-anchor","middle").attr("class","seclbl").text("Lieutenant Governor");
@@ -128,7 +121,7 @@ function bmBuild(){
   // ---- ministers ----
   const mn=g.append("g").selectAll("g").data(D.mins).join("g").attr("class",m=>"pmn minister"+(m.mpp?"":" gone")).attr("transform",m=>`translate(${m.x},${m.y})`).datum(m=>({type:"minister",key:m.id,m}));
   mn.append("rect").attr("x",-14).attr("y",-BM_CAB.rh/2+2).attr("width",(BM_CAB.w-24)/BM_CAB.cols-8).attr("height",BM_CAB.rh-4).attr("rx",7).attr("class","rowhit");
-  mn.append("circle").attr("r",9.5).attr("fill",x=>x.m.mpp?"var(--p-ndp)":"none").attr("stroke",x=>x.m.mpp?"#ffffff80":"var(--p-ndp)").attr("stroke-width",x=>x.m.mpp?1:2);
+  mn.append("circle").attr("r",9.5).attr("fill",x=>x.m.mpp?"var(--p-con)":"none").attr("stroke",x=>x.m.mpp?"#ffffff80":"var(--p-con)").attr("stroke-width",x=>x.m.mpp?1:2);
   mn.filter(x=>x.m.mpp).append("circle").attr("r",3.2).attr("fill","#fff");
   mn.append("text").attr("class","mlbl2").attr("x",17).attr("dy","0.35em").text(x=>x.m.name);
   // ---- ministries ----
@@ -139,7 +132,7 @@ function bmBuild(){
   // ---- interaction ----
   const keyOf=d=>d.type==="mpp"?bmKeyForMpp(d.m.i):d.key;
   g.selectAll(".pmn").attr("tabindex",0).attr("role","button")
-    .attr("aria-label",d=>d.type==="mpp"?`${d.m.name}, ${d.m.place}`:d.type==="minister"?`${d.m.name}, ${d.m.title}`:d.type==="ministry"?d.o.name:d.type==="premier"?"David Eby, Premier (caretaker)":d.type==="designate"?"Lorne Doerkson, Premier-designate":d.type==="sec"?"Head of the Public Service":d.type==="lg"?`${BC_LG.name}, ${BC_LG.title}`:"Statutory officers")
+    .attr("aria-label",d=>d.type==="mpp"?`${d.m.name}, ${d.m.place}`:d.type==="minister"?`${d.m.name}, ${d.m.title}`:d.type==="ministry"?d.o.name:d.type==="premier"?"Lorne Doerkson, Premier":d.type==="sec"?"Head of the Public Service":d.type==="lg"?`${BC_LG.name}, ${BC_LG.title}`:"Statutory officers")
     .on("click",(e,d)=>bmSelect(keyOf(d),true)).on("keydown",(e,d)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); bmSelect(keyOf(d),true);} })
     .on("mouseenter",(e,d)=>{ bmTip(e,d); bmHighlight(keyOf(d)); }).on("mousemove",(e,d)=>bmTip(e,d))
     .on("mouseleave",()=>{ document.getElementById("bm-tip").hidden=true; bmHighlight(BM.sel); });
@@ -155,12 +148,11 @@ function bmBuild(){
 }
 function bmRelated(key){
   const D=BM.D, s=new Set([key]); if(!key) return null;
-  if(key==="premier"){ D.mins.forEach(m=>s.add(m.id)); D.premierOffices.forEach(o=>s.add("o_"+o.id)); s.add("m"+D.eby.i); s.add("sec"); return s; }
-  if(key==="designate"){ s.add("m"+D.doerk.i); D.mpps.filter(m=>m.group==="con").forEach(m=>s.add("m"+m.i)); return s; }
+  if(key==="premier"){ D.mins.forEach(m=>s.add(m.id)); D.premierOffices.forEach(o=>s.add("o_"+o.id)); s.add("m"+D.doerk.i); s.add("sec"); return s; }
   if(key==="sec"){ D.ministries.forEach(o=>s.add("o_"+o.id)); D.premierOffices.forEach(o=>s.add("o_"+o.id)); s.add("premier"); return s; }
-  if(key==="lg"){ s.add("premier"); s.add("designate"); D.mins.forEach(m=>s.add(m.id)); return s; }
+  if(key==="lg"){ s.add("premier"); D.mins.forEach(m=>s.add(m.id)); return s; }
   if(key==="officers"){ D.mpps.forEach(m=>s.add("m"+m.i)); return s; }
-  if(key.startsWith("o_")){ const o=[...D.ministries,...D.premierOffices].find(x=>"o_"+x.id===key); o.ms.forEach(m=>{ s.add(m.id); if(m.mpp) s.add("m"+m.mpp.i); }); if(!o.ms.length){ s.add("premier"); s.add("m"+D.eby.i); } return s; }
+  if(key.startsWith("o_")){ const o=[...D.ministries,...D.premierOffices].find(x=>"o_"+x.id===key); o.ms.forEach(m=>{ s.add(m.id); if(m.mpp) s.add("m"+m.mpp.i); }); if(!o.ms.length){ s.add("premier"); s.add("m"+D.doerk.i); } return s; }
   if(/^m\d+$/.test(key)) return s;
   const mn=D.mins.find(x=>x.id===key); if(mn){ s.add("premier"); if(mn.mpp) s.add("m"+mn.mpp.i); mn.links.forEach(l=>s.add("o_"+l)); } return s;
 }
@@ -171,15 +163,14 @@ function bmHighlight(key){
   BM.spokes.classed("hot",m=>key==="premier"||key===m.id).classed("dim",m=>rel?!(key==="premier"||rel.has(m.id)):false);
   BM.seatLinks.classed("hot",d=>!!rel&&(d.key===key||(!!key&&key.startsWith("o_")&&rel.has(d.key)))).classed("dim",d=>!!rel&&key!=="premier"&&!rel.has(d.key));
   BM.psLines.attr("opacity",key==="sec"?.6:0);
-  BM.flows.classed("dim",!!rel&&key!=="premier"&&key!=="designate");
+  BM.flows.classed("dim",!!rel&&key!=="premier");
 }
 function bmTip(e,d){
   const t=document.getElementById("bm-tip"), G=BM.D.G; let h="";
-  if(d.type==="mpp"){ const mn=BM.D.mins.find(x=>x.mpp===d.m); h=`<b>${d.m.name}</b><span>${d.m.place}</span><span class="tparty"><span class="pchip" style="--pc:${G[d.m.group].color}">${G[d.m.group].short}</span>${d.m===BM.D.eby?" Premier (caretaker)":d.m===BM.D.doerk?" Premier-designate":mn?" "+mn.title:" MLA-elect"}</span>`; }
-  else if(d.type==="minister") h=`<b>${d.m.name}</b><span>${d.m.title}</span><span>${d.m.mpp?"Re-elected in "+d.m.mpp.place:"Not among the members-elect"}</span>`;
-  else if(d.type==="ministry") h=`<b>${d.o.name}</b><span>${d.o.heads.map(x=>x.name).join(", ")}</span>`;
-  else if(d.type==="premier") h=`<b>David Eby</b><span>Premier, caretaker · re-elected in Vancouver-Point Grey</span>`;
-  else if(d.type==="designate") h=`<b>Lorne Doerkson</b><span>Premier-designate · Conservative leader · Cariboo-Chilcotin</span>`;
+  if(d.type==="mpp"){ const mn=BM.D.mins.find(x=>x.mpp===d.m); h=`<b>${d.m.name}</b><span>${d.m.place}</span><span class="tparty"><span class="pchip" style="--pc:${G[d.m.group].color}">${G[d.m.group].short}</span>${d.m===BM.D.doerk?" Premier":mn?" "+mn.title:" MLA"}</span>`; }
+  else if(d.type==="minister") h=`<b>${d.m.name}</b><span>${d.m.title}</span><span>${d.m.mpp?"MLA for "+d.m.mpp.place:""}</span>`;
+  else if(d.type==="ministry") h=`<b>${d.o.name}</b><span>${d.o.heads.length?d.o.heads.map(x=>x.name).join(", "):"Deputy minister not yet announced"}</span>`;
+  else if(d.type==="premier") h=`<b>Lorne Doerkson</b><span>Premier · Conservative leader · Cariboo-Chilcotin</span>`;
   else if(d.type==="sec") h=`<b>Shannon Salter</b><span>Deputy Minister to the Premier, Cabinet Secretary and Head of the Public Service</span>`;
   else if(d.type==="lg") h=`<b>${BC_LG.name}</b><span>${BC_LG.title}</span>`;
   else h=`<b>Statutory officers</b><span>${BC_OFFICERS.map(o=>o.role).join(" · ")}</span>`;
@@ -187,23 +178,22 @@ function bmTip(e,d){
 }
 function bmPanel(key){
   const D=BM.D, G=D.G, C=D.C, el=document.getElementById("bm-panel"); let h="";
-  const seatLine=m=>m?`<div class="where"><div class="kicker">Seat in the Legislature</div><div><b>${m.side==="gov"?"Incoming government side":"Opposition side"}</b></div><div class="muted" style="font-size:12px">Highlighted on the map. Grouped by party until the Legislature publishes a seating plan.</div></div>`:"";
-  const close=m=>m&&m.place==="Ladysmith-Oceanside"?`<div class="note warnnote">Too close to call: about a 13-vote margin in the initial count. It will be recounted during the final count, November 6 to 10. One results source already shows the Conservative candidate ahead.</div>`:"";
+  const seatLine=m=>m?`<div class="where"><div class="kicker">Seat in the Legislature</div><div><b>${m.side==="gov"?"Government side":"Opposition side"}</b></div><div class="muted" style="font-size:12px">Highlighted on the map. Grouped by party until the Legislature publishes its seating plan.</div></div>`:"";
+  const RECOUNT={"Ladysmith-Oceanside":"won by 50 votes in the final count","Kelowna Centre":"won by 43 votes in the final count"};
+  const close=m=>m&&RECOUNT[m.place]?`<div class="note warnnote">Judicial recount: ${m.name} ${RECOUNT[m.place]}. A court recount was due; this page has not seen its result.</div>`:"";
   const head=(m,kicker,grp,place)=>{ const gr=grp||m.group; return `<div class="pband" style="--pc:${G[gr].color}"></div><div class="who"><div class="ava" style="--pc:${G[gr].color}" aria-hidden="true">${initials(m.name)}</div><div class="who-t"><div class="kicker">${kicker}</div><h2>${m.name}</h2><div class="party"><i style="background:${G[gr].color}"></i><span>${G[gr].name}${place?" · "+place:""}</span></div></div></div>`; };
   const dmList=o=>`<ul class="list">${o.heads.map(x=>`<li class="item"><span class="nm">${x.name}</span><span class="rl">${x.role}</span>${srcA(BC_S[x.src])}</li>`).join("")}</ul>`;
+  const psOf=n=>BC_PS.find(x=>x[0]===n), mosOf=n=>BC_MOS.find(x=>x[0]===n);
   if(!key){
     const c=chCounts(C);
     h=`<div class="kicker">Start here</div><h2>How power flows in British Columbia</h2>
-      <ol class="steps"><li><b>Voters</b> in each of the 93 ridings elected one MLA on October 24, 2026.</li><li>The Lieutenant Governor asks the leader who can hold the Legislature's confidence to form government. In the initial count the <b>Conservatives lead in ${c.con} of 93</b> ridings, past the 47 needed.</li><li>Until results are certified on November 18, <b>David Eby</b> stays on as caretaker Premier with his NDP Cabinet. <b>Lorne Doerkson</b> is Premier-designate.</li><li>Each minister directs one or more <b>ministries</b>, which deputy ministers run day to day. Those public servants stay on through the change of government.</li></ol>
-      <h3>Key roles</h3><ul class="list"><li class="item"><button class="linkbtn" data-k="premier">David Eby</button><span class="rl">Premier (caretaker)</span></li><li class="item"><button class="linkbtn" data-k="designate">Lorne Doerkson</button><span class="rl">Premier-designate</span></li><li class="item"><button class="linkbtn" data-k="lg">${BC_LG.name}</button><span class="rl">Lieutenant Governor</span></li></ul>
-      <div class="note">Hover or tap anything. Pick a minister or ministry and a line runs back to the minister's seat, if they were re-elected.</div>${srcA(BC_RES_SRC)}${srcA(BC_S.cab)}`;
+      <ol class="steps"><li><b>Voters</b> in each of the 93 ridings elected one MLA on October 24, 2026.</li><li>The <b>Conservatives won ${c.con} of 93</b> seats in the final count, more than the 47 needed for a majority.</li><li>The Lieutenant Governor swore in <b>Lorne Doerkson</b> as Premier with his Cabinet on November 20, 2026.</li><li>Each minister directs a <b>ministry</b>, which a deputy minister from the public service runs day to day.</li></ol>
+      <h3>Key roles</h3><ul class="list"><li class="item"><button class="linkbtn" data-k="premier">Lorne Doerkson</button><span class="rl">Premier</span></li><li class="item"><button class="linkbtn" data-k="rattee">Claire Rattée</button><span class="rl">Deputy Premier</span></li><li class="item"><button class="linkbtn" data-k="lg">${BC_LG.name}</button><span class="rl">Lieutenant Governor</span></li></ul>
+      <div class="note">Hover or tap anything. Pick a minister or ministry and a line runs back to the minister's seat.</div>${srcA(BC_RES_SRC)}${srcA(BC_S.cab)}`;
   } else if(key==="premier"){
-    h=head(D.eby,"Premier of British Columbia · caretaker","ndp","Vancouver-Point Grey")+`<div class="lede">Stays in office with his Cabinet until a new Premier is sworn in. He resigned as NDP leader on election night and was re-elected as an MLA.</div>
-      <div class="statgrid" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><b>${D.mins.length}</b><span>Ministers</span></div><div class="stat"><b>${D.ministries.length+1}</b><span>Ministries and offices</span></div></div>
-      <h3>His own office</h3><ul class="list">${D.premierOffices.map(o=>`<li class="item"><button class="linkbtn" data-k="o_${o.id}">${o.name}</button><span class="rl">${o.heads[0].name}</span></li>`).join("")}</ul>${seatLine(D.eby)}${srcA(BC_TRANSITION.srcs[0])}`;
-  } else if(key==="designate"){
-    h=head(D.doerk,"Premier-designate","con","Cariboo-Chilcotin")+`<div class="lede">Leader of the Conservative Party of British Columbia, which leads in ${chCounts(C).con} of 93 ridings in the initial count. He can be sworn in as Premier, with his own Cabinet, once results are certified on November 18.</div>
-      ${seatLine(D.doerk)}${srcA(BC_TRANSITION.srcs[1])}${srcA(BC_RES_SRC)}`;
+    h=head(D.doerk,"Premier of British Columbia","con","Cariboo-Chilcotin")+`<div class="lede">Sworn in November 20, 2026. Leads the Conservative Party of BC, which formed its first BC government in almost a century.</div>
+      <div class="statgrid" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="stat"><b>${D.mins.length}</b><span>Ministers</span></div><div class="stat"><b>${BC_MOS.length}</b><span>Ministers of State</span></div><div class="stat"><b>${BC_PS.length}</b><span>Parliamentary secretaries</span></div></div>
+      <h3>His own office</h3><ul class="list">${D.premierOffices.map(o=>`<li class="item"><button class="linkbtn" data-k="o_${o.id}">${o.name}</button><span class="rl">${o.heads.length?o.heads[0].name:"Deputy minister not yet announced"}</span></li>`).join("")}</ul>${seatLine(D.doerk)}${srcA(BC_S.cab)}${srcA(BC_S.mrn)}`;
   } else if(key==="lg"){
     h=`<div class="kicker">The Crown · non-partisan</div><h2>${BC_LG.name}</h2><div class="lede">${BC_LG.title} since ${BC_LG.since}, representing the King in British Columbia.</div>
       <h3>What the role does</h3><ul class="list"><li class="item"><span class="nm">Asks a leader to form government</span><span class="rl">The leader who can hold the Legislature's confidence becomes Premier. That step comes after the results are certified.</span></li>
@@ -214,31 +204,31 @@ function bmPanel(key){
     h=`<div class="kicker">Independent of government</div><h2>Statutory officers of the Legislature</h2><div class="lede">Appointed by and reporting to the whole Legislature, not to the Premier or Cabinet.</div>
       <ul class="list">${BC_OFFICERS.map(o=>`<li class="item"><span class="nm">${o.name||`<span class="muted">Name not confirmed here</span>`}</span><span class="rl"><b>${o.role}</b> · ${o.what}</span>${srcA(o.src)}</li>`).join("")}</ul>${srcA(BC_OFF_SRC)}`;
   } else if(key==="sec"){
-    h=`<div class="kicker">Public service</div><h2>Shannon Salter</h2><div class="lede">Deputy Minister to the Premier, Cabinet Secretary and Head of the BC Public Service. Leads the deputy ministers who run each ministry, and supports the transfer of power to the new government.</div>
-      <div class="note">Public servants are non-partisan, so there is no party colour here.</div>${srcA(BC_S.dm)}`;
+    h=`<div class="kicker">Public service</div><h2>Shannon Salter</h2><div class="lede">Deputy Minister to the Premier, Cabinet Secretary and Head of the BC Public Service. Leads the deputy ministers who run each ministry.</div>
+      <div class="note">Listed in this role on October 26, 2026. The new government had not announced its senior public service appointments when this page was updated.</div><div class="note">Public servants are non-partisan, so there is no party colour here.</div>${srcA(BC_S.dm)}`;
   } else if(key.startsWith("o_")){
     const o=[...D.ministries,...D.premierOffices].find(x=>"o_"+x.id===key);
-    h=`<div class="kicker">Ministry · ${o.abbr}</div><h2>${o.name}</h2><h3>Minister${o.ms.length>1?"s":""} (caretaker)</h3>
-      ${o.ms.length?`<ul class="list">${o.ms.map(m=>`<li class="item"><button class="linkbtn" data-k="${m.id}">${m.name}</button><span class="rl">${m.title} · ${m.mpp?"re-elected in "+m.mpp.place:"not among the members-elect"}</span></li>`).join("")}</ul>`:`<ul class="list"><li class="item"><button class="linkbtn" data-k="premier">David Eby</button><span class="rl">Premier (caretaker)</span></li></ul>`}
-      <h3>Deputy minister${o.heads.length>1?"s":""} (public service)</h3>${dmList(o)}`;
+    h=`<div class="kicker">Ministry · ${o.abbr}</div><h2>${o.name}</h2><h3>Minister${o.ms.length>1?"s":""}</h3>${o.desc?`<div class="note">${o.desc}</div>`:""}
+      ${o.ms.length?`<ul class="list">${o.ms.map(m=>`<li class="item"><button class="linkbtn" data-k="${m.id}">${m.name}</button><span class="rl">${m.title}${m.mpp?" · MLA for "+m.mpp.place:""}</span></li>`).join("")}</ul>`:`<ul class="list"><li class="item"><button class="linkbtn" data-k="premier">Lorne Doerkson</button><span class="rl">Premier</span></li></ul>`}
+      <h3>Deputy minister${o.heads.length>1?"s":""} (public service)</h3>${o.heads.length?dmList(o):`<p class="muted">Not yet announced by the new government.</p>`}${srcA(BC_S.cab)}`;
   } else if(/^m\d+$/.test(key)){
     const m=D.mpps[+key.slice(1)], mn=D.mins.find(x=>x.mpp===m);
-    if(mn) return bmPanel(mn.id); if(m===D.eby) return bmPanel("premier"); if(m===D.doerk) return bmPanel("designate");
-    const mos=BC_MOS.find(x=>x[0]===m.name);
-    h=head(m,"MLA-elect",null,m.place)+`<div class="lede">${mos?`Minister of State for ${mos[1]} in the caretaker government. `:""}${m.group==="con"?"Elected for the incoming governing party.":"Elected for an opposition party."}</div>${close(m)}
+    if(mn) return bmPanel(mn.id); if(m===D.doerk) return bmPanel("premier");
+    const mos=mosOf(m.name), ps=psOf(m.name);
+    h=head(m,mos?"Minister of State":ps?"Parliamentary Secretary":"MLA",null,m.place)+`<div class="lede">${mos?`Minister of State for ${mos[1]}. `:ps?`Parliamentary Secretary for ${ps[1]}. `:""}${m.group==="con"?"Sits with the governing party.":"Sits in opposition."}</div>${close(m)}
       <div class="role"><div class="kicker">About this role</div><p>Members of the Legislative Assembly represent one riding each in Victoria, where they debate and vote on BC's laws and budget and question the provincial government.</p></div>${seatLine(m)}${srcA(BC_RES_SRC)}`;
   } else {
     const mn=D.mins.find(x=>x.id===key);
-    h=head(mn,"Cabinet minister · caretaker","ndp",mn.mpp?mn.mpp.place:null)+`<div class="lede">${mn.title}</div>${mn.note?`<div class="note">${mn.note}</div>`:""}
-      <h3>Responsible for</h3>${mn.links.length?`<ul class="list">${mn.links.map(l=>{ const o=[...D.ministries,...D.premierOffices].find(x=>x.id===l); return o?`<li class="item"><button class="linkbtn" data-k="o_${o.id}">${o.name}</button><span class="rl">${o.heads.map(x=>x.name+" · "+x.role.split(" (")[0]).join("<br>")}</span></li>`:""; }).join("")}</ul>`:`<p class="muted">No ministry of her own.</p>`}
-      ${mn.mpp?seatLine(mn.mpp)+close(mn.mpp):`<div class="note">Not among the members-elect in the initial count, so this minister has no seat in the new Legislature. Ministers stay in office until a new Cabinet is sworn in.</div>`}${srcA(BC_S.cab)}`;
+    h=head(mn,"Cabinet minister","con",mn.mpp?mn.mpp.place:null)+`<div class="lede">${mn.title}</div>${mn.note?`<div class="note">${mn.note}</div>`:""}
+      <h3>Responsible for</h3>${mn.links.length?`<ul class="list">${mn.links.map(l=>{ const o=[...D.ministries,...D.premierOffices].find(x=>x.id===l); return o?`<li class="item"><button class="linkbtn" data-k="o_${o.id}">${o.name}</button><span class="rl">${o.heads.map(x=>x.name+" · "+x.role.split(" (")[0]).join("<br>")}</span></li>`:""; }).join("")}</ul>`:`<p class="muted">No ministry of their own.</p>`}
+      ${mn.mpp?seatLine(mn.mpp)+close(mn.mpp):""}${srcA(BC_S.cab)}`;
   }
   if(key) h+=`<button class="linkbtn" data-k="" style="font-size:13px">← How power flows</button>`;
   el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap"); el.innerHTML=h;
   el.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>bmSelect(b.dataset.k||null,!!b.dataset.k));
 }
 function bmPoint(key){ const D=BM.D;
-  if(key==="premier") return D.premier; if(key==="designate") return D.desig; if(key==="sec") return D.sec; if(key==="lg") return D.lgPt; if(key==="officers") return D.offPt;
+  if(key==="premier") return D.premier; if(key==="sec") return D.sec; if(key==="lg") return D.lgPt; if(key==="officers") return D.offPt;
   if(key.startsWith("o_")){ const o=[...D.ministries,...D.premierOffices].find(x=>"o_"+x.id===key); return [o.x,o.y]; }
   if(/^m\d+$/.test(key)){ const m=D.mpps[+key.slice(1)]; return [m.px,m.py]; }
   const mn=D.mins.find(x=>x.id===key); return mn?[mn.x,mn.y]:[0,0]; }
