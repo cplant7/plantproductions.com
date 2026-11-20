@@ -41,7 +41,6 @@ const NEWS=[
 ];
 /* Coming up: scheduled releases that will update the scorecards */
 const COMING=[
- ["Nov 18, 2026","B.C. election results expected to be certified"],
  ["Nov 20, 2026","New B.C. Cabinet expected"],
  ["Dec 7, 2026","Six federal by-elections"],
  ["Spring 2027","Federal Main Estimates and 2027–28 Departmental Plans; B.C. and Ontario budgets"],
@@ -49,6 +48,7 @@ const COMING=[
 ];
 /* Site updates: data changes on ParliVue. Add a line each time a scorecard's data changes. Newest first. */
 const SITE_UPDATES=[
+ ["2026-11-20","mississauga","Mississauga: Alvin Tedjo is now shown as Mayor and the ward members as Councillors. The 2026 to 2030 term began November 15, 2026."],
  ["2026-11-14","vicscore","Victoria: Council pages and scorecard now use the City's Declaration of Official Election Results (certified Oct 21, 2026) instead of the preliminary counts."],
  ["2026-11-14","fedscore","Federal Departments Scorecard: \"What happened in FY 2025–26\" panel added, from the Public Accounts, the Annual Financial Report and the 2025–26 Departmental Results Reports."],
  ["2026-11-14","fedscore","Federal Departments Scorecard: Supplementary Estimates (B), 2026–27 (tabled Nov 6, 2026) added to the FY 2026–27 Financials for all 31 departments."],

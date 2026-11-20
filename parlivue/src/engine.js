@@ -76,9 +76,9 @@ const DS={
    inner:VIC_IN, outer:VIC_OUT, hubLinks:[], budget:true,
    sats:[{key:"crd",pos:"top",label:"CRD Board",sub:"REGIONAL · MAYOR SITS ON IT",color:"var(--muted)",role:null,src:"guide",
           text:"The Capital Regional District Board governs regional services for Greater Victoria. The City automatically appoints its mayor to the board. The regional layer isn't mapped here yet."}]},
- mississauga:{id:"mississauga",tab:"Mississauga",stamp:"City of Mississauga · Snapshot Nov 5 2026",
-   tagline:"Who runs the City of Mississauga: the Mayor-elect and Council for 2026 to 2030, the City Manager, the commissioners and the departments they lead.",
-   party:"mun", banner:MIS_TRANSITION, hub:{name:"Alvin Tedjo",kicker:"MAYOR-ELECT",l1:"Alvin",l2:"Tedjo",title:"Mayor-elect of Mississauga (74,479 votes, 39.21%). Takes office November 15, 2026",role:"mis_mayor",src:"res"},
+ mississauga:{id:"mississauga",tab:"Mississauga",stamp:"City of Mississauga · Snapshot Nov 20 2026",
+   tagline:"Who runs the City of Mississauga: the Mayor and Council for 2026 to 2030, the City Manager, the commissioners and the departments they lead.",
+   party:"mun", banner:null, hub:{name:"Alvin Tedjo",kicker:"MAYOR",l1:"Alvin",l2:"Tedjo",title:"Mayor of Mississauga since November 15, 2026 (elected with 74,479 votes, 39.21%)",role:"mis_mayor",src:"res"},
    S:MIS_S, sectors:MIS_SECTORS, innerNoun:"Council & administration", outerNoun:"Department / division", outerRole:"mis_head",
    inner:MIS_IN, outer:MIS_OUT, hubLinks:[],
    sats:[{key:"peel",pos:"top",label:"Peel Regional Council",sub:"REGIONAL · MAYOR AND ALL 11 COUNCILLORS SIT ON IT",color:"var(--muted)",role:null,src:"council",
@@ -288,7 +288,7 @@ function render(key){
     const hr=ds.id==="federal"?RIDING.carney:(ds.hub.riding||null); h=personHead("At the helm",ds.hub.name,ds.party,hr)+`<div class="lede">${ds.hub.title}.</div>`+partySrc(ds.party,hr);
     if(ds.id==="mississauga"){
       h+=`<div class="statgrid"><div class="stat"><b>11</b><span>Ward councillors</span></div><div class="stat"><b>5</b><span>Commissioners</span></div><div class="stat"><b>2</b><span>New to Council</span></div></div>
-        <div class="note">Certified October 28, 2026. The new term begins November 15, 2026. Carolyn Parrish is mayor until then.</div><button class="chipbtn" onclick="show('misscore');window.scrollTo(0,0)">Council Scorecard 2024–2026 →</button>
+        <div class="note">Results certified October 28, 2026. The term runs from November 15, 2026 to November 14, 2030.</div><button class="chipbtn" onclick="show('misscore');window.scrollTo(0,0)">Council Scorecard 2024–2026 →</button>
         <h3>Council, 2026 to 2030</h3><ul class="list">${ds.inner.filter(n=>n.role==="mis_council").map(n=>`<li class="item">${go(n.id,n.name)}<span class="rl">${n.riding}${n.isNew?'<span class="newtag">NEW</span>':""}</span></li>`).join("")}</ul>
         <h3>Administration</h3><ul class="list"><li class="item">${go("cm","Geoff Wright")}<span class="rl">City Manager and Chief Administrative Officer</span></li></ul>
         ${roleBox(ds.hub.role)}${srcK("res")}`;
@@ -333,7 +333,7 @@ function render(key){
   } else {
     const n=I[key]; accent=C(secOf[key]);
     const secL=ds.sectors.find(s=>s.id===secOf[key]).label;
-    const kick=`<span class="sector">${secL}</span><span>· ${n.role==="vic_council"?"Councillor":n.role==="mis_council"?"Councillor-elect · "+n.riding:n.role==="vic_cm"||n.role==="mis_cm"||n.role==="mis_comm"?"Public servant":ds.innerNoun}</span>`;
+    const kick=`<span class="sector">${secL}</span><span>· ${n.role==="vic_council"?"Councillor":n.role==="mis_council"?"Councillor · "+n.riding:n.role==="vic_cm"||n.role==="mis_cm"||n.role==="mis_comm"?"Public servant":ds.innerNoun}</span>`;
     const isPerson=["fed_min","bc_min","vic_council","vic_cm","on_min","mis_council","mis_cm","mis_comm"].includes(n.role);
     const pk=["vic_cm","mis_cm","mis_comm"].includes(n.role)?"ps":ds.party, rd=ds.id==="federal"?RIDING[n.id]:ds.id==="mississauga"?null:(n.riding||null);
     h=(isPerson?personHead(kick,n.name,pk,rd,n.isNew?'<span class="newtag">NEW</span>':""):`<div><div class="kicker">${kick}</div><h2>${n.name}</h2></div>`)+`<div class="lede">${n.title}</div>`+(isPerson&&pk!=="ps"?partySrc(pk,rd):"");

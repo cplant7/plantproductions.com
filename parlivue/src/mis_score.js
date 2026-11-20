@@ -45,7 +45,7 @@ function misYearPanel(){
    ["Key events",[
     ["Housing","Council approved Mayor's Housing Task Force actions, including reducing or eliminating development charges.",""],
     ["Goreway Drive","The Goreway Drive overpass over the CN Rail line opened.",""],
-    ["Municipal election, Oct 26, 2026","Alvin Tedjo was elected mayor. The new Council's term starts November 15, 2026.",""]]],
+    ["Municipal election, Oct 26, 2026","Alvin Tedjo was elected mayor. The new Council's term started November 15, 2026.",""]]],
    ["Met or beat the plan",[
     ["Revenue","Revenue came in above plan, so the year ended with a larger surplus than budgeted.",""],
     ["Property taxes","Property taxes collected were slightly above plan.",""]]],

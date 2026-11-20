@@ -1888,7 +1888,7 @@ function misYearPanel(){
    ["Key events",[
     ["Housing","Council approved Mayor's Housing Task Force actions, including reducing or eliminating development charges.",""],
     ["Goreway Drive","The Goreway Drive overpass over the CN Rail line opened.",""],
-    ["Municipal election, Oct 26, 2026","Alvin Tedjo was elected mayor. The new Council's term starts November 15, 2026.",""]]],
+    ["Municipal election, Oct 26, 2026","Alvin Tedjo was elected mayor. The new Council's term started November 15, 2026.",""]]],
    ["Met or beat the plan",[
     ["Revenue","Revenue came in above plan, so the year ended with a larger surplus than budgeted.",""],
     ["Property taxes","Property taxes collected were slightly above plan.",""]]],
@@ -5151,7 +5151,6 @@ const NEWS=[
 ];
 /* Coming up: scheduled releases that will update the scorecards */
 const COMING=[
- ["Nov 18, 2026","B.C. election results expected to be certified"],
  ["Nov 20, 2026","New B.C. Cabinet expected"],
  ["Dec 7, 2026","Six federal by-elections"],
  ["Spring 2027","Federal Main Estimates and 2027–28 Departmental Plans; B.C. and Ontario budgets"],
@@ -5159,6 +5158,7 @@ const COMING=[
 ];
 /* Site updates: data changes on ParliVue. Add a line each time a scorecard's data changes. Newest first. */
 const SITE_UPDATES=[
+ ["2026-11-20","mississauga","Mississauga: Alvin Tedjo is now shown as Mayor and the ward members as Councillors. The 2026 to 2030 term began November 15, 2026."],
  ["2026-11-14","vicscore","Victoria: Council pages and scorecard now use the City's Declaration of Official Election Results (certified Oct 21, 2026) instead of the preliminary counts."],
  ["2026-11-14","fedscore","Federal Departments Scorecard: \"What happened in FY 2025–26\" panel added, from the Public Accounts, the Annual Financial Report and the 2025–26 Departmental Results Reports."],
  ["2026-11-14","fedscore","Federal Departments Scorecard: Supplementary Estimates (B), 2026–27 (tabled Nov 6, 2026) added to the FY 2026–27 Financials for all 31 departments."],
@@ -5219,7 +5219,7 @@ const MIS_WARDS=[[1,"Stephen Dasko","11,458","86.99%",false],[2,"Tom Ellard","4,
  [9,"Martin Reid","11,758","74.02%",false],[10,"Sue McFadden","15,787","79.64%",false],[11,"Brad Butt","10,099","62.15%",false]];
 const MIS_PREV={2:"Alvin Tedjo, who ran for mayor",7:"Dipika Damerla, who ran for mayor"};
 const MIS_IN=[
- ...MIS_WARDS.map(([w,n,v,p,isNew])=>({id:"w"+w,name:n,title:`Councillor-elect, Ward ${w} · ${v} votes (${p})`,links:[],w:1,isNew,role:"mis_council",src:"res",status:"A",riding:"Ward "+w,
+ ...MIS_WARDS.map(([w,n,v,p,isNew])=>({id:"w"+w,name:n,title:`Councillor, Ward ${w} · ${v} votes (${p})`,links:[],w:1,isNew,role:"mis_council",src:"res",status:"A",riding:"Ward "+w,
    note:(isNew?`New to Council. Ward ${w} was previously held by ${MIS_PREV[w]}. `:"Re-elected. ")+"Also sits on Peel Regional Council."})),
  {id:"cm",name:"Geoff Wright",short:"City Manager",title:"City Manager and Chief Administrative Officer",links:["fire","audit","comms","corp","legis","comm","tw","pb"],w:3,role:"mis_cm",status:"A",src:"lead"},
  {id:"c_corp",name:"Marisa Chiu",short:"Corporate Services",title:"Commissioner of Corporate Services, Chief Financial Officer and Treasurer",links:["corp"],w:1.2,role:"mis_comm",status:"A",src:"lead"},
@@ -5239,7 +5239,7 @@ const MIS_OUT=[
  {id:"audit",abbr:"Audit",name:"Internal Audit",heads:[],desc:"A division reporting to the City Manager."},
  {id:"comms",abbr:"Comms",name:"Strategic Communications and Initiatives",heads:[],desc:"A division reporting to the City Manager."}
 ];
-const MIS_TRANSITION={text:"Mississauga voted on October 26, 2026, and the City Clerk certified the results on October 28. Alvin Tedjo was elected mayor. The new Council's term runs from November 15, 2026 to November 14, 2030. This page shows the incoming Council. Carolyn Parrish remains mayor until November 14.",
+const MIS_TRANSITION={text:"Mississauga voted on October 26, 2026, and the City Clerk certified the results on October 28. Alvin Tedjo was elected mayor. The new Council's term runs from November 15, 2026 to November 14, 2030. Alvin Tedjo and the new Council took office on November 15, 2026.",
   srcs:[MIS_S.res,MIS_S.mayor]};
 const MIS_REPS=[["Fares Al Soud","MP, Mississauga Centre (Liberal)"],["Peter Fonseca","MP, Mississauga East—Cooksville (Liberal)"],["Iqra Khalid","MP, Mississauga—Erin Mills (Liberal)"],["Charles Sousa","MP, Mississauga—Lakeshore (Liberal)"],["Iqwinder Gaheer","MP, Mississauga—Malton (Liberal)"],["Rechie Valdez","MP, Mississauga—Streetsville (Liberal)"],
  ["Natalia Kusendova-Bashta","MPP, Mississauga Centre (PC) · Minister of Long-Term Care"],["Silvia Gualtieri","MPP, Mississauga East—Cooksville (PC)"],["Sheref Sabawy","MPP, Mississauga—Erin Mills (PC)"],["Rudy Cuzzetto","MPP, Mississauga—Lakeshore (PC)"],["Deepak Anand","MPP, Mississauga—Malton (PC)"],["Nina Tangri","MPP, Mississauga—Streetsville (PC) · Associate Minister of Small Business"]];
@@ -9555,9 +9555,9 @@ const DS={
    inner:VIC_IN, outer:VIC_OUT, hubLinks:[], budget:true,
    sats:[{key:"crd",pos:"top",label:"CRD Board",sub:"REGIONAL · MAYOR SITS ON IT",color:"var(--muted)",role:null,src:"guide",
           text:"The Capital Regional District Board governs regional services for Greater Victoria. The City automatically appoints its mayor to the board. The regional layer isn't mapped here yet."}]},
- mississauga:{id:"mississauga",tab:"Mississauga",stamp:"City of Mississauga · Snapshot Nov 5 2026",
-   tagline:"Who runs the City of Mississauga: the Mayor-elect and Council for 2026 to 2030, the City Manager, the commissioners and the departments they lead.",
-   party:"mun", banner:MIS_TRANSITION, hub:{name:"Alvin Tedjo",kicker:"MAYOR-ELECT",l1:"Alvin",l2:"Tedjo",title:"Mayor-elect of Mississauga (74,479 votes, 39.21%). Takes office November 15, 2026",role:"mis_mayor",src:"res"},
+ mississauga:{id:"mississauga",tab:"Mississauga",stamp:"City of Mississauga · Snapshot Nov 20 2026",
+   tagline:"Who runs the City of Mississauga: the Mayor and Council for 2026 to 2030, the City Manager, the commissioners and the departments they lead.",
+   party:"mun", banner:null, hub:{name:"Alvin Tedjo",kicker:"MAYOR",l1:"Alvin",l2:"Tedjo",title:"Mayor of Mississauga since November 15, 2026 (elected with 74,479 votes, 39.21%)",role:"mis_mayor",src:"res"},
    S:MIS_S, sectors:MIS_SECTORS, innerNoun:"Council & administration", outerNoun:"Department / division", outerRole:"mis_head",
    inner:MIS_IN, outer:MIS_OUT, hubLinks:[],
    sats:[{key:"peel",pos:"top",label:"Peel Regional Council",sub:"REGIONAL · MAYOR AND ALL 11 COUNCILLORS SIT ON IT",color:"var(--muted)",role:null,src:"council",
@@ -9767,7 +9767,7 @@ function render(key){
     const hr=ds.id==="federal"?RIDING.carney:(ds.hub.riding||null); h=personHead("At the helm",ds.hub.name,ds.party,hr)+`<div class="lede">${ds.hub.title}.</div>`+partySrc(ds.party,hr);
     if(ds.id==="mississauga"){
       h+=`<div class="statgrid"><div class="stat"><b>11</b><span>Ward councillors</span></div><div class="stat"><b>5</b><span>Commissioners</span></div><div class="stat"><b>2</b><span>New to Council</span></div></div>
-        <div class="note">Certified October 28, 2026. The new term begins November 15, 2026. Carolyn Parrish is mayor until then.</div><button class="chipbtn" onclick="show('misscore');window.scrollTo(0,0)">Council Scorecard 2024–2026 →</button>
+        <div class="note">Results certified October 28, 2026. The term runs from November 15, 2026 to November 14, 2030.</div><button class="chipbtn" onclick="show('misscore');window.scrollTo(0,0)">Council Scorecard 2024–2026 →</button>
         <h3>Council, 2026 to 2030</h3><ul class="list">${ds.inner.filter(n=>n.role==="mis_council").map(n=>`<li class="item">${go(n.id,n.name)}<span class="rl">${n.riding}${n.isNew?'<span class="newtag">NEW</span>':""}</span></li>`).join("")}</ul>
         <h3>Administration</h3><ul class="list"><li class="item">${go("cm","Geoff Wright")}<span class="rl">City Manager and Chief Administrative Officer</span></li></ul>
         ${roleBox(ds.hub.role)}${srcK("res")}`;
@@ -9812,7 +9812,7 @@ function render(key){
   } else {
     const n=I[key]; accent=C(secOf[key]);
     const secL=ds.sectors.find(s=>s.id===secOf[key]).label;
-    const kick=`<span class="sector">${secL}</span><span>· ${n.role==="vic_council"?"Councillor":n.role==="mis_council"?"Councillor-elect · "+n.riding:n.role==="vic_cm"||n.role==="mis_cm"||n.role==="mis_comm"?"Public servant":ds.innerNoun}</span>`;
+    const kick=`<span class="sector">${secL}</span><span>· ${n.role==="vic_council"?"Councillor":n.role==="mis_council"?"Councillor · "+n.riding:n.role==="vic_cm"||n.role==="mis_cm"||n.role==="mis_comm"?"Public servant":ds.innerNoun}</span>`;
     const isPerson=["fed_min","bc_min","vic_council","vic_cm","on_min","mis_council","mis_cm","mis_comm"].includes(n.role);
     const pk=["vic_cm","mis_cm","mis_comm"].includes(n.role)?"ps":ds.party, rd=ds.id==="federal"?RIDING[n.id]:ds.id==="mississauga"?null:(n.riding||null);
     h=(isPerson?personHead(kick,n.name,pk,rd,n.isNew?'<span class="newtag">NEW</span>':""):`<div><div class="kicker">${kick}</div><h2>${n.name}</h2></div>`)+`<div class="lede">${n.title}</div>`+(isPerson&&pk!=="ps"?partySrc(pk,rd):"");
