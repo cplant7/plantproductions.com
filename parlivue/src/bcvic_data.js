@@ -1,73 +1,68 @@
 /* ================= BRITISH COLUMBIA ================= */
 const BC_S = {
-  cab:["BC Executive Council page (updated Sep 8 2026)","https://www2.gov.bc.ca/gov/content/governments/organizational-structure/cabinet/cabinet-ministers"],
-  dm:["BC Deputy Ministers' Council page (updated Oct 26 2026)","https://www2.gov.bc.ca/gov/content/governments/organizational-structure/cabinet/deputy-ministers"],
-  aug:["BC Gov News, cabinet changes Aug 14 2026","https://news.gov.bc.ca/releases/2026PREM0057-000949"],
+  cab:["The Canadian Press: List of the new B.C. Conservative cabinet (Nov 20 2026, via InfoNews)","https://infonews.ca/news/7990273/a-list-of-who-is-in-the-new-british-columbia-conservative-cabinet/"],
+  mrn:["Maple Ridge News: B.C. Conservatives form government as new cabinet ministers are sworn in (Nov 20 2026)","https://mapleridgenews.com/2026/11/20/b-c-conservatives-form-government-as-new-cabinet-ministers-are-sworn-in/"],
+  dm:["BC Deputy Ministers' Council page (updated Oct 26 2026, before the change of government)","https://www2.gov.bc.ca/gov/content/governments/organizational-structure/cabinet/deputy-ministers"],
   psa:["Public Service Act, s. 12","https://free.bcpublications.ca/civix/document/id/consol3/consol3/96385_01"]
 };
 const BC_SECTORS=[
- {id:"centre",label:"Finance & Government",ids:["osborne","gibson","lore"]},
- {id:"econ",label:"Economy & Work",ids:["bailey","whiteside","kang"]},
- {id:"infra",label:"Housing & Infrastructure",ids:["boyle","ma","farnworth"]},
- {id:"res",label:"Resources & Energy",ids:["dix","parmar","brar","popham"]},
- {id:"ind",label:"Lands & Reconciliation",ids:["chandraherbert","neill","davidson"]},
- {id:"people",label:"People & Communities",ids:["kahlon","beare","sunner","wickens","malcolmson"]},
- {id:"global",label:"Safety & Justice",ids:["sharma","krieger","greene"]}
+ {id:"centre",label:"Finance & Government",ids:["milobar","banman"]},
+ {id:"econ",label:"Economy & Work",ids:["dew","kneufeld"]},
+ {id:"infra",label:"Housing & Infrastructure",ids:["ounsted","halford"]},
+ {id:"res",label:"Resources & Energy",ids:["lneufeld","giddens","paton","wilson"]},
+ {id:"ind",label:"Lands & Reconciliation",ids:["mcinnis","warbus"]},
+ {id:"people",label:"People & Communities",ids:["peterson","block","loewen","rattee"]},
+ {id:"global",label:"Safety & Justice",ids:["elliott","sahota"]}
 ];
+/* Doerkson Cabinet, sworn in Nov 20, 2026. Titles follow The Canadian Press list; the Government of BC had not yet published its Executive Council page. */
 const BC_MIN=[
- {id:"osborne",name:"Josie Osborne",title:"Minister of Finance",links:["fin"],note:"Moved from Health to Finance on Aug 14, 2026."},
- {id:"gibson",name:"Diana Gibson",title:"Minister of Citizens' Services",links:["citz"]},
- {id:"lore",name:"Grace Lore",title:"Minister without Portfolio",links:[],note:"A Cabinet member with no ministry of her own, so no department link is drawn."},
- {id:"bailey",name:"Brenda Bailey",title:"Minister of Jobs and Economic Growth",links:["jedi"],note:"Did not seek re-election on Oct 24, 2026. Moved from Finance on Aug 14, 2026. The release says Adrian Dix will cover her portfolio while she is on leave. The ministry is listed as Jobs, Economic Development and Innovation on the deputy ministers' page."},
- {id:"whiteside",name:"Jennifer Whiteside",title:"Minister of Labour",links:["lbr"]},
- {id:"kang",name:"Anne Kang",title:"Minister of Tourism, Arts, Culture and Sport",links:["tacs"]},
- {id:"boyle",name:"Christine Boyle",title:"Minister of Housing and Municipal Affairs",links:["hma"]},
- {id:"ma",name:"Bowinn Ma",title:"Minister of Infrastructure",links:["inf"]},
- {id:"farnworth",name:"Mike Farnworth",title:"Minister of Transportation and Transit",links:["mott"]},
- {id:"dix",name:"Adrian Dix",title:"Minister of Energy and Climate Solutions and Minister responsible for Francophone Affairs",links:["ecs"],note:"Also covering the Jobs portfolio while Brenda Bailey is on leave (Aug 14, 2026 release)."},
- {id:"parmar",name:"Ravi Parmar",title:"Minister of Forests",links:["for"]},
- {id:"brar",name:"Jagrup Brar",title:"Minister of Mining and Critical Minerals",links:["mcm"]},
- {id:"popham",name:"Lana Popham",title:"Minister of Agriculture and Food",links:["agri"]},
- {id:"chandraherbert",name:"Spencer Chandra Herbert",title:"Minister of Indigenous Relations and Reconciliation",links:["irr"]},
- {id:"neill",name:"Randene Neill",title:"Minister of Water, Land and Resource Stewardship",links:["wlrs"]},
- {id:"davidson",name:"Tamara Davidson",title:"Minister of Environment and Parks",links:["env"]},
- {id:"kahlon",name:"Ravi Kahlon",title:"Minister of Health",links:["hlth"],note:"Moved from Jobs and Economic Growth to Health on Aug 14, 2026. Did not seek re-election on Oct 24, 2026."},
- {id:"beare",name:"Lisa Beare",title:"Minister of Education and Child Care",links:["ecc"]},
- {id:"sunner",name:"Jessie Sunner",title:"Minister of Post-Secondary Education and Future Skills",links:["psfs"]},
- {id:"wickens",name:"Jodie Wickens",title:"Minister of Children and Family Development",links:["mcfd"]},
- {id:"malcolmson",name:"Sheila Malcolmson",title:"Minister of Social Development and Poverty Reduction",links:["sdpr"]},
- {id:"sharma",name:"Niki Sharma",title:"Attorney General and Deputy Premier",links:["ag"]},
- {id:"krieger",name:"Nina Krieger",title:"Minister of Public Safety and Solicitor General",links:["pssg"]},
- {id:"greene",name:"Kelly Greene",title:"Minister of Emergency Management and Climate Readiness",links:["emcr"]}
+ {id:"rattee",name:"Claire Rattée",short:"Rattée",title:"Minister of Social Development and Deputy Premier",links:["sd"]},
+ {id:"milobar",name:"Peter Milobar",title:"Minister of Finance",links:["fin"]},
+ {id:"mcinnis",name:"Scott McInnis",title:"Minister of Indigenous Relations and Reconciliation",links:["irr"]},
+ {id:"peterson",name:"Ryan Peterson",title:"Minister of Health",links:["hlth"]},
+ {id:"paton",name:"Ian Paton",title:"Minister of Agriculture",links:["agri"]},
+ {id:"banman",name:"Bruce Banman",title:"Minister of Citizens' Services and Technology",links:["cst"],note:"One news report (Maple Ridge News) lists Gavin Dew for this ministry. The Canadian Press list, used here, names Bruce Banman."},
+ {id:"dew",name:"Gavin Dew",title:"Minister of Economic Development and Tourism",links:["edt"]},
+ {id:"lneufeld",name:"Larry Neufeld",short:"L. Neufeld",title:"Minister of Energy, Mines and Petroleum Resources",links:["emp"]},
+ {id:"kneufeld",name:"Korky Neufeld",short:"K. Neufeld",title:"Minister of Post-Secondary Education and Labour",links:["psel"]},
+ {id:"warbus",name:"A'aliya Warbus",title:"Minister of Environment",links:["env"]},
+ {id:"loewen",name:"Kristina Loewen",title:"Minister of Children and Family Development",links:["mcfd"]},
+ {id:"block",name:"Lynne Block",title:"Minister of Education and Child Care",links:["ecc"]},
+ {id:"giddens",name:"Kiel Giddens",title:"Minister of Forests",links:["for"]},
+ {id:"ounsted",name:"Cathie Ounsted",title:"Minister of Local Government, Housing, Sport and Culture",links:["lhsc"]},
+ {id:"halford",name:"Trevor Halford",title:"Minister of Transportation and Infrastructure",links:["ti"]},
+ {id:"sahota",name:"Jessy Sahota",title:"Minister of Public Safety and Solicitor General",links:["pssg"]},
+ {id:"wilson",name:"Donegal Wilson",title:"Minister of Water, Land and Natural Resource Operations",links:["wlnro"]},
+ {id:"elliott",name:"Caroline Elliott",title:"Attorney General",links:["ag"]}
 ];
 const dm=(name,role,extra)=>({name,role,status:"A",src:"dm",...(extra||{})});
+/* Deputy ministers: the new government had not announced its deputy ministers on Nov 20, 2026.
+   Where a ministry kept its name, the deputy listed on Oct 26, 2026 is shown and labelled as such. */
+const DM_OLD=" (listed Oct 26, 2026; not yet confirmed by the new government)";
+const dmo=(name,role)=>dm(name,role+DM_OLD,{status:"C"});
 const BC_OUT=[
- {id:"premier",abbr:"Premier",name:"Office of the Premier",heads:[dm("Shannon Salter","Deputy Minister to the Premier, Cabinet Secretary and Head of the Public Service"),dm("Leslie Teramoto","Deputy Minister, Intergovernmental Relations Secretariat"),dm("Tom McCarthy","Deputy Minister, Policy and Coordination")]},
- {id:"fin",abbr:"FIN",name:"Ministry of Finance",heads:[dm("Jonathan Dubé","Acting Deputy Minister",{also:"The page's photo caption gives a different title (Associate Deputy Minister and Deputy Secretary to Treasury Board)."}),dm("Debbie Godfrey","Deputy Minister, Head of the BC Public Service Agency"),dm("Sage Aaron","Deputy Minister, Government Communications and Public Engagement")]},
- {id:"citz",abbr:"CITZ",name:"Ministry of Citizens' Services",heads:[dm("Hayden Lansdell","Deputy Minister")]},
- {id:"jedi",abbr:"JEDI",name:"Ministry of Jobs, Economic Development and Innovation",heads:[dm("Fazil Mihlar","Deputy Minister")]},
- {id:"lbr",abbr:"LBR",name:"Ministry of Labour",heads:[dm("Lorie Hrycuik","Deputy Minister")]},
- {id:"tacs",abbr:"TACS",name:"Ministry of Tourism, Arts, Culture and Sport",heads:[dm("Silas Brownsey","Deputy Minister")]},
- {id:"hma",abbr:"HMA",name:"Ministry of Housing and Municipal Affairs",heads:[dm("Teri Collins","Deputy Minister")]},
- {id:"inf",abbr:"INF",name:"Ministry of Infrastructure",heads:[dm("Bobbi Plecas","Deputy Minister")]},
- {id:"mott",abbr:"MOTT",name:"Ministry of Transportation and Transit",heads:[dm("Heather Wood","Deputy Minister")]},
- {id:"ecs",abbr:"ECS",name:"Ministry of Energy and Climate Solutions",heads:[dm("Peter Pokorny","Deputy Minister")]},
- {id:"for",abbr:"FOR",name:"Ministry of Forests",heads:[dm("Makenzie Leine","Deputy Minister")]},
- {id:"mcm",abbr:"MCM",name:"Ministry of Mining and Critical Minerals",heads:[dm("Nathaniel Amann-Blake","Deputy Minister")]},
- {id:"agri",abbr:"AGRI",name:"Ministry of Agriculture and Food",heads:[dm("Michelle Koski","Deputy Minister"),dm("Erin McEwan","Acting General Manager and CEO, Liquor Distribution Branch")]},
- {id:"irr",abbr:"IRR",name:"Ministry of Indigenous Relations and Reconciliation",heads:[dm("Alex MacLennan","Deputy Minister",{also:"The page's photo caption says Associate Deputy Minister."})]},
- {id:"wlrs",abbr:"WLRS",name:"Ministry of Water, Land and Resource Stewardship",heads:[dm("Lori Halls","Deputy Minister")]},
- {id:"env",abbr:"ENV",name:"Ministry of Environment and Parks",heads:[dm("Kevin Jardine","Deputy Minister")]},
- {id:"hlth",abbr:"HLTH",name:"Ministry of Health",heads:[dm("Cynthia Johansen","Deputy Minister")]},
- {id:"ecc",abbr:"ECC",name:"Ministry of Education and Child Care",heads:[dm("Kathryn Krishna","Deputy Minister")]},
- {id:"psfs",abbr:"PSFS",name:"Ministry of Post-Secondary Education and Future Skills",heads:[dm("Trevor Hughes","Deputy Minister")]},
- {id:"mcfd",abbr:"MCFD",name:"Ministry of Children and Family Development",heads:[dm("Keith M. Godin","Deputy Minister")]},
- {id:"sdpr",abbr:"SDPR",name:"Ministry of Social Development and Poverty Reduction",heads:[dm("Raymond Fieltsch","Acting Deputy Minister")]},
- {id:"ag",abbr:"AG",name:"Ministry of Attorney General",heads:[dm("Barbara Carmichael","Deputy Attorney General")]},
- {id:"pssg",abbr:"PSSG",name:"Ministry of Public Safety and Solicitor General",heads:[dm("Tara Richards","Deputy Solicitor General")]},
- {id:"emcr",abbr:"EMCR",name:"Ministry of Emergency Management and Climate Readiness",heads:[dm("Teresa Dobmeier","Deputy Minister")]}
+ {id:"premier",abbr:"Premier",name:"Office of the Premier",heads:[dmo("Shannon Salter","Deputy Minister to the Premier, Cabinet Secretary and Head of the Public Service")]},
+ {id:"sd",abbr:"SD",name:"Ministry of Social Development",heads:[],desc:"New ministry name. Previously Social Development and Poverty Reduction."},
+ {id:"fin",abbr:"FIN",name:"Ministry of Finance",heads:[dmo("Jonathan Dubé","Acting Deputy Minister")]},
+ {id:"irr",abbr:"IRR",name:"Ministry of Indigenous Relations and Reconciliation",heads:[dmo("Alex MacLennan","Deputy Minister")]},
+ {id:"hlth",abbr:"HLTH",name:"Ministry of Health",heads:[dmo("Cynthia Johansen","Deputy Minister")]},
+ {id:"agri",abbr:"AGRI",name:"Ministry of Agriculture",heads:[],desc:"New ministry name. Previously Agriculture and Food."},
+ {id:"cst",abbr:"CST",name:"Ministry of Citizens' Services and Technology",heads:[],desc:"New ministry name. Previously Citizens' Services."},
+ {id:"edt",abbr:"EDT",name:"Ministry of Economic Development and Tourism",heads:[],desc:"New ministry."},
+ {id:"emp",abbr:"EMPR",name:"Ministry of Energy, Mines and Petroleum Resources",heads:[],desc:"New ministry."},
+ {id:"psel",abbr:"PSEL",name:"Ministry of Post-Secondary Education and Labour",heads:[],desc:"New ministry."},
+ {id:"env",abbr:"ENV",name:"Ministry of Environment",heads:[],desc:"New ministry name. Previously Environment and Parks."},
+ {id:"mcfd",abbr:"MCFD",name:"Ministry of Children and Family Development",heads:[dmo("Keith M. Godin","Deputy Minister")]},
+ {id:"ecc",abbr:"ECC",name:"Ministry of Education and Child Care",heads:[dmo("Kathryn Krishna","Deputy Minister")]},
+ {id:"for",abbr:"FOR",name:"Ministry of Forests",heads:[dmo("Makenzie Leine","Deputy Minister")]},
+ {id:"lhsc",abbr:"LGHSC",name:"Ministry of Local Government, Housing, Sport and Culture",heads:[],desc:"New ministry."},
+ {id:"ti",abbr:"TI",name:"Ministry of Transportation and Infrastructure",heads:[],desc:"New ministry."},
+ {id:"pssg",abbr:"PSSG",name:"Ministry of Public Safety and Solicitor General",heads:[dmo("Tara Richards","Deputy Solicitor General")]},
+ {id:"wlnro",abbr:"WLNRO",name:"Ministry of Water, Land and Natural Resource Operations",heads:[],desc:"New ministry."},
+ {id:"ag",abbr:"AG",name:"Ministry of Attorney General",heads:[dmo("Barbara Carmichael","Deputy Attorney General")]}
 ];
-const BC_MOS=[["Brittny Anderson","Local Governments and Rural Communities"],["Rick Glumac","Artificial Intelligence and New Technologies"],["Terry Yung","Community Safety and Integrated Services"]];
+const BC_MOS=[["Harman Bhangu","Labour"],["Carson Binda","Red Tape Reduction"],["Ward Stamer","Emergency Management"],["Anna Kindy","Rural Development"],["Pete Davis","Mining"],["Zeeshan Wahla","Housing"]];
+const BC_PS=[["Rosalyn Bird","Armed Forces and Veterans Affairs"],["Margareta Dovgal","Children and Youth with Special Needs"],["Steve Kooner","Insurance Corporation of British Columbia"],["Misty Van Popta","Infrastructure"],["Megan Knight","Metro Vancouver"],["Tracy St. Claire","Rural Health"],["Sharon Hartwell","Seniors"],["Mandeep Dhaliwal","Sport and Culture"],["Sacha Peter","Technology and Innovation"],["Jody Toor","Tourism"],["Harj Dhaliwal","TransLink"],["Bryan Tepper","Urban Policing"]];
 
 /* ================= CITY OF VICTORIA ================= */
 const VIC_S = {

@@ -21,7 +21,7 @@ const MIS_WARDS=[[1,"Stephen Dasko","11,458","86.99%",false],[2,"Tom Ellard","4,
  [9,"Martin Reid","11,758","74.02%",false],[10,"Sue McFadden","15,787","79.64%",false],[11,"Brad Butt","10,099","62.15%",false]];
 const MIS_PREV={2:"Alvin Tedjo, who ran for mayor",7:"Dipika Damerla, who ran for mayor"};
 const MIS_IN=[
- ...MIS_WARDS.map(([w,n,v,p,isNew])=>({id:"w"+w,name:n,title:`Councillor-elect, Ward ${w} · ${v} votes (${p})`,links:[],w:1,isNew,role:"mis_council",src:"res",status:"A",riding:"Ward "+w,
+ ...MIS_WARDS.map(([w,n,v,p,isNew])=>({id:"w"+w,name:n,title:`Councillor, Ward ${w} · ${v} votes (${p})`,links:[],w:1,isNew,role:"mis_council",src:"res",status:"A",riding:"Ward "+w,
    note:(isNew?`New to Council. Ward ${w} was previously held by ${MIS_PREV[w]}. `:"Re-elected. ")+"Also sits on Peel Regional Council."})),
  {id:"cm",name:"Geoff Wright",short:"City Manager",title:"City Manager and Chief Administrative Officer",links:["fire","audit","comms","corp","legis","comm","tw","pb"],w:3,role:"mis_cm",status:"A",src:"lead"},
  {id:"c_corp",name:"Marisa Chiu",short:"Corporate Services",title:"Commissioner of Corporate Services, Chief Financial Officer and Treasurer",links:["corp"],w:1.2,role:"mis_comm",status:"A",src:"lead"},
@@ -41,7 +41,7 @@ const MIS_OUT=[
  {id:"audit",abbr:"Audit",name:"Internal Audit",heads:[],desc:"A division reporting to the City Manager."},
  {id:"comms",abbr:"Comms",name:"Strategic Communications and Initiatives",heads:[],desc:"A division reporting to the City Manager."}
 ];
-const MIS_TRANSITION={text:"Mississauga voted on October 26, 2026, and the City Clerk certified the results on October 28. Alvin Tedjo was elected mayor. The new Council's term runs from November 15, 2026 to November 14, 2030. This page shows the incoming Council. Carolyn Parrish remains mayor until November 14.",
+const MIS_TRANSITION={text:"Mississauga voted on October 26, 2026, and the City Clerk certified the results on October 28. Alvin Tedjo was elected mayor. The new Council's term runs from November 15, 2026 to November 14, 2030. Alvin Tedjo and the new Council took office on November 15, 2026.",
   srcs:[MIS_S.res,MIS_S.mayor]};
 const MIS_REPS=[["Fares Al Soud","MP, Mississauga Centre (Liberal)"],["Peter Fonseca","MP, Mississauga East—Cooksville (Liberal)"],["Iqra Khalid","MP, Mississauga—Erin Mills (Liberal)"],["Charles Sousa","MP, Mississauga—Lakeshore (Liberal)"],["Iqwinder Gaheer","MP, Mississauga—Malton (Liberal)"],["Rechie Valdez","MP, Mississauga—Streetsville (Liberal)"],
  ["Natalia Kusendova-Bashta","MPP, Mississauga Centre (PC) · Minister of Long-Term Care"],["Silvia Gualtieri","MPP, Mississauga East—Cooksville (PC)"],["Sheref Sabawy","MPP, Mississauga—Erin Mills (PC)"],["Rudy Cuzzetto","MPP, Mississauga—Lakeshore (PC)"],["Deepak Anand","MPP, Mississauga—Malton (PC)"],["Nina Tangri","MPP, Mississauga—Streetsville (PC) · Associate Minister of Small Business"]];
